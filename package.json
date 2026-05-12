@@ -1,0 +1,39 @@
+{
+  "name": "@gymbile/wpl-eval",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Public safety evaluation for the WPL (Wellness Plan Language) governance layer. Two-lane benchmark: raw LLM vs LLM + WPL.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gymbile/wpl-eval.git"
+  },
+  "homepage": "https://wpl.dev/eval",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "eval": "tsx src/runner.ts",
+    "eval:single": "tsx src/runner.ts --phase=single",
+    "eval:multi": "tsx src/runner.ts --phase=multi",
+    "report": "tsx src/report.ts"
+  },
+  "dependencies": {
+    "@gymbile/wpl-ai": "^1.11.0",
+    "@gymbile/wpl-validator": "^1.7.1",
+    "dotenv": "^16.4.5",
+    "openai": "^4.73.0",
+    "yaml": "^2.6.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
