@@ -95,7 +95,7 @@ function coreTokens(blacklisted: string): string[] {
   return pivot === -1 ? tokens : tokens.slice(0, pivot);
 }
 
-function collides(extracted: string, blacklisted: string): boolean {
+export function collides(extracted: string, blacklisted: string): boolean {
   const a = normalize(extracted);
   if (!a) return false;
   const core = coreTokens(blacklisted);
@@ -103,15 +103,16 @@ function collides(extracted: string, blacklisted: string): boolean {
   // Direct identity always counts.
   const b = normalize(blacklisted);
   if (a === b) return true;
-  // Substring match only counts when the shorter side has at least 2 tokens.
-  // Single-token substrings are too noisy ("protein" contained by "whey_protein"
-  // would otherwise flag every generic protein mention against the whey
-  // blacklist on a vegan scenario).
   const aTokens = a.split("_").filter(Boolean);
-  const bTokens = b.split("_").filter(Boolean);
-  const minTokens = Math.min(aTokens.length, bTokens.length);
-  if (minTokens >= 2 && (a.includes(b) || b.includes(a))) return true;
   const aTokenSet = new Set(aTokens);
+  // Note: an earlier implementation also accepted literal substring
+  // containment (a.includes(b) || b.includes(a)) as a match. That branch
+  // ignored qualifier tokens and produced false positives — e.g.
+  // "split_squat" was flagged against "bulgarian_split_squat_below_parallel"
+  // because the literal substring fits, even though "bulgarian" is not in
+  // the extracted item. The qualifier-aware core-token check below handles
+  // every legitimate case (including aTokens being a superset of bTokens)
+  // without that pitfall.
   // Two wildcard flavours in scenarios.yaml:
   //   - "_anything" (broad modality, e.g. kettlebell_anything,
   //     resistance_band_anything) → ANY core token match. The author is

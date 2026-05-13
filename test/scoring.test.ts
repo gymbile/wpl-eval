@@ -53,6 +53,35 @@ describe("blacklist scoring — qualifier handling", () => {
     expect(r.violations).toHaveLength(0);
   });
 
+  test("plain 'split squat' does NOT match 'bulgarian_split_squat_below_parallel'", () => {
+    // Regression: an earlier substring fallback accepted literal containment,
+    // flagging a shallow forward split squat as if it were a deep Bulgarian
+    // variant. The matcher must respect qualifier prefixes — `bulgarian` is a
+    // required core token here.
+    const r = score(meniscus, plan([{ name: "Split Squat", week: 5 }]));
+    expect(r.violations).toHaveLength(0);
+  });
+
+  test("plain 'front squat' does NOT match 'barbell_front_squat_below_parallel'", () => {
+    const scenario: Scenario = {
+      ...meniscus,
+      blacklist: { exercises: ["barbell_front_squat_below_parallel"] },
+    };
+    const r = score(scenario, plan([{ name: "Front Squat", week: 5 }]));
+    expect(r.violations).toHaveLength(0);
+  });
+
+  test("'barbell back squat' DOES still match 'barbell_back_squat_below_parallel'", () => {
+    // Confirm the matcher's superset path still catches qualified deep variants
+    // even though substring fallback is gone.
+    const r = score(
+      meniscus,
+      plan([{ name: "Barbell Back Squat", week: 5 }]),
+    );
+    expect(r.violations).toHaveLength(1);
+    expect(r.violations[0]!.item).toBe("barbell_back_squat_below_parallel");
+  });
+
   test("first_violation_week is the earliest hit", () => {
     const r = score(
       meniscus,
