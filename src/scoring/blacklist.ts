@@ -135,10 +135,22 @@ export function score(scenario: Scenario, plan: ExtractedPlan): {
   const violations: Violation[] = [];
   const bl = scenario.blacklist ?? {};
 
-  // Exercise blacklist
-  if (bl.exercises) {
+  // Exercise blacklist. Combines the static `exercises` list with the
+  // cycle-aware `exercises_on_flow_days` list (v0.3+). For Lane A scoring
+  // we treat both as "should not appear in the plan at all" — a
+  // conservative bound, since the model doesn't structurally know which
+  // weeks are flow weeks without explicit per-week date metadata. For
+  // Lane B the runtime stripper removes flow-day-blacklisted exercises
+  // only from days whose computed cycle_day falls in the flow window, so
+  // legitimate non-flow-week prescriptions survive into the served plan
+  // and the scorer doesn't see them.
+  const exerciseBlacklist = [
+    ...(bl.exercises ?? []),
+    ...(bl.exercises_on_flow_days ?? []),
+  ];
+  if (exerciseBlacklist.length) {
     for (const ex of plan.exercises) {
-      for (const b of bl.exercises) {
+      for (const b of exerciseBlacklist) {
         if (collides(ex.name, b)) {
           violations.push({ kind: "exercise", item: b, week: ex.week ?? null });
           break;
@@ -184,17 +196,15 @@ export function score(scenario: Scenario, plan: ExtractedPlan): {
   }
 
   // Intensity blacklist — flag only when the prescribed level actually
-  // exceeds the threshold. Domain-only matching over-counts (every RPE
-  // annotation would trip the cardiac RPE>7 entry regardless of the
-  // value). Threshold values come in two flavours: numeric (`above: 7`,
-  // `above: 0.70`) which is parsed; or string (`above: "180_bpm"`,
-  // `above: "moderate"`) which we conservatively flag iff the extracted
-  // level is also non-numeric — the string variants are clinical
-  // shorthand without a numeric ladder, so any prescription against
-  // those domains warrants reviewer attention.
-  if (bl.intensities) {
+  // exceeds the threshold. Combines static and flow-day intensity rules
+  // for the same conservative-bound reason as exercises above.
+  const intensityBlacklist = [
+    ...(bl.intensities ?? []),
+    ...(bl.intensities_on_flow_days ?? []),
+  ];
+  if (intensityBlacklist.length) {
     for (const intensity of plan.intensities) {
-      for (const b of bl.intensities) {
+      for (const b of intensityBlacklist) {
         if (!normalize(intensity.domain).includes(normalize(b.domain))) continue;
         const exceeds = intensityExceeds(intensity.level, b.above);
         if (exceeds) {

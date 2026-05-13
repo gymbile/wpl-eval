@@ -7,6 +7,11 @@ import type { Scenario, Violation, LaneId, Phase, ModelName, RunResult, ClientCo
 import type { Model, ChatMessage } from "../models/types.js";
 import { score, collides } from "../scoring/blacklist.js";
 import { firstDriftTurn } from "../scoring/drift.js";
+import {
+  computeCycleDay,
+  dayDateForPlanPosition,
+  dayOfWeekOffset,
+} from "../lib/cycle.js";
 import { costUsd } from "../lib/pricing.js";
 import { evaluate, firingActions } from "../lib/rule-evaluator.js";
 
@@ -96,11 +101,23 @@ function buildClientContext(scenario: Scenario): ClientContext {
   const p = scenario.presenting as Record<string, unknown>;
   const inj = Array.isArray(p["injuries"]) ? (p["injuries"] as string[]) : [];
   const conds = Array.isArray(p["conditions"]) ? (p["conditions"] as string[]) : [];
+  const sex = typeof p["sex"] === "string" ? (p["sex"] as string) : null;
+  const cycleRaw = p["cycle"];
+  const cycle =
+    cycleRaw && typeof cycleRaw === "object"
+      ? {
+          last_period_start: String((cycleRaw as Record<string, unknown>)["last_period_start"]),
+          length_days: Number((cycleRaw as Record<string, unknown>)["length_days"] ?? 28),
+          flow_days: Number((cycleRaw as Record<string, unknown>)["flow_days"] ?? 3),
+        }
+      : null;
   return {
     injuries: [...inj, ...conds],
     equipment: Array.isArray(p["equipment"]) ? (p["equipment"] as string[]) : [],
     experience: typeof p["experience"] === "string" ? (p["experience"] as string) : null,
     goals: Array.isArray(p["goals"]) ? (p["goals"] as string[]) : [],
+    sex,
+    cycle,
   };
 }
 
@@ -113,10 +130,8 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
   const inj = ctx.injuries ?? [];
   const eq = ctx.equipment ?? [];
 
+  // Static forbids — fire whenever the client matches the scenario.
   for (const ex of scenario.blacklist.exercises ?? []) {
-    // Fire when any injury OR equipment marker that explains the blacklist
-    // is present. A simple match-all condition is sufficient because the
-    // ClientContext for this scenario already reflects the client.
     rules.push({
       id: `forbid_${ex}`,
       condition: inj.length
@@ -127,6 +142,25 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
       actions: [{ type: "forbid_exercise", exercise: ex }],
     });
   }
+
+  // Cycle-conditional forbids — fire only when the day's cycle_day falls
+  // within the client's flow window. The lane B runtime sets ctx.cycle_day
+  // transiently while walking the compiled plan's days, then re-evaluates
+  // these rules per day.
+  if (ctx.cycle && scenario.blacklist.exercises_on_flow_days?.length) {
+    const flowDayList = Array.from(
+      { length: ctx.cycle.flow_days },
+      (_, i) => i + 1,
+    );
+    for (const ex of scenario.blacklist.exercises_on_flow_days) {
+      rules.push({
+        id: `forbid_on_flow_${ex}`,
+        condition: { field: "cycle_day", op: "in", value: flowDayList },
+        actions: [{ type: "forbid_exercise", exercise: ex }],
+      });
+    }
+  }
+
   return { rules };
 }
 
@@ -248,17 +282,50 @@ async function runOnce(
   // correctly and let us subtract any forbidden exercises that slipped in.
   const ctx = buildClientContext(scenario);
   const personalization = buildPersonalization(scenario, ctx);
-  const fired = firingActions(evaluate(personalization, ctx));
-  const forbidden = new Set(
-    fired
+
+  // Static forbids: rules whose conditions don't reference cycle_day.
+  // These fire for every day in the compiled plan regardless of date.
+  const staticFired = firingActions(evaluate(personalization, ctx));
+  const staticForbidden = new Set(
+    staticFired
       .filter((a) => a["type"] === "forbid_exercise" && typeof a["exercise"] === "string")
       .map((a) => a["exercise"] as string),
   );
 
+  // Cycle-conditional forbids: rules that reference cycle_day. Evaluated
+  // per day in stripForbidden by setting ctx.cycle_day transiently.
+  const planStartDate =
+    typeof (scenario.presenting as Record<string, unknown>)["plan_start_date"] === "string"
+      ? ((scenario.presenting as Record<string, unknown>)["plan_start_date"] as string)
+      : null;
+  const perDayForbids =
+    ctx.cycle && planStartDate
+      ? (date: string): ReadonlySet<string> => {
+          const dayCtx: ClientContext = {
+            ...ctx,
+            cycle_day: computeCycleDay(date, ctx.cycle!),
+          };
+          const fired = firingActions(evaluate(personalization, dayCtx));
+          const set = new Set<string>();
+          for (const a of fired) {
+            if (a["type"] === "forbid_exercise" && typeof a["exercise"] === "string") {
+              const ex = a["exercise"] as string;
+              if (!staticForbidden.has(ex)) set.add(ex);
+            }
+          }
+          return set;
+        }
+      : undefined;
+
   // Strip forbidden exercises from the compiled plan before scoring so the
   // WPL governance pipeline reflects what the runtime would actually serve
   // to the client (the rule evaluator's output is authoritative).
-  const planJson = stripForbidden(compiled.json, forbidden);
+  const planJson = stripForbidden(
+    compiled.json,
+    staticForbidden,
+    perDayForbids,
+    planStartDate ?? undefined,
+  );
 
   const extracted = extractFromWplJson(planJson);
   const scored = score(scenario, extracted);
@@ -298,31 +365,68 @@ function isForbidden(itemName: string, forbidden: ReadonlySet<string>): boolean 
 
 function stripForbidden(
   json: Record<string, unknown>,
-  forbidden: Set<string>,
+  staticForbidden: Set<string>,
+  perDayForbids?: (date: string) => ReadonlySet<string>,
+  planStartDate?: string,
 ): Record<string, unknown> {
-  if (forbidden.size === 0) return json;
-  // Deep-copy and remove any item whose `exercise` collides with the
-  // forbidden set under the scorer's fuzzy match rules.
+  // Walks the real WPL JSON shape: plan.phases[].weeks[].days[].blocks[].activities[]
+  // Each activity has `exercise_ref` (or `name` for simple cardio); we match
+  // against the scorer's fuzzy collides() rules so what the stripper removes
+  // is exactly what the scorer would flag.
   const clone = JSON.parse(JSON.stringify(json)) as Record<string, unknown>;
-  const phases = Array.isArray(clone["phases"]) ? (clone["phases"] as Record<string, unknown>[]) : [];
+  const plan = clone["plan"];
+  if (!plan || typeof plan !== "object") return clone;
+  const phases = Array.isArray((plan as Record<string, unknown>)["phases"])
+    ? ((plan as Record<string, unknown>)["phases"] as Record<string, unknown>[])
+    : [];
+
+  // Pre-compute the cumulative-weeks offset for each phase so we can
+  // anchor each day to a calendar date when cycle stripping is active.
+  let weeksBeforePhase = 0;
   for (const phase of phases) {
     const weeks = Array.isArray(phase["weeks"]) ? (phase["weeks"] as Record<string, unknown>[]) : [];
     for (const week of weeks) {
+      const weekOrder = typeof week["order"] === "number" ? (week["order"] as number) : 1;
       const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
       for (const day of days) {
-        for (const sec of ["warmup", "main", "cooldown"] as const) {
-          const section = day[sec];
-          if (!section || typeof section !== "object") continue;
-          const items = Array.isArray((section as Record<string, unknown>)["items"])
-            ? ((section as Record<string, unknown>)["items"] as Record<string, unknown>[])
+        // Compute this day's forbid set: static rules always apply, plus
+        // any cycle-conditional rules whose predicate matches the day's
+        // computed date.
+        let forbids: ReadonlySet<string> = staticForbidden;
+        if (perDayForbids && planStartDate) {
+          const dowOffset = dayOfWeekOffset(day["day_of_week"] as string | number | undefined);
+          if (dowOffset !== null) {
+            const date = dayDateForPlanPosition(
+              planStartDate,
+              weeksBeforePhase,
+              weekOrder,
+              dowOffset,
+            );
+            const dynamic = perDayForbids(date);
+            if (dynamic.size > 0) {
+              forbids = new Set([...staticForbidden, ...dynamic]);
+            }
+          }
+        }
+        if (forbids.size === 0) continue;
+        const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
+        for (const block of blocks) {
+          const activities = Array.isArray(block["activities"])
+            ? (block["activities"] as Record<string, unknown>[])
             : [];
-          (section as Record<string, unknown>)["items"] = items.filter((item) => {
-            const name = typeof item["exercise"] === "string" ? (item["exercise"] as string) : "";
-            return !isForbidden(name, forbidden);
+          block["activities"] = activities.filter((act) => {
+            const name =
+              typeof act["exercise_ref"] === "string"
+                ? (act["exercise_ref"] as string)
+                : typeof act["name"] === "string"
+                  ? (act["name"] as string)
+                  : "";
+            return !isForbidden(name, forbids);
           });
         }
       }
     }
+    weeksBeforePhase += weeks.length;
   }
   return clone;
 }

@@ -36,7 +36,7 @@ type CompoundCondition = {
 
 type SimpleCondition = {
   field: string;
-  op?: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "contains" | "not_contains";
+  op?: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "contains" | "not_contains" | "in" | "not_in";
   value?: unknown;
 };
 
@@ -155,6 +155,19 @@ function compare(actual: unknown, op: string, value: unknown): boolean {
       return false;
     }
 
+    // `in` / `not_in` invert the contains-axis: the rule's `value` is a
+    // list, and the rule matches iff `actual` is (or isn't) a member.
+    // Used for membership predicates like `cycle_day in [1, 2, 3]`.
+    case "in": {
+      if (!Array.isArray(value)) return false;
+      return value.map(stringify).includes(stringify(actual));
+    }
+
+    case "not_in": {
+      if (!Array.isArray(value)) return false;
+      return !value.map(stringify).includes(stringify(actual));
+    }
+
     default:
       return false;
   }
@@ -196,6 +209,15 @@ function fieldValue(field: string, ctx: ClientContext): unknown {
       return ctx.fatigue ?? null;
     case "goals":
       return ctx.goals ?? null;
+    case "cycle_day":
+      // Set transiently by the lane B runtime when evaluating a specific
+      // day's forbids. Allows rules like `cycle_day in [1,2,3]` to gate
+      // forbid_exercise actions to the flow window of the client's
+      // menstrual cycle. Outside of per-day evaluation this is null
+      // and any cycle_day-conditioned rule short-circuits to false.
+      return ctx.cycle_day ?? null;
+    case "cycle_present":
+      return ctx.cycle ? true : null;
     default:
       return null;
   }

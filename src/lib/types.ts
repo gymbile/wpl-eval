@@ -24,6 +24,25 @@ export interface ClientContext {
   equipment?: string[] | null;
   fatigue?: string | null;
   goals?: string[] | null;
+  // Menstrual cycle context. Optional — only relevant for menstruating
+  // clients whose programming needs cycle-aware phasing.
+  cycle?: Cycle | null;
+  // Per-day cycle position, set transiently by the runtime when applying
+  // personalization rules to a specific day in the compiled plan. This
+  // lets rules like `{ field: "cycle_day", op: "lte", value: 3 }` fire
+  // conditionally per day rather than globally per client.
+  cycle_day?: number | null;
+}
+
+export interface Cycle {
+  // ISO-8601 date string for the start of the client's most recent
+  // menstrual period (cycle day 1 of that cycle).
+  last_period_start: string;
+  // Average cycle length in days (typically 21-35; default 28).
+  length_days: number;
+  // Number of days at the start of each cycle treated as "flow" — the
+  // window during which intensity and impact contraindications apply.
+  flow_days: number;
 }
 
 // A scenario as loaded from scenarios.yaml.
@@ -39,6 +58,12 @@ export interface Scenario {
     meal_compositions?: Array<{ context: string; avoid: string }>;
     session_starts?: string[];
     intensities_without_warmup?: Array<{ domain: string; above: string | number }>;
+    // Cycle-aware contraindications (v0.3+): these only apply on days
+    // whose computed cycle_day falls in the client's flow window
+    // (1..cycle.flow_days). Outside the flow window these exercises and
+    // intensities are expected to appear in the plan.
+    exercises_on_flow_days?: string[];
+    intensities_on_flow_days?: Array<{ domain: string; above: string | number }>;
   };
   required?: string[];
   single_turn_prompt: string;
