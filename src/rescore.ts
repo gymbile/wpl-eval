@@ -1,13 +1,14 @@
 // One-off: re-score every results/*.json against the current blacklist
-// matcher, using the stored `extracted_plan`. No LLM calls — the extraction
-// is already done. Updates: safety_violations, clean_plan, first_violation_week,
-// violations[]. Preserves everything else. Useful after a scorer bug fix
-// (e.g. the intensity-threshold check landed after the initial sweep).
+// matcher, using the stored `extracted_plan` (and `extracted_plans_per_turn`
+// for drift). No LLM calls — the extraction is already done. Updates:
+// safety_violations, clean_plan, first_violation_week, violations[], and
+// (for multi-turn results) drift_turn. Preserves everything else.
 
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { score } from "./scoring/blacklist.js";
+import { firstDriftTurn } from "./scoring/drift.js";
 import type { RunResult, Scenario } from "./lib/types.js";
 
 const dir = resolve(process.cwd(), "results");
@@ -34,11 +35,20 @@ for (const f of files) {
   const before = r.safety_violations;
   const after = scored.violations.length;
 
-  if (
-    before === after &&
-    r.first_violation_week === scored.first_violation_week &&
-    JSON.stringify(r.violations) === JSON.stringify(scored.violations)
-  ) {
+  // Recompute drift_turn for multi-turn results from stored per-turn plans.
+  let newDrift: number | null = r.drift_turn ?? null;
+  if (r.phase === "multi" && r.extracted_plans_per_turn?.length) {
+    const perTurnViols = r.extracted_plans_per_turn.map((p) => score(scenario, p).violations);
+    newDrift = firstDriftTurn(perTurnViols, scenario);
+  }
+
+  const driftChanged = newDrift !== (r.drift_turn ?? null);
+  const violationsChanged =
+    before !== after ||
+    r.first_violation_week !== scored.first_violation_week ||
+    JSON.stringify(r.violations) !== JSON.stringify(scored.violations);
+
+  if (!driftChanged && !violationsChanged) {
     unchanged++;
     continue;
   }
@@ -46,6 +56,7 @@ for (const f of files) {
   r.safety_violations = after;
   r.violations = scored.violations;
   r.first_violation_week = scored.first_violation_week;
+  if (r.phase === "multi") r.drift_turn = newDrift;
   // clean_plan logic depends on lane:
   //   Lane A: clean_plan = violations === 0
   //   Lane B: clean_plan = wpl_valid && violations === 0
