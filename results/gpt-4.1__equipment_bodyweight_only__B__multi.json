@@ -17,7 +17,7 @@
   "cost_usd": 0.621712,
   "wpl_valid": false,
   "wpl_schema_valid": false,
-  "compile_errors": 119,
+  "compile_errors": 1,
   "validator_errors": 0,
   "violations": [],
   "violations_per_turn": [
@@ -100,43 +100,38 @@
   "lane_b": {
     "outcome": "compile_failed",
     "compile_error": {
-      "code": "invalid_character",
-      "message": "Invalid character '–'",
-      "repair_hint": null
+      "code": "week_has_no_valid_days",
+      "message": "WEEK 1 block has no valid DAY children (found 'Monday'). Use 'DAY <name> training Nm \"...\":' syntax — inline 'Monday: ...' summaries are not valid WPL-AI.",
+      "repair_hint": {
+        "action": "add_days",
+        "target_path": "/plan/weeks/1/days",
+        "parent_name": "Week 1",
+        "expected_shape": "DAY <name> training <duration> \"<label>\": (with warmup/main/cooldown body)",
+        "context_dsl_example": "      DAY Monday training 45m \"Session name\":\n        warmup:\n          cycling 5m zone2\n        main straight_sets:\n          <exercise_name> 3x8..12 rpe 7 rest 90 seconds\n        cooldown:\n          <stretch_name> 30s"
+      }
     },
     "all_errors": [
       {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character '–'",
+        "kind": "parse",
+        "type": "week_has_no_valid_days",
+        "message": "WEEK 1 block has no valid DAY children (found 'Monday'). Use 'DAY <name> training Nm \"...\":' syntax — inline 'Monday: ...' summaries are not valid WPL-AI.",
         "location": {
-          "line": 97,
-          "column": 34,
-          "offset": 3686
+          "line": 20,
+          "column": 7,
+          "offset": 672
         },
-        "context": "The character '–' is not allowed here"
-      },
-      {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character '–'",
-        "location": {
-          "line": 102,
-          "column": 32,
-          "offset": 4000
-        },
-        "context": "The character '–' is not allowed here"
-      },
-      {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character '–'",
-        "location": {
-          "line": 104,
-          "column": 28,
-          "offset": 4127
-        },
-        "context": "The character '–' is not allowed here"
+        "expected": [
+          "DAY"
+        ],
+        "got": "Monday",
+        "suggestions": null,
+        "repair_hint": {
+          "action": "add_days",
+          "target_path": "/plan/weeks/1/days",
+          "parent_name": "Week 1",
+          "expected_shape": "DAY <name> training <duration> \"<label>\": (with warmup/main/cooldown body)",
+          "context_dsl_example": "      DAY Monday training 45m \"Session name\":\n        warmup:\n          cycling 5m zone2\n        main straight_sets:\n          <exercise_name> 3x8..12 rpe 7 rest 90 seconds\n        cooldown:\n          <stretch_name> 30s"
+        }
       }
     ],
     "strip_counts": [],

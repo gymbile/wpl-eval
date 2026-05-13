@@ -17,7 +17,7 @@
   "cost_usd": 0.0009499500000000001,
   "wpl_valid": false,
   "wpl_schema_valid": false,
-  "compile_errors": 2,
+  "compile_errors": 1,
   "validator_errors": 0,
   "violations": [],
   "violations_per_turn": [
@@ -35,32 +35,23 @@
   "lane_b": {
     "outcome": "compile_failed",
     "compile_error": {
-      "code": "invalid_character",
-      "message": "Invalid character ';'",
+      "code": "unknown_exercise_ref",
+      "message": "Unknown exercise reference 'bodyweight_chest_push'",
       "repair_hint": null
     },
     "all_errors": [
       {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character ';'",
+        "kind": "parse",
+        "type": "unknown_exercise_ref",
+        "message": "Unknown exercise reference 'bodyweight_chest_push'",
         "location": {
-          "line": 199,
-          "column": 54,
-          "offset": 8309
+          "line": 16,
+          "column": 62,
+          "offset": 446
         },
-        "context": "The character ';' is not allowed here"
-      },
-      {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character ';'",
-        "location": {
-          "line": 201,
-          "column": 55,
-          "offset": 8451
-        },
-        "context": "The character ';' is not allowed here"
+        "expected": null,
+        "got": "bodyweight_chest_push",
+        "suggestions": []
       }
     ],
     "strip_counts": [],

@@ -35,21 +35,25 @@
   "lane_b": {
     "outcome": "compile_failed",
     "compile_error": {
-      "code": "invalid_character",
-      "message": "Invalid character '–'",
+      "code": "unknown_exercise_ref",
+      "message": "Unknown exercise reference 'run_walk'. Did you mean: crab_walk?",
       "repair_hint": null
     },
     "all_errors": [
       {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character '–'",
+        "kind": "parse",
+        "type": "unknown_exercise_ref",
+        "message": "Unknown exercise reference 'run_walk'. Did you mean: crab_walk?",
         "location": {
-          "line": 287,
-          "column": 117,
-          "offset": 10738
+          "line": 17,
+          "column": 47,
+          "offset": 456
         },
-        "context": "The character '–' is not allowed here"
+        "expected": null,
+        "got": "run_walk",
+        "suggestions": [
+          "crab_walk"
+        ]
       }
     ],
     "strip_counts": [],

@@ -17,7 +17,7 @@
   "cost_usd": 0.0019126500000000001,
   "wpl_valid": false,
   "wpl_schema_valid": false,
-  "compile_errors": 4,
+  "compile_errors": 1,
   "validator_errors": 0,
   "violations": [],
   "violations_per_turn": [
@@ -35,54 +35,25 @@
   "lane_b": {
     "outcome": "compile_failed",
     "compile_error": {
-      "code": "invalid_character",
-      "message": "Invalid character ';'",
+      "code": "unknown_exercise_ref",
+      "message": "Unknown exercise reference 'db_calf_raise'. Did you mean: calf_raise?",
       "repair_hint": null
     },
     "all_errors": [
       {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character ';'",
+        "kind": "parse",
+        "type": "unknown_exercise_ref",
+        "message": "Unknown exercise reference 'db_calf_raise'. Did you mean: calf_raise?",
         "location": {
-          "line": 401,
-          "column": 39,
-          "offset": 15059
+          "line": 19,
+          "column": 55,
+          "offset": 562
         },
-        "context": "The character ';' is not allowed here"
-      },
-      {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character ';'",
-        "location": {
-          "line": 402,
-          "column": 18,
-          "offset": 15154
-        },
-        "context": "The character ';' is not allowed here"
-      },
-      {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character ';'",
-        "location": {
-          "line": 403,
-          "column": 28,
-          "offset": 15225
-        },
-        "context": "The character ';' is not allowed here"
-      },
-      {
-        "kind": "lexer",
-        "type": "invalid_character",
-        "message": "Invalid character ';'",
-        "location": {
-          "line": 405,
-          "column": 87,
-          "offset": 15552
-        },
-        "context": "The character ';' is not allowed here"
+        "expected": null,
+        "got": "db_calf_raise",
+        "suggestions": [
+          "calf_raise"
+        ]
       }
     ],
     "strip_counts": [],
