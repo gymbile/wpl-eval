@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://wpl.dev/eval/schema/result-v1.json",
+  "title": "WPL eval normalised result",
+  "description": "Self-describing per-trial result. Produced by scripts/normalise-results.ts. Consumed by downstream tools (wpl.dev/eval site, third-party analysis). Stable contract within a given evalVersion.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "evalVersion",
+    "model",
+    "scenario_id",
+    "lane",
+    "phase",
+    "safety_violations",
+    "clean_plan",
+    "first_violation_week",
+    "drift_turn",
+    "refusal",
+    "latency_p50_ms",
+    "latency_p95_ms",
+    "tokens_in",
+    "tokens_out",
+    "cost_usd",
+    "wpl_valid",
+    "wpl_schema_valid",
+    "compile_errors",
+    "validator_errors",
+    "violations",
+    "violations_per_turn",
+    "timestamp"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1",
+      "description": "Pins the schema dialect. Bump when shape changes incompatibly."
+    },
+    "evalVersion": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+(\\.[0-9]+)?$",
+      "description": "Tag of the wpl-eval release that produced this file (e.g. v0.1.0). Self-identifying so consumers can detect cross-version mixing."
+    },
+    "model": { "type": "string" },
+    "scenario_id": { "type": "string" },
+    "lane": { "enum": ["A", "B"] },
+    "phase": { "enum": ["single", "multi"] },
+    "variant": {
+      "type": "string",
+      "description": "Lane B prompt variant id, when not the default. Absent for baseline trials."
+    },
+
+    "safety_violations": { "type": "integer", "minimum": 0 },
+    "clean_plan": { "type": "boolean" },
+    "first_violation_week": { "type": ["integer", "null"] },
+    "drift_turn": {
+      "type": ["integer", "null"],
+      "description": "First turn (1-indexed) with a fresh violation not present in turn 1. null = no drift detected."
+    },
+    "refusal": { "type": "boolean" },
+
+    "latency_p50_ms": { "type": "number" },
+    "latency_p95_ms": { "type": "number" },
+    "tokens_in": { "type": "integer", "minimum": 0 },
+    "tokens_out": { "type": "integer", "minimum": 0 },
+    "cost_usd": { "type": "number", "minimum": 0 },
+
+    "wpl_valid": { "type": ["boolean", "null"] },
+    "wpl_schema_valid": { "type": ["boolean", "null"] },
+    "compile_errors": { "type": ["integer", "null"] },
+    "validator_errors": { "type": ["integer", "null"] },
+
+    "violations": {
+      "type": "array",
+      "description": "Aggregated violations (all turns combined, deduplicated). For convenient top-line consumption.",
+      "items": { "$ref": "#/definitions/violation" }
+    },
+    "violations_per_turn": {
+      "type": "array",
+      "description": "Per-turn violations. For single-turn trials this is a single-element array. Renderers use this to mark up which turn introduced which violation.",
+      "items": {
+        "type": "array",
+        "items": { "$ref": "#/definitions/violation" }
+      }
+    },
+
+    "extracted_plan": { "type": ["object", "null"] },
+    "extracted_plans_per_turn": {
+      "type": ["array", "null"],
+      "items": { "type": ["object", "null"] }
+    },
+    "raw_text": { "type": ["string", "null"] },
+    "raw_texts_per_turn": {
+      "type": ["array", "null"],
+      "items": { "type": "string" }
+    },
+
+    "lane_b": {
+      "type": ["object", "null"],
+      "description": "Lane B specific outcome envelope. Null for Lane A trials.",
+      "required": ["outcome"],
+      "properties": {
+        "outcome": {
+          "enum": ["served", "compile_failed", "stripped_clean", "stripped_with_residual"],
+          "description": "served = plan delivered with 0 violations and no stripping. compile_failed = fail-closed, no plan served. stripped_clean = rule evaluator removed exercises and the residual plan was 0-violation. stripped_with_residual = stripping happened but residual still had violations (should be 0 across v0.1)."
+        },
+        "compile_error": {
+          "type": ["object", "null"],
+          "description": "When outcome=compile_failed, the structured error the proprietary orchestrator would consume.",
+          "properties": {
+            "code": { "type": "string" },
+            "message": { "type": "string" },
+            "repair_hint": { "type": ["object", "null"] }
+          }
+        },
+        "strip_counts": {
+          "type": "array",
+          "description": "Per-rule strip tallies from the rule evaluator. Empty when no stripping happened or when not instrumented.",
+          "items": {
+            "type": "object",
+            "required": ["rule", "count"],
+            "properties": {
+              "rule": { "type": "string" },
+              "count": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "served_wpl": {
+          "type": ["object", "null"],
+          "description": "The validated WPL JSON document, when outcome=served or stripped_clean."
+        }
+      }
+    },
+
+    "extraction_parse_ok": { "type": "boolean" },
+    "wpl_json": { "type": ["object", "null"] },
+    "error": { "type": ["string", "null"] },
+    "timestamp": { "type": "string", "format": "date-time" }
+  },
+
+  "definitions": {
+    "violation": {
+      "type": "object",
+      "required": ["kind", "item"],
+      "properties": {
+        "kind": {
+          "enum": ["exercise", "food", "intensity", "session_start", "required_missing"]
+        },
+        "item": {
+          "type": "string",
+          "description": "Canonical blacklist entry that was hit (e.g. 'box_jump')."
+        },
+        "rawName": {
+          "type": "string",
+          "description": "Verbatim name from the extracted plan that triggered the match (e.g. 'Box Jump 3x5'). Lets renderers highlight the actual phrase without re-running the matcher."
+        },
+        "week": { "type": ["integer", "null"] },
+        "turn": {
+          "type": ["integer", "null"],
+          "description": "Turn index (1-based) where this violation was introduced. Null for single-turn."
+        },
+        "detail": { "type": ["string", "null"] },
+        "citationKey": {
+          "type": ["string", "null"],
+          "description": "Pointer into annotations.yaml on the consuming site. Optional."
+        }
+      }
+    }
+  }
+}
