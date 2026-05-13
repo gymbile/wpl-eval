@@ -109,6 +109,69 @@ describe("cycle helpers", () => {
     });
   });
 
+  describe("cycle patterns", () => {
+    test("suppressed cycle: isProjectable=false and isOnFlowDay always false", async () => {
+      const { isProjectable } = await import("../src/lib/cycle.js");
+      const suppressed: Cycle = { pattern: "suppressed", flow_days: 3 };
+      expect(isProjectable(suppressed)).toBe(false);
+      expect(isOnFlowDay("2026-05-01", suppressed)).toBe(false);
+      expect(isOnFlowDay("2026-06-26", suppressed)).toBe(false);
+      expect(computeCycleDay("2026-05-01", suppressed)).toBe(null);
+    });
+
+    test("irregular cycle: isProjectable=false, flow_days projection blocked", async () => {
+      const { isProjectable } = await import("../src/lib/cycle.js");
+      const irregular: Cycle = { pattern: "irregular" };
+      expect(isProjectable(irregular)).toBe(false);
+      expect(isOnFlowDay("2026-05-01", irregular)).toBe(false);
+      expect(computeCycleDay("2026-05-01", irregular)).toBe(null);
+    });
+
+    test("irregular cycle WITH flare_windows: isOnFlowDay true inside flares only", async () => {
+      const withFlares: Cycle = {
+        pattern: "irregular",
+        flare_windows: [
+          { start: "2026-07-10", end: "2026-07-13" },
+          { start: "2026-08-04", end: "2026-08-07" },
+        ],
+      };
+      expect(isOnFlowDay("2026-06-15", withFlares)).toBe(false);
+      expect(isOnFlowDay("2026-07-10", withFlares)).toBe(true);
+      expect(isOnFlowDay("2026-07-13", withFlares)).toBe(true);
+      expect(isOnFlowDay("2026-07-14", withFlares)).toBe(false);
+      expect(isOnFlowDay("2026-08-04", withFlares)).toBe(true);
+      expect(isOnFlowDay("2026-08-08", withFlares)).toBe(false);
+    });
+
+    test("regular cycle WITH flare_windows: flow AND flare windows both trigger", async () => {
+      const regular: Cycle = {
+        pattern: "regular",
+        last_period_start: "2026-05-04",
+        length_days: 27,
+        flow_days: 4,
+        flare_windows: [{ start: "2026-07-10", end: "2026-07-13" }],
+      };
+      // Cycle 4 of length 27 from 2026-05-04 → next flow window is
+      // 2026-05-31..06-03; then 2026-06-27..06-30; then 2026-07-24..07-27;
+      // 2026-07-10 is mid-cycle (cycle_day ~10) — not a flow day, but is
+      // in the flare window.
+      expect(isOnFlowDay("2026-07-10", regular)).toBe(true);
+      // 2026-07-25 is in cycle's natural flow window.
+      expect(isOnFlowDay("2026-07-25", regular)).toBe(true);
+      // 2026-07-14 is past the flare window and not in a flow window.
+      expect(isOnFlowDay("2026-07-14", regular)).toBe(false);
+    });
+
+    test("regular pattern is the default when omitted", async () => {
+      const cycle: Cycle = {
+        last_period_start: "2026-05-01",
+        length_days: 28,
+        flow_days: 3,
+      };
+      expect(isOnFlowDay("2026-05-01", cycle)).toBe(true);
+    });
+  });
+
   describe("dayOfWeekOffset", () => {
     test("string day names map to 0..6", () => {
       expect(dayOfWeekOffset("Monday")).toBe(0);

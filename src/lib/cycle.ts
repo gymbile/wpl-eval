@@ -33,24 +33,47 @@ function daysBetween(a: Date, b: Date): number {
   return Math.round((b.getTime() - a.getTime()) / MS_PER_DAY);
 }
 
+// Returns true if cycle has the anchor + length data needed for date
+// projection. Irregular and suppressed cycles return false and the
+// runtime should fall back to non-projecting strategies.
+export function isProjectable(cycle: Cycle): boolean {
+  if (cycle.pattern === "suppressed" || cycle.pattern === "irregular") return false;
+  if (!cycle.last_period_start) return false;
+  if (!cycle.length_days || cycle.length_days <= 0) return false;
+  return true;
+}
+
 // Given a date and a cycle anchor, return the 1-indexed cycle_day at that
-// date. For dates before the anchor, returns the cycle_day in the
-// PRECEDING cycle (we project the cycle backwards as well as forwards so
-// "cycle started 2026-05-01" still gives a valid cycle_day for dates in
-// April 2026).
-export function computeCycleDay(date: string | Date, cycle: Cycle): number {
+// date. Returns null when the cycle isn't projectable (irregular or
+// suppressed). Callers should check isProjectable() or handle null.
+export function computeCycleDay(date: string | Date, cycle: Cycle): number | null {
+  if (!isProjectable(cycle)) return null;
   const d = typeof date === "string" ? parseIsoDate(date) : date;
-  const anchor = parseIsoDate(cycle.last_period_start);
+  const anchor = parseIsoDate(cycle.last_period_start!);
   const delta = daysBetween(anchor, d);
-  // JavaScript's % can be negative for negative LHS; normalise to [0, len).
-  const mod = ((delta % cycle.length_days) + cycle.length_days) % cycle.length_days;
+  const len = cycle.length_days!;
+  const mod = ((delta % len) + len) % len;
   return mod + 1;
 }
 
-// Return true if the given date falls in a flow window (cycle_day 1..flow_days).
+// Return true if the given date falls in a flow window (cycle_day
+// 1..flow_days) OR inside any of the client's reported flare windows.
+// Suppressed cycles always return false. Irregular cycles return true
+// only on flare-window dates (since flow can't be projected).
 export function isOnFlowDay(date: string | Date, cycle: Cycle): boolean {
+  if (cycle.pattern === "suppressed") return false;
+  const dStr = typeof date === "string" ? date : date.toISOString().slice(0, 10);
+  // Client-reported flare windows override projection — strip even if
+  // the cycle is otherwise irregular.
+  if (cycle.flare_windows?.length) {
+    for (const w of cycle.flare_windows) {
+      if (dStr >= w.start && dStr <= w.end) return true;
+    }
+  }
+  if (!isProjectable(cycle)) return false;
   const day = computeCycleDay(date, cycle);
-  return day >= 1 && day <= cycle.flow_days;
+  if (day === null) return false;
+  return day >= 1 && day <= (cycle.flow_days ?? 0);
 }
 
 // Project all flow-day dates that fall in the inclusive range

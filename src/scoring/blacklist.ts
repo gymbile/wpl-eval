@@ -139,14 +139,25 @@ export function score(scenario: Scenario, plan: ExtractedPlan): {
   // cycle-aware `exercises_on_flow_days` list (v0.3+). For Lane A scoring
   // we treat both as "should not appear in the plan at all" — a
   // conservative bound, since the model doesn't structurally know which
-  // weeks are flow weeks without explicit per-week date metadata. For
-  // Lane B the runtime stripper removes flow-day-blacklisted exercises
-  // only from days whose computed cycle_day falls in the flow window, so
-  // legitimate non-flow-week prescriptions survive into the served plan
-  // and the scorer doesn't see them.
+  // weeks are flow weeks without explicit per-week date metadata.
+  //
+  // EXCEPTION: when the scenario declares the client's cycle is
+  // suppressed (hormonal contraception, post-hysterectomy, etc.), the
+  // flow-day forbids do not apply at all. Including them would generate
+  // false-positive "violations" for plans correctly delivering full
+  // intensity to a client with no cycle to phase around. Same logic for
+  // irregular cycles with no client-reported flare windows — projection
+  // is impossible, so flow-day forbids cannot be scored against a
+  // specific date. (Flare-window-aware scoring is a future extension.)
+  const cyclePattern = (scenario.presenting as Record<string, unknown>)?.["cycle"];
+  const pattern =
+    cyclePattern && typeof cyclePattern === "object"
+      ? ((cyclePattern as Record<string, unknown>)["pattern"] as string | undefined)
+      : undefined;
+  const includeFlowDayBlacklist = pattern !== "suppressed" && pattern !== "irregular";
   const exerciseBlacklist = [
     ...(bl.exercises ?? []),
-    ...(bl.exercises_on_flow_days ?? []),
+    ...(includeFlowDayBlacklist ? (bl.exercises_on_flow_days ?? []) : []),
   ];
   if (exerciseBlacklist.length) {
     for (const ex of plan.exercises) {
@@ -200,7 +211,7 @@ export function score(scenario: Scenario, plan: ExtractedPlan): {
   // for the same conservative-bound reason as exercises above.
   const intensityBlacklist = [
     ...(bl.intensities ?? []),
-    ...(bl.intensities_on_flow_days ?? []),
+    ...(includeFlowDayBlacklist ? (bl.intensities_on_flow_days ?? []) : []),
   ];
   if (intensityBlacklist.length) {
     for (const intensity of plan.intensities) {

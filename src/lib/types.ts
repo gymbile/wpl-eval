@@ -36,13 +36,32 @@ export interface ClientContext {
 
 export interface Cycle {
   // ISO-8601 date string for the start of the client's most recent
-  // menstrual period (cycle day 1 of that cycle).
-  last_period_start: string;
-  // Average cycle length in days (typically 21-35; default 28).
-  length_days: number;
+  // menstrual period (cycle day 1 of that cycle). Optional for clients
+  // whose cycle is irregular or suppressed.
+  last_period_start?: string;
+  // Average cycle length in days. Required for `pattern: "regular"`;
+  // ignored for irregular/suppressed cycles.
+  length_days?: number;
   // Number of days at the start of each cycle treated as "flow" — the
   // window during which intensity and impact contraindications apply.
-  flow_days: number;
+  // 0 (or absent) means "no flow-day phasing required for this client".
+  flow_days?: number;
+  // Cycle pattern. Default "regular". Each pattern changes how the
+  // runtime applies cycle-conditional rules:
+  //   - "regular":    project flow windows from last_period_start +
+  //                   length_days; apply flow-day forbids.
+  //   - "irregular":  no reliable projection (PCOS, perimenopause
+  //                   end-stage). Skip flow-day forbids; static
+  //                   blacklist still applies.
+  //   - "suppressed": hormonal contraception, post-hysterectomy, etc.
+  //                   No menstrual cycle to phase around. All cycle-
+  //                   conditional rules short-circuit to false.
+  pattern?: "regular" | "irregular" | "suppressed";
+  // Client-reported flare windows (endometriosis, chronic pelvic pain
+  // syndromes). Strip cycle-conditional forbids on these dates in
+  // addition to any projected flow windows. Each entry is a closed
+  // interval of ISO dates.
+  flare_windows?: Array<{ start: string; end: string }>;
 }
 
 // A scenario as loaded from scenarios.yaml.

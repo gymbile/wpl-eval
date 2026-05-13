@@ -103,14 +103,29 @@ function buildClientContext(scenario: Scenario): ClientContext {
   const conds = Array.isArray(p["conditions"]) ? (p["conditions"] as string[]) : [];
   const sex = typeof p["sex"] === "string" ? (p["sex"] as string) : null;
   const cycleRaw = p["cycle"];
-  const cycle =
-    cycleRaw && typeof cycleRaw === "object"
-      ? {
-          last_period_start: String((cycleRaw as Record<string, unknown>)["last_period_start"]),
-          length_days: Number((cycleRaw as Record<string, unknown>)["length_days"] ?? 28),
-          flow_days: Number((cycleRaw as Record<string, unknown>)["flow_days"] ?? 3),
-        }
-      : null;
+  let cycle: ClientContext["cycle"] = null;
+  if (cycleRaw && typeof cycleRaw === "object") {
+    const c = cycleRaw as Record<string, unknown>;
+    cycle = {};
+    const pat = c["pattern"];
+    if (pat === "regular" || pat === "irregular" || pat === "suppressed") {
+      cycle.pattern = pat;
+    }
+    if (typeof c["last_period_start"] === "string") {
+      cycle.last_period_start = c["last_period_start"] as string;
+    }
+    if (typeof c["length_days"] === "number") {
+      cycle.length_days = c["length_days"] as number;
+    }
+    if (typeof c["flow_days"] === "number") {
+      cycle.flow_days = c["flow_days"] as number;
+    }
+    if (Array.isArray(c["flare_windows"])) {
+      cycle.flare_windows = (c["flare_windows"] as Array<Record<string, unknown>>)
+        .filter((w) => typeof w["start"] === "string" && typeof w["end"] === "string")
+        .map((w) => ({ start: w["start"] as string, end: w["end"] as string }));
+    }
+  }
   return {
     injuries: [...inj, ...conds],
     equipment: Array.isArray(p["equipment"]) ? (p["equipment"] as string[]) : [],
@@ -147,11 +162,17 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
   // within the client's flow window. The lane B runtime sets ctx.cycle_day
   // transiently while walking the compiled plan's days, then re-evaluates
   // these rules per day.
-  if (ctx.cycle && scenario.blacklist.exercises_on_flow_days?.length) {
-    const flowDayList = Array.from(
-      { length: ctx.cycle.flow_days },
-      (_, i) => i + 1,
-    );
+  //
+  // For suppressed cycles the cycle_day field stays null and the rule's
+  // `cycle_day in [...]` predicate short-circuits to false — no flow-day
+  // forbids will fire even if exercises_on_flow_days is non-empty. For
+  // irregular cycles the same is true for projection-based flow days; the
+  // runtime instead uses flare_windows (if provided) which are applied
+  // via the isOnFlowDay helper in stripForbidden, bypassing the rule
+  // evaluator entirely for those dates.
+  const flowDaysCount = ctx.cycle?.flow_days ?? 0;
+  if (ctx.cycle && scenario.blacklist.exercises_on_flow_days?.length && flowDaysCount > 0) {
+    const flowDayList = Array.from({ length: flowDaysCount }, (_, i) => i + 1);
     for (const ex of scenario.blacklist.exercises_on_flow_days) {
       rules.push({
         id: `forbid_on_flow_${ex}`,
@@ -298,19 +319,43 @@ async function runOnce(
     typeof (scenario.presenting as Record<string, unknown>)["plan_start_date"] === "string"
       ? ((scenario.presenting as Record<string, unknown>)["plan_start_date"] as string)
       : null;
+  // Flare windows (endometriosis et al.) are client-reported date ranges
+  // where flow-day-style forbids apply regardless of projected cycle_day.
+  // Materialise once so the per-day closure can union them in for free
+  // without re-evaluating the rule engine.
+  const flareForbids: ReadonlySet<string> =
+    ctx.cycle?.flare_windows?.length && scenario.blacklist.exercises_on_flow_days?.length
+      ? new Set(scenario.blacklist.exercises_on_flow_days)
+      : new Set();
+
   const perDayForbids =
     ctx.cycle && planStartDate
       ? (date: string): ReadonlySet<string> => {
-          const dayCtx: ClientContext = {
-            ...ctx,
-            cycle_day: computeCycleDay(date, ctx.cycle!),
-          };
-          const fired = firingActions(evaluate(personalization, dayCtx));
           const set = new Set<string>();
+          // Projection-based forbids — fire only when cycle is projectable
+          // (regular pattern + anchor + length). For irregular/suppressed
+          // cycles computeCycleDay returns null and the rule short-circuits.
+          const cd = computeCycleDay(date, ctx.cycle!);
+          const dayCtx: ClientContext = { ...ctx, cycle_day: cd };
+          const fired = firingActions(evaluate(personalization, dayCtx));
           for (const a of fired) {
             if (a["type"] === "forbid_exercise" && typeof a["exercise"] === "string") {
               const ex = a["exercise"] as string;
               if (!staticForbidden.has(ex)) set.add(ex);
+            }
+          }
+          // Flare-window forbids — apply for any cycle pattern, projection
+          // independent. Walks the flare_windows list directly rather than
+          // going through the rule evaluator (the predicate is a date-range
+          // membership check, simpler to inline than to encode as a rule).
+          if (ctx.cycle?.flare_windows?.length && flareForbids.size > 0) {
+            for (const w of ctx.cycle.flare_windows) {
+              if (date >= w.start && date <= w.end) {
+                for (const ex of flareForbids) {
+                  if (!staticForbidden.has(ex)) set.add(ex);
+                }
+                break;
+              }
             }
           }
           return set;
