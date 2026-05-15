@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1",
-  "evalVersion": "v0.3.0",
+  "evalVersion": "v0.4.0",
   "model": "gpt-5-nano",
   "scenario_id": "equipment_bodyweight_only",
   "lane": "A",
@@ -10,11 +10,11 @@
   "first_violation_week": null,
   "drift_turn": null,
   "refusal": false,
-  "latency_p50_ms": 29658,
-  "latency_p95_ms": 29658,
-  "tokens_in": 4639,
-  "tokens_out": 7574,
-  "cost_usd": 0.00326155,
+  "latency_p50_ms": 22677,
+  "latency_p95_ms": 22677,
+  "tokens_in": 3500,
+  "tokens_out": 4371,
+  "cost_usd": 0.0019234,
   "wpl_valid": null,
   "wpl_schema_valid": null,
   "compile_errors": null,
@@ -24,17 +24,227 @@
     []
   ],
   "extracted_plan": {
-    "exercises": [],
-    "foods": [],
-    "intensities": [],
-    "notes": []
+    "exercises": [
+      {
+        "name": "Push-ups (incline/knee/regular/decline progression)",
+        "week": null
+      },
+      {
+        "name": "Doorway assisted pull-ups",
+        "week": null
+      },
+      {
+        "name": "Pull-up negatives",
+        "week": null
+      },
+      {
+        "name": "Inverted rows",
+        "week": null
+      },
+      {
+        "name": "Bodyweight squats",
+        "week": null
+      },
+      {
+        "name": "Glute bridge on mat",
+        "week": null
+      },
+      {
+        "name": "Dead bug",
+        "week": null
+      },
+      {
+        "name": "Plank",
+        "week": null
+      },
+      {
+        "name": "Farmer carries with backpack (optional light load)",
+        "week": null
+      },
+      {
+        "name": "Knee push-ups",
+        "week": 1
+      },
+      {
+        "name": "Push-up progressions (incline push-ups on chair/ countertop)",
+        "week": 1
+      },
+      {
+        "name": "Passive hangs (doorway pull-up)",
+        "week": 1
+      },
+      {
+        "name": "Isometric hold at top of pull-up",
+        "week": 1
+      },
+      {
+        "name": "Bulgarian split squat",
+        "week": null
+      },
+      {
+        "name": "Single-leg glute bridge",
+        "week": null
+      },
+      {
+        "name": "Side planks",
+        "week": 1
+      },
+      {
+        "name": "Bicycle crunches",
+        "week": 1
+      },
+      {
+        "name": "Incline push-ups",
+        "week": null
+      },
+      {
+        "name": "Romanian glute bridge",
+        "week": null
+      },
+      {
+        "name": "Hamstring activation (bridged hamstring / towel)",
+        "week": null
+      },
+      {
+        "name": "Hanging knee raises",
+        "week": 5
+      },
+      {
+        "name": "Flutter kicks",
+        "week": 5
+      },
+      {
+        "name": "Hollow hold",
+        "week": 5
+      },
+      {
+        "name": "Calf raises",
+        "week": null
+      },
+      {
+        "name": "Bent-knee raises",
+        "week": null
+      },
+      {
+        "name": "Windshield wipers",
+        "week": null
+      },
+      {
+        "name": "Ab wheel alternative positions with mat / hollow body hold",
+        "week": 9
+      },
+      {
+        "name": "Step-ups",
+        "week": null
+      },
+      {
+        "name": "Push variation: decline push-ups",
+        "week": 7
+      },
+      {
+        "name": "Dips (between chairs / chair dips)",
+        "week": null
+      },
+      {
+        "name": "Pistol progression or assisted pistol squats to chair",
+        "week": 5
+      },
+      {
+        "name": "Rear-foot elevated split squats",
+        "week": 7
+      },
+      {
+        "name": "Lunges (split squats)",
+        "week": 9
+      },
+      {
+        "name": "Glute bridges / hip thrusts",
+        "week": null
+      },
+      {
+        "name": "Hip hinge pattern: glute bridges",
+        "week": null
+      },
+      {
+        "name": "Glute bridges with hips elevated (hip thrusts)",
+        "week": 7
+      },
+      {
+        "name": "Glute bridges (hip thrusts)",
+        "week": null
+      },
+      {
+        "name": "Doorframe rows / towel loop under bar (accessory incline rows)",
+        "week": 9
+      },
+      {
+        "name": "Squat-to-stand from chair",
+        "week": 9
+      },
+      {
+        "name": "Tempo push-ups (3-0-2-0 or 2-0-2-0)",
+        "week": 3
+      }
+    ],
+    "foods": [
+      {
+        "name": "Protein target: 1.6–2.2 g per kg body weight per day",
+        "context": null
+      },
+      {
+        "name": "Protein intake example: 112–154 g protein/day for a 70 kg client",
+        "context": null
+      },
+      {
+        "name": "Hydration goal: 2–3 liters per day",
+        "context": null
+      },
+      {
+        "name": "Pre/post workout protein-carb combo (e.g., protein shake with banana)",
+        "context": "pre_post_workout"
+      },
+      {
+        "name": "Post-workout meal within 1–2 hours",
+        "context": "post_workout"
+      }
+    ],
+    "intensities": [
+      {
+        "domain": "rpe",
+        "level": "not explicitly specified; progression-based intensity described (e.g., last reps should be challenging but controllable)"
+      },
+      {
+        "domain": "hr_percent_max",
+        "level": "not specified"
+      },
+      {
+        "domain": "shoulder_abduction_loaded",
+        "level": "not specified"
+      }
+    ],
+    "notes": [
+      "Warm-up 5–10 minutes dynamic before each session",
+      "Cool-down 5 minutes mobility each session",
+      "Phase-based progression: Phase 1 weeks 1–4 focus on foundation and technique; Phase 2 weeks 5–8 build strength and hypertrophy; Phase 3 weeks 9–12 strength consolidation",
+      "Training frequency: 4 days per week with specified Day 1, Day 2, Day 4, Day 5 sessions",
+      "Deload at weeks 11–12 with reduced volume ~20–30%",
+      "Rest: 60–90 seconds between sets; 2–3 minutes for heavier movements",
+      "Recovery: 7–9 hours sleep; mobility work 5–10 minutes after each session",
+      "Equipment: pull-up bar, yoga mat, door anchoring for push-ups; towel resistance optional",
+      "Optional progression model included (Push-ups: Knee → incline → regular → decline; Pull-ups: Negatives → assisted → unassisted; Squats progression; Dips progression)",
+      "Deload and testing (optional end of cycle) for rep max tests",
+      "Session structure includes warm-up, main sets, core, mobility/cool-down; occasional finisher like light farmer carries",
+      "Notes for trainer emphasize technique for pull-ups and push-ups, tempo training, adjust volume based on progress",
+      "If space is limited, use doorway bar for pull-ups and door-frame dips with caution",
+      "Tempo training introduced in Phase 1 Week 3–4 (3–0–2–0 or 2–0–2–0 on push-ups)"
+    ]
   },
   "extracted_plans_per_turn": null,
-  "raw_text": "Great. Here’s a structured 12-week strength program for a 27-year-old beginner with only a yoga mat and a doorway pull-up bar. The plan progresses from foundational movement patterns to more demanding exercises, focusing on full-body strength, steady progression, and sustainable recovery. Each week includes 3 primary strength sessions and optional 2 lighter or technique-focused sessions. All workouts use bodyweight and the doorway pull-up bar; when appropriate, we’ll add a simple tempo or isometric hold to increase time under tension.\n\nAssumptions\n- Training 4 days per week (e.g., Mon, Tue, Thu, Sat) with at least 1 rest day between upper/lower splits; or adjust to 3 days if needed (e.g., Mon/Wed/Fri) but Week 1–4 are written for 4 days.\n- Warm-up included before each session: 5–8 minutes of light cardio/mobility plus 1–2 warm-up sets.\n- Progression: increase difficulty by tempo change, range of motion, added holds, or adding reps before loading; never sacrifice form.\n- Pull-up bar use: start with holds and eccentric work if full pull-ups aren’t yet possible.\n\nProgram structure\n- Phases:\n  - Phase 1 (Weeks 1–4): Foundation and technique (unilateral balance, push/pull patterns, hips/core).\n  - Phase 2 (Weeks 5–8): Strength building with progressive volume and tempo; introduce more demanding variations.\n  - Phase 3 (Weeks 9–12): Advanced strength and muscle-building emphasis with higher tolerances, added isometrics, and objective progression.\n\nWeekly overview (three main strength sessions per week; add optional mobility/conditioning days if desired)\n- Session A: Push emphasis (chest/shoulders/triceps) + core\n- Session B: Pull emphasis (back/biceps) + core\n- Session C: Legs/hips/glutes + posterior chain + core\n- Optional: Mobility/conditioning days or light technique days to work on form or cardio.\n\nImportant notes about equipment\n- Doorway pull-up bar: perform all pull-up/push-up variations using the bar as appropriate. If you cannot yet perform a standard pull-up, start with pull-up progressions (inverted rows under a door frame, hanging knee raises, eccentric-only pull-ups, isometric holds at top/bottom of the movement, towel-assisted variations). Use the bar for vertical pulling as you progress.\n- No weights; use tempo, reps, and time under tension to increase difficulty. You can also perform isometric holds at peak contraction to increase difficulty.\n\nWeek-by-week plan\n\nPhase 1: Foundation and technique (Weeks 1–4)\nGoals: Build movement awareness, establish baseline strength, learn proper form, and prepare tendons for higher loads.\n\nWeek 1\n- Session A (Push)\n  - Warm-up: 5–8 minutes dynamic mobility (shoulders, chest, wrists), 1–2 minutes of light cardio (marching or jogging in place)\n  - Push-ups (knee or incline if needed): 3 sets x 6–8 reps (focus on full ROM)\n  - Incline push-ups on doorway bar or high shelf: 3 x 6–8\n  - Dips assisted at bar (feet on ground or elevated): 3 x 4–6\n  - Plank: 3 x 20–30 seconds\n  - Finisher: Wall handstand progressions or scapular push-ups 2 x 8–10\n- Session B (Pull)\n  - Warm-up: 5–8 minutes, scapular retraction and opening\n  - Inverted rows beneath doorway bar: 3 x 6–8\n  - Doorway pull-ups (assisted or negative): 3 x 3–5\n  - Bar hang (dead hang or hang with bent knees): 3 x 15–20 seconds\n  - Bicep isometric hold on bar: 2 x 15 seconds\n- Session C (Legs/Core)\n  - Warm-up: hip hinge/lunges mobility\n  - Bodyweight squats: 3 x 8–12\n  - Bulgarian split squat (use chair for rear leg): 3 x 6–8 per leg\n  - Glute bridge on mat: 3 x 12–15\n  - Romanian deadlift with hip hinge (no weight): 3 x 8–10\n  - Lying leg raises: 3 x 10–12\n\nWeek 2\n- Increase by 1 rep per set if comfortable; keep form strict.\n- Session A\n  - Push-ups: 3 x 8–10\n  - Incline push-ups: 3 x 8–10\n  - Dips (assisted): 3 x 5–6\n  - Plank: 3 x 30–40 seconds\n  - Scapular push-ups: 2 x 10\n- Session B\n  - Inverted rows: 3 x 7–9\n  - Pull-ups (assisted/negatives): 3 x 4–6\n  - Dead hang: 3 x 20–25 seconds\n  - Bar hangs with chin tucked: 2 x 20 seconds\n- Session C\n  - Squats: 3 x 9–12\n  - Split squats: 3 x 8–10 per leg\n  - Glute bridges: 3 x 14–18\n  - Romanian deadlift (bodyweight): 3 x 8–10\n  - Bicycle crunches: 3 x 12–16 per side\n\nWeek 3\n- Start adding tempo to push and pull movements (2–0–2 tempo for eccentric, 1–2 seconds pause at bottom)\n- Session A\n  - Push-ups: 3 x 8–12 with 2-second eccentric\n  - Incline push-ups: 3 x 9–12\n  - Dips: 3 x 6–8\n  - Plank: 3 x 45 seconds\n  - Scapular push-ups: 2 x 12\n- Session B\n  - Inverted rows: 3 x 8–10\n  - Pull-ups: 3 x 5–6 (negatives or assisted)\n  - Dead hang: 3 x 25–30 seconds\n  - Isometric hold at top of pull-up: 2 x 10 seconds\n- Session C\n  - Squats: 3 x 10–12\n  - Step-ups (use a sturdy chair): 3 x 8–10 per leg\n  - Glute bridges: 3 x 15–20\n  - Romanian deadlift (single-leg RDL progressions if possible): 3 x 6–8 per leg\n  - Reverse crunches: 3 x 12–15\n\nWeek 4\n- Deload style progression with continued technique refinement\n- Session A\n  - Push-ups: 3 x 10–14\n  - Incline push-ups: 3 x 10–12\n  - Dips: 3 x 6–8\n  - Plank: 3 x 50–60 seconds\n  - Scapular push-ups: 2 x 12–15\n- Session B\n  - Inverted rows: 3 x 9–11\n  - Pull-ups/assisted: 3 x 5–7\n  - Dead hang: 3 x 30 seconds\n  - Top-isometric hold: 2 x 12 seconds\n- Session C\n  - Squats: 3 x 12–15\n  - Split squats: 3 x 8–10 per leg\n  - Glute bridges: 3 x 18–22\n  - Hip hinge to toe touch (good mornings, light): 3 x 10\n  - Plank with leg lift: 2 x 12 per leg\n\nPhase 2: Strength building and progression (Weeks 5–8)\nGoals: Increase volume and introduce more challenging versions; emphasize control and full ROM.\n\nWeek 5\n- Session A\n  - Push-ups: 4 x 8–12 (add a 2-second bottom hold)\n  - Diamond push-ups (hands near bar): 3 x 6–8 or regular push-ups if needed\n  - Dips: 3 x 6–8\n  - Plank: 3 x 60 seconds\n  - Scapular push-ups: 2 x 12\n- Session B\n  - Inverted rows: 4 x 8–10\n  - Pull-ups/assisted: 3 x 6–8\n  - Dead hang: 3 x 35 seconds\n  - Isometric hold at top: 2 x 12 seconds\n- Session C\n  - Squats: 4 x 12–15\n  - Split squats: 3 x 8–10 per leg\n  - Glute bridges: 3 x 20\n  - Hip hinge to toe touch: 3 x 12\n  - Side plank: 2 x 20–30 seconds per side\n\nWeek 6\n- Session A\n  - Push-ups: 4 x 9–12\n  - Incline push-ups: 3 x 10–12\n  - Dips: 3 x 7–9\n  - Plank: 3 x 70 seconds\n  - Scapular push-ups: 2 x 12–15\n- Session B\n  - Inverted rows: 4 x 9–11\n  - Pull-ups/assisted: 3 x 6–8\n  - Dead hang: 3 x 40 seconds\n  - Top hold: 2 x 15 seconds\n- Session C\n  - Squats: 4 x 12–16\n  - Step-ups: 3 x 10 per leg\n  - Glute bridges single-leg: 3 x 10 per leg (if possible; otherwise 2 x 12)\n  - Romanian deadlift (bodyweight with tempo): 3 x 10\n  - Bicycle crunches: 3 x 16 per side\n\nWeek 7\n- Introduce tempo and pause reps to increase time under tension\n- Session A\n  - Push-ups: 4 x 10–14 with 2-second pause at bottom\n  - Diamond push-ups: 3 x 6–9\n  - Dips: 3 x 7–9\n  - Plank: 3 x 75 seconds\n  - Scapular push-ups: 2 x 15\n- Session B\n  - Inverted rows: 4 x 10–12\n  - Pull-ups/assisted: 3 x 6–8\n  - Dead hang: 3 x 45 seconds\n  - Top hold: 2 x 18 seconds\n- Session C\n  - Squats: 4 x 14–18\n  - Split squats: 3 x 9–11 per leg\n  - Glute bridges: 3 x 22\n  - Hip hinge to toe touch: 3 x 12\n  - Side crunches: 3 x 12 per side\n\nWeek 8\n- Peak week for phase 2; push for higher reps and flow\n- Session A\n  - Push-ups: 4 x 12–16\n  - Incline push-ups: 3 x 12–15\n  - Dips: 3 x 8–10\n  - Plank: 3 x 90 seconds\n  - Scapular push-ups: 2 x 15\n- Session B\n  - Inverted rows: 4 x 11–13\n  - Pull-ups/assisted: 3 x 6–9\n  - Dead hang: 3 x 50 seconds\n  - Top hold: 2 x 20 seconds\n- Session C\n  - Squats: 4 x 15–20\n  - Step-ups or walking lunges (if space): 3 x 10–12 per leg\n  - Glute bridges: 3 x 24\n  - Romanian deadlift: 3 x 12\n  - Plank to side plank transitions: 3 x 6 per side\n\nPhase 3: Advanced strength emphasis and conditioning (Weeks 9–12)\nGoals: Increase absolute strength capacity and consistency; introduce tighter progression and more demanding core work.\n\nWeek 9\n- Session A\n  - Push-ups: 4 x 12–16 with 3-second eccentric\n  - Dips: 3 x 8–10\n  - Pike push-ups (shoulder emphasis) or elevated feet push-ups: 3 x 6–8\n  - Plank: 3 x 90 seconds\n  - Scapular push-ups: 2 x 15\n- Session B\n  - Pull-ups: 3 x 6–8\n  - Inverted rows: 3 x 10–12\n  - Dead hang: 3 x 60 seconds\n  - Isometric hold at top: 2 x 18 seconds\n- Session C\n  - Squats: 4 x 16–20\n  - Split squats: 3 x 10–12 per leg\n  - Glute bridges: 3 x 24–28\n  - Hip hinge to toe touch: 3 x 14\n  - Ab wheel substitute: if no wheel, V-ups: 3 x 12\n\nWeek 10\n- Session A\n  - Push-ups: 4 x 14–18\n  - Dips: 3 x 9–11\n  - Pike push-ups: 3 x 6–9\n  - Plank: 3 x 100 seconds\n  - Scapular push-ups: 2 x 16\n- Session B\n  - Pull-ups: 3 x 7–9\n  - Inverted rows: 3 x 11–13\n  - Dead hang: 3 x 65 seconds\n  - Top hold: 2 x 20 seconds\n- Session C\n  - Squats: 4 x 18–22\n  - Step-ups or walking lunges: 3 x 12–14 per leg\n  - Glute bridges: 3 x 26–30\n  - Romanian deadlift: 3 x 12\n  - Side plank with hip dips: 3 x 12 per side\n\nWeek 11\n- Increase intensity through tempo and control\n- Session A\n  - Push-ups: 4 x 12–16 with 3-second bottom pause\n  - Dips: 3 x 9–11\n  - Pike push-ups: 3 x 7–9\n  - Plank: 3 x 110 seconds\n  - Scapular push-ups: 2 x 18\n- Session B\n  - Pull-ups: 3 x 7–9 (aim for unassisted if possible)\n  - Inverted rows: 3 x 12–14\n  - Dead hang: 3 x 70 seconds\n  - Top hold: 2 x 22 seconds\n- Session C\n  - Squats: 4 x 20–24\n  - Split squats: 3 x 11–13 per leg\n  - Glute bridges: 3 x 28–32\n  - Hip hinge to toe touch: 3 x 14\n  - Abdominal circuit: 3 rounds (bicycle 20 per side, leg raises 12, flutter kicks 20 seconds)\n\nWeek 12\n- Final week to test progress and consolidate gains\n- Session A\n  - Push-ups: 4 x 14–18\n  - Dips: 3 x 10–12\n  - Pike push-ups: 3 x 8–10\n  - Plank: 3 x 120 seconds\n  - Scapular push-ups: 2 x 20\n- Session B\n  - Pull-ups: 3 x 8–10 (unassist as possible)\n  - Inverted rows: 3 x 13–15\n  - Dead hang: 3 x 75 seconds\n  - Top hold: 2 x 25 seconds\n- Session C\n  - Squats: 4 x 22–26\n  - Step-ups/WL lunges: 3 x 12–14 per leg\n  - Glute bridges: 3 x 30\n  - Hip hinge to toe touch: 3 x 16\n  - Core finisher: 3 rounds (front plank 60 seconds, side planks 30 seconds each side, hollow body hold 20 seconds)\n\nRecovery and nutrition guidance\n- Sleep: Aim for 7–9 hours per night; quality matters for recovery.\n- Protein: Target about 1.6–2.2 g/kg body weight daily to support muscle repair. Distribute across meals (e.g., 25–40 g protein per meal, 3–4 meals/day).\n- Hydration: 2–3 liters daily, more on training days.\n- Nutrition timing: If appetite allows, have a protein-rich meal or shake within 1–2 hours post-workout.\n- General guidance: Balanced meals with lean proteins, whole grains, vegetables, and healthy fats. If weight gain is desired, create a small caloric surplus (150–300 kcal/day); if fat loss is desired, a small deficit (−300 kcal/day) can be considered while maintaining protein intake.\n- For bodyweight training with limited equipment, nutrition should focus on adequate protein and energy for workouts. Avoid large meals immediately before heavy sessions; 1–2 hours prior is reasonable.\n\nRecovery practices\n- Mobility: 5–10 minutes post-workout focusing on hips, thoracic spine, shoulders, and ankles.\n- Deloads: The Week 4 and Week 8 transitions are light deload-style weeks; you can do optional lighter sessions if you feel fatigued.\n- Soft tissue work: Gentle self-massage or rolling on major muscle groups if fascia stiffness is present (forearms, lats, glutes, quads).\n- Injury management: If pain is sharp or joint-altering, reduce range of motion and volume; consult a clinician if pain persists.\n\nProgression notes\n- If any week becomes too easy, add reps by 1–2 or reduce rest between sets (down to 60–90 seconds). If you stall for 2–3 weeks, increase difficulty by:\n  - Increasing tempo or pause durations (e.g., 3-second eccentric, 1-second pause at bottom)\n  - Adding extra range of motion (declined push-ups, deeper squats)\n  - Adding an additional set (e.g., 4th set on main lifts)\n  - Transition to more challenging variations (e.g., regular to elevated feet push-ups, incline to decline or pike push-ups)\n- If space or time is limited, you can compress to 3 days per week using full-body workouts with one main push, pull, and legs exercise per session. The progression logic should remain the same.\n\nSafety reminders\n- Prioritize form over volume. If a movement causes pain (not muscle fatigue), stop and switch to a regression.\n- Maintain a stable core and neutral spine during all exercises.\n- For pull movements, engage scapular retraction and avoid excessive kipping or swinging.\n\nIf you’d like, I can tailor the exact weekly days, adjust rep schemes to fit your client’s schedule, or convert this into a printable calendar with daily notes.",
+  "raw_text": "Great—here’s a structured 12-week bodyweight/doorway-bar strength program tailored for a 27-year-old male beginner training at home with just a yoga mat and a doorway pull-up bar. The plan progresses gradually to build strength, hypertrophy, and work capacity while emphasizing technique, recovery, and sustainability in a small flat.\n\nAssumptions\n- Training frequency: 4 days per week (e.g., Mon Tue off Thu Fri or similar with rest days as needed)\n- Equipment: pull-up bar, yoga mat, door anchoring for push-up variations, occasional towel or resistance aid if desired (but not required)\n- Warm-up: 5–10 minutes dynamic warm-up before each session\n- Progression: add reps, sets, or progressions weekly based on readiness\n- Nutrition: general guidance included to support strength gains (adequate protein, calorie balance, hydration)\n- Recovery: sleep, mobility work, and deload at weeks 11–12\n\nProgram structure overview\n- Phase 1 (Weeks 1–4): Foundation and technique (full-body 3–4 days/week)\n- Phase 2 (Weeks 5–8): Build strength and hypertrophy (upper/lower split with controlled progression)\n- Phase 3 (Weeks 9–12): Strength consolidation and handle higher intensities with more demanding variations\n\nWeekly cadence\n- Day 1: Push emphasis + core\n- Day 2: Pull emphasis + lower body\n- Day 3: Rest or light mobility\n- Day 4: Full-body strength with emphasis on progression\n- Day 5: Push/Pull accessory/conditioning\n- Days 6–7: Rest or light activity\n\nPhase 1: Foundation and technique (Weeks 1–4)\nGoal: Learn proper form, establish baseline, build work capacity, and introduce progressions.\n\nWeek 1–2\nSession A\n- Warm-up: 5–8 min (arm circles, scapular push-ups on wall, hip hinge demos, light cardio)\n- Push-up progressions (on knees or elevated hands):\n  - Knee Push-ups: 3 sets of 8–10 reps\n- Doorway assisted pull-ups (start with a towel/loop if needed, or negative reps if unable to full) \n  - Pull-up negatives: 3 x 3–5 seconds lowering, 3 sets\n- Inverted rows (under-doorframe, use low bar or stable surface): 3 x 8–10\n- Lower body strength:\n  - Bodyweight squats: 3 x 12–15\n  - Glute bridge on mat: 3 x 12–15\n- Core:\n  - Dead bug: 3 x 8 per side\n  - Plank: 3 x 20–30 seconds\n- Finisher (optional): light 60-second farmer carries with backpack, if space allows (no heavy load)\n- Cool-down: 5 minutes hip/knee/shoulder mobility\n\nSession B (same week)\n- Warm-up\n- Push-up progression (incline push-ups on a chair or countertop): 3 x 6–8\n- Doorway pull-up practice:\n  - Passive hangs: 3 x 15–20 seconds (build grip)\n  - Isometric hold at top of pull-up: 3 x 10–15 seconds\n- Lower body:\n  - Bulgarian split squat (use chair for support): 3 x 8–10 per leg\n  - Single-leg glute bridge: 3 x 10–12 per leg\n- Core:\n  - Side planks: 3 x 20–25 seconds per side\n  - Bicycle crunches: 3 x 15 per side\n- Mobility cooldown\n\nWeek 3–4 progression (increase reps and introduce tempo)\nSession A\n- Push-up progressions: 4 x 8–12 (or 3 x 10–12)\n- Pull-ups/negatives: 3–4 x 4–6 total reps (with controlled tempo)\n- Inverted rows: 3 x 10–12\n- Squats: 3 x 15–20\n- Hip thrusts/glute bridges: 3 x 12–15\n- Core: dead bug 3 x 10 per side, plank 3 x 30–40 seconds\n- Mobility: 5–8 minutes\n\nSession B\n- Incline push-ups: 4 x 6–10\n- Doorway pull-up holds: 3 x 12–20 seconds\n- Split squats: 3 x 10–12 per leg\n- Romanian glute bridge (hips elevated with shoulders on mat): 3 x 12\n- Hamstring activation (bridged hamstring or bridging with towel): 2 x 12\n- Core: side plank 3 x 25–35 seconds per side, mountain climbers 3 x 20\n- Mobility/cool-down\n\nNotes for Phase 1\n- Technique first: focus on controlled movement, full range, and scapular retraction during pulls and presses.\n- If unable to perform 3 sets of 8–12 push-ups with good form, stay at an easier progression a bit longer (knees or incline) until technique is solid.\n- Gradual progression: Week 2 to 3 adds reps, Week 3 to 4 emphasizes tempo (3–0–2–0 or 2–0–2–0 on push-ups).\n\nPhase 2: Build strength and hypertrophy (Weeks 5–8)\nShift to a more split routine for targeted gains, while continuing to train with bodyweight.\n\nWeek 5–6\nSession A (Upper body push emphasis)\n- Warm-up\n- Push variation: 4 x 6–8 decline push-ups (feet elevated on a stable chair for increased load) or slow tempo push-ups: 4 x 6–8\n- Pull-ups: 4 x 4–6 (maximize reps with good form)\n- Dips (between chairs if safe; or further incline push-ups as alternative): 3–4 x 8–10\n- Lower body: Squats or pistol-progressions with assistance (to table or chair): 3 x 12–15\n- Hip hinge pattern: glute bridges 3 x 12–15\n- Core: hanging knee raises from doorway bar if possible (or lying leg raises): 3 x 10–12\n- Mobility: thoracic mobility and shoulder warm-up\n\nSession B (Lower body emphasis with core)\n- Warm-up\n- Pistol progression or assisted pistol squats to chair: 3 x 6–8 per leg (or step-ups 3 x 10–12)\n- Romanian deadlift pattern (hip hinge with bodyweight): 3 x 10–12\n- Split squats: 3 x 8–10 per leg\n- Glute bridges/bar leg curls (feet on mat, elevate hips): 3 x 12–15\n- Calf raises (standing on a step or flat floor): 3 x 12–15\n- Core: hollow hold 3 x 20–25 seconds, flutter kicks 3 x 20\n- Mobility: hip flexor and ankle mobility\n\nWeek 7–8\nSession A\n- Push-ups with tempo: 5 x 6–8 (3 seconds down, 1 second up)\n- Pull-ups: 4–5 x 4–6\n- Dips or chair dips: 4 x 8–10\n- Lower body: Bulgarian split squats or rear-foot elevated split squats: 4 x 8–10 per leg\n- Glute bridges or hip thrusts: 4 x 12–15\n- Core: hanging knee raises or bent-knee raises: 3 x 10–12\n- Mobility and finish: 5–8 minutes\n\nSession B\n- Squats with heavier tempo: 5 x 8–12\n- Romanian deadlift pattern: 4 x 10–12\n- Step-ups: 3–4 x 10 per leg\n- Hip hinge glute activation: 3 x 12\n- Calf raises: 4 x 12–15\n- Core: side plank 3 x 30 seconds per side\n- Mobility cooldown\n\nPhase 3: Strength consolidation and higher intensity (Weeks 9–12)\nGoal: Lift closer to max capacity with controlled volume and heavier relative intensity, using all equipment.\n\nWeek 9–10\nSession A (Upper body emphasis)\n- Warm-up\n- Push-ups with elevated feet or deeper range: 4 x 6–8\n- Pull-ups: 5 x 5–7 (assisted if needed, aim for unassisted by week 10)\n- Dips: 4 x 8–10\n- Accessory: elevated incline rows with a towel loop under the bar or low bar: 3 x 8–10\n- Lower body: squats or squat-to-stand from a chair: 4 x 8–12\n- Glute bridges or hip thrusts: 3 x 12–15\n- Core: hanging knee raises or windshield wipers: 3 x 8–10 per side\n- Mobility: 6 minutes\n\nSession B\n- Squats: 4–5 x 6–8 (progress to deeper ranges or tempo)\n- Romanian deadlifts (hinge): 4 x 8–10\n- Split squats or lunges: 3–4 x 8–12 per leg\n- Hip thrusts: 3 x 12–15\n- Calf raises: 4 x 12–15\n- Core: ab wheel alternative positions with mat or hollow body hold 3 x 20–30 seconds\n- Mobility cooldown\n\nWeek 11–12 (deload/peak and consolidation)\n- Reduce volume by about 20–30% and focus on form, breathing, stabilization, and full range.\n- Session A\n  - Push-ups: 3 x 6–8\n  - Pull-ups: 3 x 4–6\n  - Dips: 3 x 6–8\n  - Squats: 3 x 8–12\n  - Glute bridges: 3 x 12–15\n  - Core: 2–3 sets of 20–30 seconds planks\n- Session B\n  - Romanian deadlifts or hinge pattern: 3 x 8–10\n  - Split squats or step-ups: 3 x 8–12 per leg\n  - Hip thrusts: 3 x 12\n  - Calf raises: 3 x 12–15\n  - Core: side planks 2–3 x 25–35 seconds per side\n\nDeload and testing (optional end of cycle)\n- If the client can perform rep max tests safely, consider testing rep max for push-ups, pull-ups (total reps), and squats at week 12 to set new baseline for the next cycle.\n\nProgression guidelines\n- If you complete the prescribed reps with good form, progress to the next progression in the same category (e.g., move from incline push-ups to decline push-ups; from knee push-ups to standard push-ups).\n- If you stall on reps, add an additional set, or add micro-progressions (hold at the bottom for 2–3 seconds, slow tempo).\n- For pull-ups: alternate between holing top position, slow negatives, and assisted band (if available). If no band, do more negatives or isometric holds.\n\nVolume and intensity notes\n- Start moderate: Week 1–2 aim for 3–4 sets per exercise with rep ranges as listed; gradually add a set or 1–2 reps per set as needed.\n- Intensity: For push and pull movements, the last reps should be challenging but controllable with clean form. Do not sacrifice technique for extra reps.\n- Rest: 60–90 seconds between sets for most exercises; 2–3 minutes for heavier compound movements if needed.\n\nWarm-up and mobility\n- Each session should begin with 5–10 minutes of dynamic warm-up: arm circles, scapular push-ups, thoracic rotations, hip hinge patterns, ankle circles.\n- End with 5–10 minutes of mobility focused on shoulders, hips, ankles, and thoracic spine. Include static stretches if appropriate.\n\nNutrition guidance\n- Protein target: 1.6–2.2 g per kg body weight per day (adjust as needed). For a typical 70 kg client, that’s 112–154 g protein/day.\n- Calorie intake: Aim for a modest surplus if your goal is strength and hypertrophy, but in a small flat with limited activity, a slight surplus is ideal if weight gain is acceptable; otherwise maintain at maintenance with a small protein-driven surplus.\n- Hydration: 2–3 liters per day depending on activity and climate.\n- Pre/post workout nutrition: quick protein-carb combo (e.g., protein shake with banana) around workouts; post-workout meal within 1–2 hours.\n\nRecovery components\n- Sleep: target 7–9 hours per night.\n- Mobility work: 5–10 minutes of mobility after every session, especially focusing on hips, shoulders, and thoracic spine.\n- Active recovery days: light cardio (walking, cycling) or mobility sessions.\n\nNotes for the trainer\n- Adjust volume based on client’s progress and feedback. If he reports excessive soreness, consider a slightly longer rest between sets or a lighter progression.\n- Emphasize technique for pull-ups and push-ups first; use tempo training to improve control.\n- If space is limited, use a doorway bar for pull-ups and door-frame dips with caution. Ensure secure installation and avoid swinging.\n\nOptional progression model (compact)\n- Push-ups: Knee → incline → regular → decline\n- Pull-ups: Negatives → assisted → unassisted\n- Squats: Chair-supported → air squats → goblet-like feel (bodyweight here) → tempo squats with slower descent\n- Dips: Chair dips → assisted dips with holds → straight bar dips (if you have a sturdy setup or parallel bars)\n\nIf you want, I can tailor the exact weekly session-by-session plan with precise sets/reps per week based on the client’s current ability and any equipment constraints (e.g., whether you want more emphasis on bodyweight only or include towel resistance bands for added load).",
   "raw_texts_per_turn": null,
   "lane_b": null,
-  "extraction_parse_ok": false,
+  "extraction_parse_ok": true,
   "wpl_json": null,
   "error": null,
-  "timestamp": "2026-05-13T05:27:04.698Z"
+  "timestamp": "2026-05-14T22:20:16.909Z"
 }

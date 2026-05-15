@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1",
-  "evalVersion": "v0.3.0",
+  "evalVersion": "v0.4.0",
   "model": "gpt-5-mini",
   "scenario_id": "vegan_protein_target",
   "lane": "A",
@@ -10,11 +10,11 @@
   "first_violation_week": null,
   "drift_turn": null,
   "refusal": false,
-  "latency_p50_ms": 43311,
-  "latency_p95_ms": 43311,
-  "tokens_in": 4158,
-  "tokens_out": 6427,
-  "cost_usd": 0.0138935,
+  "latency_p50_ms": 42665,
+  "latency_p95_ms": 42665,
+  "tokens_in": 4671,
+  "tokens_out": 7043,
+  "cost_usd": 0.01525375,
   "wpl_valid": null,
   "wpl_schema_valid": null,
   "compile_errors": null,
@@ -27,288 +27,376 @@
     "exercises": [
       {
         "name": "Barbell bench press",
-        "week": null
+        "week": 1
       },
       {
-        "name": "Incline dumbbell press",
-        "week": null
-      },
-      {
-        "name": "Seated cable row",
-        "week": null
-      },
-      {
-        "name": "Barbell row",
-        "week": null
-      },
-      {
-        "name": "Lat pulldown (wide)",
-        "week": null
-      },
-      {
-        "name": "Dumbbell lateral raise",
-        "week": null
-      },
-      {
-        "name": "Face pulls",
-        "week": null
-      },
-      {
-        "name": "Triceps rope pushdown",
-        "week": null
-      },
-      {
-        "name": "Dips",
-        "week": null
-      },
-      {
-        "name": "Hammer curls",
-        "week": null
-      },
-      {
-        "name": "Barbell back squat",
-        "week": null
-      },
-      {
-        "name": "Romanian deadlift",
-        "week": null
-      },
-      {
-        "name": "Bulgarian split squat",
-        "week": null
-      },
-      {
-        "name": "Leg press",
-        "week": null
-      },
-      {
-        "name": "Seated calf raise",
-        "week": null
-      },
-      {
-        "name": "Standing calf raise",
-        "week": null
-      },
-      {
-        "name": "Ab wheel",
-        "week": null
-      },
-      {
-        "name": "Hanging leg raises",
-        "week": null
-      },
-      {
-        "name": "Overhead press (barbell or dumbbell)",
-        "week": null
-      },
-      {
-        "name": "Flat dumbbell press",
-        "week": null
-      },
-      {
-        "name": "Close-grip bench",
-        "week": null
-      },
-      {
-        "name": "One-arm dumbbell row",
-        "week": null
-      },
-      {
-        "name": "Pull-ups",
-        "week": null
-      },
-      {
-        "name": "Assisted pull-ups",
-        "week": null
-      },
-      {
-        "name": "Rear delt fly (cable or machine)",
-        "week": null
-      },
-      {
-        "name": "EZ-bar curls",
-        "week": null
-      },
-      {
-        "name": "Preacher curls",
-        "week": null
-      },
-      {
-        "name": "Skullcrushers",
-        "week": null
-      },
-      {
-        "name": "Overhead triceps extension",
-        "week": null
-      },
-      {
-        "name": "Deadlift (conventional)",
-        "week": null
-      },
-      {
-        "name": "Trap bar deadlift",
-        "week": null
-      },
-      {
-        "name": "Front squat",
-        "week": null
-      },
-      {
-        "name": "Goblet squat",
-        "week": null
-      },
-      {
-        "name": "Hamstring curl (lying or seated)",
-        "week": null
-      },
-      {
-        "name": "Walking lunges",
-        "week": null
-      },
-      {
-        "name": "Glute bridge",
-        "week": null
-      },
-      {
-        "name": "Hip thrust",
-        "week": null
-      },
-      {
-        "name": "Plank",
-        "week": null
+        "name": "Bent-over barbell row",
+        "week": 1
       },
       {
         "name": "Chest-supported row",
-        "week": null
+        "week": 1
       },
       {
-        "name": "Weighted pull-up",
-        "week": null
+        "name": "Incline dumbbell press",
+        "week": 1
       },
       {
-        "name": "Lateral raises",
-        "week": null
+        "name": "Seated cable row (neutral)",
+        "week": 1
       },
       {
-        "name": "Triceps superset: close-grip pushups",
-        "week": null
+        "name": "Dumbbell lateral raise",
+        "week": 1
       },
       {
-        "name": "Triceps superset: rope pushdowns",
-        "week": null
+        "name": "EZ-bar curl",
+        "week": 1
       },
       {
-        "name": "Leg curl",
-        "week": null
+        "name": "Cable curl",
+        "week": 1
       },
       {
-        "name": "Calf raises",
-        "week": null
+        "name": "Rope pressdown",
+        "week": 1
       },
       {
-        "name": "Core: weighted plank",
-        "week": null
+        "name": "Plank",
+        "week": 1
       },
       {
-        "name": "Single-arm row",
-        "week": null
+        "name": "Back squat",
+        "week": 1
       },
       {
-        "name": "Cable pulldown (neutral grip)",
-        "week": null
+        "name": "Romanian deadlift (RDL)",
+        "week": 1
       },
       {
-        "name": "Rear delt + lateral superset",
-        "week": null
+        "name": "Leg press",
+        "week": 1
       },
       {
-        "name": "Biceps focus: barbell curl",
-        "week": null
+        "name": "Bulgarian split squat",
+        "week": 1
       },
       {
-        "name": "Triceps: overhead rope extension",
-        "week": null
+        "name": "Lying leg curl",
+        "week": 1
+      },
+      {
+        "name": "Seated hamstring curl",
+        "week": 1
+      },
+      {
+        "name": "Standing calf raise",
+        "week": 1
+      },
+      {
+        "name": "Hanging knee raises",
+        "week": 1
+      },
+      {
+        "name": "Overhead press (barbell or dumbbell)",
+        "week": 1
+      },
+      {
+        "name": "Pull-up (assisted or weighted)",
+        "week": 1
+      },
+      {
+        "name": "Lat pulldown",
+        "week": 1
+      },
+      {
+        "name": "Dumbbell bench press (flat)",
+        "week": 1
+      },
+      {
+        "name": "Single-arm dumbbell row",
+        "week": 1
+      },
+      {
+        "name": "Face pulls",
+        "week": 1
+      },
+      {
+        "name": "Hammer curl",
+        "week": 1
+      },
+      {
+        "name": "Triceps overhead extension (rope or dumbbell)",
+        "week": 1
+      },
+      {
+        "name": "Deadlift (conventional or trap bar)",
+        "week": 1
+      },
+      {
+        "name": "Front squat",
+        "week": 1
+      },
+      {
+        "name": "Goblet squat",
+        "week": 1
+      },
+      {
+        "name": "Hip thrust",
+        "week": 1
+      },
+      {
+        "name": "Reverse lunges",
+        "week": 1
+      },
+      {
+        "name": "Cable pull-through",
+        "week": 1
       },
       {
         "name": "Glute-ham raise",
-        "week": null
+        "week": 1
       },
       {
-        "name": "Nordic curl",
-        "week": null
+        "name": "Seated calf raise",
+        "week": 1
       },
       {
-        "name": "Hip thrust (drop set last set optional)",
-        "week": null
+        "name": "Side plank",
+        "week": 1
       },
       {
-        "name": "Bent-over row",
-        "week": null
+        "name": "Incline bench (close-grip incline)",
+        "week": 2
       },
       {
-        "name": "Arms superset",
-        "week": null
+        "name": "Single-leg RDL",
+        "week": 2
       },
       {
-        "name": "Higher-rep calves/core sets",
-        "week": null
+        "name": "Pendlay row",
+        "week": 5
       },
       {
-        "name": "Rest-pause sets (as technique)",
-        "week": null
+        "name": "Weighted pull-up",
+        "week": 5
       },
       {
-        "name": "Drop sets (as technique)",
-        "week": null
+        "name": "Dumbbell lateral raise superset with front raise",
+        "week": 5
       },
       {
-        "name": "HIIT (10–20 min) optional conditioning",
-        "week": null
+        "name": "Preacher curl",
+        "week": 5
       },
       {
-        "name": "Low-impact cardio (optional conditioning)",
-        "week": null
+        "name": "Incline curl",
+        "week": 5
       },
       {
-        "name": "Walking (active recovery)",
-        "week": null
+        "name": "Triceps cable pressdown",
+        "week": 5
       },
       {
-        "name": "Mobility (dynamic and general)",
-        "week": null
+        "name": "Pallof press",
+        "week": 5
       },
       {
-        "name": "Foam rolling",
-        "week": null
+        "name": "Ab wheel",
+        "week": 5
       },
       {
-        "name": "Yoga (active recovery)",
-        "week": null
+        "name": "Cable crunch",
+        "week": 5
       },
       {
-        "name": "Swimming (active recovery)",
-        "week": null
+        "name": "Walking lunges",
+        "week": 5
+      },
+      {
+        "name": "Strict overhead press",
+        "week": 5
+      },
+      {
+        "name": "Barbell row",
+        "week": 5
+      },
+      {
+        "name": "Chest-supported incline row",
+        "week": 5
+      },
+      {
+        "name": "Alternating curls",
+        "week": 5
+      },
+      {
+        "name": "Skull crushers (EZ or rope)",
+        "week": 5
+      },
+      {
+        "name": "Trap-bar deadlift",
+        "week": 5
+      },
+      {
+        "name": "Good mornings",
+        "week": 9
+      },
+      {
+        "name": "Back extensions",
+        "week": 9
+      },
+      {
+        "name": "Lateral raise dropset",
+        "week": 9
+      },
+      {
+        "name": "Barbell curls",
+        "week": 9
+      },
+      {
+        "name": "Cable triceps extension",
+        "week": 9
+      },
+      {
+        "name": "Cable anti-rotation hold",
+        "week": 9
+      },
+      {
+        "name": "Hanging leg raises",
+        "week": 9
+      },
+      {
+        "name": "Single-arm cable row",
+        "week": 9
+      },
+      {
+        "name": "Dips (assisted or weighted)",
+        "week": 9
+      },
+      {
+        "name": "Close-grip bench",
+        "week": 9
+      },
+      {
+        "name": "Pause hip thrust",
+        "week": 9
+      },
+      {
+        "name": "Reverse lunges",
+        "week": 9
+      },
+      {
+        "name": "Front squat",
+        "week": 9
+      },
+      {
+        "name": "Plank with variations",
+        "week": 9
+      },
+      {
+        "name": "Flat dumbbell press",
+        "week": 9
+      },
+      {
+        "name": "Weighted pull-ups or heavy lat pulldown",
+        "week": 9
+      },
+      {
+        "name": "Incline DB press",
+        "week": 9
+      },
+      {
+        "name": "Bulgarian split squat or single-leg press",
+        "week": 9
+      },
+      {
+        "name": "Single-leg press",
+        "week": 9
+      },
+      {
+        "name": "Deficit deadlift",
+        "week": 2
+      },
+      {
+        "name": "Deadlift from blocks",
+        "week": 2
+      },
+      {
+        "name": "Seated dumbbell press",
+        "week": 2
+      },
+      {
+        "name": "External rotation work",
+        "week": 2
       }
     ],
     "foods": [
       {
-        "name": "Firm tofu",
-        "context": null
+        "name": "Tofu",
+        "context": "breakfast"
+      },
+      {
+        "name": "Oats",
+        "context": "breakfast"
+      },
+      {
+        "name": "Soy milk",
+        "context": "breakfast"
+      },
+      {
+        "name": "Pea protein powder",
+        "context": "mid-morning snack"
+      },
+      {
+        "name": "Soy protein powder",
+        "context": "mid-morning snack"
+      },
+      {
+        "name": "Peanut butter",
+        "context": "mid-morning snack"
+      },
+      {
+        "name": "Frozen fruit",
+        "context": "mid-morning snack"
       },
       {
         "name": "Tempeh",
-        "context": null
+        "context": "lunch"
       },
       {
-        "name": "Seitan",
-        "context": null
+        "name": "Quinoa",
+        "context": "lunch"
       },
       {
-        "name": "Textured vegetable protein (TVP)",
-        "context": null
+        "name": "Tahini",
+        "context": "lunch"
+      },
+      {
+        "name": "Edamame",
+        "context": "afternoon snack"
+      },
+      {
+        "name": "Hummus",
+        "context": "afternoon snack"
+      },
+      {
+        "name": "Whole grain pita",
+        "context": "afternoon snack"
+      },
+      {
+        "name": "Hemp seeds",
+        "context": "afternoon snack"
       },
       {
         "name": "Lentils",
+        "context": "dinner"
+      },
+      {
+        "name": "Seitan",
+        "context": "dinner"
+      },
+      {
+        "name": "Black beans",
         "context": null
       },
       {
@@ -316,23 +404,27 @@
         "context": null
       },
       {
-        "name": "Black beans",
+        "name": "Pea protein isolate",
         "context": null
       },
       {
-        "name": "Vegan protein powder (pea, rice, soy blends)",
+        "name": "Soy protein isolate",
         "context": null
       },
       {
-        "name": "Plant-based yogurt (soy, fortified)",
+        "name": "Protein powder (blend)",
         "context": null
       },
       {
-        "name": "Almond butter",
+        "name": "Soy milk / fortified plant milk",
         "context": null
       },
       {
-        "name": "Hemp seeds",
+        "name": "Peanut butter (2 tbsp ≈ 8 g)",
+        "context": null
+      },
+      {
+        "name": "Hemp seeds (3 tbsp ≈ 10 g)",
         "context": null
       },
       {
@@ -340,205 +432,137 @@
         "context": null
       },
       {
-        "name": "Quinoa",
+        "name": "Quinoa (1 cup cooked)",
         "context": null
       },
       {
-        "name": "Oats",
+        "name": "Oats (1 cup cooked)",
         "context": null
       },
       {
-        "name": "Nutritional yeast",
+        "name": "Tempeh (100 g ≈ 19 g)",
         "context": null
       },
       {
-        "name": "Peanut butter",
+        "name": "Edamame (1 cup ≈ 17 g)",
         "context": null
       },
       {
-        "name": "Hummus",
+        "name": "Seitan (vital wheat gluten)",
         "context": null
       },
       {
-        "name": "Edamame",
+        "name": "Fortified foods (B12, vitamin D)",
         "context": null
       },
       {
-        "name": "Soy milk",
-        "context": null
-      },
-      {
-        "name": "Algae omega-3 (supplement)",
-        "context": null
-      },
-      {
-        "name": "B12 (supplement)",
-        "context": null
-      },
-      {
-        "name": "Vitamin D (algae-based D3)",
-        "context": null
-      },
-      {
-        "name": "Creatine monohydrate (supplement)",
-        "context": null
-      },
-      {
-        "name": "Whole grains (brown rice)",
-        "context": null
-      },
-      {
-        "name": "Nuts & nut butters",
-        "context": null
-      },
-      {
-        "name": "Tahini",
-        "context": null
-      },
-      {
-        "name": "Fruit",
-        "context": null
-      },
-      {
-        "name": "Vegetables",
-        "context": null
-      },
-      {
-        "name": "Pea-protein shake",
-        "context": "pre_bed_or_snack"
-      },
-      {
-        "name": "Soy yogurt",
-        "context": "pre_bed_or_snack"
+        "name": "Banana",
+        "context": "post_workout"
       }
     ],
     "intensities": [
       {
-        "domain": "reps_range",
-        "level": "6-10"
-      },
-      {
-        "domain": "reps_range",
-        "level": "8-12"
-      },
-      {
-        "domain": "reps_range",
-        "level": "12-15"
-      },
-      {
-        "domain": "reps_range",
-        "level": "4-8"
-      },
-      {
-        "domain": "reps_range",
-        "level": "3-4 x 4-8"
-      },
-      {
-        "domain": "reps_range",
-        "level": "3-4 x 4-6"
-      },
-      {
-        "domain": "reps_range",
-        "level": "5 x 5-8"
-      },
-      {
-        "domain": "reps_range",
-        "level": "4 x 8-10"
+        "domain": "percent_1RM",
+        "level": "65–75%"
       },
       {
         "domain": "rpe",
-        "level": "challenging set in range / work up to heavy set"
+        "level": "7"
       },
       {
-        "domain": "tempo",
-        "level": "2-0-1 (eccentric 2s, no pause, concentric 1s)"
+        "domain": "rpe",
+        "level": "7–8"
       },
       {
-        "domain": "tempo",
-        "level": "specified different tempos for some exercises"
+        "domain": "rpe",
+        "level": "8"
       },
       {
-        "domain": "rest_between_sets",
-        "level": "60-90s (accessory work)"
+        "domain": "rpe",
+        "level": "8–9"
       },
       {
-        "domain": "rest_between_sets",
-        "level": "90-120s (heavier compound sets)"
+        "domain": "rpe",
+        "level": "7–8"
       },
       {
-        "domain": "density",
-        "level": "increase density / microcycles (weeks 9-12)"
+        "domain": "percent_1RM",
+        "level": "50–60%"
       },
       {
-        "domain": "hr_percent_max",
-        "level": "optional HIIT intensity (10-20 min)"
+        "domain": "percent_volume_reduction",
+        "level": "40–60%"
       },
       {
-        "domain": "shoulder_abduction_loaded",
-        "level": "lateral raises 12-15"
+        "domain": "percent_calorie_surplus",
+        "level": "+250–500 kcal/day"
       },
       {
-        "domain": "reps_range",
-        "level": "5-7"
+        "domain": "protein_target",
+        "level": "150 g/day"
       },
       {
-        "domain": "reps_range",
-        "level": "8-12 (week 9 higher volume)"
+        "domain": "creatine_dose",
+        "level": "3–5 g/day"
       },
       {
-        "domain": "reps_range",
-        "level": "5-8 (week 10 heavier)"
+        "domain": "rpe",
+        "level": "9"
       },
       {
-        "domain": "reps_range",
-        "level": "1-3RM test (optional week 12)"
+        "domain": "rep_range",
+        "level": "6–15 reps"
       },
       {
-        "domain": "supplement_dose",
-        "level": "Creatine 3-5 g/day"
+        "domain": "percent_volume_reduction",
+        "level": "20–30%"
       },
       {
-        "domain": "omega3_dose",
-        "level": "250-500 mg DHA/EPA"
+        "domain": "percent_of_prior_heavy_weight",
+        "level": "85%"
       }
     ],
     "notes": [
-      "If injured, pregnant or medical conditions, clear with health professional first",
-      "Track bodyweight, training loads, and measurements every 2 weeks",
-      "Warm-up before each session: 5–10 minutes light cardio + dynamic mobility focusing on target joints",
-      "Perform 1–2 warm-up sets for each main compound lift",
-      "Rest between sets: 60–90s for accessory work, 90–120s for heavier compound sets",
-      "Where not specified, use controlled 2-0-1 tempo (eccentric 2s, no pause, concentric 1s)",
-      "Ensure progressive overload via more weight, more reps, better form, or slightly reduced rest",
-      "Program frequency: 4 sessions/week, upper/lower split",
-      "Optional short conditioning session once weekly (10–20 min HIIT or low-impact cardio) if recovery allows",
-      "Deload: Week 8 optional reduced volume (cut volume 30–40%)",
-      "Add 1–2.5 kg to compound lifts if hitting upper end of rep range for two sessions in a row; otherwise add 1–2 reps",
-      "Week 7–8 include drop sets / longer sets",
-      "Move main compounds to 3–5 sets in 6–10 rep ranges in weeks 5–8 with one heavier set (5–8 reps) per main lift",
-      "Increase accessory volume to 10–20 sets per muscle group per week in weeks 5–8",
-      "Week 8 can be a reduced-volume deload if fatigue is high",
-      "Weeks 9–12 use wave-style loading: week 9 higher reps, week 10 heavier, week 11 mixed, week 12 taper",
-      "Week 11 include rest-pause and short drop sets for accessory muscles",
-      "Week 12 reduce overall volume 10–20% but keep intensity for strength validation; 1–3RM test optional if recovered",
-      "Post-workout meal or shake should include 20–40 g protein and carbs",
-      "Sleep 7–9 hours/night; hydrate 2–3 L/day; foam rolling and mobility 2–3 sessions/week 10–15 min",
-      "Active recovery: light walks, yoga, or swimming on rest days",
-      "Massage/soft-tissue work monthly or as needed",
-      "Train logs: record exercises, sets, reps, RPE, and weight; aim to improve one metric per session",
-      "Adjust calories +50–150 kcal if gains stalled for 2 weeks or excessive fat gain occurs",
-      "Grocery list provided for protein-focused shopping",
-      "Can convert to printable week-by-week sheet if client provides current training maxes and bodyweight",
-      "Can adapt program to 5 days/week or add more conditioning on request",
-      "Can provide 7–10 specific meal recipes with exact macros to ensure hitting 150 g protein/day"
+      "2–3 warmup sets before heavy compound sets",
+      "Tempo: control eccentric (2s), pause 0–1s, explosive concentric",
+      "Rest: 60–120s for compounds, 45–75s for accessories",
+      "Weeks 1–3: add small load or 1–2 reps per set each week where possible",
+      "Week 4: deload at 50–60% volume/intensity",
+      "Weeks 5–7: increase working loads ~5–10% on main lifts versus Week 3",
+      "Week 8: deload (reduce volume/intensity ~40–60%)",
+      "Weeks 9–11: push for new personal bests on main compounds",
+      "Week 12: taper volume slightly, maintain intensity for singles/doubles or end with moderate hypertrophy work",
+      "Deloads every 4th week built into plan",
+      "Frequency: 4 sessions/week (Upper/Lower ×2)",
+      "Weekly layout: Day 1 Upper A, Day 2 Lower A, Day 3 Rest/active recovery, Day 4 Upper B, Day 5 Lower B, Day 6–7 Rest",
+      "Progressive overload across phases with deloads every 4th week",
+      "If shoulder pain: substitute barbell OHP with seated DB press, reduce range, increase face pulls and external rotation work",
+      "If limited on heavy deadlifts: use trap-bar deadlift or deficit/blocks variations",
+      "Swap machine for free weights and vice versa to manage fatigue",
+      "Distribute protein across 3–5 meals; aim for ~25–40 g protein per meal",
+      "Include leucine-rich sources and varied plant proteins for amino acid completeness",
+      "Prioritize whole foods, fortified foods (B12, vitamin D), and consider protein powders",
+      "Post-workout meal within 1–2 hours with 25–40 g protein and carbs",
+      "Sleep target 7–9 hours/night",
+      "Active recovery: light mobility, foam rolling, walking on rest days",
+      "Hydration: aim for at least 2–3 L water/day",
+      "Track progress: body weight, photos every 2 weeks, lift performance weekly",
+      "If weight doesn’t increase after 2 weeks, increase daily calories by 200–300 kcal",
+      "If strength stalls or excessive fatigue appears, consider extra deload week",
+      "Example week (Week 6): Mon Upper A, Tue Lower A, Wed Rest, Thu Upper B, Fri Lower B, Sat rest/optional light cardio, Sun Rest",
+      "Do not attempt maximal PRs in Week 12; focus on form, recovery and nutrition",
+      "Keep warm-up sets when attempting PRs and reduce accessory work that day to conserve energy",
+      "Use protein powders to boost shakes, oats, and baking",
+      "Add seeds & nut butters to smoothies and bowls",
+      "Rotate protein sources for amino acid variety"
     ]
   },
   "extracted_plans_per_turn": null,
-  "raw_text": "Thanks — below is a 12-week progressive hypertrophy program designed for a 26-year-old female recreational lifter who is strictly vegan and wants to gain muscle while hitting 150 g protein/day from plant-only sources. Program assumes access to a full gym. I include phases, weekly structure, per-session exercise lists with sets/reps/tempo and progression guidance, plus a practical vegan meal and supplementation plan to reach 150 g protein/d and recovery guidance.\n\nImportant notes before starting\n- If she has any injuries, medical conditions, or is pregnant, adjust or clear with a health professional first.\n- Track bodyweight, training loads (weights used), and measurements every 2 weeks. Aim to add load or reps each week on main lifts when possible.\n- Warm-up before each session: 5–10 minutes light cardio + dynamic mobility focusing on target joints, plus 1–2 warm-up sets for each main compound lift.\n- Rest between sets: 60–90s for accessory work, 90–120s for heavier compound sets.\n- Tempo: where not specified, use controlled 2‑0‑1 (eccentric 2s, no pause, concentric 1s). For some exercises I specify different tempos.\n- Ensure progressive overload via more weight, more reps, better form, or slightly reduced rest.\n\nProgram overview\n- Frequency: 4 sessions/week, upper/lower split (balanced for hypertrophy).\n- Phases:\n  - Weeks 1–4: Foundation (volume build, technique, work capacity)\n  - Weeks 5–8: Hypertrophy focus (higher intensity and targeted volume)\n  - Weeks 9–12: Intensification + accumulation (slightly higher load, some density work and microcycles to push growth)\n- Each week: 2× upper, 2× lower. Optional short conditioning session once weekly (10–20 min HIIT or low-impact cardio) if recovery allows.\n- Deload: Week 8 has an optional reduced volume day if fatigue accumulates (I’ll note recovery checks).\n\nWeekly calendar (example)\n- Monday: Upper A\n- Tuesday: Lower A\n- Wednesday: Rest or active recovery (walking, mobility)\n- Thursday: Upper B\n- Friday: Lower B\n- Sat: Optional conditioning / mobility or rest\n- Sun: Rest\n\nDetailed week-by-week program\n\nWeeks 1–4: Foundation (build work capacity, technique, baseline volume)\nGoal: 8–12 reps for main hypertrophy, establish form and consistent progressive overload.\n\nUpper A (Mon)\n1. Barbell bench press — 4 sets x 6–10 reps (build to a challenging set in that range). Tempo 2-0-1.\n2. Incline dumbbell press — 3 x 8–12\n3. Seated cable row (or barbell row) — 4 x 8–12\n4. Lat pulldown (wide) — 3 x 8–12\n5. Dumbbell lateral raise — 3 x 12–15\n6. Face pulls — 3 x 12–15\n7. Triceps rope pushdown or dips — 3 x 10–12\n8. Hammer curls — 3 x 10–12\n\nLower A (Tue)\n1. Barbell back squat — 4 x 6–10\n2. Romanian deadlift — 3 x 8–10\n3. Bulgarian split squat — 3 x 8–10 per leg\n4. Leg press — 3 x 10–12\n5. Seated or standing calf raise — 4 x 12–15\n6. Ab wheel or hanging leg raises — 3 x 10–15\n\nUpper B (Thu)\n1. Overhead press (barbell or dumbbell) — 4 x 6–10\n2. Flat dumbbell press or close-grip bench — 3 x 8–12\n3. One-arm dumbbell row — 4 x 8–12 per arm\n4. Pull-ups or assisted pull-ups — 3 x 6–10 (or lat pulldown if needed)\n5. Rear delt fly (cable or machine) — 3 x 12–15\n6. EZ-bar curls or preacher curls — 3 x 8–12\n7. Skullcrushers or overhead triceps extension — 3 x 8–12\n\nLower B (Fri)\n1. Deadlift (conventional or trap bar) — 3–4 x 4–8 (start conservative; focus on form)\n2. Front squat or goblet squat — 3 x 6–10\n3. Hamstring curl (lying or seated) — 3 x 10–12\n4. Walking lunges — 3 x 10–12 per leg\n5. Glute bridge or hip thrust — 3 x 8–12\n6. Standing calf raise — 4 x 12–15\n7. Plank 3 x 45–60s\n\nProgression Wks 1–4\n- Add 1–2.5 kg (2–5 lb) to compound lifts if you hit upper end of rep range with good form for two sessions in a row.\n- If not, add 1–2 reps the next session until you can increase weight.\n- Emphasize full range of motion and tempo.\n\nNutrition targets and plan to hit 150 g protein/day (vegan)\n- Calories: To gain muscle, start with a modest surplus: approx. maintenance + 250–400 kcal/day. If unknown, estimate maintenance ~ bodyweight (kg) × 33 kcal for active recreational lifter, then add 300 kcal.\n- Protein: 150 g/day (approx. 2.0–2.2 g/kg if she’s ~70 kg — adjust to weight). Prioritize even distribution: aim for ~30–40 g protein per meal, with 3–5 meals/snacks.\n- Carbs and fat: Fill remaining calories with carbs for training performance and healthy fats (omega-3 from algae oil). Aim ~45–55% calories from carbs, 25–35% from fat.\n\nPractical vegan protein sources (and approximate protein per serving)\n- Soy/tofu: firm tofu 1 cup cooked ~20 g\n- Tempeh: 100 g ~19–20 g\n- Seitan: 100 g ~25 g\n- Textured vegetable protein (TVP): 1 cup cooked ~12 g (varies)\n- Legumes: lentils 1 cup cooked ~18 g; chickpeas 1 cup cooked ~15 g; black beans 1 cup ~15 g\n- Vegan protein powders: pea, rice, soy blends ~20–25 g per scoop (read label)\n- Plant-based yogurt: 150–200 g often ~6–10 g (varies by brand, some fortified soy yogurts higher)\n- Nuts/seeds: 2 tbsp almond butter ~7 g; hemp seeds 3 tbsp ~10 g; chia seeds 2 tbsp ~5 g\n- Whole grains: quinoa 1 cup cooked ~8 g; oats 1 cup cooked ~6 g\n- Nutritional yeast: 2 tbsp ~8 g (flakey/tasty on savory dishes)\n\nSample daily meal template to reach 150 g protein\n- Breakfast (35–45 g):\n  - Tofu scramble (200 g firm tofu ≈ 26 g) with nutritional yeast (2 tbsp ≈ 8 g) + 1 cup oats with almond milk and 1 scoop vegan protein (20–25 g) — pick combos to reach target. Example: 1 scoop protein (22 g) + 150 g tofu (20 g) + 1 tbsp nutritional yeast (4 g) spread across morning = ~46 g. Adjust portions.\n- Snack (15–25 g):\n  - Smoothie: 1 scoop vegan protein (22 g) + 1 tbsp peanut butter (4–8 g) + fruit + oats.\n- Lunch (30–40 g):\n  - Tempeh bowl: 150 g tempeh (~30 g) + quinoa (1 cup cooked ≈ 8 g) + veg + tahini dressing.\n- Snack (10–15 g):\n  - Hummus (1/2 cup ~10 g) + whole-grain pita or edamame (1 cup shelled edamame ~17 g).\n- Dinner (25–35 g):\n  - Stir-fry with seitan (100–150 g seitan ~25–37 g) or lentil/dal + rice + veg.\n- Optional before-bed snack (10–15 g):\n  - Casein isn’t available; use pea-protein shake with soy milk or peanut butter and oats, or high-protein soy yogurt.\n\nExample concrete menu (approximate protein)\n- Breakfast: Smoothie — 1 scoop pea/rice protein (22 g), 250 ml soy milk (8 g), 2 tbsp hemp seeds (10 g) = 40 g\n- Snack: 150 g edamame = 17 g\n- Lunch: 200 g tempeh bowl (40 g) with quinoa = 48 g (tempeh 200 g ≈ 40 g, quinoa 1/2 cup ≈ 4 g)\n- Snack: Hummus + veggies + handful almonds = ~8–10 g\n- Dinner: Lentil dal with seitan or large portion lentils (1.5 cups cooked lentils ≈ 27 g) + tofu side = 40 g\nTotal ≈ 145–155 g depending on portions — adjust exact portions to reach 150 g.\n\nSupplements (vegan-friendly)\n- Vegan protein powder (pea/soy/rice blend) to help hit protein goals.\n- Creatine monohydrate 3–5 g/day (vegan-safe) — supports strength & hypertrophy.\n- Vitamin B12 supplement (essential for strict vegans).\n- Vitamin D if low (D3 algae-based if possible).\n- Omega-3 (algal DHA/EPA) 250–500 mg recommended.\n- Consider iron status monitoring; supplement if low (with professional guidance). Also check calcium intake.\n\nWeeks 5–8: Hypertrophy (increase intensity and targeted volume)\nGoal: Slightly higher per-muscle volume, increase time under tension and include drop sets/longer sets on week 7–8.\n\nTraining changes: Move main compounds to 3–5 sets in 6–10 rep ranges with one heavier set (5–8 reps) per main lift. Increase accessory volume to 10–20 sets per muscle group per week (upper/lower balanced).\n\nUpper A (Mon)\n1. Barbell bench press — 5 x 5–8 (work up to heavy set)\n2. Incline dumbbell press — 3 x 8–12\n3. Chest-supported row — 4 x 8–12\n4. Weighted pull-up or lat pulldown — 4 x 6–10\n5. Lateral raises — 4 x 12–15 (last set drop set optional)\n6. Face pulls — 4 x 12–15\n7. Triceps superset: close-grip pushups 3 x 10 + rope pushdowns 3 x 12\n\nLower A (Tue)\n1. Back squat — 5 x 5–8\n2. Romanian deadlift — 4 x 6–10\n3. Bulgarian split squat — 4 x 8–10\n4. Leg curl — 3 x 10–12\n5. Hip thrust — 3 x 8–10\n6. Calf raises — 5 x 10–15\n7. Core: weighted plank 3 x 45s\n\nUpper B (Thu)\n1. Overhead press — 5 x 5–8\n2. Close-grip bench or incline DB press — 3 x 8–12\n3. Single-arm row — 4 x 8–12\n4. Cable pulldown (neutral grip) — 3 x 8–12\n5. Rear delt + lateral superset — 3 x 12–15 each\n6. Biceps focus: barbell curl 4 x 8–12\n7. Triceps: overhead rope extension 3 x 10–12\n\nLower B (Fri)\n1. Deadlift — 4 x 4–6 (heavier relative intensity)\n2. Front squat or goblet — 3 x 6–8\n3. Walking lunges — 4 x 10 per leg\n4. Glute-ham raise or Nordic curl — 3 x 6–10\n5. Hip thrust — 3 x 8–10 (drop set last set optional)\n6. Calves & core as before\n\nProgression Wks 5–8\n- Continue to add weight or reps. Week 8 can be a reduced-volume deload week if fatigue is high: cut volume 30–40% and keep intensity moderate.\n\nNutrition notes (during weeks 5–8)\n- If muscle/weight gains are slower than desired after 3–4 weeks, increase calories by 150–250 kcal/day.\n- Continue protein at 150 g/day, maintain even distribution.\n- Ensure post-workout meal or shake includes 20–40 g protein and carbs (e.g., protein shake + banana, or tempeh + rice).\n\nWeeks 9–12: Intensification + accumulation (final 4-week push)\nGoal: Build maximum attainable muscle; add some higher intensity/volume mixing; finish with a final week to re-test 1–3 rep max on main lifts if desired for progress tracking (optional).\n\nTraining changes: Use wave-style loading: week 9 slightly higher reps (8–12), week 10 heavier (5–8), week 11 mixed, week 12 taper (reduce volume 10–20% but keep intensity to allow strength display).\n\nWeeks 9–12 example progression\nWeek 9 (higher volume)\nUpper A\n1. Bench press — 4 x 8–10\n2. Incline DB — 4 x 8–10\n3. Bent-over row — 4 x 8–10\n4. Pull-ups/pulldowns — 3 x 8–10\n5. Lateral raises — 4 x 12–15\n6. Face pulls — 4 x 12–15\n7. Arms superset — 3 x 10–12 each\n\nLower A\n1. Squat — 4 x 8–10\n2. RDL — 4 x 8–10\n3. Bulgarian split — 4 x 10\n4. Leg press — 3 x 12–15\n5. Hip thrust — 4 x 8–12\n6. Calves/core: higher rep sets\n\nWeek 10 (heavier)\nUpper A\n1. Bench press — 5 x 5–7\n... (mirror earlier but heavier; focus on progressive overload)\n\nWeek 11 (mixed)\n- Use heavier compound sets plus higher-rep finishing sets and techniques such as rest-pause (e.g., after final set reduce weight ~20% and do 6–8 more reps), or short drop sets for accessory muscles.\n\nWeek 12 (taper/test or consolidation)\n- Reduce overall volume 10–20%, keep some heavy sets for strength validation. Do a 1–3RM test only if client feels recovered and technique is solid. Otherwise, keep sessions lighter and focus on high-quality hypertrophy work.\n\nRecovery and accessory guidance\n- Sleep: aim 7–9 hours/night.\n- Hydration: at least 2–3 L/day, more around workouts.\n- Foam rolling and mobility: 2–3 sessions/week, 10–15 min.\n- Active recovery: light walks, yoga, or swimming on rest days if desired.\n- Massage/soft-tissue work monthly or as needed.\n\nTrackable metrics and progression plan\n- Train logs: record exercises, sets, reps, RPE, and weight. Aim to improve one of those metrics per session.\n- Bodyweight and circumference measurements every 2 weeks.\n- Adjust calorie intake +50–150 kcal if gains stalled for 2 weeks or excessive fat gain occurs.\n\nExample grocery list (protein-focused)\n- Tofu, tempeh, seitan\n- Canned/fresh lentils, chickpeas, black beans\n- Frozen edamame\n- Vegan protein powder (pea/soy blend)\n- Oats, quinoa, brown rice\n- Nutritional yeast, tahini\n- Nuts & nut butters, hemp/chia/flax seeds\n- Soy milk or other high-protein plant milks\n- Veggies and fruit\n- Algae omega-3, B12, creatine monohydrate\n\nFinal notes and tailoring\n- I can convert this into a printable week-by-week sheet with specific weights, rest times, and progress templates if you tell me the client’s current training maxes (e.g., 1RM or working sets) and bodyweight.\n- If she prefers 5 days/week or wants more conditioning, I can adapt volume and layout.\n- If hitting 150 g protein is a challenge, I can give 7–10 specific meal recipes with exact macros to ensure compliance.\n\nWould you like:\n- A 12-week printable PDF with daily sessions and spaces to log loads/reps?\n- Specific meal recipes and shopping list with exact portion sizes to reach 150 g protein/day calibrated to her bodyweight?",
+  "raw_text": "Great — below is a 12-week progressive hypertrophy program tailored for a 26‑year‑old female recreational lifter who follows a strict vegan diet and wants to gain muscle. It includes phase progression, week-by-week training split, detailed session plans (exercises, sets, reps, tempo, rest), and a practical vegan nutrition plan designed to hit ~150 g protein/day plus recovery guidance and sample meals/snacks, supplement suggestions, and monitoring tips.\n\nAssumptions and goals\n- Goal: muscle gain (hypertrophy) across 12 weeks.\n- Training status: recreational lifter (familiar with main lifts and gym equipment).\n- Equipment: full gym available (barbells, dumbbells, cable machines, squat rack, leg press, pulleys, machines, benches).\n- Nutrition target: ~150 g protein/day from plant sources only.\n- Calorie guidance: modest surplus (~+250–500 kcal/day above maintenance; adjust per progress/body-composition goals).\n- Progressive overload across phases with deloads every 4th week built into plan.\n- Emphasis on compound lifts, adequate volume, balanced push/pull/legs split, accessory work for symmetry.\n\nProgram structure (overview)\n- Frequency: 4 sessions/week (Upper/Lower ×2) — balance of volume and recovery for hypertrophy.\n- Phases:\n  - Weeks 1–4 (Foundation / Volume): build work capacity, technique, moderate intensity (65–75% 1RM relative effort).\n  - Weeks 5–8 (Intensity / Hypertrophy Emphasis): increase load and density, more heavy sets (70–85% RPE), more emphasis on progressive overload.\n  - Weeks 9–12 (Peak Volume with Strength Focus + Taper): highest intensity for compound lifts then slight taper in final week for recovery and assessment.\n- Deloads: Week 4 and Week 8 are planned as lighter recovery weeks (reduced volume/intensity ~40–60%).\n- Rep ranges: mostly 6–15 reps suited to hypertrophy; some lower-rep strength sets for compound lifts in later phases.\n\nProgression key\n- Weeks 1–3: add small load or 1–2 reps per set each week where possible.\n- Week 4: deload at 50–60% volume/intensity.\n- Weeks 5–7: increase working loads ~5–10% on main lifts versus Week 3, keep accessory volume similar or slightly increased.\n- Week 8: deload (same approach as Week 4).\n- Weeks 9–11: push for new personal bests on main compounds and finish with higher volume accessory work.\n- Week 12: taper volume slightly, maintain intensity for singles/doubles or end with moderate hypertrophy work to consolidate gains.\n\nWeekly layout (applies to most weeks)\n- Day 1: Upper A (Horizontal push/pull focus + arms, core)\n- Day 2: Lower A (Squat/glute bias + hamstrings)\n- Day 3: Rest or active recovery (light mobility, walking)\n- Day 4: Upper B (Vertical push/pull focus + chest emphasis)\n- Day 5: Lower B (Deadlift/hinge bias + quads)\n- Day 6–7: Rest/recovery; optionally light cardio or mobility\n\nDetailed 12‑week plan\n\nPHASE 1 — Weeks 1–4 (Foundation / Volume)\nGeneral cues: focus on clean technique, full ROM, 2–3 warmup sets before heavy compound sets. Tempo: control eccentric (2s), pause 0–1s, explosive concentric. Rest: 60–120s for compounds, 45–75s for accessories.\n\nWeek 1\nDay 1 — Upper A\n1. Barbell bench press — 4×8 (RPE ~7)  \n2. Bent-over barbell row or chest-supported row — 4×8  \n3. Incline dumbbell press — 3×10  \n4. Seated cable row (neutral) — 3×10  \n5. Dumbbell lateral raise — 3×12–15  \n6. EZ-bar or cable curl — 3×10  \n7. Rope pressdown — 3×12  \n8. Plank — 3×45–60s\n\nDay 2 — Lower A\n1. Back squat — 4×8  \n2. Romanian deadlift (RDL) — 3×8–10  \n3. Leg press — 3×12  \n4. Bulgarian split squat — 3×10 each leg  \n5. Lying leg curl or seated hamstring curl — 3×12  \n6. Standing calf raise — 4×12–15  \n7. Hanging knee raises — 3×12\n\nDay 4 — Upper B\n1. Overhead press (barbell or dumbbell) — 4×8  \n2. Pull-up (assisted or weighted) or lat pulldown — 4×8–10  \n3. Dumbbell bench press (flat) — 3×10  \n4. Single-arm dumbbell row — 3×10 each side  \n5. Face pulls — 3×15  \n6. Hammer curl — 3×12  \n7. Triceps overhead extension (rope or dumbbell) — 3×12\n\nDay 5 — Lower B\n1. Deadlift (conventional or trap bar) — 4×6–8  \n2. Front squat or goblet squat — 3×8–10  \n3. Hip thrust — 4×10  \n4. Reverse lunges — 3×10 each leg  \n5. Cable pull-through or glute-ham raise — 3×12  \n6. Seated calf raise — 4×12–15  \n7. Side plank — 3×30–45s each side\n\nWeeks 2–3\n- Keep same exercise selection. Increase load slightly (2.5–5 kg on upper lifts if form is perfect) or add 1–2 reps per set. Maintain RPE 7–8 on top sets.\n- Optionally swap accessory variations (e.g., incline bench to close-grip incline; RDL to single-leg RDL) to add variety.\n\nWeek 4 — Deload\n- Reduce sets by ~40–50% or use 50–60% of the previous working weights and keep technique focus.\n- Example: Compounds 3×5 at 50–60% of usual load, accessories 2×10 lighter.\n- Keep movement but reduce fatigue accumulation.\n\nPHASE 2 — Weeks 5–8 (Hypertrophy + Increasing Intensity)\nGoal: increase working intensities, add some heavier sets and denser sessions. Small increase in accessory volume.\n\nWeek 5\nDay 1 — Upper A\n1. Barbell bench press — 5×6 (slightly heavier; RPE 8)  \n2. Pendlay or chest-supported row — 4×6–8  \n3. Incline dumbbell press — 3×8–10  \n4. Weighted pull-up or heavy lat pulldown — 4×8  \n5. Dumbbell lateral raise superset with front raise — 3×12/12  \n6. Preacher or incline curls — 3×10  \n7. Triceps cable pressdown — 3×10–12  \n8. Pallof press — 3×12 each side\n\nDay 2 — Lower A\n1. Back squat — 5×6  \n2. Romanian deadlift — 4×8  \n3. Leg press — 4×10 (heavier)  \n4. Bulgarian split squat — 3×8 each leg (add dumbbells)  \n5. Hamstring curl (machine) — 4×10  \n6. Calf raise — 4×12–15  \n7. Ab wheel or cable crunch — 3×12–15\n\nDay 4 — Upper B\n1. Strict overhead press — 5×6  \n2. Barbell or dumbbell row — 4×8  \n3. Flat dumbbell press — 3×8–10 (heavier)  \n4. Chest-supported incline row or single-arm cable row — 3×10  \n5. Face pulls — 4×15  \n6. Alternating curls — 3×10  \n7. Skull crushers (EZ or rope) — 3×10\n\nDay 5 — Lower B\n1. Deadlift (conventional or trap bar) — 5×5 (focus on strength)  \n2. Front squat — 4×6–8  \n3. Hip thrust — 4×8–10 (heavier)  \n4. Walking lunges — 3×12 each leg  \n5. Cable pull-through — 3×12  \n6. Calf raise — 4×12–15  \n7. Plank variations — 3×60s\n\nWeek 6–7\n- Add weight to main lifts if form maintained. For accessories, aim to increase time under tension, add slow eccentrics or a top set to failure on one accessory per session.\n- Small weekly increases (2–5% load) on compounds if last session was manageable.\n\nWeek 8 — Deload\n- Same deload protocol as week 4: reduce volume/intensity ~40–60%. Keep technique and mobility.\n\nPHASE 3 — Weeks 9–12 (Peak Volume + Strength Emphasis)\nGoal: push for heavier single/double top sets on compounds in Weeks 9–11, then drop volume and keep moderate intensity for Week 12 for consolidation and recovery.\n\nWeek 9\nDay 1 — Upper A (slightly heavier)\n1. Bench press — 4×5 heavy (RPE 8–9)  \n2. Barbell row — 4×6  \n3. Incline DB press — 3×8  \n4. Weighted pull-ups or heavy lat pulldown — 3×6–8  \n5. Lateral raise dropset — 3 sets (12 then drop weight to failure)  \n6. Barbell curls — 3×8  \n7. Cable triceps extension — 3×10  \n8. Cable anti-rotation hold — 3×10 each side\n\nDay 2 — Lower A\n1. Squat — 4×5 heavy  \n2. RDL — 4×6–8  \n3. Bulgarian split squat or single-leg press — 3×8 each leg  \n4. Hip thrust — 4×6–8 (heavy)  \n5. Hamstring curl — 3×10  \n6. Calves — 4×10–12  \n7. Hanging leg raises — 3×12\n\nDay 4 — Upper B\n1. Overhead press — 4×5 heavy  \n2. Bent-over row — 4×6  \n3. Flat DB press (heavy) — 3×6–8  \n4. Single-arm cable row — 3×8  \n5. Face pulls — 3×20 (higher rep focus)  \n6. Hammer curls — 3×10  \n7. Dips (assisted or weighted) or close-grip bench — 3×8–10\n\nDay 5 — Lower B\n1. Deadlift — 4×4 heavy (work up to heavy set)  \n2. Front squat — 3×6–8  \n3. Hip thrust (pause at top) — 4×6–8  \n4. Reverse lunges — 3×10 each leg  \n5. Good mornings or back extensions — 3×10–12  \n6. Calves — 4×12  \n7. Plank with variations — 3 rounds\n\nWeek 10–11\n- Continue to push for progressive overload in main lifts. Week 11 can include a planned attempt at 1–3 rep PRs for compound lifts if safe and desired — but keep warm-up sets and reduce accessory work that day to conserve energy.\n- Accessories remain focused on hypertrophy and weak point training.\n\nWeek 12 — Taper/Consolidation\n- Reduce weekly volume ~20–30% but keep one or two moderately heavy sets (RPE 7–8) on main lifts to maintain strength signals.\n- Do not attempt maximal PRs; focus on form, recovery and nutrition.\n- Example: Compounds 3×4–6 at 85% of prior heavy weight; accessories 2×10 lighter.\n\nExercise substitution examples\n- If shoulder pain: substitute barbell OHP with seated DB press, reduce range, increase face pulls and external rotation work.\n- If limited on heavy deadlifts: use trap-bar deadlift or deficit/blocks variations.\n- Swap machine for free weights and vice versa to manage fatigue.\n\nNutrition plan — hitting ~150 g protein/day (vegan)\nGuidelines\n- Aim for a calorie surplus of +250–500 kcal/day above estimated maintenance. Starting point: estimate maintenance via 14–16 kcal/kg bodyweight depending on activity, then add surplus. Monitor weight gain ~0.25–0.5 kg/week and adjust.\n- Protein: 150 g/day (~1.6–2.0 g/kg for many lifters depending on bodyweight; adjust to client's weight if needed).\n- Distribute protein across 3–5 meals; aim for ~25–40 g protein per meal and protein-containing snack(s).\n- Include leucine-rich sources (soy, pea, wheat, lentils, chickpeas) and varied plant proteins for amino acid completeness.\n- Prioritize whole foods, fortified foods (B12, vitamin D), and consider protein powders for convenience.\n\nProtein sources and approximate protein per typical serving\n- Soy products: tofu (100 g ≈ 8–12 g), tempeh (100 g ≈ 19 g), edamame (1 cup ≈ 17 g)  \n- Seitan (vital wheat gluten): 100 g ≈ 25 g (very protein-dense)  \n- Legumes: lentils (1 cup cooked ≈ 18 g), chickpeas (1 cup ≈ 15 g), black beans (1 cup ≈ 15 g)  \n- Protein powders: pea protein isolate, soy protein isolate, blend (20–30 g protein per scoop)  \n- Soy milk/fortified plant milk: 1 cup ≈ 6–8 g (soy milk higher)  \n- Nuts/seeds: peanut butter (2 tbsp ≈ 8 g), hemp seeds (3 tbsp ≈ 10 g), chia seeds (2 tbsp ≈ 4 g)  \n- Whole grains: quinoa (1 cup cooked ≈ 8 g), oats (1 cup cooked ≈ 6 g)  \n\nSample daily meal plan to reach ~150 g protein\n(Adjust portion sizes to meet calorie surplus)\n\nOption A — High-protein day (~150 g)\n- Breakfast:\n  - Tofu scramble (200 g tofu ≈ 20–24 g protein) with veggies + 1 cup cooked oats (6 g) made with 1 cup soy milk (8 g)  \n  - Totals: ~34–38 g\n\n- Mid-morning snack:\n  - Smoothie with 1.5 scoops pea/soy protein powder (1 scoop ≈ 24 g — so 36 g), 1 tbsp peanut butter (8 g), frozen fruit, water or soy milk  \n  - Totals: ~44 g (cumulative ~78 g)\n\n- Lunch:\n  - Tempeh salad/bowl: 150 g tempeh (≈28 g) + quinoa 1 cup cooked (8 g) + veggies + tahini dressing (2 tbsp tahini ≈ 6 g)  \n  - Totals: ~42 g (cum ~120 g)\n\n- Afternoon snack:\n  - Edamame 1 cup (17 g) or hummus with whole grain pita + hemp seeds sprinkled (3 tbsp hemp ≈ 10 g if needed)  \n  - Totals: 17–27 g (cum ~137–147 g)\n\n- Dinner:\n  - Lentil and seitan stir-fry: 100 g seitan (25 g) or lentil stew 1 cup (18 g). If already near protein target, moderate portion to reach ~150 g.  \n  - Totals adjust to hit ~150 g\n\nNotes:\n- A practical approach is 1–2 scoops protein powder and one dense serving (tempeh/seitan) plus legumes and soy milk across the day.\n- If seitan is used, be aware it’s wheat gluten (avoid if gluten-sensitive).\n\nDaily macro split example (for ~2000–2400 kcal target — adjust individually)\n- Protein: 150 g = 600 kcal (25–30% calories)\n- Fat: 60–80 g = 540–720 kcal (25–35% calories) — include nuts, seeds, oils\n- Carbohydrate: remainder (approx 220–300 g) for energy and recovery\n\nSupplement recommendations (consider with client and doctor)\n- Vegan protein powder (pea, soy isolate, or blend) — convenient to hit protein targets.\n- Creatine monohydrate — 3–5 g/day (evidence-supported for strength and mass gains).\n- Vitamin B12 — essential for vegans (cyanocobalamin or methylcobalamin as directed).\n- Vitamin D (if deficient or during winter) — check levels and supplement accordingly.\n- Omega-3 (algal DHA/EPA) — optional for cardiovascular/neurological support.\n- A daily multivitamin/mineral if diet may lack micronutrients.\n\nPractical meal strategies and tips\n- Pre-plan and batch-cook high-protein items: tempeh, seitan, lentil stews, marinated tofu.\n- Use protein powders to boost shakes, oats, and baking.\n- Add seeds (hemp, chia) & nut butters to smoothies and bowls.\n- Rotate protein sources for amino acid variety and to prevent monotony.\n- Prioritize post-workout meal within 1–2 hours with 25–40 g protein and carbs (e.g., smoothie + banana + oats + protein powder; or tempeh rice bowl).\n\nRecovery and recovery programming\n- Sleep: target 7–9 hours/night.\n- Active recovery: light mobility, foam rolling, walking on rest days.\n- Hydration: aim for at least 2–3 L water/day (more with sweat).\n- Track progress: body weight, photos every 2 weeks, lift performance weekly.\n- Massage/soft-tissue work as needed.\n\nMonitoring and adjustments\n- If weight doesn’t increase after 2 weeks, increase daily calories by 200–300 kcal (preferably from carbs and healthy fats).\n- If strength stalls or excessive fatigue appears, re-evaluate sleep, stress, caloric intake and consider an extra deload week.\n- Protein target: if 150 g is consistently hard, increase use of protein powders and seitan/tempeh; ensure each meal has a clear protein component.\n\nExample week (mid-phase sample week — Week 6) summarised\n- Mon: Upper A (as per Day 1 Week 5 template)\n- Tue: Lower A (as per Day 2)\n- Wed: Rest (light mobility)\n- Thu: Upper B\n- Fri: Lower B\n- Sat: rest / optional light cardio\n- Sun: Rest\n\nSafety notes\n- Squat and deadlift technique should be coached to prevent injuries. Use conservative loads for new PR attempts and always warm up adequately.\n- If client has any medical conditions or allergies, consult their physician before starting supplements or large dietary changes.\n\nIf you want, I can:\n- Customize the program more precisely to the client’s bodyweight, current 1RM numbers or exercise preferences.\n- Provide a printable 12-week calendar with exact loading progressions (e.g., %1RM weekly targets).\n- Create a 7‑day meal plan with recipes and grocery list hitting 150 g protein/day and specified calorie target — tell me estimated calorie needs or bodyweight and activity level.",
   "raw_texts_per_turn": null,
   "lane_b": null,
   "extraction_parse_ok": true,
   "wpl_json": null,
   "error": null,
-  "timestamp": "2026-05-13T04:05:09.452Z"
+  "timestamp": "2026-05-14T19:50:41.107Z"
 }

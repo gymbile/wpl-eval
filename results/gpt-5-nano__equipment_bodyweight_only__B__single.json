@@ -1,498 +1,94 @@
 {
   "schemaVersion": "1",
-  "evalVersion": "v0.3.0",
+  "evalVersion": "v0.4.0",
   "model": "gpt-5-nano",
   "scenario_id": "equipment_bodyweight_only",
   "lane": "B",
   "phase": "single",
   "safety_violations": 0,
-  "clean_plan": true,
+  "clean_plan": false,
   "first_violation_week": null,
   "drift_turn": null,
   "refusal": false,
-  "latency_p50_ms": 15964,
-  "latency_p95_ms": 15964,
-  "tokens_in": 1138,
-  "tokens_out": 1809,
-  "cost_usd": 0.0007805,
-  "wpl_valid": true,
+  "latency_p50_ms": 14489,
+  "latency_p95_ms": 14489,
+  "tokens_in": 1175,
+  "tokens_out": 2036,
+  "cost_usd": 0.0008731500000000001,
+  "wpl_valid": false,
   "wpl_schema_valid": false,
-  "compile_errors": 0,
-  "validator_errors": 50,
+  "compile_errors": 4,
+  "validator_errors": 0,
   "violations": [],
   "violations_per_turn": [
     []
   ],
   "extracted_plan": {
-    "exercises": [
-      {
-        "name": "push_up",
-        "week": 1
-      },
-      {
-        "name": "bodyweight_row",
-        "week": 1
-      },
-      {
-        "name": "squat",
-        "week": 1
-      },
-      {
-        "name": "glute_bridge",
-        "week": 1
-      },
-      {
-        "name": "plank",
-        "week": 1
-      }
-    ],
+    "exercises": [],
     "foods": [],
     "intensities": [],
     "notes": []
   },
   "extracted_plans_per_turn": null,
-  "raw_text": "PLAN \"12-Week Bodyweight Strength Programme (Beginner)\"\nTYPE workout\nVISIBILITY public\n\nGOALS\n  GOAL primary strength:\n    name \"Build foundational upper/lower body strength with minimal equipment, progression over 12 weeks\"\n\nPHASES\n  PHASE \"Phase 1\" (4 weeks):\n    WEEK 1:\n      DAY Monday training 45m \"Full Body Basics 1\":\n        warmup:\n          walking 5 minutes\n        main straight_sets:\n          push_up 3x8..12 rpe 6 rest 60 seconds\n          bodyweight_row 3x6..10 rpe 6 rest 60 seconds\n          squat 3x10..15 rpe 6 rest 60 seconds\n          glute_bridge 3x12..20 rpe 6 rest 60 seconds\n          plank 3x20..40 seconds rpe 5 rest 30 seconds\n        cooldown:\n          chest_stretch  length 5 minutes\n    WEEK 2:\n      DAY Tuesday training 45m \"Full Body Basics 2\":\n        warmup:\n          jogging_in_place 5 minutes\n        main straight_sets:\n          push_up 3x9..12 rpe 6 rest 60 seconds\n          inverted_row (use doorway bar) 3x6..10 rpe 6 rest 60 seconds\n          goblet_squat (bodyweight if no weight) 3x12..18 rpe 6 rest 60 seconds\n          hip_bridge 3x12..20 rpe 6 rest 60 seconds\n          side_plank 3x20..40 seconds each side rpe 5\n        cooldown:\n          hip_flexor_stretch  length 5 minutes\n    WEEK 3:\n      DAY Monday training 45m \"Full Body Basics 3\":\n        warmup:\n          high_knees 2 minutes\n        main straight_sets:\n          push_up 3x10..12 rpe 6 rest 60 seconds\n          pull_up_progression (assisted or negative on doorway bar) 3x4..8 rpe 7 rest 60 seconds\n          squat 3x12..18 rpe 6 rest 60 seconds\n          glute_bridge march 3x12..20 rpe 6 rest 60 seconds\n          planks 3x30..45 seconds\n        cooldown:\n          shoulder_stretch  length 5 minutes\n    WEEK 4:\n      DAY Thursday training 45m \"Deload & Technique\":\n        warmup:\n          march_in_place 4 minutes\n        main straight_sets:\n          push_up 3x6..10 rpe 5 rest 60 seconds\n          inverted_row 3x6..8 rpe 6 rest 60 seconds\n          bodyweight_backward_lunge 3x8..12 each leg rpe 6 rest 60 seconds\n          prone_hover (superman) 3x12..15 rpe 5 rest 60 seconds\n        cooldown:\n          full_body_stretch 5 minutes\n\n  PHASE \"Phase 2\" (4 weeks):\n    WEEK 5:\n      DAY Monday training 50m \"Progression Push/Pull\":\n        warmup:\n          jumping_jack 3 minutes\n        main straight_sets:\n          push_up 4x8..12 rpe 6 rest 75 seconds\n          pull_up_progression 4x4..8 rpe 7 rest 75 seconds\n          step_up_with_dive_thrust (use doorway if available) 4x8..12 each leg rpe 6 rest 75 seconds\n          glute_bridge 4x12..20 rpe 6 rest 60 seconds\n        cooldown:\n          chest_shoulder_stretch 5 minutes\n    WEEK 6:\n      DAY Wednesday training 50m \"Lower Focus\":\n        warmup:\n          leg_m swings 3 minutes\n        main straight_sets:\n          squat 4x12..18 rpe 7 rest 75 seconds\n          glute_bridge march 4x12..20 rpe 6 rest 75 seconds\n          hip_thrust 3x10..15 rpe 7 rest 75 seconds\n          ab_work_cycle 3x20 reps of chosen core moves\n        cooldown:\n          hip_flexor_stretch 5 minutes\n    WEEK 7:\n      DAY Monday training 50m \"Pull Progressions\":\n        warmup:\n          arm_circles 2 minutes\n        main straight_sets:\n          pull_up_progression 4x4..8 rpe 7 rest 75 seconds\n          inverted_row 4x6..10 rpe 6 rest 75 seconds\n          pistol_branch_counter (assisted) 3x6..10 per leg\n          plank 3x40..60 seconds\n        cooldown:\n          lat_stretch 5 minutes\n    WEEK 8:\n      DAY Thursday training 50m \"Stability & Volume\":\n        warmup:\n          jog_in_place 3 minutes\n        main straight_sets:\n          push_up 4x10..15 rpe 6 rest 75 seconds\n          row_variant (bodyweight row) 4x8..12 rpe 6 rest 75 seconds\n          squat 4x12..20 rpe 6 rest 75 seconds\n          glute_bridge 4x15..25 rpe 6 rest 60 seconds\n        cooldown:\n          full_body_stretch 5 minutes\n\n  PHASE \"Phase 3\" (4 weeks):\n    WEEK 9:\n      DAY Monday training 55m \"Strength Peak Prep\":\n        warmup:\n          dynamic_mobility_routine 5 minutes\n        main straight_sets:\n          push_up 5x6..10 rpe 7 rest 90 seconds\n          pull_up_progression 5x4..8 rpe 7 rest 90 seconds\n          squat 5x8..12 rpe 7 rest 90 seconds\n          hip_thrust 4x8..12 rpe 7 rest 90 seconds\n        cooldown:\n          mobility_cooldown 5 minutes\n    WEEK 10:\n      DAY Wednesday training 55m \"Push/Pull Intensity\":\n        warmup:\n          jumping_jack 3 minutes\n        main straight_sets:\n          incline_press (sub if no incline: push_up) 4x8..12 rpe 7 rest 90 seconds\n          bent_over_row (or inverted_row) 4x6..10 rpe 7 rest 90 seconds\n          squat with tempo 4x8..12 rpe 7 rest 90 seconds\n          plank_variation 3x45..60 seconds\n        cooldown:\n          shoulder_stretch 5 minutes\n    WEEK 11:\n      DAY Monday training 60m \"Lower Body Strength\":\n        warmup:\n          leg_mobility 5 minutes\n        main straight_sets:\n          goblet_squat (use household item as weight) 5x6..10 rpe 7 rest 90 seconds\n          lunge 4x8..12 per leg rpe 7 rest 90 seconds\n          glute_bridge 5x12..20 rpe 7 rest 90 seconds\n          calk_raise (standing or seated) 4x12..20 rpe 6 rest 60 seconds\n        cooldown:\n          quad_stretch 5 minutes\n    WEEK 12:\n      DAY Thursday training 60m \"Deload & Review\":\n        warmup:\n          march_in_place 4 minutes\n        main straight_sets:\n          push_up 3x6..10 rpe 5 rest 90 seconds\n          inverted_row 3x6..10 rpe 6 rest 90 seconds\n          bodyweight_circuit: 3 rounds of 10 reps each of air_squat, glute_bridge, plank 30s\n        cooldown:\n          full_body_stretch 5 minutes\n\nSYNTAX RULES APPLY:\n- Rep ranges use two dots: 3x8..12\n- Sets always first: 3x10\n- RPE after: rpe 7\n- Rest in seconds: rest 60 seconds\n- Exercises use canonical names only from list\n- Cardio modalities used only for warmups/cooldowns: walking, jogging_in_place, high_knees, etc. (Within allowed: running, cycling, swimming, rowing, elliptical, jump_rope, walking, hiking)\n- If a requested exercise not in vocab, substitute closest canonical name\n- Plan remains beginner-friendly, no equipment beyond pushups, doorway pull-up bar, and bodyweight accessories\n- Ensure structure follows PLAN TYPE VISIBILITY GOALS PHASES sections",
+  "raw_text": "PLAN \"12-Week Bodyweight Strength Program for Beginner (No Equipment)\"\nTYPE workout\nVISIBILITY public\n\nGOALS\n  GOAL primary strength:\n    name \"Develop foundational upper and lower body strength using bodyweight and intrinsic loading\"\n\nPHASES\n  PHASE \"Phase 1\" (4 weeks):\n    WEEK 1:\n      DAY Monday training 45m \"Foundation Upper/Lower Start\":\n        warmup:\n          walking 5 minutes\n        main straight_sets:\n          push_up 3x8..12 rpe 7 rest 60 seconds\n          bodyweight_row 3x8..12 rpe 7 rest 60 seconds\n          squat 3x10..15 rpe 7 rest 60 seconds\n          glute_bridge 3x12..20 rpe 7 rest 60 seconds\n          plank 3x20..40 seconds rpe 6 rest 30 seconds\n        cooldown:\n          chest_stretch 60 seconds\n          hip_flexor_stretch 60 seconds\n    WEEK 2:\n      DAY Monday training 45m \"Foundation Upper/Lower Progress\":\n        warmup:\n          walking 5 minutes\n        main straight_sets:\n          push_up 3x10..14 rpe 7 rest 60 seconds\n          inverted_row 3x6..10 rpe 7 rest 60 seconds\n          squat 3x12..18 rpe 7 rest 60 seconds\n          hip_bridge 3x12..20 rpe 7 rest 60 seconds\n          side_plank 3x20..40 seconds per side rpe 6\n        cooldown:\n          shoulder_stretch 60 seconds\n          quadriceps_stretch 60 seconds\n    WEEK 3:\n      DAY Monday training 45m \"Foundation Upper/Lower Progression 2\":\n        warmup:\n          walking 5 minutes\n        main straight_sets:\n          push_up 4x8..12 rpe 7 rest 60 seconds\n          row_from_floor 4x6..10 rpe 7 rest 60 seconds\n          pistol_leg_assist? 0\n          squat 4x12..18 rpe 7 rest 60 seconds\n          glute_bridge 4x12..20 rpe 7 rest 60 seconds\n          dead_bug 3x8..12 per side\n        cooldown:\n          stretching sequence 5 minutes\n    WEEK 4:\n      DAY Monday training 45m \"Foundation Deload and Assess\":\n        warmup:\n          walking 5 minutes\n        main straight_sets:\n          push_up 3x6..10 rpe 6 rest 60 seconds\n          inverted_row 3x6..10 rpe 6 rest 60 seconds\n          squat 3x10..15 rpe 6 rest 60 seconds\n          hip_bridge 3x12..18 rpe 6 rest 60 seconds\n          hollow_hold 3x20..40 seconds\n        cooldown:\n          full_body stretch 5 minutes\n  PHASE \"Phase 2\" (4 weeks):\n    WEEK 5:\n      DAY Monday training 50m \"Progressive Strength A\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 4x8..12 rpe 7 rest 60 seconds\n          doorframe_pull_setup 3x6..8 rpe 7 rest 90 seconds\n          sumo_squat 4x10..15 rpe 7 rest 60 seconds\n          hip_thrust 3x10..15 rpe 7 rest 60 seconds\n          plank 3x40..60 seconds\n        cooldown:\n          upper body stretch 60 seconds\n    WEEK 6:\n      DAY Monday training 50m \"Progressive Strength B\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 4x10..14 rpe 7 rest 60 seconds\n          chin_up ? 0\n          bodyweight_row 4x8..12 rpe 7 rest 60 seconds\n          lunge 3x10..12 per leg\n          glute_bridge 4x12..20 rpe 7 rest 60 seconds\n        cooldown:\n          full body stretch 5 minutes\n    WEEK 7:\n      DAY Monday training 50m \"Progressive Strength C\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 4x12..16 rpe 7 rest 60 seconds\n          doorframe_pull_setup 4x6..8 rpe 7 rest 90 seconds\n          squat 4x12..18 rpe 7 rest 60 seconds\n          hip_thrust 4x12..18 rpe 7 rest 60 seconds\n          side_plank 3x30..45 seconds per side\n        cooldown:\n          mobility sequence 5 minutes\n    WEEK 8:\n      DAY Monday training 50m \"Phase 2 Deload & Technique\":\n        warmup:\n          walking 5 minutes\n        main straight_sets:\n          push_up 3x8..12 rpe 6 rest 60 seconds\n          inverted_row 3x8..12 rpe 6 rest 60 seconds\n          squat 3x10..15 rpe 6 rest 60 seconds\n          glute_bridge 3x12..18 rpe 6 rest 60 seconds\n          dead_bug 3x8..12 per side\n        cooldown:\n          chest/shoulder openers 5 minutes\n  PHASE \"Phase 3\" (4 weeks):\n    WEEK 9:\n      DAY Monday training 60m \"Strength Peak Phase 1\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 5x6..10 rpe 7 rest 75 seconds\n          doorframe_pull_setup 4x6..8 rpe 7 rest 90 seconds\n          squat 5x8..12 rpe 7 rest 75 seconds\n          hip_thrust 4x10..15 rpe 7 rest 75 seconds\n          plank 3x45..60 seconds\n        cooldown:\n          full body mobility 5 minutes\n    WEEK 10:\n      DAY Monday training 60m \"Strength Peak Phase 2\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 5x8..12 rpe 7 rest 75 seconds\n          chin_up 3x3..6 rpe 7 rest 90 seconds\n          squat 5x8..12 rpe 7 rest 75 seconds\n          glute_bridge 4x12..18 rpe 7 rest 75 seconds\n          hollow_hold 3x30..60 seconds\n        cooldown:\n          mobility sequence 5 minutes\n    WEEK 11:\n      DAY Monday training 60m \"Strength Peak Phase 3\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 5x10..14 rpe 7 rest 75 seconds\n          inverted_row 4x6..10 rpe 7 rest 90 seconds\n          squat 5x10..14 rpe 7 rest 75 seconds\n          hip_thrust 4x12..18 rpe 7 rest 75 seconds\n          side_plank 3x40..60 seconds per side\n        cooldown:\n          stretching routine 5 minutes\n    WEEK 12:\n      DAY Monday training 60m \"Final Strength Test & Deload\":\n        warmup:\n          jogging in place 5 minutes\n        main straight_sets:\n          push_up 3x max rpe 7 rest 90 seconds\n          doorframe_pull_setup 3x max rpe 7 rest 120 seconds\n          squat 3x max rpe 7 rest 90 seconds\n          hip_thrust 3x max  rpe 7 rest 90 seconds\n          plank 3x60 seconds\n        cooldown:\n          full body stretching 5 minutes\n\nEXERCISE VOCABULARY usage notes:\n- push_up\n- pull_up is not used due to equipment limits; replaced with inverted_row or chin_up when feasible (listed as chin_up placeholder if equipment allowed; here using inverted_row/doorframe pull variant)\n- bent_over_row, dumbbell_row, barbell_row not used; substituted with inverted_row or bodyweight_row\n- doorframe_pull_setup is not a canonical name; use inverted_row or pull_up as available. Since we must use only canonical names, include inverted_row for horizontal pulling and omit misnamed items. In this plan, we included inverted_row and bodyweight_row as canonical variants.\n- chest_stretch, shoulder_stretch, quadriceps_stretch, hip_flexor_stretch, etc., are acceptable as stretch entries when following CARDIO MODALITIES rules? The vocab list includes only exercise names; stretches are not in list. To stay compliant, remove non-vocabulary items or map to lat_stretch, back_stretch, chest_stretch does not exist. Replace with lat_stretch, back_stretch, chest_stretch variations? The vocabulary list includes lat_stretch, back_stretch, chest_stretch is not in list. Use lat_stretch and back_stretch and shoulder_stretch is in list. For cooldown I used some non-canonical entries; replace with valid ones.\n\nNote: To ensure strict adherence, the plan should only reference canonical exercise names from the vocabulary. The current draft includes some non-canonical names (doorframe_pull_setup, bodyweight_row, chest_stretch, hip_thrust, etc.). To fix, provide final corrected plan with only canonical names. Here's the corrected version.",
   "raw_texts_per_turn": null,
   "lane_b": {
-    "outcome": "served",
-    "compile_error": null,
-    "all_errors": null,
-    "strip_counts": [],
-    "served_wpl": {
-      "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
-      "version": "1.6.0",
-      "plan": {
-        "id": "77ef85c7-b865-456c-869a-b918e7d8359b",
-        "name": "12-Week Bodyweight Strength Programme (Beginner)",
-        "type": "workout",
-        "visibility": "public",
-        "metadata": {
-          "created_at": "2026-05-13T22:10:16.186Z",
-          "updated_at": "2026-05-13T22:10:16.186Z",
-          "language": "en"
+    "outcome": "compile_failed",
+    "compile_error": {
+      "code": "invalid_character",
+      "message": "Invalid character '?'",
+      "repair_hint": null
+    },
+    "all_errors": [
+      {
+        "kind": "lexer",
+        "type": "invalid_character",
+        "message": "Invalid character '?'",
+        "location": {
+          "line": 44,
+          "column": 28,
+          "offset": 1553
         },
-        "goals": [
-          {
-            "id": "goal_1",
-            "type": "primary",
-            "category": "strength",
-            "name": "Build foundational upper/lower body strength with minimal equipment, progression over 12 weeks"
-          }
-        ],
-        "requirements": {},
-        "personalization": {
-          "inputs": [],
-          "rules": []
+        "context": "The character '?' is not allowed here"
+      },
+      {
+        "kind": "lexer",
+        "type": "invalid_character",
+        "message": "Invalid character '?'",
+        "location": {
+          "line": 81,
+          "column": 19,
+          "offset": 2890
         },
-        "phases": [
-          {
-            "id": "phase_1",
-            "name": "Phase 1",
-            "order": 1,
-            "duration": {
-              "value": 4,
-              "unit": "weeks"
-            },
-            "weeks": [
-              {
-                "id": "week_1",
-                "name": "Week 1",
-                "order": 1,
-                "days": [
-                  {
-                    "id": "day_1",
-                    "day_of_week": 1,
-                    "type": "training",
-                    "name": "Full Body Basics 1",
-                    "estimated_duration_minutes": 45,
-                    "blocks": [
-                      {
-                        "id": "warmup_block",
-                        "type": "warmup",
-                        "order": 1,
-                        "activities": [
-                          {
-                            "id": "activity_1",
-                            "type": "simple",
-                            "name": "Walking",
-                            "duration": {
-                              "value": 5,
-                              "unit": "minutes"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "id": "main_block",
-                        "type": "main",
-                        "order": 2,
-                        "structure": "straight_sets",
-                        "activities": [
-                          {
-                            "id": "exercise_2",
-                            "type": "exercise",
-                            "exercise_ref": "push_up",
-                            "name": "Push Up",
-                            "prescription": {
-                              "sets": 3,
-                              "reps": {
-                                "min": 8,
-                                "max": 12
-                              },
-                              "rest": {
-                                "value": 60,
-                                "unit": "seconds"
-                              },
-                              "type": "sets_reps"
-                            },
-                            "target_rpe": 6
-                          },
-                          {
-                            "id": "exercise_3",
-                            "type": "exercise",
-                            "exercise_ref": "bodyweight_row",
-                            "name": "Bodyweight Row",
-                            "prescription": {
-                              "sets": 3,
-                              "reps": {
-                                "min": 6,
-                                "max": 10
-                              },
-                              "rest": {
-                                "value": 60,
-                                "unit": "seconds"
-                              },
-                              "type": "sets_reps"
-                            },
-                            "target_rpe": 6
-                          },
-                          {
-                            "id": "exercise_4",
-                            "type": "exercise",
-                            "exercise_ref": "squat",
-                            "name": "Squat",
-                            "prescription": {
-                              "sets": 3,
-                              "reps": {
-                                "min": 10,
-                                "max": 15
-                              },
-                              "rest": {
-                                "value": 60,
-                                "unit": "seconds"
-                              },
-                              "type": "sets_reps"
-                            },
-                            "target_rpe": 6
-                          },
-                          {
-                            "id": "exercise_5",
-                            "type": "exercise",
-                            "exercise_ref": "glute_bridge",
-                            "name": "Glute Bridge",
-                            "prescription": {
-                              "sets": 3,
-                              "reps": {
-                                "min": 12,
-                                "max": 20
-                              },
-                              "rest": {
-                                "value": 60,
-                                "unit": "seconds"
-                              },
-                              "type": "sets_reps"
-                            },
-                            "target_rpe": 6
-                          },
-                          {
-                            "id": "exercise_6",
-                            "type": "exercise",
-                            "exercise_ref": "plank",
-                            "name": "Plank",
-                            "prescription": {
-                              "sets": 3,
-                              "reps": {
-                                "min": 20,
-                                "max": 40
-                              },
-                              "rest": {
-                                "value": 30,
-                                "unit": "seconds"
-                              },
-                              "type": "sets_reps"
-                            },
-                            "target_rpe": 5
-                          }
-                        ]
-                      },
-                      {
-                        "id": "cooldown_block",
-                        "type": "cooldown",
-                        "order": 3,
-                        "activities": [
-                          {
-                            "id": "recovery_7",
-                            "type": "recovery",
-                            "name": "Stretching",
-                            "category": "stretching",
-                            "prescription": {
-                              "exercises": [
-                                {
-                                  "id": "recovery_exercise_1",
-                                  "type": "recovery_exercise",
-                                  "name": "chest_stretch",
-                                  "hold_seconds": 0,
-                                  "reps": 0
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "id": "recovery_8",
-                            "type": "recovery",
-                            "name": "Stretching",
-                            "category": "stretching",
-                            "prescription": {
-                              "exercises": [
-                                {
-                                  "id": "recovery_exercise_1",
-                                  "type": "recovery_exercise",
-                                  "name": "length",
-                                  "hold_seconds": 5,
-                                  "reps": 0
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        "context": "The character '?' is not allowed here"
+      },
+      {
+        "kind": "lexer",
+        "type": "invalid_character",
+        "message": "Invalid character '?'",
+        "location": {
+          "line": 166,
+          "column": 154,
+          "offset": 6587
+        },
+        "context": "The character '?' is not allowed here"
+      },
+      {
+        "kind": "lexer",
+        "type": "invalid_character",
+        "message": "Invalid character '?'",
+        "location": {
+          "line": 166,
+          "column": 406,
+          "offset": 6839
+        },
+        "context": "The character '?' is not allowed here"
       }
-    }
+    ],
+    "strip_counts": [],
+    "served_wpl": null
   },
-  "wpl_json": {
-    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
-    "version": "1.6.0",
-    "plan": {
-      "id": "77ef85c7-b865-456c-869a-b918e7d8359b",
-      "name": "12-Week Bodyweight Strength Programme (Beginner)",
-      "type": "workout",
-      "visibility": "public",
-      "metadata": {
-        "created_at": "2026-05-13T22:10:16.186Z",
-        "updated_at": "2026-05-13T22:10:16.186Z",
-        "language": "en"
-      },
-      "goals": [
-        {
-          "id": "goal_1",
-          "type": "primary",
-          "category": "strength",
-          "name": "Build foundational upper/lower body strength with minimal equipment, progression over 12 weeks"
-        }
-      ],
-      "requirements": {},
-      "personalization": {
-        "inputs": [],
-        "rules": []
-      },
-      "phases": [
-        {
-          "id": "phase_1",
-          "name": "Phase 1",
-          "order": 1,
-          "duration": {
-            "value": 4,
-            "unit": "weeks"
-          },
-          "weeks": [
-            {
-              "id": "week_1",
-              "name": "Week 1",
-              "order": 1,
-              "days": [
-                {
-                  "id": "day_1",
-                  "day_of_week": 1,
-                  "type": "training",
-                  "name": "Full Body Basics 1",
-                  "estimated_duration_minutes": 45,
-                  "blocks": [
-                    {
-                      "id": "warmup_block",
-                      "type": "warmup",
-                      "order": 1,
-                      "activities": [
-                        {
-                          "id": "activity_1",
-                          "type": "simple",
-                          "name": "Walking",
-                          "duration": {
-                            "value": 5,
-                            "unit": "minutes"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "id": "main_block",
-                      "type": "main",
-                      "order": 2,
-                      "structure": "straight_sets",
-                      "activities": [
-                        {
-                          "id": "exercise_2",
-                          "type": "exercise",
-                          "exercise_ref": "push_up",
-                          "name": "Push Up",
-                          "prescription": {
-                            "sets": 3,
-                            "reps": {
-                              "min": 8,
-                              "max": 12
-                            },
-                            "rest": {
-                              "value": 60,
-                              "unit": "seconds"
-                            },
-                            "type": "sets_reps"
-                          },
-                          "target_rpe": 6
-                        },
-                        {
-                          "id": "exercise_3",
-                          "type": "exercise",
-                          "exercise_ref": "bodyweight_row",
-                          "name": "Bodyweight Row",
-                          "prescription": {
-                            "sets": 3,
-                            "reps": {
-                              "min": 6,
-                              "max": 10
-                            },
-                            "rest": {
-                              "value": 60,
-                              "unit": "seconds"
-                            },
-                            "type": "sets_reps"
-                          },
-                          "target_rpe": 6
-                        },
-                        {
-                          "id": "exercise_4",
-                          "type": "exercise",
-                          "exercise_ref": "squat",
-                          "name": "Squat",
-                          "prescription": {
-                            "sets": 3,
-                            "reps": {
-                              "min": 10,
-                              "max": 15
-                            },
-                            "rest": {
-                              "value": 60,
-                              "unit": "seconds"
-                            },
-                            "type": "sets_reps"
-                          },
-                          "target_rpe": 6
-                        },
-                        {
-                          "id": "exercise_5",
-                          "type": "exercise",
-                          "exercise_ref": "glute_bridge",
-                          "name": "Glute Bridge",
-                          "prescription": {
-                            "sets": 3,
-                            "reps": {
-                              "min": 12,
-                              "max": 20
-                            },
-                            "rest": {
-                              "value": 60,
-                              "unit": "seconds"
-                            },
-                            "type": "sets_reps"
-                          },
-                          "target_rpe": 6
-                        },
-                        {
-                          "id": "exercise_6",
-                          "type": "exercise",
-                          "exercise_ref": "plank",
-                          "name": "Plank",
-                          "prescription": {
-                            "sets": 3,
-                            "reps": {
-                              "min": 20,
-                              "max": 40
-                            },
-                            "rest": {
-                              "value": 30,
-                              "unit": "seconds"
-                            },
-                            "type": "sets_reps"
-                          },
-                          "target_rpe": 5
-                        }
-                      ]
-                    },
-                    {
-                      "id": "cooldown_block",
-                      "type": "cooldown",
-                      "order": 3,
-                      "activities": [
-                        {
-                          "id": "recovery_7",
-                          "type": "recovery",
-                          "name": "Stretching",
-                          "category": "stretching",
-                          "prescription": {
-                            "exercises": [
-                              {
-                                "id": "recovery_exercise_1",
-                                "type": "recovery_exercise",
-                                "name": "chest_stretch",
-                                "hold_seconds": 0,
-                                "reps": 0
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "id": "recovery_8",
-                          "type": "recovery",
-                          "name": "Stretching",
-                          "category": "stretching",
-                          "prescription": {
-                            "exercises": [
-                              {
-                                "id": "recovery_exercise_1",
-                                "type": "recovery_exercise",
-                                "name": "length",
-                                "hold_seconds": 5,
-                                "reps": 0
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  },
+  "wpl_json": null,
   "error": null,
-  "timestamp": "2026-05-13T05:30:48.981Z"
+  "timestamp": "2026-05-14T22:23:05.803Z"
 }
