@@ -191,12 +191,38 @@ for (const f of files) {
     continue;
   }
 
-  // Lane B re-derivation: older runners did not persist extracted_plan for
-  // Lane B trials, leaving the field empty even when wpl_json was fully
-  // compiled. Walk the compiled document offline to restore the data so
-  // every downstream consumer (scoring, drift, site) sees a consistent
-  // shape. No LLM cost — this is a pure function of wpl_json.
-  if (r.lane === "B") {
+  // Lane B re-derivation. We do TWO things here:
+  //
+  // 1. If raw_text is present, re-compile it against the currently-linked
+  //    @gymbile/wpl-ai. This picks up parser fixes (rpe ranges, time-unit
+  //    reps suffixes, malformed cardio: blocks, etc.) so trials that were
+  //    silently truncated by an older compiler now reflect the patched
+  //    truth. wpl_valid, wpl_json, and compile_errors are rewritten;
+  //    classifyLaneB then sees the corrected state.
+  //
+  // 2. extracted_plan is walked off the fresh wpl_json so downstream
+  //    scoring sees the full compiled tree (older runners left it empty).
+  if (r.lane === "B" && typeof r.raw_text === "string" && r.raw_text.length > 0) {
+    const recompiled = compileWplAi(r.raw_text);
+    if (recompiled.ok) {
+      r.wpl_valid = true;
+      r.wpl_json = recompiled.json as Record<string, unknown>;
+      r.wpl_schema_valid =
+        (recompiled.validation?.errors?.length ?? 0) === 0;
+      r.compile_errors = 0;
+      r.validator_errors = recompiled.validation?.errors?.length ?? 0;
+      const rederived = extractFromWplJson(r.wpl_json);
+      if (rederived) r.extracted_plan = rederived;
+    } else {
+      r.wpl_valid = false;
+      r.wpl_json = null;
+      r.wpl_schema_valid = false;
+      r.compile_errors = recompiled.errors.length;
+      r.validator_errors = 0;
+    }
+  } else if (r.lane === "B") {
+    // No raw_text — keep prior fields but ensure extracted_plan is populated
+    // from whatever wpl_json was stored.
     const ep = r.extracted_plan;
     const isEmpty =
       !ep ||

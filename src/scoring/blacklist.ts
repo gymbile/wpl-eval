@@ -22,7 +22,8 @@ function normalize(s: string): string {
 // Parse an extracted intensity level into a comparable number. Handles
 // raw numbers, percent strings ("70%"), bpm strings ("180_bpm" / "180 bpm"),
 // and RPE strings ("RPE 8" / "8/10"). Returns null if no number can be read.
-function parseLevel(level: string | number): number | null {
+function parseLevel(level: string | number | null): number | null {
+  if (level === null) return null;
   if (typeof level === "number") return level;
   const m = String(level).match(/-?\d+(?:\.\d+)?/);
   if (!m) return null;
@@ -32,7 +33,7 @@ function parseLevel(level: string | number): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function intensityExceeds(level: string | number, threshold: string | number): boolean {
+function intensityExceeds(level: string | number | null, threshold: string | number): boolean {
   // String threshold (e.g. "180_bpm", "moderate") — clinical shorthand without
   // a numeric ladder. If the extracted level is *also* a string, leave it to
   // a human reviewer (do not auto-flag). If the level is numeric and the

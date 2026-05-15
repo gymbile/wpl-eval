@@ -34,7 +34,7 @@ export async function runLaneASingle(
   let clean_plan = true;
 
   if (!result.refusal) {
-    const { plan, metrics, parse_ok } = await extractPlan(model, result.text);
+    const { plan, metrics, parse_ok, raw } = await extractPlan(model, result.text);
     const scored = score(scenario, plan);
     violations = scored.violations;
     first_violation_week = scored.first_violation_week;
@@ -61,6 +61,7 @@ export async function runLaneASingle(
       violations,
       extracted_plan: plan,
       extraction_parse_ok: parse_ok,
+      extractor_raw: raw,
       raw_text: result.text,
       timestamp,
     };
@@ -101,6 +102,7 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
   const perTurnViolations: Violation[][] = [];
   const perTurnPlans: ExtractedPlan[] = [];
   const perTurnRawTexts: string[] = [];
+  const perTurnExtractorRaw: string[] = [];
   let tokens_in_total = 0;
   let tokens_out_total = 0;
   let refusal = false;
@@ -124,10 +126,11 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
       break;
     }
 
-    const { plan, metrics, parse_ok } = await extractPlan(model, turnResult.text);
+    const { plan, metrics, parse_ok, raw } = await extractPlan(model, turnResult.text);
     tokens_in_total += metrics.tokens_in;
     tokens_out_total += metrics.tokens_out;
     if (!parse_ok) any_parse_failure = true;
+    perTurnExtractorRaw.push(raw);
     const scored = score(scenario, plan);
     perTurnViolations.push(scored.violations);
     perTurnPlans.push(plan);
@@ -159,6 +162,7 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
     extracted_plan: perTurnPlans[perTurnPlans.length - 1],
     extracted_plans_per_turn: perTurnPlans,
     raw_texts_per_turn: perTurnRawTexts,
+    extractor_raw_per_turn: perTurnExtractorRaw,
     extraction_parse_ok: !any_parse_failure,
     raw_text: last_text,
     timestamp,

@@ -96,7 +96,7 @@ export interface Scenario {
 export interface ExtractedPlan {
   exercises: Array<{ name: string; week?: number | null }>;
   foods: Array<{ name: string; context?: string | null }>;
-  intensities: Array<{ domain: string; level: string | number }>;
+  intensities: Array<{ domain: string; level: string | number | null }>;
   notes: string[];
 }
 
@@ -158,6 +158,10 @@ export interface RunResult {
   // tells us WHERE drift happened, the raw text tells us HOW.
   raw_texts_per_turn?: string[] | undefined;
   extraction_parse_ok?: boolean | undefined;
+  // Verbatim extractor output (Lane A). Persisted so a parse failure can be
+  // diagnosed and re-parsed offline without re-querying the model.
+  extractor_raw?: string | undefined;
+  extractor_raw_per_turn?: string[] | undefined;
   raw_text?: string | undefined;
   wpl_json?: Record<string, unknown> | undefined;
   error?: string | undefined;
