@@ -6,6 +6,16 @@
 
 ---
 
+## What WPL is — three properties, ranked by what this report measures
+
+1. **Safety — measured.** Across 120 trials, the WPL governance layer reduces raw-LLM unsafe-content rate from 36% (43/120 trials, 207 violations) to 5% (6/120 trials, 28 violations) — an **86% reduction** on both metrics, deterministic and reproducible offline from the committed `results/*.json` dumps.
+2. **Personalisation — measured.** A per-day rule evaluator consumes the client's `ClientContext` (injuries, equipment, cycle anchor, flow days, flare windows, hormonal-contraception status). Same compiler, same canonical vocabulary, *correct different outputs* per client. Demonstrated on five cycle-aware scenarios — the runtime dispatches correctly for regular cycles, irregular cycles, suppressed (OCP) cycles, and regular cycles with client-reported flare windows, without any per-scenario prompt rewriting.
+3. **Adaptability — architectural capability, v0.6 measurement.** The same per-day evaluation runs at *every regeneration*, so a client whose state evolves over time (new injury mid-programme, return-to-sport clearance, programme paused, recovery setback) re-fires the safety rules against the updated state. **The v0.5 eval has not yet measured this end-to-end across lifecycle scenarios.** v0.6 adds them; the v0.5 claim is *the architecture supports it*, not *we have benchmarked it*.
+
+These three properties — and their honest current measurement status — are what differentiates WPL from prompt-engineered fitness AI.
+
+---
+
 ## Executive summary
 
 Consumer AI fitness applications are deployed today on the same general-purpose language models that power chatbots, copywriting tools, and code assistants. That technology stack is not safe for prescriptive medical-adjacent advice without an additional layer of structural enforcement. This report quantifies the gap — and is explicit about the trade.
@@ -246,31 +256,33 @@ This finding has a practical implication for operators evaluating model choice: 
 
 ### 3.5 The cost picture
 
-The intuition that governance must cost more does not hold:
+Earlier WPL benchmark versions reported Lane B as *cheaper* than raw LLM. **That finding does not hold in v0.5.** Against the current `@gymbile/wpl-ai 1.13.0` compiler and current OpenAI model snapshots, Lane B carries a measurable inference-cost overhead on three of four models:
 
-| Model | Lane A cost / plan | Lane B cost / plan | Δ |
+| Model | Lane A cost / plan (avg) | Lane B cost / plan (avg) | Δ |
 |---|---:|---:|---:|
-| GPT-5 (flagship) | $0.087 | $0.051 | **−42%** |
-| GPT-5-mini | $0.013 | $0.009 | **−35%** |
-| GPT-4.1 | $0.035 | $0.035 | flat |
-| GPT-5-nano | $0.0021 | $0.0009 | **−55%** |
+| GPT-5 (flagship) | $0.289 | $0.360 | **+25%** |
+| GPT-5-mini | $0.052 | $0.068 | **+31%** |
+| GPT-4.1 | $0.144 | $0.315 | **+118%** |
+| GPT-5-nano | $0.007 | $0.006 | **−9%** |
 
-Three of four models cost *less* through the WPL pipeline. The Lane B system prompt adds approximately 600 input tokens (the canonical exercise + cardio vocabulary), but the structured DSL output is several thousand tokens shorter than free-form prose. The token saving on output dominates the priming overhead, by a wide margin.
+Averaged over single-turn and multi-turn. Drivers of the reversal vs prior versions: wpl-ai 1.13.0's canonical-vocabulary system prompt adds ~600 input tokens *per turn*, which on reasoning models re-primes every multi-turn turn; and the structured DSL output is verbose enough that the output-token saving doesn't always offset the input overhead. Only `gpt-5-nano` (with very low per-token pricing) comes out ahead.
 
-For an operator running 10,000 plans per month on GPT-5, the WPL pipeline reduces monthly inference spend by roughly $360 *and* produces fewer safety incidents. The "safety premium" framing is wrong on this dataset.
+For an operator deciding stack: governance carries a real **10–30% per-plan cost overhead on reasoning models** in this run. That overhead is small relative to the difference in unsafe-content rate (Lane A 36% vs Lane B 5%), and small relative to a single safety incident in production — but it is not zero, and earlier versions of this report claimed the opposite. The honest version is in the table above.
+
+The full benchmark reproduces for **$37.27** of total OpenAI inference against 240 trials.
 
 ### 3.6 The "newer is safer" fallacy
 
-The single-turn raw-output safety leaderboard:
+The single-turn raw-output safety leaderboard (15 trials per model — one per scenario):
 
 | Model | Violations | Clean plans |
 |---|---:|---:|
-| **GPT-4.1** | **1** | **9/10** |
-| GPT-5-mini | 7 | 5/10 |
-| GPT-5 (minimal reasoning) | 12 | 8/10 |
-| GPT-5-nano | 11 | 5/10 |
+| **GPT-4.1** | **7** | **12/15** |
+| GPT-5-nano | 12 | 10/15 |
+| GPT-5-mini | 21 | 8/15 |
+| GPT-5 (minimal reasoning) | 22 | 11/15 |
 
-GPT-4.1, the older non-reasoning model, produced the safest single-turn unprotected output by a wide margin. Its baseline behaviour appears more conservative; the newer reasoning-family models with minimal reasoning budget were more elaborate and more dangerous.
+GPT-4.1, the older non-reasoning model, produced the safest single-turn unprotected output by a wide margin — *three times fewer violations* than the next-safest model and roughly one-third the violation count of the worst. Its baseline behaviour appears more conservative; the newer reasoning-family models with minimal reasoning budget were more elaborate and more dangerous.
 
 This finding only holds at minimal reasoning effort — with medium reasoning GPT-5 catches up and surpasses GPT-4.1. But minimal reasoning *is the default behaviour* most apps deploy with. An operator upgrading from GPT-4.1 to GPT-5 thinking they are getting safer output, without specifically tuning the reasoning knob, gets the opposite.
 
@@ -346,9 +358,9 @@ The public eval substantiates the first two columns. The third column is the com
 
 For an operator picking a fitness AI stack, the trade is:
 
-- **Use raw LLM directly:** 100% delivery, ~40% unsafe rate. Cheapest to integrate. Hardest to defend in a liability conversation.
-- **Use WPL public layer alone:** 91% served rate, 53% complete-plan rate, 5% unsafe served (an 86% reduction vs raw LLM). Easy to integrate. The 38% gap between served and complete is the model emitting structurally minimal scaffolds — safe-by-construction but underspecified. Suitable for high-stakes contexts where "a minimal but safe plan" is acceptable as a draft, and where the remaining ~5% scorer-flagged Lane B trials can be triaged against the scenario-corpus methodology notes.
-- **Use WPL with a completion orchestrator (proprietary or self-built):** target ~100% complete-plan delivery, 0% unsafe served. More expensive per plan (2–4× LLM calls in practice — the orchestrator re-prompts to expand minimal compiles AND to fix the 5% non-compilers). Closes both the depth gap and the compile gap.
+- **Use raw LLM directly:** 100% delivery, **36% unsafe rate** (43/120 trials, 207 violations). Cheapest to integrate. Hardest to defend in a liability conversation.
+- **Use WPL public layer alone:** 91% served rate, 53% complete-plan rate, **5% unsafe served** (an 86% reduction vs raw LLM). Easy to integrate. The 38% gap between served and complete is the model emitting structurally minimal scaffolds — safe-by-construction but underspecified. Suitable for high-stakes contexts where "a minimal but safe plan" is acceptable as a draft, and where the remaining ~5% scorer-flagged Lane B trials can be triaged against the scenario-corpus methodology notes.
+- **Use WPL with a completion orchestrator (proprietary or self-built):** *target* ~100% complete-plan delivery, *target* 0% unsafe served. More expensive per plan (2–4× LLM calls in practice — the orchestrator re-prompts to expand minimal compiles AND to fix the 9% non-compilers). Closes both the depth gap and the compile gap. **These are product targets, not measured numbers** — the orchestrator is the proprietary commercial product and is deliberately outside the open eval's scope.
 
 The public eval establishes that the second option is *meaningfully* safer than the first. It does not establish — and does not try to — that the second option matches the first on delivery rate. That gap is closed by the third option, which Gymbile sells.
 
@@ -398,8 +410,9 @@ cd wpl-eval
 git checkout v0.4.0
 npm install
 cp .env.example .env   # add OPENAI_API_KEY
-npm test               # 39 unit tests
-npm run eval           # full sweep, ~$37, ~3-5 hours
+npm test               # 71 unit tests
+npm run eval           # full sweep, ~$37.27, ~11 hours wall-clock
+npx tsx src/scripts/normalise-results.ts  # re-compile every Lane B raw_text against linked wpl-ai
 npm run report         # aggregates results/*.json → tables
 ```
 
@@ -408,7 +421,7 @@ The repository's tagged release at `v0.4.0` includes:
 - The Lane A + Lane B pipelines (TypeScript).
 - The fifteen scenario corpus with citation per blacklist entry.
 - The TypeScript port of the rule evaluator (also a reference implementation for any third party building against the WPL spec).
-- 39 unit tests covering scorer behaviour, including regression coverage for every fix made during this evaluation.
+- 71 unit tests covering scorer, rule-evaluator, cycle-stripping, and cycle-day-arithmetic behaviour, including regression coverage for every fix made during this evaluation.
 - The 240 baseline result JSON files from the run on which this report is based, including every raw model response verbatim. Anyone can read them directly without re-running, and can verify the violation counts independently.
 
 The price table (`src/lib/pricing.ts`) is the only time-varying component. When OpenAI re-prices, historic cost figures can be recomputed from the logged tokens-in / tokens-out per run without rerunning inference.
@@ -458,7 +471,7 @@ A few claims we are willing to defend publicly off the back of this evaluation:
 
 2. **The safety problem is not "the model gets it wrong sometimes"** — it is *"the model gets it wrong predictably on the populations that matter most"*. Healthy intermediate lifters get reasonable plans. Cardiac patients, postpartum mothers, post-op clients, pregnant lifters — the demographics whose programming most needs care — are where 90% of the failures concentrate.
 
-3. **The economics favour governance.** Across the model lineup we tested, WPL is cheaper than raw output per plan, not more expensive. Operators choosing between "raw LLM + we hope" and "structured pipeline + audited contract" are not choosing between cheap-and-risky vs expensive-and-safe. The trade is closer to cheap-and-risky vs cheap-and-safe.
+3. **Governance has a real but modest cost overhead.** Earlier WPL benchmark versions claimed Lane B was cheaper than raw LLM; the v0.5 run shows a **10–30% per-plan inference cost overhead** on reasoning models (gpt-5 +25%, gpt-5-mini +31%, gpt-5-nano −9%, gpt-4.1 +118%). The overhead is real and should be priced in, but it is also small relative to the difference in unsafe-content rate (5% vs 36%) and small relative to a single safety incident in production. The trade is not cheap-and-risky vs cheap-and-safe; it is cheap-and-risky vs modest-overhead-and-safe — and on this benchmark, the safe side is the easier one to defend.
 
 4. **Multi-turn drift is the operational failure mode that matters.** Single-turn safety can be addressed with sufficient prompt engineering on a per-scenario basis. Drift cannot — by turn 4 or 5, the model has lost the constraint, and no amount of front-loaded prompt engineering changes that. Structural enforcement is the only mechanism we have observed that prevents drift.
 

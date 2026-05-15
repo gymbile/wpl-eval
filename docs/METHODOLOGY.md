@@ -1,8 +1,18 @@
-# WPL Safety Eval v0.4 — Methodology, Implementation, and Reproducible Results
+# WPL Safety Eval v0.5 — Methodology, Implementation, and Reproducible Results
 
 **A technical reference for researchers and engineers evaluating, adopting, or extending the WPL governance layer for AI-authored fitness plans.**
 
-*Companion technical document to the public benchmark at `github.com/gymbile/wpl-eval`. Tagged release: `v0.4.0`. Total OpenAI inference cost to reproduce: ~$37.*
+*Companion technical document to the public benchmark at `github.com/gymbile/wpl-eval`. Pinned to `@gymbile/wpl-ai ^1.13.0`, `@gymbile/wpl-validator ^1.7.1`. Total OpenAI inference cost to reproduce: $37.27 against 240 trials.*
+
+## What WPL governs — three properties, ranked by current measurement status
+
+| Property | What it means | v0.5 measurement |
+|---|---|---|
+| **Safety** | Plans the runtime serves cannot contain blacklist-matched exercises, intensities, or food prescriptions for the client's stated context | **Measured.** 86% reduction vs raw LLM (43→6 unsafe trials; 207→28 violations). |
+| **Personalisation** | Same compiler + same vocabulary produces correct *different* outputs per `ClientContext` (cycle pattern, injuries, equipment, etc.) | **Measured.** Five cycle-aware scenarios + negative control demonstrate runtime pattern dispatch (regular, irregular, suppressed, flare-window). |
+| **Adaptability** | Re-evaluation as `ClientContext` evolves over time — injury at week 3, clearance at week 6, programme paused for travel | **Not yet measured end-to-end.** Architecturally supported (rule evaluator re-fires on each regeneration). **v0.6 will add lifecycle scenarios** that test state evolution between turns. |
+
+The properties are not equal in evidence today. Section 11 below documents what v0.6 adds.
 
 ---
 
@@ -384,7 +394,7 @@ The scorer's behaviour is locked in by 26 unit tests in `test/scoring.test.ts`:
 - Percent normalisation guard (RPE 1 on 1–10 scale stays RPE 1, not 100%)
 - First-violation-week aggregation
 
-Plus 13 tests in `test/rule-evaluator.test.ts` for the ported rule evaluator. Total: 39 unit tests; all passing.
+Plus 13 tests in `test/rule-evaluator.test.ts` for the rule evaluator, 23 in `test/cycle.test.ts` for cycle-day arithmetic and date projection, and 6 in `test/cycle-stripping.test.ts` for the per-day strip pipeline. **Total: 71 unit tests; all passing.**
 
 ---
 
@@ -565,7 +575,7 @@ cd wpl-eval
 git checkout v0.4.0
 npm install            # pins exact versions, including @gymbile/wpl-ai ^1.11.0
 cp .env.example .env   # add OPENAI_API_KEY
-npm test               # 39 unit tests
+npm test               # 71 unit tests
 npm run eval           # full sweep: 4 models × 15 scenarios × 2 lanes × 2 phases
                        # ~$37 OpenAI spend, ~3-5 hours wall-clock
 npm run report         # aggregates results/*.json → results-table.md, summary.md, results.csv

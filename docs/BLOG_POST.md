@@ -18,6 +18,16 @@ This is the story of what we measured, how, and what it means for anyone buildin
 
 ---
 
+## What WPL actually does — three properties, ranked by what this run measures
+
+1. **Safety — measured.** Every plan Lane B serves passes a deterministic compile + rule-evaluator pipeline against the client's specific contraindications. Across 120 trials, raw LLM produced **207 violations across 43 unsafe trials (36%)**; WPL-governed output produced **28 violations across 6 unsafe trials (5%)** — an 86% reduction on both. Fully reproducible from any `results/<file>.json`.
+
+2. **Personalisation — measured.** The rule evaluator runs per-day with the client's `ClientContext` (injuries, equipment, cycle anchor, flow days, flare windows, hormonal-contraception status). *Same compiler, same vocabulary, correct different outputs* for regular cycles vs irregular vs suppressed vs with-flare-windows. The five cycle-aware scenarios (dysmenorrhea, endometriosis, PCOS, perimenopause, OCP-suppressed negative control) are the canonical demonstration — raw LLMs produced 71 violations across them; the runtime dispatches correctly for each pattern.
+
+3. **Adaptability — architectural, v0.6 measurement.** The same per-day rule evaluation runs at *every regeneration*, so a `ClientContext` that evolves over time — new injury, return-to-sport clearance, programme paused for travel, recovery setbacks — re-fires the safety rules against the updated state. **The v0.5 eval has not yet measured this end-to-end across simulated life events.** v0.6 will add lifecycle scenarios that test state evolution between turns. Today the honest claim is *the architecture supports it*; not *we have benchmarked it*.
+
+---
+
 ## The problem nobody wants to define
 
 Every major fitness brand now ships AI. Fitbod, Caliber, Future, Tonal, Stronger by the Day, Aaptiv, Nike Training Club's "AI coach", Peloton's recommendation surface. The technology stack is the same in all of them: a frontier LLM, prompted at runtime, returning prose that a trainer or end-user reads and acts on.
@@ -214,12 +224,12 @@ The single-turn raw safety leaderboard (15 trials per model — one per scenario
 
 | Model | Violations | Clean plans |
 |---|---:|---:|
-| **GPT-4.1** | **3** | **13/15** |
-| GPT-5-nano | 10 | 11/15 |
-| GPT-5 (minimal reasoning) | 13 | 12/15 |
-| GPT-5-mini | 15 | 10/15 |
+| **GPT-4.1** | **7** | **12/15** |
+| GPT-5-nano | 12 | 10/15 |
+| GPT-5-mini | 21 | 8/15 |
+| GPT-5 (minimal reasoning) | 22 | 11/15 |
 
-GPT-4.1 — the older, non-reasoning model in the lineup — produced the safest unprotected single-turn output by a wide margin. The newer reasoning-family models with their default reasoning settings were more elaborate and more dangerous. **GPT-5-mini**, the cheap-reasoning tier most apps are upgrading to, came out *worst* — 15 violations, 5 unsafe plans of 15.
+GPT-4.1 — the older, non-reasoning model in the lineup — produced the safest unprotected single-turn output by a wide margin: roughly **one-third the violation count** of GPT-5 or GPT-5-mini. The newer reasoning-family models with default settings were more elaborate and more dangerous. `gpt-5-mini`, the cheap-reasoning tier most apps default to at scale, left **almost half its plans (7 of 15) with at least one safety violation**.
 
 An app upgrading from GPT-4.1 to GPT-5 thinking it's getting safer, without specifically tuning OpenAI's reasoning-effort parameter (which most apps don't), gets the opposite.
 
@@ -328,12 +338,14 @@ All Apache 2.0.
 
 ## A side finding worth flagging
 
-Running this benchmark caught two production defects in our own toolchain:
+This v0.5 run caught **two new production defects in our own scoring pipeline** — both fixed before publication, both committed transparently:
 
-- **`@gymbile/wpl-ai 1.10.5`** had a tokenizer bug that ate `WEEK 10:` as an invalid number — every 12-week programme failed to compile through Lane B. Caught by the eval, fixed in `1.10.6`.
-- **`@gymbile/wpl-validator 1.6.7`** scoped block-uniqueness checks too narrowly and emitted false-positive `DUPLICATE_ID` warnings on every multi-week plan. Fixed by scoping to `(phase, week, day)`.
+- **The Lane A extractor was capped at 4096 output tokens**, which silently truncated mid-JSON on 27 of 120 trials. Those plans then scored as "0 violations" because the parser threw and the extracted-plan was zeroed. False-negative scoring on **~22% of Lane A**. Fixed in `src/scoring/extraction.ts`; v0.5 results re-extracted at 16384. (See [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md) and the `extractor_raw_per_turn` field now persisted in every Lane A result for offline re-parse.)
+- **Ten scoring-blacklist entries had no substantive core tokens** — entries like `max_effort_lifts`, `heavy_isometrics`, `heavy_squat_above_bodyweight` looked like contraindications but matched literally nothing because every token was a qualifier (stripped by the `collides()` matcher). Cardiac post-MI's `max_effort_lifts` and `heavy_valsalva_lifting` rules were silently inert across all prior eval versions. Repaired in `scenarios/scenarios.yaml`; Lane A unsafe count moved from `~28%` (v0.4 archive) to **36%** in v0.5 — same model outputs, *correctly* scored.
 
-Both fixes shipped before this post. We mention them because a benchmark that doesn't catch defects in the system it's testing is either too narrow or not testing real conditions. Our benchmark caught defects. Take from that what you will — but the next time someone shows you a clean safety benchmark with no asterisks, ask whether they were really testing the production stack or a sanitised version of it.
+A benchmark that doesn't catch defects in the system it's testing is either too narrow or not testing real conditions. Our benchmark — twice in two versions — caught defects of its own. The next time you see a clean safety benchmark with no asterisks, ask whether it was really testing the production stack or a sanitised version of it.
+
+(Earlier versions of this post called out two different bugs in older wpl-ai / wpl-validator releases — `@gymbile/wpl-ai 1.10.5` tokenizer bug, `@gymbile/wpl-validator 1.6.7` scope bug. Both real, both fixed in 2026; superseded as the headline finding by the bigger v0.5 scoring-pipeline bugs above.)
 
 ---
 
