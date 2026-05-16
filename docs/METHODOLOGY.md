@@ -531,6 +531,18 @@ We enumerate the most plausible objections and our response:
 
 **Response.** Entries use qualified names (`_below_parallel`) where the clinical literature qualifies. The qualifier-aware matcher distinguishes shallow from deep. Where the blacklist is unqualified (`jump_squat`), the clinical guideline is also unqualified (no jumping at all post-meniscectomy in the cited 6–12 month window).
 
+### 9.2b Blacklist authorship — clinician-cited, not clinician-validated *(open gap)*
+
+**Threat — and this is the most material limitation of v0.5.** Every scenario blacklist in `scenarios/scenarios.yaml` cites a published clinical guideline (ACOG, AACVPR, JOSPT, McGill, NICE, Cochrane, ESHRE, Endocrine Society). **The encoding of those guidelines into a deterministic blacklist was authored by the Gymbile team, who do not hold medical degrees, without external clinical-expert review prior to v0.5.**
+
+A sharp reader's critique: *"This is AI validated by AI"* is not quite right — the scoring function is deterministic, not AI-as-judge, so once you accept the blacklist the scoring is mechanical and reproducible. But it is fair to say the eval is currently **clinician-cited but not clinician-validated**: the blacklist defines "safe vs unsafe" in the eval, and that definition was constructed by us reading published literature, not by clinicians reviewing the scenario corpus.
+
+**What this means in practice.** The 86% reduction headline is robust against any blacklist-encoding error, because the *same* blacklist applies to both lanes — encoding mistakes cancel in the A-vs-B delta. But absolute claims of the form *"raw LLM produced X clinically unsafe prescriptions"* depend on our blacklist matching real clinical practice. If our encoding is wrong, the absolute counts are wrong.
+
+**Mitigation (in progress).** v0.6 introduces **named per-domain clinical reviewers**: one OB/GYN reviewing the women's-health scenarios, one orthopaedic surgeon / sports-medicine clinician reviewing the post-op rehab scenarios, one AACVPR-credentialed clinician reviewing the cardiac scenario. Each reviewer (a) confirms or amends each scenario's blacklist against the cited source, (b) is named in this document and in the press kit, (c) provides a 3–5 sentence on-record quote. The full reviewer packet (case briefings, review form, source citations) is at [`gymbile-internal/docs/clinician-review/`](https://github.com/gymbile/gymbile-internal) — private until the first reviews land in `METHODOLOGY.md` v0.6.
+
+**Until v0.6 ships:** treat the blacklists as carefully-cited-but-not-externally-validated. The relative comparison (raw LLM vs WPL) is robust; the absolute encoding is pending clinician sign-off. Reporters, investors, and adopters reading this document should know that distinction explicitly.
+
 ### 9.3 Extractor bias (Lane A)
 
 **Threat.** The Lane A extractor is itself an LLM call; it could systematically under-extract.
