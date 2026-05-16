@@ -144,13 +144,12 @@ Each row contradicts the ground-truth reference above. **None of these should su
 | **165** | *"reduced per-plan inference cost by 35–55% across three of four models tested"* | Reversed — +25 / +31 / +118 / −9 | Rewrite cost angle; pull the savings claim |
 | **237–240** | Cost table −42 / −35 / flat / −55 | +25 / +31 / +118 / −9 | Replace table |
 
-### DIFF_v0.1_to_v0.2.md, EVAL_WRITEUP_DRAFT.md, NARRATIVE.md, EVAL_PAGE_SPEC.md, PLAN.md, CLAUDE_CODE_HANDOFF.md
+### Pre-v0.5 working drafts
 
-Pre-v0.5 working drafts. Stale by definition. Either:
-- (a) **Leave as-is** — they're committed as editorial history, dated by their version tags. Reporters auditing the repo won't mistake them for current claims if the README points clearly at the 4 active docs.
-- (b) **Move to `docs/archive/`** — formal separation from current publication content.
+Two-step disposition (both completed):
 
-Recommend (b) before press outreach.
+- **Public-safe drafts** (`DIFF_v0.1_to_v0.2.md`, `EVAL_WRITEUP_DRAFT.md`, `EVAL_PAGE_SPEC.md`) → moved to `docs/archive/` for editorial history. Stale by definition; auditable as such.
+- **Operational / architecturally-sensitive drafts** (`NARRATIVE.md`, `PLAN.md`, `CLAUDE_CODE_HANDOFF.md`) → relocated to the private companion repo (`gymbile-internal`). Reasons: internal editorial planning (LinkedIn-post arc, publish-readiness checklist), hardcoded local filesystem paths, references to the private `gymbile_backend` codebase structure.
 
 ---
 
