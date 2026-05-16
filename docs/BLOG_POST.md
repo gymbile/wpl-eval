@@ -130,17 +130,27 @@ trainer prompt
 
 The orchestrator that promotes minimal-served plans to complete-served plans is what turns the WPL contract into a usable product. It is the proprietary part of what Gymbile sells — and we deliberately leave it out of the open benchmark, because doing so makes the safety contract *verifiable*. Anyone can run `compileWplAi()` and inspect its output. Nobody has to take "our orchestrator is safe" on faith.
 
-So the operator-facing trade is three columns, not two:
+So the operator-facing trade has two **measured** columns and one **claimed** column. Keep them separate; the open eval substantiates the first table, not the second.
 
-| | Raw LLM | WPL public layer | WPL + orchestrator (proprietary) |
-|---|---:|---:|---:|
-| Plan delivered | 100% | 91% | target ~100% |
-| Plan delivered AND complete | 100% | 53% | target ~100% |
-| Plans containing unsafe content | **36%** | **5%** | target **0%** |
-| Cost per delivered plan (median) | ~$0.04 | ~$0.024 | $0.04–0.10 |
-| Reproducible safety guarantee | no | **yes** | yes (built on the public guarantee) |
+**MEASURED — reproducible from `results/*.json` in this repo:**
 
-The public eval substantiates the first two columns. The third column is the product.
+| | Raw LLM | WPL public layer |
+|---|---:|---:|
+| Plan delivered | 120/120 (100%) | 109/120 (91%) |
+| Plan delivered AND complete (≥10 wk) | 120/120 (100%) | 64/120 (53%) |
+| Plans containing unsafe content | **43/120 (36%)** | **6/120 (5%)** |
+| Cost per delivered plan (range across 4 models) | $0.007–$0.289 | $0.006–$0.360 |
+| Reproducible safety guarantee | no | **yes** |
+
+**CLAIMED — product targets for the proprietary completion orchestrator (not measured here):**
+
+| | WPL + orchestrator (proprietary, Gymbile commercial) |
+|---|---:|
+| Plan delivered AND complete | *target* ~100% |
+| Plans containing unsafe content | *target* 0% |
+| Cost per delivered plan | *target* $0.04–0.10 (2–4× LLM calls because orchestrator retries) |
+
+These two tables look similar but are epistemically different. The first is what the open eval measured against 240 trials of real OpenAI inference; you can verify every cell in 10 minutes. The second is the design target of a closed-source product Gymbile sells. Anyone evaluating WPL should compare the first measured table to whatever evidence they have for any other AI fitness stack — and treat the orchestrator targets as the commercial roadmap, not the safety claim.
 
 ### 2. The constraint evaporates as the conversation grows.
 
@@ -379,4 +389,8 @@ If you're building in this space and want to talk about adopting WPL — or abou
 
 *Questions about reproducibility, methodology, or v0.5 collaboration: GitHub Issues at [`github.com/gymbile/wpl-eval`](https://github.com/gymbile/wpl-eval) or `alex@gymbile.com`.*
 
-*This post derives entirely from public artefacts. Every claim is reproducible. The companion technical document with the full algorithmic detail is at [`METHODOLOGY.md`](https://github.com/gymbile/wpl-eval/) for readers who want the receipts.*
+*This post derives entirely from public artefacts. Every claim is reproducible. The companion technical document with the full algorithmic detail is at [`METHODOLOGY.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/METHODOLOGY.md) for readers who want the receipts.*
+
+---
+
+**Audited 2026-05-16** against the v0.5 corpus in [`results/*.json`](https://github.com/gymbile/wpl-eval/tree/main/results). Every quantitative claim in this post is cross-checked in [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md). Changelog disclosing why v0.5 numbers differ from earlier versions: [`docs/DIFF_v0.4_to_v0.5.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/DIFF_v0.4_to_v0.5.md). Forward roadmap (lifecycle / adaptability measurement coming in v0.6): [`docs/V0_6_LIFECYCLE_SCENARIOS.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_6_LIFECYCLE_SCENARIOS.md).

@@ -712,4 +712,8 @@ The completion loop itself is left as an integration concern. We expect multiple
 
 ---
 
-*This document is published alongside the v0.4.0 tag of `github.com/gymbile/wpl-eval`. Last updated to match the published numbers as of May 2026.*
+*This document is published alongside the v0.5 corpus at `github.com/gymbile/wpl-eval`. Last updated 2026-05-16.*
+
+---
+
+**Audited 2026-05-16** against the v0.5 corpus in [`results/*.json`](https://github.com/gymbile/wpl-eval/tree/main/results). Every quantitative claim is cross-checked in [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md). Changelog disclosing why v0.5 numbers differ from earlier versions: [`docs/DIFF_v0.4_to_v0.5.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/DIFF_v0.4_to_v0.5.md). Forward roadmap (lifecycle / adaptability measurement coming in v0.6): [`docs/V0_6_LIFECYCLE_SCENARIOS.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_6_LIFECYCLE_SCENARIOS.md).

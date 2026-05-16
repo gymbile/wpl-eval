@@ -344,4 +344,8 @@ Validates: post-MI, hypertensive, exercise-induced asthma scenarios. Ideal: AACV
 
 ---
 
-*Published alongside the public release at `github.com/gymbile/wpl-eval` v0.4.0. Materials in this press kit may be reproduced or excerpted with attribution to "WPL Safety Eval v0.4, gymbile.com".*
+*Published alongside the v0.5 corpus at `github.com/gymbile/wpl-eval`. Materials in this press kit may be reproduced or excerpted with attribution to "WPL Safety Eval v0.5, gymbile.com".*
+
+---
+
+**Audited 2026-05-16** against the v0.5 corpus in [`results/*.json`](https://github.com/gymbile/wpl-eval/tree/main/results). Every quantitative claim and verbatim model quote in this kit is cross-checked in [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md). Changelog disclosing why v0.5 numbers differ from earlier versions: [`docs/DIFF_v0.4_to_v0.5.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/DIFF_v0.4_to_v0.5.md). Forward roadmap (lifecycle / adaptability measurement coming in v0.6): [`docs/V0_6_LIFECYCLE_SCENARIOS.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_6_LIFECYCLE_SCENARIOS.md).

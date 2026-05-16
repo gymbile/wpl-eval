@@ -341,18 +341,31 @@ The public eval deliberately tests only the single-attempt path. It does so beca
 
 ### 4.3 The realistic comparison
 
-The fair comparison for an operator evaluating production deployment is three columns, not two:
+The fair comparison for an operator evaluating production deployment has **two measured columns** (Raw LLM and the WPL public layer) and **one claimed column** (the proprietary orchestrator). We separate them visually to keep the line clear between *measured in this eval* and *product target*.
 
-| Metric | Raw LLM | WPL public layer (single attempt) | WPL + orchestrator (proprietary) |
-|---|---:|---:|---:|
-| Plan compiled | 100% | 95% | target ~100% |
-| Plan compiled AND complete (10–12 weeks) | 100% | **58%** | target ~100% |
-| Plans containing unsafe content | 29% | **0%** | **0%** |
-| Latency to delivery | low | low | higher (retry budget) |
-| Cost per delivered plan | $0.04 | $0.024 | $0.04–0.10 (multiple LLM calls) |
-| Architectural transparency | opaque | public + reproducible | proprietary closed source |
+**MEASURED — reproducible from `results/*.json`:**
 
-The public eval substantiates the first two columns. The third column is the commercial product. **The benchmark cannot prove what the orchestrator achieves end-to-end — that would require running and publishing the orchestrator, which we deliberately don't.** But the benchmark *can* prove the contract the orchestrator builds on, which is what matters for credibility.
+| Metric | Raw LLM | WPL public layer (single attempt) |
+|---|---:|---:|
+| Plan compiled / served | 120/120 (100%) | 109/120 (91%) |
+| Plan compiled AND complete (≥10 wk) | 120/120 (100%) | **64/120 (53%)** |
+| Plans containing unsafe content | **43/120 (36%)** | **6/120 (5%)** |
+| Total violations | **207** | **28** |
+| Latency to delivery | low | low |
+| Cost per delivered plan (range across 4 models) | $0.007–$0.289 | $0.006–$0.360 |
+| Architectural transparency | opaque | public + reproducible |
+
+**CLAIMED — proprietary completion-orchestrator product targets (not measured by this eval):**
+
+| Metric | WPL + orchestrator (Gymbile commercial) |
+|---|---:|
+| Plan delivered AND complete | *target* ~100% |
+| Plans containing unsafe content | *target* 0% |
+| Latency to delivery | higher (retry budget) |
+| Cost per delivered plan | *target* $0.04–0.10 (2–4× LLM calls) |
+| Architectural transparency | proprietary, closed source |
+
+The open eval substantiates the first table. The second table is the commercial-product roadmap. **The eval cannot prove what the orchestrator achieves end-to-end — that would require running and publishing the orchestrator, which we deliberately don't.** It *can* prove the contract the orchestrator builds on, which is what matters for credibility.
 
 ### 4.4 What this means for operators
 
@@ -494,3 +507,7 @@ The public artefacts will continue to be published at `github.com/gymbile/wpl-ev
 ---
 
 *This report represents work by the Gymbile team on the public WPL ecosystem. Methodology questions and corrigenda are welcome via the GitHub issue tracker. Press inquiries: `alex@gymbile.com`.*
+
+---
+
+**Audited 2026-05-16** against the v0.5 corpus in [`results/*.json`](https://github.com/gymbile/wpl-eval/tree/main/results). Every quantitative claim in this report is cross-checked in [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md). Changelog disclosing why v0.5 numbers differ from earlier versions: [`docs/DIFF_v0.4_to_v0.5.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/DIFF_v0.4_to_v0.5.md). Forward roadmap (lifecycle / adaptability measurement coming in v0.6): [`docs/V0_6_LIFECYCLE_SCENARIOS.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_6_LIFECYCLE_SCENARIOS.md).
