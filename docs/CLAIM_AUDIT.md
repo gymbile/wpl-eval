@@ -1,19 +1,19 @@
 # Claim audit — v0.5 publication docs
 
-*Audit date: 2026-05-15. Auditing BLOG_POST.md, INDUSTRY_REPORT.md, METHODOLOGY.md, PRESS_KIT.md against the v0.5 corpus committed at `results/`.*
+*Initial audit: 2026-05-15. Re-stamp: 2026-05-26 — all 17 stale claims listed below have been corrected in the four publication docs (BLOG_POST, INDUSTRY_REPORT, METHODOLOGY, PRESS_KIT). The "🔴 Stale" section is retained as audit history; treat it as a closed fix-list, not an open press-blocker.*
 
 The audit asks one question per claim: **can a reporter reproduce this from the committed JSON files in ten minutes or less?** Anything that fails that test is flagged.
 
-## Triage summary
+## Triage summary (current — 2026-05-26)
 
 | Status | Count | Action |
 |---|---:|---|
 | ✅ Verified — reproducible from `results/<file>.json` | ~140 claims | Ship as-is |
 | ⚠️ Verified-with-caveat — true on scorer's terms; needs disclosed nuance | 12 claims | Ensure caveat survives the soundbite version |
-| 🔴 **Stale — does not match v0.5 data, fix before any press contact** | **17 claims** | **Fix list below** |
-| ❓ Unprovable from public data — marketing/architecture claim about the proprietary orchestrator | 8 claims | Move into a clearly-labelled "claimed, not measured" section |
+| ✅ **Resolved — formerly stale, now corrected against v0.5 ground truth** | **17 claims** | **See historical fix-list below — all applied in commits leading up to the 2026-05-16 doc footers** |
+| ❓ Unprovable from public data — marketing/architecture claim about the proprietary orchestrator | 8 claims | Kept in clearly-labelled "claimed, not measured" sections |
 
-The 17 stale claims are the only press-blocking risk. The marketing claims (orchestrator targets) aren't dishonest — they're future-tense / about-a-different-product — but they currently sit in the same tables as measured numbers, which blurs the line. Recommend separating measured vs claimed tables.
+The 17 formerly-stale claims have been fixed; the marketing/orchestrator claims have been separated from measured numbers per the original recommendation.
 
 ---
 
@@ -104,9 +104,9 @@ Of 26 cycle box/tuck/depth-jump violations, **22 are on off-flow days** (the run
 
 ---
 
-## 🔴 Stale claims — fix list (press-blocker)
+## ✅ Historical fix list — resolved 2026-05-16
 
-Each row contradicts the ground-truth reference above. **None of these should survive into any media outreach.**
+*The rows below were stale at the 2026-05-15 audit. All have been corrected in the publication docs; the four active docs now carry an "Audited 2026-05-16 against `results/*.json`" footer. Retained here for editorial provenance — these are no longer press-blockers.*
 
 ### BLOG_POST.md
 

@@ -103,7 +103,7 @@ Full definitions and clinical citations in [`scenarios/scenarios.yaml`](scenario
 
 - 15 scenarios is not exhaustive — it's a stratified snapshot.
 - 4 OpenAI models is not all of LLM-space. v0.6 plans Anthropic + Google.
-- Blacklists are curated; one named clinical reviewer per domain is the next credibility step (see [`docs/PRESS_KIT.md`](docs/PRESS_KIT.md) for the reviewer-quote stubs).
+- Blacklists are **clinician-cited but not clinician-validated**: every entry cites a published clinical source, but the encoding into the deterministic blacklist was authored by the Gymbile team — not by clinicians reviewing the corpus. v0.6 adds named per-domain reviewers (see [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) §9.2b and [`docs/PRESS_KIT.md`](docs/PRESS_KIT.md) for the reviewer-quote stubs). The relative comparison (raw LLM vs WPL) is robust to this gap; the absolute labels are pending external sign-off.
 - Drift protocol is one realistic 8-turn trainer-conversation shape, not all shapes.
 - Cycle-scenario scoring carries a documented asymmetry: the scorer flags off-flow placements of `exercises_on_flow_days` because Lane A prose extraction has no per-day calendar resolution. Lane B's runtime correctly strips only on actual flow days. v0.6 narrows the scorer to remove the false-positive class. Documented in `docs/METHODOLOGY.md` §11.
 

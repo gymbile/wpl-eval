@@ -261,7 +261,7 @@ We ran every single-turn (model, scenario) combination through four prompt varia
 3. **The rule evaluator's runtime stripper never fired**, in any variant, on any run. The `stripForbidden` mechanism — even after the fuzzy-match fix that brought it to parity with the deterministic scorer — had nothing to strip in 160 trials.
 4. **The "0 unsafe plans" property survives every variant.** Even the adversarial configuration (no vocabulary, no safety instruction in the system prompt) produced 0 unsafe plans across 40 trials. The variant served only 2 plans of 40; both were safe.
 
-The implication for v0.4 published claim is twofold:
+The implication for the v0.5 published claim is twofold:
 
 **(a) The Lane B headline holds robustly.** 0 unsafe plans across 200 Lane B trials (80 baseline + 120 variant), regardless of prompt configuration. The relative comparison against Lane A (100 vs 0) is conservative; the actual Lane B safety floor is more robust than the baseline configuration suggests.
 
@@ -271,7 +271,7 @@ The implication for v0.4 published claim is twofold:
 2. The DSL's commitment-forcing structure (the model must name a specific exercise rather than hedge with prose)
 3. Compile-time validation, which fail-closes any plan whose contents the safety contract cannot verify
 
-The rule evaluator's runtime stripping is **defence in depth** — it would catch any case where the LLM emits a blacklisted exercise that compile-time validation missed. On the v0.4 corpus that has not happened.
+The rule evaluator's runtime stripping is **defence in depth** — it would catch any case where the LLM emits a blacklisted exercise that compile-time validation missed. On the v0.5 corpus that has not happened.
 
 This is a more honest framing than "three reinforcing layers stack". The architecture has redundancy intentionally; the corpus has not exercised every layer. Future scenarios may. The eval should evolve to test conditions that exercise the rule evaluator — for example, blacklist entries that aren't qualifier-suffixed (so they'd appear in the canonical vocabulary verbatim) on scenarios where the trainer's brief is incomplete.
 
@@ -561,13 +561,13 @@ See §3.3.
 
 **Threat.** Production apps run with non-zero temperature; absolute violation counts will differ.
 
-**Response.** Documented. Lane A vs Lane B relative ordering should be robust to temperature (drift gets *worse* at higher temperature, in our experience; safety priors are not). We chose temperature 0 explicitly for reproducibility, not for realism — the goal of v0.4 is a clean delta measurement, not absolute production-rate estimation.
+**Response.** Documented. Lane A vs Lane B relative ordering should be robust to temperature (drift gets *worse* at higher temperature, in our experience; safety priors are not). We chose temperature 0 explicitly for reproducibility, not for realism — the goal of v0.5 is a clean delta measurement, not absolute production-rate estimation.
 
 ### 9.6 Single vendor
 
 **Threat.** OpenAI-only; the finding may not generalise.
 
-**Response.** Documented. v0.4 is single-vendor by design (one API contract, comparable across the lineup). A future release adds Anthropic Claude and Google Gemini. We expect the relative ordering of Lane A vs Lane B to hold; the per-model rankings will likely shift.
+**Response.** Documented. v0.5 is single-vendor by design (one API contract, comparable across the lineup). v0.6 adds Anthropic Claude and Google Gemini. We expect the relative ordering of Lane A vs Lane B to hold; the per-model rankings will likely shift.
 
 ### 9.7 OpenAI policy filter false-positive
 
@@ -584,12 +584,12 @@ See §3.3.
 ```bash
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
-git checkout v0.4.0
-npm install            # pins exact versions, including @gymbile/wpl-ai ^1.11.0
+git checkout v0.5.0
+npm install            # pins exact versions, including @gymbile/wpl-ai ^1.13.0, @gymbile/wpl-validator ^1.7.1
 cp .env.example .env   # add OPENAI_API_KEY
 npm test               # 71 unit tests
 npm run eval           # full sweep: 4 models × 15 scenarios × 2 lanes × 2 phases
-                       # ~$37 OpenAI spend, ~3-5 hours wall-clock
+                       # ~$37.27 OpenAI spend, ~11 hours wall-clock
 npm run report         # aggregates results/*.json → results-table.md, summary.md, results.csv
 ```
 
@@ -688,7 +688,7 @@ The blacklists in `scenarios.yaml` are version-controlled and citable. Forks tar
 
 | Artifact | URL |
 |---|---|
-| Eval source + v0.4.0 release + 240 baseline result JSONs | `github.com/gymbile/wpl-eval` |
+| Eval source + v0.5.0 release + 240 baseline result JSONs | `github.com/gymbile/wpl-eval` |
 | WPL-AI compiler (TypeScript) | `github.com/gymbile/wpl-ai`, `npmjs.com/@gymbile/wpl-ai` |
 | WPL-AI compiler (Elixir reference) | `github.com/gymbile/wpl-ai-ex` |
 | WPL validator (TypeScript) | `github.com/gymbile/wpl-validator-ts`, `npmjs.com/@gymbile/wpl-validator` |
