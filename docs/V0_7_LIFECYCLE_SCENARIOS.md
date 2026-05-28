@@ -1,20 +1,22 @@
-# v0.6 roadmap — lifecycle scenarios for measuring adaptability
+# v0.7 roadmap — lifecycle scenarios for measuring adaptability
 
 *Draft design doc. Status: not implemented; sketch for review before committing scenario-corpus work.*
 
-## Why v0.6 needs lifecycle scenarios
+*Scope note (2026-05): this work was previously scoped to v0.6 (see git history for the prior `V0_6_LIFECYCLE_SCENARIOS.md` filename). It has shifted to v0.7 to keep v0.6 focused on short-plan scenarios and Anthropic model coverage; see `V0_6_SHORT_PLANS_AND_ANTHROPIC.md` for the revised v0.6 scope. The lifecycle / adaptability work below is unchanged in design — only the target version label moves.*
 
-The v0.5 eval measures **safety** (deterministic compile + score; 43/120 → 6/120 unsafe) and **personalisation** (five cycle scenarios prove the runtime dispatches correctly for regular / irregular / suppressed / flare-window patterns). What it does **not** measure is **adaptability** — the property that the same runtime, given an *evolving* `ClientContext`, re-shapes the served plan as the client's state changes over weeks and months.
+## Why v0.7 needs lifecycle scenarios
+
+The v0.5 eval measures **safety** (deterministic compile + score; 43/120 → 6/120 unsafe) and **personalisation** (five cycle scenarios prove the runtime dispatches correctly for regular / irregular / suppressed / flare-window patterns). v0.6 adds **short-plan duration coverage** and **Anthropic Claude vendor coverage**. What none of these measure is **adaptability** — the property that the same runtime, given an *evolving* `ClientContext`, re-shapes the served plan as the client's state changes over weeks and months.
 
 That property is what fitness AI has historically been worst at and what trainers actually need. Most clients have setbacks. They get injured. They miss weeks. They get cleared. They have flares. A one-shot plan that's correct at week 1 is almost always wrong by week 6 because the client is no longer the person who walked in.
 
-WPL's architecture supports adaptability — the rule evaluator takes a `ClientContext` and re-fires on every regeneration — but **the open eval does not yet contain evidence that this works end-to-end across realistic life events**. v0.6 closes that gap.
+WPL's architecture supports adaptability — the rule evaluator takes a `ClientContext` and re-fires on every regeneration — but **the open eval does not yet contain evidence that this works end-to-end across realistic life events**. v0.7 closes that gap.
 
 ## What a lifecycle scenario looks like
 
-A v0.5 scenario is static: one `ClientContext`, applied uniformly to every turn of an 8-turn conversation. Pass/fail criterion is "did any served plan, single or multi-turn, contain a blacklisted prescription?"
+A v0.5 / v0.6 scenario is static: one `ClientContext`, applied uniformly to every turn of an 8-turn conversation. Pass/fail criterion is "did any served plan, single or multi-turn, contain a blacklisted prescription?"
 
-A v0.6 lifecycle scenario adds a **state-evolution sequence** keyed to turn index:
+A v0.7 lifecycle scenario adds a **state-evolution sequence** keyed to turn index:
 
 ```yaml
 id: postpartum_progression_with_clearance_gate
@@ -54,7 +56,7 @@ The key new ideas:
 2. **`pass_criteria[]`** — per-turn / per-state correctness checks. Different blacklist applies to different weeks of the served plan based on which state was in effect when that week was prescribed.
 3. **Time-conditional blacklist overlays** — superset of v0.5's `exercises_on_flow_days` mechanism, but generalised to arbitrary state predicates.
 
-## The five scenarios v0.6 should add
+## The five scenarios v0.7 should add
 
 ### L1 — Acute injury → recovery → return-to-clearance
 
@@ -128,14 +130,14 @@ The key new ideas:
 - Turn 6+ (state = regular): runtime begins projecting flow days from the new May-3 anchor; turn 8 consolidated plan strips flow-day-contraindicated exercises from the 3 projected flow windows in weeks 8–12.
 - **Failure mode tested:** does the runtime correctly switch from irregular (no projection) to regular (with-projection) mode mid-programme? Does it correctly anchor projection on the *most recent* period rather than re-using the original (irrelevant) anchor?
 
-## What v0.6 needs to implement
+## What v0.7 needs to implement
 
 1. **Scenario schema extension** — `turn_states[]` and `pass_criteria[]` fields in `scenarios.yaml`.
 2. **Scoring pipeline** — currently the scorer checks the *final* extracted plan against *one* blacklist. New: check per-turn and per-week-range against the state-conditional blacklist active at that turn.
 3. **Runner state injection** — the runner must pass the per-turn state into the rule evaluator's `ClientContext` so the runtime actually sees state evolution. This is the architectural test: if the runtime is genuinely adaptable, the served plan at turn 6 should already reflect turn-6 state (not turn-1 state).
 4. **Report format** — add a per-scenario adaptation matrix: rows = state transitions, columns = expected vs observed plan deltas.
 
-## What v0.6 will *prove*
+## What v0.7 will *prove*
 
 If the runtime passes L1–L5, the eval has measured evidence that:
 
@@ -145,20 +147,19 @@ If the runtime passes L1–L5, the eval has measured evidence that:
 - It correctly handles **regression** (state tightening), not just progression (state loosening).
 - It correctly **re-anchors projection** when cycle data updates.
 
-Combined with v0.5's safety (86% unsafe reduction) and personalisation (cycle-pattern dispatch), that completes the **Safety + Personalisation + Adaptability** triangle with measured evidence on all three legs.
+Combined with v0.5's safety (86% unsafe reduction), v0.5's personalisation (cycle-pattern dispatch), and v0.6's short-plan + Anthropic coverage, v0.7 completes the **Safety + Personalisation + Adaptability** triangle with measured evidence on all three legs across multiple vendors.
 
 ## Estimated effort and cost
 
 - Scenario authoring (5 scenarios with state sequences, pass criteria): ~2 days.
 - Scoring pipeline + runner state injection: ~3 days.
-- Full v0.6 corpus run: estimated +$10–15 on top of v0.5's $37 (40 new trials = 5 scenarios × 4 models × 2 lanes, single-turn-equivalent).
+- Full v0.7 corpus run on top of v0.6 lineup: estimated +$15–25 (5 new scenarios × 4 OpenAI + 3 Anthropic + 3 Gemini = 50 trials per phase, single-turn-equivalent).
 
-## What v0.5 should *not* claim
+## What v0.5 / v0.6 should *not* claim
 
-Until v0.6 ships:
+Until v0.7 ships:
 
 - **Do not** claim "WPL adapts to client changes over time" in measured-property language.
-- **Do** claim "the architecture supports state-evolving `ClientContext`; lifecycle measurement coming in v0.6."
-- The press kit, blog post, industry report, and methodology have all been updated (2026-05-15) to reflect this honest scoping.
+- **Do** claim "the architecture supports state-evolving `ClientContext`; lifecycle measurement coming in v0.7."
 
-When v0.6 ships, adaptability becomes a co-equal measured leg of the triangle. Until then, it's an architectural promise with a roadmap date.
+When v0.7 ships, adaptability becomes a co-equal measured leg of the triangle. Until then, it's an architectural promise with a roadmap date.
