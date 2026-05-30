@@ -1,13 +1,25 @@
 // Shared types used across lanes, scoring, and the runner.
 
-// The locked v0.1 sweep — these four show up in the published results table.
+// The locked v0.1 sweep — these four show up in the published v0.5 results.
 export type LockedModel = "gpt-5" | "gpt-5-mini" | "gpt-5-nano" | "gpt-4.1";
 
-// Any OpenAI model identifier the runner is willing to call. Useful for
-// ad-hoc smoke tests against models outside the locked sweep (e.g.
-// gpt-4o-mini). Models not in the pricing table cost $0 in the results
-// (clearly flagged as "unpriced" by the runner).
-export type ModelName = LockedModel | (string & { readonly __opaque?: "openai-model" });
+// v0.6 widens vendor coverage to Anthropic Claude. These three mirror the
+// OpenAI tier structure (flagship / mid / cheap) so the cross-vendor
+// leaderboard stays interpretable.
+export type AnthropicModel =
+  | "claude-opus-4-7"
+  | "claude-sonnet-4-6"
+  | "claude-haiku-4-5-20251001";
+
+// Version-pinned locked sweeps. V0_5 stays frozen so historical results
+// remain reproducible against the same lineup; V0_6 is the superset.
+export type LockedModelV05 = LockedModel;
+export type LockedModelV06 = LockedModelV05 | AnthropicModel;
+
+// Any model identifier the runner is willing to call. The opaque-string
+// escape hatch covers ad-hoc smoke tests (gpt-4o-mini, etc.). Models not in
+// the pricing table cost $0 in the results, clearly flagged as "unpriced".
+export type ModelName = LockedModelV06 | (string & { readonly __opaque?: "model-id" });
 
 export type LaneId = "A" | "B";
 

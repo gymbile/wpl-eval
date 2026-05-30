@@ -3,15 +3,41 @@ import { resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import "./lib/env.js";
 import { makeOpenAiModel } from "./models/openai.js";
+import { makeAnthropicModel } from "./models/anthropic.js";
 import { runLaneASingle, runLaneAMulti } from "./lanes/lane-a.js";
 import { runLaneBSingle, runLaneBMulti } from "./lanes/lane-b.js";
-import type { LockedModel, ModelName, Phase, RunResult, Scenario } from "./lib/types.js";
+import type {
+  LockedModelV05,
+  LockedModelV06,
+  ModelName,
+  Phase,
+  RunResult,
+  Scenario,
+} from "./lib/types.js";
 import { isPriced } from "./lib/pricing.js";
 
-// The locked v0.1 sweep — these four ship in the published results table.
-// Ad-hoc smoke tests against other OpenAI models are supported via
-// `--model=<name>` (e.g. gpt-4o-mini).
-const LOCKED_MODELS: LockedModel[] = ["gpt-5", "gpt-5-mini", "gpt-5-nano", "gpt-4.1"];
+// v0.5 locked sweep — these four ship in the published v0.5 results. Frozen
+// so historical results stay reproducible against the same lineup.
+const LOCKED_MODELS_V0_5: LockedModelV05[] = ["gpt-5", "gpt-5-mini", "gpt-5-nano", "gpt-4.1"];
+
+// v0.6 widens the lineup to add three Anthropic Claude models. Mirrors the
+// flagship / mid / cheap tier shape of the OpenAI side so the cross-vendor
+// leaderboard is interpretable. Pass `--sweep=v0.6` to use this set;
+// default remains v0.5 for backwards compatibility with existing reruns.
+const LOCKED_MODELS_V0_6: LockedModelV06[] = [
+  ...LOCKED_MODELS_V0_5,
+  "claude-opus-4-7",
+  "claude-sonnet-4-6",
+  "claude-haiku-4-5-20251001",
+];
+
+function isAnthropic(name: ModelName): boolean {
+  return name.startsWith("claude-");
+}
+
+function makeModel(name: ModelName) {
+  return isAnthropic(name) ? makeAnthropicModel(name) : makeOpenAiModel(name);
+}
 
 function loadScenarios(): Scenario[] {
   const path = resolve(process.cwd(), "scenarios/scenarios.yaml");
@@ -35,11 +61,13 @@ function resultPath(
 
 function parseArgs(): {
   phase: Phase | "all";
+  sweep: "v0.5" | "v0.6";
   only: { model?: string; scenario?: string; lane?: "A" | "B" };
   tag?: string;
 } {
   const argv = process.argv.slice(2);
   let phase: Phase | "all" = "all";
+  let sweep: "v0.5" | "v0.6" = "v0.5";
   let onlyModel: string | undefined;
   let onlyScenario: string | undefined;
   let onlyLane: "A" | "B" | undefined;
@@ -47,6 +75,8 @@ function parseArgs(): {
   for (const a of argv) {
     if (a === "--phase=single") phase = "single";
     else if (a === "--phase=multi") phase = "multi";
+    else if (a === "--sweep=v0.5") sweep = "v0.5";
+    else if (a === "--sweep=v0.6") sweep = "v0.6";
     else if (a.startsWith("--model=")) onlyModel = a.slice("--model=".length);
     else if (a.startsWith("--scenario=")) onlyScenario = a.slice("--scenario=".length);
     else if (a === "--lane=A" || a === "--lane=B") onlyLane = a.slice("--lane=".length) as "A" | "B";
@@ -56,16 +86,18 @@ function parseArgs(): {
   if (onlyModel !== undefined) only.model = onlyModel;
   if (onlyScenario !== undefined) only.scenario = onlyScenario;
   if (onlyLane !== undefined) only.lane = onlyLane;
-  return { phase, only, ...(tag !== undefined ? { tag } : {}) };
+  return { phase, sweep, only, ...(tag !== undefined ? { tag } : {}) };
 }
 
 async function main(): Promise<void> {
-  const { phase, only, tag } = parseArgs();
+  const { phase, sweep, only, tag } = parseArgs();
   const scenarios = loadScenarios();
   // If a single model is requested, use it verbatim (allows ad-hoc smoke
   // tests against models outside the locked sweep). Otherwise run the
-  // locked four.
-  const models: ModelName[] = only.model ? [only.model as ModelName] : [...LOCKED_MODELS];
+  // sweep selected via --sweep=v0.5|v0.6 (default v0.5).
+  const lockedSweep: ModelName[] =
+    sweep === "v0.6" ? [...LOCKED_MODELS_V0_6] : [...LOCKED_MODELS_V0_5];
+  const models: ModelName[] = only.model ? [only.model as ModelName] : lockedSweep;
   for (const m of models) {
     if (!isPriced(m)) {
       console.warn(`  WARN: ${m} has no pricing entry — cost_usd will be 0 in results.`);
@@ -83,7 +115,7 @@ async function main(): Promise<void> {
   console.log(`Running ${total} (model × scenario × lane × phase) combinations.`);
 
   for (const modelName of models) {
-    const model = makeOpenAiModel(modelName);
+    const model = makeModel(modelName);
 
     for (const scenario of targets) {
       for (const lane of lanes) {

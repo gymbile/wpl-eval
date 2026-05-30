@@ -1,10 +1,14 @@
 import type { ModelName } from "./types.js";
 
-// OpenAI public price table, USD per million tokens. Single source of truth —
-// when OpenAI re-prices, this file changes and historic cost figures are
+// Public price table, USD per million tokens. Single source of truth — when
+// a vendor re-prices, this file changes and historic cost figures are
 // recomputable from logged tokens without re-running the benchmark.
 //
-// Last verified: 2026-05-11. Source: openai.com/pricing.
+// OpenAI rows last verified: 2026-05-11. Source: openai.com/pricing.
+// Anthropic rows last verified: 2026-05-30. Source: anthropic.com/pricing.
+//   Note: confirm the three Claude prices before the v0.6 inference sweep —
+//   pricing changes are unannounced and the cost-per-plan tables in
+//   INDUSTRY_REPORT.md and DIFF_v0.5_to_v0.6.md derive directly from here.
 const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   "gpt-5": { input_per_m: 1.25, output_per_m: 10.0 },
   "gpt-5-mini": { input_per_m: 0.25, output_per_m: 2.0 },
@@ -13,6 +17,10 @@ const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   // Out-of-sweep models supported for ad-hoc smoke tests.
   "gpt-4o-mini": { input_per_m: 0.15, output_per_m: 0.6 },
   "gpt-4o": { input_per_m: 2.5, output_per_m: 10.0 },
+  // Anthropic Claude (v0.6 sweep). VERIFY before running the full sweep.
+  "claude-opus-4-7": { input_per_m: 15.0, output_per_m: 75.0 },
+  "claude-sonnet-4-6": { input_per_m: 3.0, output_per_m: 15.0 },
+  "claude-haiku-4-5-20251001": { input_per_m: 1.0, output_per_m: 5.0 },
 };
 
 export function costUsd(model: ModelName, tokensIn: number, tokensOut: number): number {

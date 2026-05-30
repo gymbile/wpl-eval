@@ -28,3 +28,14 @@ export function requireOpenAiKey(): string {
   }
   return key;
 }
+
+export function requireAnthropicKey(): string {
+  const key = process.env["ANTHROPIC_API_KEY"];
+  if (!key) {
+    throw new Error(
+      "ANTHROPIC_API_KEY is not set. Add it to ./.env (preferred for public reproducers) " +
+        "or ../../gymbile_backend/.env (local dev fallback).",
+    );
+  }
+  return key;
+}
