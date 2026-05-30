@@ -10,9 +10,9 @@
 |---|---|---|
 | **Safety** | Plans the runtime serves cannot contain blacklist-matched exercises, intensities, or food prescriptions for the client's stated context | **Measured.** 86% reduction vs raw LLM (43→6 unsafe trials; 207→28 violations). |
 | **Personalisation** | Same compiler + same vocabulary produces correct *different* outputs per `ClientContext` (cycle pattern, injuries, equipment, etc.) | **Measured.** Five cycle-aware scenarios + negative control demonstrate runtime pattern dispatch (regular, irregular, suppressed, flare-window). |
-| **Adaptability** | Re-evaluation as `ClientContext` evolves over time — injury at week 3, clearance at week 6, programme paused for travel | **Not yet measured end-to-end.** Architecturally supported (rule evaluator re-fires on each regeneration). **v0.6 will add lifecycle scenarios** that test state evolution between turns. |
+| **Adaptability** | Re-evaluation as `ClientContext` evolves over time — injury at week 3, clearance at week 6, programme paused for travel | **Not yet measured end-to-end.** Architecturally supported (rule evaluator re-fires on each regeneration). **v0.7 will add lifecycle scenarios** that test state evolution between turns. |
 
-The properties are not equal in evidence today. Section 11 below documents what v0.6 adds.
+The properties are not equal in evidence today. The forward roadmap in `docs/V0_7_LIFECYCLE_SCENARIOS.md` documents what v0.7 adds.
 
 ---
 
@@ -539,9 +539,9 @@ A sharp reader's critique: *"This is AI validated by AI"* is not quite right —
 
 **What this means in practice.** The 86% reduction headline is robust against any blacklist-encoding error, because the *same* blacklist applies to both lanes — encoding mistakes cancel in the A-vs-B delta. But absolute claims of the form *"raw LLM produced X clinically unsafe prescriptions"* depend on our blacklist matching real clinical practice. If our encoding is wrong, the absolute counts are wrong.
 
-**Mitigation (in progress).** v0.6 introduces **named per-domain clinical reviewers**: one OB/GYN reviewing the women's-health scenarios, one orthopaedic surgeon / sports-medicine clinician reviewing the post-op rehab scenarios, one AACVPR-credentialed clinician reviewing the cardiac scenario. Each reviewer (a) confirms or amends each scenario's blacklist against the cited source, (b) is named in this document and in the press kit, (c) provides a 3–5 sentence on-record quote. The full reviewer packet (case briefings, review form, source citations) is at [`gymbile-internal/docs/clinician-review/`](https://github.com/gymbile/gymbile-internal) — private until the first reviews land in `METHODOLOGY.md` v0.6.
+**Mitigation (planned for v0.7).** v0.7 plans to engage external clinical reviewers from three specialties (OB/GYN for women's-health scenarios, orthopaedic surgery / sports medicine for post-op rehabilitation scenarios, AACVPR-credentialed cardiology for the cardiac scenario) to confirm or amend each scenario's blacklist against its cited source. The review packet (case briefings, review form, source citations) is being prepared at [`gymbile-internal/docs/clinician-review/`](https://github.com/gymbile/gymbile-internal); reviewers will be identified and acknowledged in `METHODOLOGY.md` at the v0.7 release. As of the v0.5 release, no specific reviewers have been engaged or signed on.
 
-**Until v0.6 ships:** treat the blacklists as carefully-cited-but-not-externally-validated. The relative comparison (raw LLM vs WPL) is robust; the absolute encoding is pending clinician sign-off. Reporters, investors, and adopters reading this document should know that distinction explicitly.
+**Until v0.7 ships:** treat the blacklists as carefully-cited-but-not-externally-validated. The relative comparison (raw LLM vs WPL) is robust; the absolute encoding is pending clinician review. Reporters, investors, and adopters reading this document should know that distinction explicitly.
 
 ### 9.3 Extractor bias (Lane A)
 
@@ -567,7 +567,7 @@ See §3.3.
 
 **Threat.** OpenAI-only; the finding may not generalise.
 
-**Response.** Documented. v0.5 is single-vendor by design (one API contract, comparable across the lineup). v0.6 adds Anthropic Claude and Google Gemini. We expect the relative ordering of Lane A vs Lane B to hold; the per-model rankings will likely shift.
+**Response.** Documented. v0.5 is single-vendor by design (one API contract, comparable across the lineup). v0.6 adds Anthropic Claude; v0.7 adds Google Gemini. We expect the relative ordering of Lane A vs Lane B to hold; the per-model rankings will likely shift.
 
 ### 9.7 OpenAI policy filter false-positive
 
@@ -728,4 +728,4 @@ The completion loop itself is left as an integration concern. We expect multiple
 
 ---
 
-**Audited 2026-05-16** against the v0.5 corpus in [`results/*.json`](https://github.com/gymbile/wpl-eval/tree/main/results). Every quantitative claim is cross-checked in [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md). Changelog disclosing why v0.5 numbers differ from earlier versions: [`docs/DIFF_v0.4_to_v0.5.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/DIFF_v0.4_to_v0.5.md). Forward roadmap (lifecycle / adaptability measurement coming in v0.6): [`docs/V0_6_LIFECYCLE_SCENARIOS.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_6_LIFECYCLE_SCENARIOS.md).
+**Audited 2026-05-16** against the v0.5 corpus in [`results/*.json`](https://github.com/gymbile/wpl-eval/tree/main/results). Every quantitative claim is cross-checked in [`docs/CLAIM_AUDIT.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/CLAIM_AUDIT.md). Changelog disclosing why v0.5 numbers differ from earlier versions: [`docs/DIFF_v0.4_to_v0.5.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/DIFF_v0.4_to_v0.5.md). Forward roadmap: v0.6 adds short-plan scenarios and Anthropic Claude ([`docs/V0_6_SHORT_PLANS_AND_ANTHROPIC.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_6_SHORT_PLANS_AND_ANTHROPIC.md)); v0.7 adds lifecycle / adaptability scenarios, clinician review of blacklist encodings, Google Gemini, and the orchestrator benchmark ([`docs/V0_7_LIFECYCLE_SCENARIOS.md`](https://github.com/gymbile/wpl-eval/blob/main/docs/V0_7_LIFECYCLE_SCENARIOS.md)).

@@ -18,7 +18,7 @@ v0.6 closes both gaps minimally. We deliberately scope out the full v0.5→v0.7 
 |---|---|
 | Short-plan scenarios (5 new) | Lifecycle / adaptability scenarios (see `V0_7_LIFECYCLE_SCENARIOS.md`) |
 | Anthropic Claude (full sweep) | Google Gemini (full sweep) |
-| New scorer dimensions for short-plan failure modes | Named per-domain clinician-validated blacklists |
+| New scorer dimensions for short-plan failure modes | Per-domain clinician review of blacklist encodings |
 | | Scorer/runtime cycle-day asymmetry fix |
 | | First public orchestrator-performance benchmark |
 
