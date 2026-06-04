@@ -1,0 +1,1629 @@
+{
+  "model": "claude-sonnet-4-6",
+  "scenario_id": "lumbar_disc",
+  "tokens_in": 14670,
+  "tokens_out": 12380,
+  "hit_token_cap": false,
+  "latency_ms": 124053,
+  "cost_usd": 0.22971,
+  "raw_text": "{\n  \"$schema\": \"https://wpl.dev/schemas/wpl/v1.schema.json\",\n  \"version\": \"1.6.0\",\n  \"plan\": {\n    \"id\": \"l4l5-recon-2wk\",\n    \"name\": \"L4-L5 Post-Herniation Reconditioning — 2-Week Starter Block\",\n    \"description\": \"A conservative 2-week introductory strength block for a 42-year-old male with a resolved L4-L5 disc herniation. No heavy spinal loading; no loaded spinal flexion. Focuses on hip-hinge patterning, anti-flexion core stability, horizontal push/pull, and single-leg work. Designed to precede a full 12-week programme once tolerance is confirmed.\",\n    \"type\": \"workout\",\n    \"visibility\": \"template\",\n    \"metadata\": {\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"created_by\": \"trainer\",\n      \"tags\": [\"back-rehab\", \"reconditioning\", \"strength\", \"low-spinal-load\", \"beginner-return\"],\n      \"difficulty\": \"beginner\",\n      \"estimated_duration_days\": 14,\n      \"language\": \"en\"\n    },\n    \"goals\": [\n      {\n        \"id\": \"goal-movement-quality\",\n        \"type\": \"primary\",\n        \"category\": \"movement_quality\",\n        \"name\": \"Re-establish safe movement patterns\",\n        \"description\": \"Groove hip-hinge, squat, and anti-flexion core patterns with zero pain provocation.\"\n      },\n      {\n        \"id\": \"goal-strength-base\",\n        \"type\": \"secondary\",\n        \"category\": \"strength\",\n        \"name\": \"Build foundational strength\",\n        \"description\": \"Develop moderate lower and upper body strength within spinal-safe loading parameters.\"\n      }\n    ],\n    \"requirements\": {\n      \"min_age\": 18,\n      \"fitness_level\": [\"beginner\", \"intermediate\"],\n      \"equipment\": [\n        { \"id\": \"eq-barbell\", \"name\": \"Barbell\", \"required\": false, \"alternatives\": [\"dumbbells\"] },\n        { \"id\": \"eq-dumbbells\", \"name\": \"Dumbbells\", \"required\": true },\n        { \"id\": \"eq-cable\", \"name\": \"Cable machine\", \"required\": true },\n        { \"id\": \"eq-bench\", \"name\": \"Flat bench\", \"required\": true },\n        { \"id\": \"eq-pulldown\", \"name\": \"Lat pulldown machine\", \"required\": true },\n        { \"id\": \"eq-mat\", \"name\": \"Exercise mat\", \"required\": true }\n      ],\n      \"contraindications\": [\n        {\n          \"condition\": \"icd10:M51.1\",\n          \"severity\": \"moderate\",\n          \"action\": \"modify\",\n          \"affected_activities\": [\"any_loaded_spinal_flexion\", \"heavy_deadlift\", \"back_squat_heavy\"]\n        },\n        {\n          \"condition\": \"lower_back_injury\",\n          \"severity\": \"moderate\",\n          \"action\": \"exclude\",\n          \"affected_activities\": [\"loaded_spinal_flexion\", \"sit_ups\", \"leg_press_deep_lumbar_flexion\"]\n        }\n      ],\n      \"time_commitment\": {\n        \"min_days_per_week\": 3,\n        \"max_days_per_week\": 3,\n        \"min_minutes_per_day\": 45,\n        \"max_minutes_per_day\": 60\n      }\n    },\n    \"athlete_thresholds\": {\n      \"body_weight_kg\": 85\n    },\n    \"phases\": [\n      {\n        \"id\": \"phase-1-intro\",\n        \"name\": \"Phase 1 — Movement Foundations\",\n        \"order\": 1,\n        \"type\": \"accumulation\",\n        \"description\": \"Two weeks of low-load, high-quality movement. RPE capped at 6/10. Emphasis on technique, bracing, and pain-free range of motion. Three sessions per week on non-consecutive days.\",\n        \"duration\": { \"value\": 2, \"unit\": \"weeks\" },\n        \"weeks\": [\n          {\n            \"id\": \"week-1\",\n            \"name\": \"Week 1 — Pattern Acquisition\",\n            \"order\": 1,\n            \"is_deload\": false,\n            \"days\": [\n              {\n                \"id\": \"w1d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Session A — Lower Body & Core\",\n                \"estimated_duration_minutes\": 55,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d1-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-wu1\",\n                        \"type\": \"simple\",\n                        \"name\": \"5-min low-intensity bike or walk\",\n                        \"duration\": { \"value\": 5, \"unit\": \"minutes\" }\n                      },\n                      {\n                        \"id\": \"w1d1-wu2\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Hip Mobility & Glute Activation\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 8, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d1-wu2-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"90/90 Hip Rotation\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"body_part\": \"hip_flexors\"\n                            },\n                            {\n                              \"id\": \"w1d1-wu2-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Glute Bridge (bodyweight)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 12,\n                              \"sides\": \"both\",\n                              \"body_part\": \"glutes\"\n                            },\n                            {\n                              \"id\": \"w1d1-wu2-ex3\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Cat-Camel (neutral only — stop at neutral, no end-range flexion)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"body_part\": \"spinal_erectors\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-a1\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"goblet_squat\",\n                        \"name\": \"Goblet Squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 10, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 5,\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"squat\"\n                      },\n                      {\n                        \"id\": \"w1d1-a2\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"romanian_deadlift_dumbbell\",\n                        \"name\": \"Dumbbell Romanian Deadlift\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 12, \"unit\": \"kg\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 1, \"pause_top\": 0 }\n                        },\n                        \"target_rpe\": 5,\n                        \"primary_muscles\": [\"hamstrings\", \"glutes\"],\n                        \"secondary_muscles\": [\"spinal_erectors\", \"lower_back\"],\n                        \"movement_pattern\": \"hinge\"\n                      },\n                      {\n                        \"id\": \"w1d1-a3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"pallof_press_cable\",\n                        \"name\": \"Pallof Press (Cable)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 5,\n                        \"primary_muscles\": [\"abs\", \"obliques\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      },\n                      {\n                        \"id\": \"w1d1-a4\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dead_bug\",\n                        \"name\": \"Dead Bug\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 8 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 2, \"concentric\": 2, \"pause_top\": 0 }\n                        },\n                        \"target_rpe\": 4,\n                        \"primary_muscles\": [\"abs\"],\n                        \"secondary_muscles\": [\"hip_flexors\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-cd1\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Post-Session Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 7, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d1-cd1-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Hip Flexor Kneeling Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 6,\n                              \"body_part\": \"hip_flexors\"\n                            },\n                            {\n                              \"id\": \"w1d1-cd1-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Piriformis Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 6,\n                              \"body_part\": \"glutes\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d2\",\n                \"day_of_week\": 2,\n                \"type\": \"rest\",\n                \"name\": \"Rest Day\"\n              },\n              {\n                \"id\": \"w1d3\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Session B — Upper Body Push & Pull\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d3-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d3-wu1\",\n                        \"type\": \"simple\",\n                        \"name\": \"5-min low-intensity bike or walk\",\n                        \"duration\": { \"value\": 5, \"unit\": \"minutes\" }\n                      },\n                      {\n                        \"id\": \"w1d3-wu2\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Shoulder & Thoracic Warm-Up\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 6, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d3-wu2-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Thoracic Rotation (seated)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"body_part\": \"traps\"\n                            },\n                            {\n                              \"id\": \"w1d3-wu2-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Band Pull-Apart\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 15,\n                              \"body_part\": \"rear_delts\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d3-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d3-a1\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"db_bench_press\",\n                        \"name\": \"Dumbbell Bench Press\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 16, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"chest\"],\n                        \"secondary_muscles\": [\"front_delts\", \"triceps\"],\n                        \"movement_pattern\": \"push_horizontal\"\n                      },\n                      {\n                        \"id\": \"w1d3-a2\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"seated_cable_row\",\n                        \"name\": \"Seated Cable Row\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"upper_back\", \"lats\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\"\n                      },\n                      {\n                        \"id\": \"w1d3-a3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"lat_pulldown\",\n                        \"name\": \"Lat Pulldown (neutral grip)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"lats\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_vertical\"\n                      },\n                      {\n                        \"id\": \"w1d3-a4\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"db_shoulder_press_seated\",\n                        \"name\": \"Seated Dumbbell Shoulder Press\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 10, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"front_delts\", \"side_delts\"],\n                        \"secondary_muscles\": [\"triceps\", \"traps\"],\n                        \"movement_pattern\": \"push_vertical\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d3-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d3-cd1\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Upper Body Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d3-cd1-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Doorway Chest Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"chest\"\n                            },\n                            {\n                              \"id\": \"w1d3-cd1-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Lat Stretch (kneeling)\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"lats\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d4\",\n                \"day_of_week\": 4,\n                \"type\": \"rest\",\n                \"name\": \"Rest Day\"\n              },\n              {\n                \"id\": \"w1d5\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Session C — Full Body Integration\",\n                \"estimated_duration_minutes\": 55,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d5-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-wu1\",\n                        \"type\": \"simple\",\n                        \"name\": \"5-min low-intensity bike or walk\",\n                        \"duration\": { \"value\": 5, \"unit\": \"minutes\" }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d5-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-a1\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"split_squat_dumbbell\",\n                        \"name\": \"Dumbbell Split Squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 8, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 5,\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\"],\n                        \"movement_pattern\": \"lunge\"\n                      },\n                      {\n                        \"id\": \"w1d5-a2\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"cable_pull_through\",\n                        \"name\": \"Cable Pull-Through\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 5,\n                        \"primary_muscles\": [\"glutes\", \"hamstrings\"],\n                        \"secondary_muscles\": [\"spinal_erectors\"],\n                        \"movement_pattern\": \"hinge\"\n                      },\n                      {\n                        \"id\": \"w1d5-a3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"bird_dog\",\n                        \"name\": \"Bird Dog\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 8 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 0, \"pause_bottom\": 3, \"concentric\": 0, \"pause_top\": 0 }\n                        },\n                        \"target_rpe\": 4,\n                        \"primary_muscles\": [\"spinal_erectors\", \"glutes\"],\n                        \"secondary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      },\n                      {\n                        \"id\": \"w1d5-a4\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"db_single_arm_row\",\n                        \"name\": \"Single-Arm Dumbbell Row (bench supported)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 16, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"lats\", \"upper_back\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d5-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-cd1\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Full Body Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 7, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d5-cd1-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Glute Stretch (figure-4)\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 6,\n                              \"body_part\": \"glutes\"\n                            },\n                            {\n                              \"id\": \"w1d5-cd1-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Thoracic Foam Roll\",\n                              \"modality\": \"smr_foam_roll\",\n                              \"hold_seconds\": 60,\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"traps\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d6\",\n                \"day_of_week\": 6,\n                \"type\": \"active_recovery\",\n                \"name\": \"Active Recovery — Light Walk\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d6-ar\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d6-ar1\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy Walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 30, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": { \"min\": 2, \"max\": 3 },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d7\",\n                \"day_of_week\": 7,\n                \"type\": \"rest\",\n                \"name\": \"Rest Day\"\n              }\n            ]\n          },\n          {\n            \"id\": \"week-2\",\n            \"name\": \"Week 2 — Load Familiarisation\",\n            \"order\": 2,\n            \"is_deload\": false,\n            \"days\": [\n              {\n                \"id\": \"w2d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Session A — Lower Body & Core (progressive)\",\n                \"estimated_duration_minutes\": 55,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d1-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-wu1\",\n                        \"type\": \"simple\",\n                        \"name\": \"5-min low-intensity bike or walk\",\n                        \"duration\": { \"value\": 5, \"unit\": \"minutes\" }\n                      },\n                      {\n                        \"id\": \"w2d1-wu2\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Hip Mobility & Glute Activation\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 8, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d1-wu2-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"90/90 Hip Rotation\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"body_part\": \"hip_flexors\"\n                            },\n                            {\n                              \"id\": \"w2d1-wu2-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Glute Bridge (bodyweight)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 15,\n                              \"sides\": \"both\",\n                              \"body_part\": \"glutes\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-a1\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"goblet_squat\",\n                        \"name\": \"Goblet Squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 14, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"squat\"\n                      },\n                      {\n                        \"id\": \"w2d1-a2\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"romanian_deadlift_dumbbell\",\n                        \"name\": \"Dumbbell Romanian Deadlift\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 16, \"unit\": \"kg\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 1, \"pause_top\": 0 }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"hamstrings\", \"glutes\"],\n                        \"secondary_muscles\": [\"spinal_erectors\", \"lower_back\"],\n                        \"movement_pattern\": \"hinge\"\n                      },\n                      {\n                        \"id\": \"w2d1-a3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"pallof_press_cable\",\n                        \"name\": \"Pallof Press (Cable) — add 1 sec pause at extension\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 12 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"abs\", \"obliques\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      },\n                      {\n                        \"id\": \"w2d1-a4\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dead_bug\",\n                        \"name\": \"Dead Bug\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 2, \"concentric\": 2, \"pause_top\": 0 }\n                        },\n                        \"target_rpe\": 5,\n                        \"primary_muscles\": [\"abs\"],\n                        \"secondary_muscles\": [\"hip_flexors\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-cd1\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Post-Session Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 7, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d1-cd1-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Hip Flexor Kneeling Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 6,\n                              \"body_part\": \"hip_flexors\"\n                            },\n                            {\n                              \"id\": \"w2d1-cd1-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Piriformis Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 6,\n                              \"body_part\": \"glutes\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d2\",\n                \"day_of_week\": 2,\n                \"type\": \"rest\",\n                \"name\": \"Rest Day\"\n              },\n              {\n                \"id\": \"w2d3\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Session B — Upper Body Push & Pull (progressive)\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d3-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d3-wu1\",\n                        \"type\": \"simple\",\n                        \"name\": \"5-min low-intensity bike or walk\",\n                        \"duration\": { \"value\": 5, \"unit\": \"minutes\" }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d3-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d3-a1\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"db_bench_press\",\n                        \"name\": \"Dumbbell Bench Press\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 18, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 7,\n                        \"primary_muscles\": [\"chest\"],\n                        \"secondary_muscles\": [\"front_delts\", \"triceps\"],\n                        \"movement_pattern\": \"push_horizontal\"\n                      },\n                      {\n                        \"id\": \"w2d3-a2\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"seated_cable_row\",\n                        \"name\": \"Seated Cable Row\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 7,\n                        \"primary_muscles\": [\"upper_back\", \"lats\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\"\n                      },\n                      {\n                        \"id\": \"w2d3-a3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"lat_pulldown\",\n                        \"name\": \"Lat Pulldown (neutral grip)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"lats\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_vertical\"\n                      },\n                      {\n                        \"id\": \"w2d3-a4\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"db_shoulder_press_seated\",\n                        \"name\": \"Seated Dumbbell Shoulder Press\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 12, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 7,\n                        \"primary_muscles\": [\"front_delts\", \"side_delts\"],\n                        \"secondary_muscles\": [\"triceps\", \"traps\"],\n                        \"movement_pattern\": \"push_vertical\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d3-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d3-cd1\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Upper Body Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d3-cd1-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Doorway Chest Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"chest\"\n                            },\n                            {\n                              \"id\": \"w2d3-cd1-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Lat Stretch (kneeling)\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"lats\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d4\",\n                \"day_of_week\": 4,\n                \"type\": \"rest\",\n                \"name\": \"Rest Day\"\n              },\n              {\n                \"id\": \"w2d5\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Session C — Full Body Integration (progressive)\",\n                \"estimated_duration_minutes\": 55,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d5-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-wu1\",\n                        \"type\": \"simple\",\n                        \"name\": \"5-min low-intensity bike or walk\",\n                        \"duration\": { \"value\": 5, \"unit\": \"minutes\" }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d5-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-a1\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"split_squat_dumbbell\",\n                        \"name\": \"Dumbbell Split Squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 10, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\"],\n                        \"movement_pattern\": \"lunge\"\n                      },\n                      {\n                        \"id\": \"w2d5-a2\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"cable_pull_through\",\n                        \"name\": \"Cable Pull-Through\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 12, \"max\": 15 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 6,\n                        \"primary_muscles\": [\"glutes\", \"hamstrings\"],\n                        \"secondary_muscles\": [\"spinal_erectors\"],\n                        \"movement_pattern\": \"hinge\"\n                      },\n                      {\n                        \"id\": \"w2d5-a3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"bird_dog\",\n                        \"name\": \"Bird Dog\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 0, \"pause_bottom\": 3, \"concentric\": 0, \"pause_top\": 0 }\n                        },\n                        \"target_rpe\": 4,\n                        \"primary_muscles\": [\"spinal_erectors\", \"glutes\"],\n                        \"secondary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      },\n                      {\n                        \"id\": \"w2d5-a4\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"db_single_arm_row\",\n                        \"name\": \"Single-Arm Dumbbell Row (bench supported)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 18, \"unit\": \"kg\" }\n                        },\n                        \"target_rpe\": 7,\n                        \"primary_muscles\": [\"lats\", \"upper_back\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d5-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-cd1\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Full Body Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 7, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d5-cd1-ex1\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Glute Stretch (figure-4)\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 6,\n                              \"body_part\": \"glutes\"\n                            },\n                            {\n                              \"id\": \"w2d5-cd1-ex2\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Thoracic Foam Roll\",\n                              \"modality\": \"smr_foam_roll\",\n                              \"hold_seconds\": 60,\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"traps\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d6\",\n                \"day_of_week\": 6,\n                \"type\": \"active_recovery\",\n                \"name\": \"Active Recovery — Light Walk\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d6-ar\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d6-ar1\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy Walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 30, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": { \"min\": 2, \"max\": 3 },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d7\",\n                \"day_of_week\": 7,\n                \"type\": \"assessment\",\n                \"name\": \"End-of-Block Check-In\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d7-assess\",\n                    \"type\": \"assessment\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d7-assess1\",\n                        \"type\": \"simple\",\n                        \"name\": \"Trainer check-in: pain score, movement quality review, readiness for Phase 2 loading\",\n                        \"duration\": { \"value\": 15, \"unit\": \"minutes\" }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"progress\": {\n      \"checkpoints\": [\n        {\n          \"id\": \"cp-end-of-block\",\n          \"name\": \"2-Week Block Review\",\n          \"at\": { \"value\": 14, \"unit\": \"days\" },\n          \"measurements\": [\n            { \"metric\": \"session_rpe_avg\" },\n            { \"metric\": \"free_text\", \"note\": \"Pain score (0-10) during and 24h after each session\" },\n            { \"metric\": \"free_text\", \"note\": \"Movement quality rating by trainer: goblet squat, RDL, bird dog\" }\n          ],\n          \"questions\": [\n            \"Any pain or neurological symptoms (numbness, tingling) during or after sessions?\",\n            \"How is sleep quality and general energy?\",\n            \"Confident to progress to Phase 2 loading?\"\n          ]\n        }\n      ],\n      \"points_system\": {\n        \"enabled\": false\n      }\n    },\n    \"notifications\": [\n      {\n        \"id\": \"notif-pain-warning\",\n        \"enabled\": true,\n        \"message\": \"Stop immediately and contact your trainer if you experience any sharp back pain, leg pain, numbness, or tingling during any exercise.\",\n        \"timing_reference\": \"session_start\",\n        \"timing_offset\": { \"value\": 0, \"unit\": \"minutes\" }\n      }\n    ]\n  }\n}",
+  "refusal": false,
+  "parse_ok": true,
+  "parse_error": null,
+  "schema_valid": true,
+  "validator_errors": 0,
+  "error_categories": {},
+  "top_error_paths": [],
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "l4l5-recon-2wk",
+      "name": "L4-L5 Post-Herniation Reconditioning — 2-Week Starter Block",
+      "description": "A conservative 2-week introductory strength block for a 42-year-old male with a resolved L4-L5 disc herniation. No heavy spinal loading; no loaded spinal flexion. Focuses on hip-hinge patterning, anti-flexion core stability, horizontal push/pull, and single-leg work. Designed to precede a full 12-week programme once tolerance is confirmed.",
+      "type": "workout",
+      "visibility": "template",
+      "metadata": {
+        "created_at": "2025-01-01T00:00:00Z",
+        "updated_at": "2025-01-01T00:00:00Z",
+        "created_by": "trainer",
+        "tags": [
+          "back-rehab",
+          "reconditioning",
+          "strength",
+          "low-spinal-load",
+          "beginner-return"
+        ],
+        "difficulty": "beginner",
+        "estimated_duration_days": 14,
+        "language": "en"
+      },
+      "goals": [
+        {
+          "id": "goal-movement-quality",
+          "type": "primary",
+          "category": "movement_quality",
+          "name": "Re-establish safe movement patterns",
+          "description": "Groove hip-hinge, squat, and anti-flexion core patterns with zero pain provocation."
+        },
+        {
+          "id": "goal-strength-base",
+          "type": "secondary",
+          "category": "strength",
+          "name": "Build foundational strength",
+          "description": "Develop moderate lower and upper body strength within spinal-safe loading parameters."
+        }
+      ],
+      "requirements": {
+        "min_age": 18,
+        "fitness_level": [
+          "beginner",
+          "intermediate"
+        ],
+        "equipment": [
+          {
+            "id": "eq-barbell",
+            "name": "Barbell",
+            "required": false,
+            "alternatives": [
+              "dumbbells"
+            ]
+          },
+          {
+            "id": "eq-dumbbells",
+            "name": "Dumbbells",
+            "required": true
+          },
+          {
+            "id": "eq-cable",
+            "name": "Cable machine",
+            "required": true
+          },
+          {
+            "id": "eq-bench",
+            "name": "Flat bench",
+            "required": true
+          },
+          {
+            "id": "eq-pulldown",
+            "name": "Lat pulldown machine",
+            "required": true
+          },
+          {
+            "id": "eq-mat",
+            "name": "Exercise mat",
+            "required": true
+          }
+        ],
+        "contraindications": [
+          {
+            "condition": "icd10:M51.1",
+            "severity": "moderate",
+            "action": "modify",
+            "affected_activities": [
+              "any_loaded_spinal_flexion",
+              "heavy_deadlift",
+              "back_squat_heavy"
+            ]
+          },
+          {
+            "condition": "lower_back_injury",
+            "severity": "moderate",
+            "action": "exclude",
+            "affected_activities": [
+              "loaded_spinal_flexion",
+              "sit_ups",
+              "leg_press_deep_lumbar_flexion"
+            ]
+          }
+        ],
+        "time_commitment": {
+          "min_days_per_week": 3,
+          "max_days_per_week": 3,
+          "min_minutes_per_day": 45,
+          "max_minutes_per_day": 60
+        }
+      },
+      "athlete_thresholds": {
+        "body_weight_kg": 85
+      },
+      "phases": [
+        {
+          "id": "phase-1-intro",
+          "name": "Phase 1 — Movement Foundations",
+          "order": 1,
+          "type": "accumulation",
+          "description": "Two weeks of low-load, high-quality movement. RPE capped at 6/10. Emphasis on technique, bracing, and pain-free range of motion. Three sessions per week on non-consecutive days.",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week-1",
+              "name": "Week 1 — Pattern Acquisition",
+              "order": 1,
+              "is_deload": false,
+              "days": [
+                {
+                  "id": "w1d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Session A — Lower Body & Core",
+                  "estimated_duration_minutes": 55,
+                  "blocks": [
+                    {
+                      "id": "w1d1-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-wu1",
+                          "type": "simple",
+                          "name": "5-min low-intensity bike or walk",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        },
+                        {
+                          "id": "w1d1-wu2",
+                          "type": "recovery",
+                          "name": "Hip Mobility & Glute Activation",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 8,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d1-wu2-ex1",
+                                "type": "recovery_exercise",
+                                "name": "90/90 Hip Rotation",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "body_part": "hip_flexors"
+                              },
+                              {
+                                "id": "w1d1-wu2-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Glute Bridge (bodyweight)",
+                                "modality": "mobility_drill",
+                                "reps": 12,
+                                "sides": "both",
+                                "body_part": "glutes"
+                              },
+                              {
+                                "id": "w1d1-wu2-ex3",
+                                "type": "recovery_exercise",
+                                "name": "Cat-Camel (neutral only — stop at neutral, no end-range flexion)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "body_part": "spinal_erectors"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-main",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-a1",
+                          "type": "exercise",
+                          "exercise_ref": "goblet_squat",
+                          "name": "Goblet Squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 10,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 5,
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "squat"
+                        },
+                        {
+                          "id": "w1d1-a2",
+                          "type": "exercise",
+                          "exercise_ref": "romanian_deadlift_dumbbell",
+                          "name": "Dumbbell Romanian Deadlift",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 12,
+                              "unit": "kg"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 1,
+                              "pause_top": 0
+                            }
+                          },
+                          "target_rpe": 5,
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "spinal_erectors",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge"
+                        },
+                        {
+                          "id": "w1d1-a3",
+                          "type": "exercise",
+                          "exercise_ref": "pallof_press_cable",
+                          "name": "Pallof Press (Cable)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 5,
+                          "primary_muscles": [
+                            "abs",
+                            "obliques"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        },
+                        {
+                          "id": "w1d1-a4",
+                          "type": "exercise",
+                          "exercise_ref": "dead_bug",
+                          "name": "Dead Bug",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 2,
+                              "concentric": 2,
+                              "pause_top": 0
+                            }
+                          },
+                          "target_rpe": 4,
+                          "primary_muscles": [
+                            "abs"
+                          ],
+                          "secondary_muscles": [
+                            "hip_flexors"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d1-cd1",
+                          "type": "recovery",
+                          "name": "Post-Session Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 7,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d1-cd1-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Hip Flexor Kneeling Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 6,
+                                "body_part": "hip_flexors"
+                              },
+                              {
+                                "id": "w1d1-cd1-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Supine Piriformis Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 6,
+                                "body_part": "glutes"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d2",
+                  "day_of_week": 2,
+                  "type": "rest",
+                  "name": "Rest Day"
+                },
+                {
+                  "id": "w1d3",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Session B — Upper Body Push & Pull",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w1d3-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d3-wu1",
+                          "type": "simple",
+                          "name": "5-min low-intensity bike or walk",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        },
+                        {
+                          "id": "w1d3-wu2",
+                          "type": "recovery",
+                          "name": "Shoulder & Thoracic Warm-Up",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 6,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d3-wu2-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Thoracic Rotation (seated)",
+                                "modality": "mobility_drill",
+                                "reps": 10,
+                                "sides": "both",
+                                "body_part": "traps"
+                              },
+                              {
+                                "id": "w1d3-wu2-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Band Pull-Apart",
+                                "modality": "dynamic_stretch",
+                                "reps": 15,
+                                "body_part": "rear_delts"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d3-main",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d3-a1",
+                          "type": "exercise",
+                          "exercise_ref": "db_bench_press",
+                          "name": "Dumbbell Bench Press",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 16,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "chest"
+                          ],
+                          "secondary_muscles": [
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal"
+                        },
+                        {
+                          "id": "w1d3-a2",
+                          "type": "exercise",
+                          "exercise_ref": "seated_cable_row",
+                          "name": "Seated Cable Row",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal"
+                        },
+                        {
+                          "id": "w1d3-a3",
+                          "type": "exercise",
+                          "exercise_ref": "lat_pulldown",
+                          "name": "Lat Pulldown (neutral grip)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "lats"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_vertical"
+                        },
+                        {
+                          "id": "w1d3-a4",
+                          "type": "exercise",
+                          "exercise_ref": "db_shoulder_press_seated",
+                          "name": "Seated Dumbbell Shoulder Press",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 10,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "front_delts",
+                            "side_delts"
+                          ],
+                          "secondary_muscles": [
+                            "triceps",
+                            "traps"
+                          ],
+                          "movement_pattern": "push_vertical"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d3-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d3-cd1",
+                          "type": "recovery",
+                          "name": "Upper Body Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d3-cd1-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Doorway Chest Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "intensity_rpe": 5,
+                                "body_part": "chest"
+                              },
+                              {
+                                "id": "w1d3-cd1-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Lat Stretch (kneeling)",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "lats"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d4",
+                  "day_of_week": 4,
+                  "type": "rest",
+                  "name": "Rest Day"
+                },
+                {
+                  "id": "w1d5",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Session C — Full Body Integration",
+                  "estimated_duration_minutes": 55,
+                  "blocks": [
+                    {
+                      "id": "w1d5-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d5-wu1",
+                          "type": "simple",
+                          "name": "5-min low-intensity bike or walk",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d5-main",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d5-a1",
+                          "type": "exercise",
+                          "exercise_ref": "split_squat_dumbbell",
+                          "name": "Dumbbell Split Squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 8,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 5,
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "lunge"
+                        },
+                        {
+                          "id": "w1d5-a2",
+                          "type": "exercise",
+                          "exercise_ref": "cable_pull_through",
+                          "name": "Cable Pull-Through",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 5,
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "secondary_muscles": [
+                            "spinal_erectors"
+                          ],
+                          "movement_pattern": "hinge"
+                        },
+                        {
+                          "id": "w1d5-a3",
+                          "type": "exercise",
+                          "exercise_ref": "bird_dog",
+                          "name": "Bird Dog",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 0,
+                              "pause_bottom": 3,
+                              "concentric": 0,
+                              "pause_top": 0
+                            }
+                          },
+                          "target_rpe": 4,
+                          "primary_muscles": [
+                            "spinal_erectors",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        },
+                        {
+                          "id": "w1d5-a4",
+                          "type": "exercise",
+                          "exercise_ref": "db_single_arm_row",
+                          "name": "Single-Arm Dumbbell Row (bench supported)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 16,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "lats",
+                            "upper_back"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d5-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d5-cd1",
+                          "type": "recovery",
+                          "name": "Full Body Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 7,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d5-cd1-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Supine Glute Stretch (figure-4)",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 6,
+                                "body_part": "glutes"
+                              },
+                              {
+                                "id": "w1d5-cd1-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Thoracic Foam Roll",
+                                "modality": "smr_foam_roll",
+                                "hold_seconds": 60,
+                                "intensity_rpe": 5,
+                                "body_part": "traps"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d6",
+                  "day_of_week": 6,
+                  "type": "active_recovery",
+                  "name": "Active Recovery — Light Walk",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w1d6-ar",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d6-ar1",
+                          "type": "cardio",
+                          "name": "Easy Walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d7",
+                  "day_of_week": 7,
+                  "type": "rest",
+                  "name": "Rest Day"
+                }
+              ]
+            },
+            {
+              "id": "week-2",
+              "name": "Week 2 — Load Familiarisation",
+              "order": 2,
+              "is_deload": false,
+              "days": [
+                {
+                  "id": "w2d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Session A — Lower Body & Core (progressive)",
+                  "estimated_duration_minutes": 55,
+                  "blocks": [
+                    {
+                      "id": "w2d1-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d1-wu1",
+                          "type": "simple",
+                          "name": "5-min low-intensity bike or walk",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        },
+                        {
+                          "id": "w2d1-wu2",
+                          "type": "recovery",
+                          "name": "Hip Mobility & Glute Activation",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 8,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d1-wu2-ex1",
+                                "type": "recovery_exercise",
+                                "name": "90/90 Hip Rotation",
+                                "modality": "mobility_drill",
+                                "reps": 10,
+                                "sides": "both",
+                                "body_part": "hip_flexors"
+                              },
+                              {
+                                "id": "w2d1-wu2-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Glute Bridge (bodyweight)",
+                                "modality": "mobility_drill",
+                                "reps": 15,
+                                "sides": "both",
+                                "body_part": "glutes"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-main",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d1-a1",
+                          "type": "exercise",
+                          "exercise_ref": "goblet_squat",
+                          "name": "Goblet Squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 14,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "squat"
+                        },
+                        {
+                          "id": "w2d1-a2",
+                          "type": "exercise",
+                          "exercise_ref": "romanian_deadlift_dumbbell",
+                          "name": "Dumbbell Romanian Deadlift",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 16,
+                              "unit": "kg"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 1,
+                              "pause_top": 0
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "spinal_erectors",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge"
+                        },
+                        {
+                          "id": "w2d1-a3",
+                          "type": "exercise",
+                          "exercise_ref": "pallof_press_cable",
+                          "name": "Pallof Press (Cable) — add 1 sec pause at extension",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "abs",
+                            "obliques"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        },
+                        {
+                          "id": "w2d1-a4",
+                          "type": "exercise",
+                          "exercise_ref": "dead_bug",
+                          "name": "Dead Bug",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 2,
+                              "concentric": 2,
+                              "pause_top": 0
+                            }
+                          },
+                          "target_rpe": 5,
+                          "primary_muscles": [
+                            "abs"
+                          ],
+                          "secondary_muscles": [
+                            "hip_flexors"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d1-cd1",
+                          "type": "recovery",
+                          "name": "Post-Session Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 7,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d1-cd1-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Hip Flexor Kneeling Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 6,
+                                "body_part": "hip_flexors"
+                              },
+                              {
+                                "id": "w2d1-cd1-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Supine Piriformis Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 6,
+                                "body_part": "glutes"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d2",
+                  "day_of_week": 2,
+                  "type": "rest",
+                  "name": "Rest Day"
+                },
+                {
+                  "id": "w2d3",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Session B — Upper Body Push & Pull (progressive)",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w2d3-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d3-wu1",
+                          "type": "simple",
+                          "name": "5-min low-intensity bike or walk",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d3-main",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d3-a1",
+                          "type": "exercise",
+                          "exercise_ref": "db_bench_press",
+                          "name": "Dumbbell Bench Press",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 18,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 7,
+                          "primary_muscles": [
+                            "chest"
+                          ],
+                          "secondary_muscles": [
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal"
+                        },
+                        {
+                          "id": "w2d3-a2",
+                          "type": "exercise",
+                          "exercise_ref": "seated_cable_row",
+                          "name": "Seated Cable Row",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7,
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal"
+                        },
+                        {
+                          "id": "w2d3-a3",
+                          "type": "exercise",
+                          "exercise_ref": "lat_pulldown",
+                          "name": "Lat Pulldown (neutral grip)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "lats"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_vertical"
+                        },
+                        {
+                          "id": "w2d3-a4",
+                          "type": "exercise",
+                          "exercise_ref": "db_shoulder_press_seated",
+                          "name": "Seated Dumbbell Shoulder Press",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 12,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 7,
+                          "primary_muscles": [
+                            "front_delts",
+                            "side_delts"
+                          ],
+                          "secondary_muscles": [
+                            "triceps",
+                            "traps"
+                          ],
+                          "movement_pattern": "push_vertical"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d3-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d3-cd1",
+                          "type": "recovery",
+                          "name": "Upper Body Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d3-cd1-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Doorway Chest Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "intensity_rpe": 5,
+                                "body_part": "chest"
+                              },
+                              {
+                                "id": "w2d3-cd1-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Lat Stretch (kneeling)",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "lats"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d4",
+                  "day_of_week": 4,
+                  "type": "rest",
+                  "name": "Rest Day"
+                },
+                {
+                  "id": "w2d5",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Session C — Full Body Integration (progressive)",
+                  "estimated_duration_minutes": 55,
+                  "blocks": [
+                    {
+                      "id": "w2d5-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d5-wu1",
+                          "type": "simple",
+                          "name": "5-min low-intensity bike or walk",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d5-main",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d5-a1",
+                          "type": "exercise",
+                          "exercise_ref": "split_squat_dumbbell",
+                          "name": "Dumbbell Split Squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 10,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "lunge"
+                        },
+                        {
+                          "id": "w2d5-a2",
+                          "type": "exercise",
+                          "exercise_ref": "cable_pull_through",
+                          "name": "Cable Pull-Through",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 12,
+                              "max": 15
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6,
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "secondary_muscles": [
+                            "spinal_erectors"
+                          ],
+                          "movement_pattern": "hinge"
+                        },
+                        {
+                          "id": "w2d5-a3",
+                          "type": "exercise",
+                          "exercise_ref": "bird_dog",
+                          "name": "Bird Dog",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 0,
+                              "pause_bottom": 3,
+                              "concentric": 0,
+                              "pause_top": 0
+                            }
+                          },
+                          "target_rpe": 4,
+                          "primary_muscles": [
+                            "spinal_erectors",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        },
+                        {
+                          "id": "w2d5-a4",
+                          "type": "exercise",
+                          "exercise_ref": "db_single_arm_row",
+                          "name": "Single-Arm Dumbbell Row (bench supported)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 18,
+                              "unit": "kg"
+                            }
+                          },
+                          "target_rpe": 7,
+                          "primary_muscles": [
+                            "lats",
+                            "upper_back"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d5-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d5-cd1",
+                          "type": "recovery",
+                          "name": "Full Body Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 7,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d5-cd1-ex1",
+                                "type": "recovery_exercise",
+                                "name": "Supine Glute Stretch (figure-4)",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 6,
+                                "body_part": "glutes"
+                              },
+                              {
+                                "id": "w2d5-cd1-ex2",
+                                "type": "recovery_exercise",
+                                "name": "Thoracic Foam Roll",
+                                "modality": "smr_foam_roll",
+                                "hold_seconds": 60,
+                                "intensity_rpe": 5,
+                                "body_part": "traps"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d6",
+                  "day_of_week": 6,
+                  "type": "active_recovery",
+                  "name": "Active Recovery — Light Walk",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w2d6-ar",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d6-ar1",
+                          "type": "cardio",
+                          "name": "Easy Walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d7",
+                  "day_of_week": 7,
+                  "type": "assessment",
+                  "name": "End-of-Block Check-In",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w2d7-assess",
+                      "type": "assessment",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d7-assess1",
+                          "type": "simple",
+                          "name": "Trainer check-in: pain score, movement quality review, readiness for Phase 2 loading",
+                          "duration": {
+                            "value": 15,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "progress": {
+        "checkpoints": [
+          {
+            "id": "cp-end-of-block",
+            "name": "2-Week Block Review",
+            "at": {
+              "value": 14,
+              "unit": "days"
+            },
+            "measurements": [
+              {
+                "metric": "session_rpe_avg"
+              },
+              {
+                "metric": "free_text",
+                "note": "Pain score (0-10) during and 24h after each session"
+              },
+              {
+                "metric": "free_text",
+                "note": "Movement quality rating by trainer: goblet squat, RDL, bird dog"
+              }
+            ],
+            "questions": [
+              "Any pain or neurological symptoms (numbness, tingling) during or after sessions?",
+              "How is sleep quality and general energy?",
+              "Confident to progress to Phase 2 loading?"
+            ]
+          }
+        ],
+        "points_system": {
+          "enabled": false
+        }
+      },
+      "notifications": [
+        {
+          "id": "notif-pain-warning",
+          "enabled": true,
+          "message": "Stop immediately and contact your trainer if you experience any sharp back pain, leg pain, numbness, or tingling during any exercise.",
+          "timing_reference": "session_start",
+          "timing_offset": {
+            "value": 0,
+            "unit": "minutes"
+          }
+        }
+      ]
+    }
+  }
+}

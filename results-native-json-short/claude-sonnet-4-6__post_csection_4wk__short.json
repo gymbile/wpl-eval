@@ -1,0 +1,970 @@
+{
+  "model": "claude-sonnet-4-6",
+  "scenario_id": "post_csection_4wk",
+  "tokens_in": 14682,
+  "tokens_out": 7754,
+  "hit_token_cap": false,
+  "latency_ms": 86652,
+  "cost_usd": 0.160356,
+  "raw_text": "{\n  \"$schema\": \"https://wpl.dev/schemas/wpl/v1.schema.json\",\n  \"version\": \"1.6.0\",\n  \"plan\": {\n    \"id\": \"postpartum-return-2wk-intro\",\n    \"name\": \"Postpartum Return to Movement — 2-Week Introductory Block\",\n    \"description\": \"A gentle 2-week starter block for a client 4 weeks post uncomplicated C-section, cleared for light activity only. Focuses on diaphragmatic breathing, pelvic floor reconnection, posture, and progressive walking. No abdominal loading, no heavy lifting, no high-impact. Designed for home use with a yoga mat only.\",\n    \"type\": \"hybrid\",\n    \"visibility\": \"template\",\n    \"metadata\": {\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"created_by\": \"personal_trainer\",\n      \"tags\": [\n        \"postpartum\",\n        \"c-section\",\n        \"pelvic-floor\",\n        \"return-to-movement\",\n        \"home\",\n        \"no-equipment\"\n      ],\n      \"difficulty\": \"beginner\",\n      \"estimated_duration_days\": 14\n    },\n    \"goals\": [\n      {\n        \"id\": \"goal-pelvic-floor-reconnect\",\n        \"type\": \"primary\",\n        \"category\": \"rehabilitation\",\n        \"name\": \"Pelvic Floor Reconnection\",\n        \"description\": \"Re-establish neuromuscular connection with the pelvic floor and deep core via breathing and gentle activation drills.\"\n      },\n      {\n        \"id\": \"goal-walking-base\",\n        \"type\": \"secondary\",\n        \"category\": \"cardiovascular\",\n        \"name\": \"Build Walking Tolerance\",\n        \"description\": \"Gradually increase daily walking duration from 10 to 20 minutes by end of week 2.\",\n        \"target\": {\n          \"metric\": \"walking_duration_minutes\",\n          \"target_value\": 20,\n          \"unit\": \"minutes\",\n          \"measurement_type\": \"absolute\"\n        }\n      }\n    ],\n    \"requirements\": {\n      \"min_age\": 18,\n      \"max_age\": 50,\n      \"fitness_level\": [\"beginner\", \"returning\"],\n      \"equipment\": [\n        {\n          \"id\": \"yoga-mat\",\n          \"name\": \"Yoga Mat\",\n          \"required\": true\n        }\n      ],\n      \"contraindications\": [\n        {\n          \"condition\": \"acog:pregnancy_t2\",\n          \"severity\": \"high\",\n          \"action\": \"require_clearance\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"icd10:O82\",\n          \"severity\": \"high\",\n          \"action\": \"modify\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"abdominal_loading\",\n          \"severity\": \"high\",\n          \"action\": \"exclude\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"heavy_lifting\",\n          \"severity\": \"high\",\n          \"action\": \"exclude\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"high_impact_exercise\",\n          \"severity\": \"high\",\n          \"action\": \"exclude\",\n          \"affected_activities\": []\n        }\n      ],\n      \"time_commitment\": {\n        \"min_days_per_week\": 4,\n        \"max_days_per_week\": 6,\n        \"min_minutes_per_day\": 15,\n        \"max_minutes_per_day\": 35\n      }\n    },\n    \"phases\": [\n      {\n        \"id\": \"phase-1-foundation\",\n        \"name\": \"Foundation — Breathe & Reconnect\",\n        \"order\": 1,\n        \"type\": \"base\",\n        \"description\": \"Weeks 1–2. Establish diaphragmatic breathing, gentle pelvic floor activation, posture awareness, and short walks. No abdominal exercises, no lifting. All floor work is supine or side-lying to avoid incision stress.\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week-1\",\n            \"name\": \"Week 1 — Gentle Reconnection\",\n            \"order\": 1,\n            \"is_deload\": false,\n            \"days\": [\n              {\n                \"id\": \"w1d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Day 1 — Breathing & Pelvic Floor\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d1-b1\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-diaphragm-breath\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"diaphragmatic_breathing\",\n                        \"name\": \"Diaphragmatic Breathing\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 30, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-b2\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-pelvic-floor\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"pelvic_floor_kegel\",\n                        \"name\": \"Pelvic Floor Activation (Kegel — gentle hold)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"hip_adductors\"],\n                        \"movement_pattern\": \"isolation\"\n                      },\n                      {\n                        \"id\": \"w1d1-glute-bridge-isometric\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"glute_bridge_isometric_hold\",\n                        \"name\": \"Glute Bridge Isometric Hold (low range, no abdominal strain)\",\n                        \"prescription\": {\n                          \"type\": \"time\",\n                          \"sets\": 3,\n                          \"duration\": { \"value\": 10, \"unit\": \"seconds\" },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 3,\n                        \"primary_muscles\": [\"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\"],\n                        \"movement_pattern\": \"hinge\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-b3\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-recovery-cooldown\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle Cooldown Stretches\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d1-child-pose\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Modified Child's Pose (avoid pressure on incision — use wide knees)\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"body_part\": \"lower_back\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d2\",\n                \"day_of_week\": 2,\n                \"type\": \"active_recovery\",\n                \"name\": \"Day 2 — Short Walk\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d2-b1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d2-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Gentle Walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 10, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": { \"min\": 1, \"max\": 3 },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d3\",\n                \"day_of_week\": 3,\n                \"type\": \"rest\",\n                \"name\": \"Day 3 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w1d4\",\n                \"day_of_week\": 4,\n                \"type\": \"training\",\n                \"name\": \"Day 4 — Breathing, Pelvic Floor & Hip Mobility\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d4-b1\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d4-diaphragm-breath\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"diaphragmatic_breathing\",\n                        \"name\": \"Diaphragmatic Breathing\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 30, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d4-b2\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d4-pelvic-floor\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"pelvic_floor_kegel\",\n                        \"name\": \"Pelvic Floor Activation (Kegel)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"hip_adductors\"],\n                        \"movement_pattern\": \"isolation\"\n                      },\n                      {\n                        \"id\": \"w1d4-supine-hip-abduction\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"supine_hip_abduction\",\n                        \"name\": \"Supine Hip Abduction (clam shell prep — side-lying)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"target\": 12 },\n                          \"rest\": { \"value\": 45, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 3,\n                        \"primary_muscles\": [\"hip_abductors\"],\n                        \"secondary_muscles\": [\"glutes\"],\n                        \"movement_pattern\": \"isolation\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d4-b3\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d4-recovery\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Hip Flexor & Glute Stretch\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d4-supine-figure4\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Figure-4 Glute Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"body_part\": \"glutes\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d5\",\n                \"day_of_week\": 5,\n                \"type\": \"active_recovery\",\n                \"name\": \"Day 5 — Short Walk\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d5-b1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Gentle Walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 10, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": { \"min\": 1, \"max\": 3 },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d6\",\n                \"day_of_week\": 6,\n                \"type\": \"rest\",\n                \"name\": \"Day 6 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w1d7\",\n                \"day_of_week\": 7,\n                \"type\": \"rest\",\n                \"name\": \"Day 7 — Rest\",\n                \"estimated_duration_minutes\": 0\n              }\n            ]\n          },\n          {\n            \"id\": \"week-2\",\n            \"name\": \"Week 2 — Build Tolerance\",\n            \"order\": 2,\n            \"is_deload\": false,\n            \"days\": [\n              {\n                \"id\": \"w2d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Day 1 — Breathing, Pelvic Floor & Glute Activation\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d1-b1\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-diaphragm-breath\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"diaphragmatic_breathing\",\n                        \"name\": \"Diaphragmatic Breathing\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 30, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-b2\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-pelvic-floor-progressive\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"pelvic_floor_kegel\",\n                        \"name\": \"Pelvic Floor — Progressive Hold (hold 5s, release 5s)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"hip_adductors\"],\n                        \"movement_pattern\": \"isolation\"\n                      },\n                      {\n                        \"id\": \"w2d1-glute-bridge\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"glute_bridge\",\n                        \"name\": \"Glute Bridge (full range, controlled — stop if incision discomfort)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 4,\n                        \"primary_muscles\": [\"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\", \"lower_back\"],\n                        \"movement_pattern\": \"hinge\"\n                      },\n                      {\n                        \"id\": \"w2d1-clamshell\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"clamshell\",\n                        \"name\": \"Clamshell (side-lying)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"target\": 12 },\n                          \"rest\": { \"value\": 45, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 3,\n                        \"primary_muscles\": [\"hip_abductors\"],\n                        \"secondary_muscles\": [\"glutes\"],\n                        \"movement_pattern\": \"isolation\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-b3\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-recovery\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Cooldown Stretches\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d1-supine-figure4\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Figure-4 Glute Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"body_part\": \"glutes\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d2\",\n                \"day_of_week\": 2,\n                \"type\": \"active_recovery\",\n                \"name\": \"Day 2 — Walk (extended)\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d2-b1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d2-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Gentle Walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 15, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": { \"min\": 2, \"max\": 3 },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d3\",\n                \"day_of_week\": 3,\n                \"type\": \"rest\",\n                \"name\": \"Day 3 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w2d4\",\n                \"day_of_week\": 4,\n                \"type\": \"training\",\n                \"name\": \"Day 4 — Posture, Hip Mobility & Pelvic Floor\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d4-b1\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d4-breath\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"diaphragmatic_breathing\",\n                        \"name\": \"Diaphragmatic Breathing\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 30, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"abs\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d4-b2\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d4-pelvic-floor\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"pelvic_floor_kegel\",\n                        \"name\": \"Pelvic Floor — Quick Flicks (fast contract/release)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 10 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"primary_muscles\": [\"hip_adductors\"],\n                        \"movement_pattern\": \"isolation\"\n                      },\n                      {\n                        \"id\": \"w2d4-glute-bridge\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"glute_bridge\",\n                        \"name\": \"Glute Bridge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"target\": 12 },\n                          \"rest\": { \"value\": 60, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 4,\n                        \"primary_muscles\": [\"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\"],\n                        \"movement_pattern\": \"hinge\"\n                      },\n                      {\n                        \"id\": \"w2d4-wall-posture\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"wall_posture_stand\",\n                        \"name\": \"Wall Posture Stand (head, shoulders, hips touching wall — gentle thoracic awareness)\",\n                        \"prescription\": {\n                          \"type\": \"time\",\n                          \"sets\": 3,\n                          \"duration\": { \"value\": 30, \"unit\": \"seconds\" },\n                          \"rest\": { \"value\": 30, \"unit\": \"seconds\" }\n                        },\n                        \"target_rpe\": 2,\n                        \"primary_muscles\": [\"spinal_erectors\"],\n                        \"secondary_muscles\": [\"rear_delts\", \"traps\"],\n                        \"movement_pattern\": \"anti_rotate\"\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d4-b3\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d4-recovery\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Thoracic & Hip Cooldown\",\n                        \"category\": \"flexibility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d4-cat-cow-gentle\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Gentle Cat-Cow (minimal lumbar flexion — avoid pulling on incision)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"body_part\": \"lower_back\"\n                            },\n                            {\n                              \"id\": \"w2d4-supine-figure4\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supine Figure-4 Glute Stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"body_part\": \"glutes\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d5\",\n                \"day_of_week\": 5,\n                \"type\": \"active_recovery\",\n                \"name\": \"Day 5 — Walk (extended)\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d5-b1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Gentle Walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 20, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": { \"min\": 2, \"max\": 3 },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d6\",\n                \"day_of_week\": 6,\n                \"type\": \"rest\",\n                \"name\": \"Day 6 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w2d7\",\n                \"day_of_week\": 7,\n                \"type\": \"assessment\",\n                \"name\": \"Day 7 — End of Block Check-In\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d7-b1\",\n                    \"type\": \"assessment\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d7-checkin\",\n                        \"type\": \"simple\",\n                        \"name\": \"Self-Assessment & Trainer Check-In: note any incision discomfort, pelvic floor symptoms (leaking, heaviness, pressure), energy levels, and readiness for 6-week OB clearance appointment.\",\n                        \"duration\": { \"value\": 15, \"unit\": \"minutes\" }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"progress\": {\n      \"checkpoints\": [\n        {\n          \"id\": \"checkpoint-end-wk2\",\n          \"name\": \"End of Week 2 — Pre-6-Week OB Check\",\n          \"at\": { \"value\": 14, \"unit\": \"days\" },\n          \"measurements\": [\n            { \"metric\": \"session_rpe_avg\" },\n            { \"metric\": \"free_text\", \"note\": \"Pelvic floor symptoms: any leaking, heaviness, or pressure during or after exercise?\" },\n            { \"metric\": \"free_text\", \"note\": \"Incision comfort during movement — any pulling, pain, or numbness?\" },\n            { \"metric\": \"free_text\", \"note\": \"Energy and sleep quality this week.\" }\n          ],\n          \"questions\": [\n            \"Are you experiencing any pelvic floor symptoms (leaking, urgency, heaviness)?\",\n            \"Any pain or pulling at the incision site during exercises or walking?\",\n            \"Do you feel ready to progress after your 6-week OB clearance?\"\n          ]\n        }\n      ],\n      \"points_system\": {\n        \"enabled\": true,\n        \"rules\": [\n          { \"action\": \"complete_training_day\", \"points\": 10 },\n          { \"action\": \"complete_walk\", \"points\": 5 },\n          { \"action\": \"complete_assessment\", \"points\": 15 }\n        ]\n      }\n    },\n    \"notifications\": [\n      {\n        \"id\": \"notif-stop-signs\",\n        \"enabled\": true,\n        \"message\": \"STOP and rest if you experience: pain at the incision site, pelvic heaviness or pressure, leaking urine or stool, dizziness, or unusual bleeding. Contact your OB if symptoms persist.\"\n      },\n      {\n        \"id\": \"notif-ob-clearance\",\n        \"enabled\": true,\n        \"message\": \"Reminder: your 6-week postnatal OB check is approaching. Clearance at that appointment is required before progressing to Phase 2 of this programme.\"\n      }\n    ]\n  }\n}",
+  "refusal": false,
+  "parse_ok": true,
+  "parse_error": null,
+  "schema_valid": true,
+  "validator_errors": 0,
+  "error_categories": {},
+  "top_error_paths": [],
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "postpartum-return-2wk-intro",
+      "name": "Postpartum Return to Movement — 2-Week Introductory Block",
+      "description": "A gentle 2-week starter block for a client 4 weeks post uncomplicated C-section, cleared for light activity only. Focuses on diaphragmatic breathing, pelvic floor reconnection, posture, and progressive walking. No abdominal loading, no heavy lifting, no high-impact. Designed for home use with a yoga mat only.",
+      "type": "hybrid",
+      "visibility": "template",
+      "metadata": {
+        "created_at": "2025-01-01T00:00:00Z",
+        "updated_at": "2025-01-01T00:00:00Z",
+        "created_by": "personal_trainer",
+        "tags": [
+          "postpartum",
+          "c-section",
+          "pelvic-floor",
+          "return-to-movement",
+          "home",
+          "no-equipment"
+        ],
+        "difficulty": "beginner",
+        "estimated_duration_days": 14
+      },
+      "goals": [
+        {
+          "id": "goal-pelvic-floor-reconnect",
+          "type": "primary",
+          "category": "rehabilitation",
+          "name": "Pelvic Floor Reconnection",
+          "description": "Re-establish neuromuscular connection with the pelvic floor and deep core via breathing and gentle activation drills."
+        },
+        {
+          "id": "goal-walking-base",
+          "type": "secondary",
+          "category": "cardiovascular",
+          "name": "Build Walking Tolerance",
+          "description": "Gradually increase daily walking duration from 10 to 20 minutes by end of week 2.",
+          "target": {
+            "metric": "walking_duration_minutes",
+            "target_value": 20,
+            "unit": "minutes",
+            "measurement_type": "absolute"
+          }
+        }
+      ],
+      "requirements": {
+        "min_age": 18,
+        "max_age": 50,
+        "fitness_level": [
+          "beginner",
+          "returning"
+        ],
+        "equipment": [
+          {
+            "id": "yoga-mat",
+            "name": "Yoga Mat",
+            "required": true
+          }
+        ],
+        "contraindications": [
+          {
+            "condition": "acog:pregnancy_t2",
+            "severity": "high",
+            "action": "require_clearance",
+            "affected_activities": []
+          },
+          {
+            "condition": "icd10:O82",
+            "severity": "high",
+            "action": "modify",
+            "affected_activities": []
+          },
+          {
+            "condition": "abdominal_loading",
+            "severity": "high",
+            "action": "exclude",
+            "affected_activities": []
+          },
+          {
+            "condition": "heavy_lifting",
+            "severity": "high",
+            "action": "exclude",
+            "affected_activities": []
+          },
+          {
+            "condition": "high_impact_exercise",
+            "severity": "high",
+            "action": "exclude",
+            "affected_activities": []
+          }
+        ],
+        "time_commitment": {
+          "min_days_per_week": 4,
+          "max_days_per_week": 6,
+          "min_minutes_per_day": 15,
+          "max_minutes_per_day": 35
+        }
+      },
+      "phases": [
+        {
+          "id": "phase-1-foundation",
+          "name": "Foundation — Breathe & Reconnect",
+          "order": 1,
+          "type": "base",
+          "description": "Weeks 1–2. Establish diaphragmatic breathing, gentle pelvic floor activation, posture awareness, and short walks. No abdominal exercises, no lifting. All floor work is supine or side-lying to avoid incision stress.",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week-1",
+              "name": "Week 1 — Gentle Reconnection",
+              "order": 1,
+              "is_deload": false,
+              "days": [
+                {
+                  "id": "w1d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Day 1 — Breathing & Pelvic Floor",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w1d1-b1",
+                      "type": "warmup",
+                      "order": 1,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-diaphragm-breath",
+                          "type": "exercise",
+                          "exercise_ref": "diaphragmatic_breathing",
+                          "name": "Diaphragmatic Breathing",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-b2",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-pelvic-floor",
+                          "type": "exercise",
+                          "exercise_ref": "pelvic_floor_kegel",
+                          "name": "Pelvic Floor Activation (Kegel — gentle hold)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "hip_adductors"
+                          ],
+                          "movement_pattern": "isolation"
+                        },
+                        {
+                          "id": "w1d1-glute-bridge-isometric",
+                          "type": "exercise",
+                          "exercise_ref": "glute_bridge_isometric_hold",
+                          "name": "Glute Bridge Isometric Hold (low range, no abdominal strain)",
+                          "prescription": {
+                            "type": "time",
+                            "sets": 3,
+                            "duration": {
+                              "value": 10,
+                              "unit": "seconds"
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 3,
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-b3",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d1-recovery-cooldown",
+                          "type": "recovery",
+                          "name": "Gentle Cooldown Stretches",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d1-child-pose",
+                                "type": "recovery_exercise",
+                                "name": "Modified Child's Pose (avoid pressure on incision — use wide knees)",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "body_part": "lower_back"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d2",
+                  "day_of_week": 2,
+                  "type": "active_recovery",
+                  "name": "Day 2 — Short Walk",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w1d2-b1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d2-walk",
+                          "type": "cardio",
+                          "name": "Gentle Walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 1,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d3",
+                  "day_of_week": 3,
+                  "type": "rest",
+                  "name": "Day 3 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w1d4",
+                  "day_of_week": 4,
+                  "type": "training",
+                  "name": "Day 4 — Breathing, Pelvic Floor & Hip Mobility",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w1d4-b1",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d4-diaphragm-breath",
+                          "type": "exercise",
+                          "exercise_ref": "diaphragmatic_breathing",
+                          "name": "Diaphragmatic Breathing",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d4-b2",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d4-pelvic-floor",
+                          "type": "exercise",
+                          "exercise_ref": "pelvic_floor_kegel",
+                          "name": "Pelvic Floor Activation (Kegel)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "hip_adductors"
+                          ],
+                          "movement_pattern": "isolation"
+                        },
+                        {
+                          "id": "w1d4-supine-hip-abduction",
+                          "type": "exercise",
+                          "exercise_ref": "supine_hip_abduction",
+                          "name": "Supine Hip Abduction (clam shell prep — side-lying)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 3,
+                          "primary_muscles": [
+                            "hip_abductors"
+                          ],
+                          "secondary_muscles": [
+                            "glutes"
+                          ],
+                          "movement_pattern": "isolation"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d4-b3",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d4-recovery",
+                          "type": "recovery",
+                          "name": "Hip Flexor & Glute Stretch",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d4-supine-figure4",
+                                "type": "recovery_exercise",
+                                "name": "Supine Figure-4 Glute Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "body_part": "glutes"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d5",
+                  "day_of_week": 5,
+                  "type": "active_recovery",
+                  "name": "Day 5 — Short Walk",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w1d5-b1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d5-walk",
+                          "type": "cardio",
+                          "name": "Gentle Walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 1,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d6",
+                  "day_of_week": 6,
+                  "type": "rest",
+                  "name": "Day 6 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w1d7",
+                  "day_of_week": 7,
+                  "type": "rest",
+                  "name": "Day 7 — Rest",
+                  "estimated_duration_minutes": 0
+                }
+              ]
+            },
+            {
+              "id": "week-2",
+              "name": "Week 2 — Build Tolerance",
+              "order": 2,
+              "is_deload": false,
+              "days": [
+                {
+                  "id": "w2d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Day 1 — Breathing, Pelvic Floor & Glute Activation",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w2d1-b1",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d1-diaphragm-breath",
+                          "type": "exercise",
+                          "exercise_ref": "diaphragmatic_breathing",
+                          "name": "Diaphragmatic Breathing",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-b2",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d1-pelvic-floor-progressive",
+                          "type": "exercise",
+                          "exercise_ref": "pelvic_floor_kegel",
+                          "name": "Pelvic Floor — Progressive Hold (hold 5s, release 5s)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "hip_adductors"
+                          ],
+                          "movement_pattern": "isolation"
+                        },
+                        {
+                          "id": "w2d1-glute-bridge",
+                          "type": "exercise",
+                          "exercise_ref": "glute_bridge",
+                          "name": "Glute Bridge (full range, controlled — stop if incision discomfort)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 4,
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge"
+                        },
+                        {
+                          "id": "w2d1-clamshell",
+                          "type": "exercise",
+                          "exercise_ref": "clamshell",
+                          "name": "Clamshell (side-lying)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 3,
+                          "primary_muscles": [
+                            "hip_abductors"
+                          ],
+                          "secondary_muscles": [
+                            "glutes"
+                          ],
+                          "movement_pattern": "isolation"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-b3",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d1-recovery",
+                          "type": "recovery",
+                          "name": "Cooldown Stretches",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d1-supine-figure4",
+                                "type": "recovery_exercise",
+                                "name": "Supine Figure-4 Glute Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "body_part": "glutes"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d2",
+                  "day_of_week": 2,
+                  "type": "active_recovery",
+                  "name": "Day 2 — Walk (extended)",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w2d2-b1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d2-walk",
+                          "type": "cardio",
+                          "name": "Gentle Walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d3",
+                  "day_of_week": 3,
+                  "type": "rest",
+                  "name": "Day 3 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w2d4",
+                  "day_of_week": 4,
+                  "type": "training",
+                  "name": "Day 4 — Posture, Hip Mobility & Pelvic Floor",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w2d4-b1",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d4-breath",
+                          "type": "exercise",
+                          "exercise_ref": "diaphragmatic_breathing",
+                          "name": "Diaphragmatic Breathing",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "abs"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d4-b2",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d4-pelvic-floor",
+                          "type": "exercise",
+                          "exercise_ref": "pelvic_floor_kegel",
+                          "name": "Pelvic Floor — Quick Flicks (fast contract/release)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "hip_adductors"
+                          ],
+                          "movement_pattern": "isolation"
+                        },
+                        {
+                          "id": "w2d4-glute-bridge",
+                          "type": "exercise",
+                          "exercise_ref": "glute_bridge",
+                          "name": "Glute Bridge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 4,
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge"
+                        },
+                        {
+                          "id": "w2d4-wall-posture",
+                          "type": "exercise",
+                          "exercise_ref": "wall_posture_stand",
+                          "name": "Wall Posture Stand (head, shoulders, hips touching wall — gentle thoracic awareness)",
+                          "prescription": {
+                            "type": "time",
+                            "sets": 3,
+                            "duration": {
+                              "value": 30,
+                              "unit": "seconds"
+                            },
+                            "rest": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 2,
+                          "primary_muscles": [
+                            "spinal_erectors"
+                          ],
+                          "secondary_muscles": [
+                            "rear_delts",
+                            "traps"
+                          ],
+                          "movement_pattern": "anti_rotate"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d4-b3",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d4-recovery",
+                          "type": "recovery",
+                          "name": "Thoracic & Hip Cooldown",
+                          "category": "flexibility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d4-cat-cow-gentle",
+                                "type": "recovery_exercise",
+                                "name": "Gentle Cat-Cow (minimal lumbar flexion — avoid pulling on incision)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "body_part": "lower_back"
+                              },
+                              {
+                                "id": "w2d4-supine-figure4",
+                                "type": "recovery_exercise",
+                                "name": "Supine Figure-4 Glute Stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "body_part": "glutes"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d5",
+                  "day_of_week": 5,
+                  "type": "active_recovery",
+                  "name": "Day 5 — Walk (extended)",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w2d5-b1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d5-walk",
+                          "type": "cardio",
+                          "name": "Gentle Walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d6",
+                  "day_of_week": 6,
+                  "type": "rest",
+                  "name": "Day 6 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w2d7",
+                  "day_of_week": 7,
+                  "type": "assessment",
+                  "name": "Day 7 — End of Block Check-In",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w2d7-b1",
+                      "type": "assessment",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d7-checkin",
+                          "type": "simple",
+                          "name": "Self-Assessment & Trainer Check-In: note any incision discomfort, pelvic floor symptoms (leaking, heaviness, pressure), energy levels, and readiness for 6-week OB clearance appointment.",
+                          "duration": {
+                            "value": 15,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "progress": {
+        "checkpoints": [
+          {
+            "id": "checkpoint-end-wk2",
+            "name": "End of Week 2 — Pre-6-Week OB Check",
+            "at": {
+              "value": 14,
+              "unit": "days"
+            },
+            "measurements": [
+              {
+                "metric": "session_rpe_avg"
+              },
+              {
+                "metric": "free_text",
+                "note": "Pelvic floor symptoms: any leaking, heaviness, or pressure during or after exercise?"
+              },
+              {
+                "metric": "free_text",
+                "note": "Incision comfort during movement — any pulling, pain, or numbness?"
+              },
+              {
+                "metric": "free_text",
+                "note": "Energy and sleep quality this week."
+              }
+            ],
+            "questions": [
+              "Are you experiencing any pelvic floor symptoms (leaking, urgency, heaviness)?",
+              "Any pain or pulling at the incision site during exercises or walking?",
+              "Do you feel ready to progress after your 6-week OB clearance?"
+            ]
+          }
+        ],
+        "points_system": {
+          "enabled": true,
+          "rules": [
+            {
+              "action": "complete_training_day",
+              "points": 10
+            },
+            {
+              "action": "complete_walk",
+              "points": 5
+            },
+            {
+              "action": "complete_assessment",
+              "points": 15
+            }
+          ]
+        }
+      },
+      "notifications": [
+        {
+          "id": "notif-stop-signs",
+          "enabled": true,
+          "message": "STOP and rest if you experience: pain at the incision site, pelvic heaviness or pressure, leaking urine or stool, dizziness, or unusual bleeding. Contact your OB if symptoms persist."
+        },
+        {
+          "id": "notif-ob-clearance",
+          "enabled": true,
+          "message": "Reminder: your 6-week postnatal OB check is approaching. Clearance at that appointment is required before progressing to Phase 2 of this programme."
+        }
+      ]
+    }
+  }
+}

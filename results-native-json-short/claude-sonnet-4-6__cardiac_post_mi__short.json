@@ -1,0 +1,1630 @@
+{
+  "model": "claude-sonnet-4-6",
+  "scenario_id": "cardiac_post_mi",
+  "tokens_in": 14683,
+  "tokens_out": 12338,
+  "hit_token_cap": false,
+  "latency_ms": 128548,
+  "cost_usd": 0.229119,
+  "raw_text": "{\n  \"$schema\": \"https://wpl.dev/schemas/wpl/v1.schema.json\",\n  \"version\": \"1.6.0\",\n  \"plan\": {\n    \"id\": \"post-mi-intro-2wk\",\n    \"name\": \"Post-MI Introductory Reconditioning — 2-Week Starter Block\",\n    \"description\": \"A conservative 2-week introductory programme for a 58-year-old male, 6 months post-myocardial infarction, cleared by cardiac rehab for moderate-intensity exercise only. Heart rate capped at 115 bpm (~70% age-predicted max). No Valsalva, no maximal lifts. Full gym available.\",\n    \"type\": \"hybrid\",\n    \"visibility\": \"template\",\n    \"metadata\": {\n      \"created_at\": \"2025-01-01T00:00:00Z\",\n      \"updated_at\": \"2025-01-01T00:00:00Z\",\n      \"created_by\": \"personal_trainer\",\n      \"tags\": [\"cardiac\", \"post-mi\", \"reconditioning\", \"moderate-intensity\", \"beginner\", \"older-adult\"],\n      \"difficulty\": \"beginner\",\n      \"estimated_duration_days\": 14,\n      \"language\": \"en\"\n    },\n    \"goals\": [\n      {\n        \"id\": \"goal-cardiovascular-safety\",\n        \"type\": \"primary\",\n        \"category\": \"cardiovascular_health\",\n        \"name\": \"Safe cardiovascular reconditioning\",\n        \"description\": \"Re-establish aerobic base while keeping HR below 115 bpm at all times.\",\n        \"target\": {\n          \"metric\": \"resting_hr_bpm\",\n          \"target_value\": 65,\n          \"unit\": \"bpm\",\n          \"measurement_type\": \"absolute\"\n        }\n      },\n      {\n        \"id\": \"goal-functional-strength\",\n        \"type\": \"secondary\",\n        \"category\": \"muscular_endurance\",\n        \"name\": \"Rebuild foundational muscular endurance\",\n        \"description\": \"Restore whole-body muscular endurance using light loads, controlled tempo, and open-glottis breathing.\",\n        \"target\": {\n          \"metric\": \"session_rpe_avg\",\n          \"target_value\": 5,\n          \"unit\": \"rpe_1-10\",\n          \"measurement_type\": \"absolute\"\n        }\n      }\n    ],\n    \"requirements\": {\n      \"min_age\": 50,\n      \"max_age\": 70,\n      \"fitness_level\": [\"beginner\", \"deconditioned\"],\n      \"equipment\": [\n        { \"id\": \"eq-treadmill\", \"name\": \"Treadmill\", \"required\": true, \"alternatives\": [\"stationary_bike\", \"rower\"] },\n        { \"id\": \"eq-dumbbells\", \"name\": \"Dumbbells (light set)\", \"required\": true },\n        { \"id\": \"eq-resistance-bands\", \"name\": \"Resistance bands\", \"required\": false, \"alternatives\": [\"cable_machine\"] },\n        { \"id\": \"eq-bench\", \"name\": \"Adjustable bench\", \"required\": true },\n        { \"id\": \"eq-cable-machine\", \"name\": \"Cable machine\", \"required\": false },\n        { \"id\": \"eq-hrm\", \"name\": \"Heart rate monitor\", \"required\": true }\n      ],\n      \"contraindications\": [\n        {\n          \"condition\": \"icd10:I21\",\n          \"severity\": \"high\",\n          \"action\": \"require_clearance\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"acsm:cardiac_rehab_phase_2\",\n          \"severity\": \"high\",\n          \"action\": \"modify\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"valsalva_manoeuvre\",\n          \"severity\": \"high\",\n          \"action\": \"exclude\",\n          \"affected_activities\": []\n        },\n        {\n          \"condition\": \"maximal_effort_lifting\",\n          \"severity\": \"high\",\n          \"action\": \"exclude\",\n          \"affected_activities\": []\n        }\n      ],\n      \"time_commitment\": {\n        \"min_days_per_week\": 3,\n        \"max_days_per_week\": 4,\n        \"min_minutes_per_day\": 35,\n        \"max_minutes_per_day\": 55\n      }\n    },\n    \"athlete_thresholds\": {\n      \"hr_max_bpm\": 162,\n      \"resting_hr_bpm\": 65,\n      \"body_weight_kg\": 85\n    },\n    \"personalization\": {\n      \"inputs\": [\n        {\n          \"id\": \"hrv_morning\",\n          \"type\": \"number\",\n          \"source\": \"wellness.hrv_rmssd_morning\",\n          \"label\": \"Morning HRV (rMSSD ms)\"\n        },\n        {\n          \"id\": \"sleep_hours\",\n          \"type\": \"number\",\n          \"source\": \"wellness.sleep_hours_last_night\",\n          \"label\": \"Sleep hours last night\"\n        },\n        {\n          \"id\": \"session_rpe_yesterday\",\n          \"type\": \"number\",\n          \"source\": \"wellness.session_rpe_yesterday\",\n          \"label\": \"Yesterday session RPE\"\n        }\n      ],\n      \"rules\": [\n        {\n          \"id\": \"rule-reduce-intensity-poor-sleep\",\n          \"condition\": {\n            \"field\": \"sleep_hours\",\n            \"op\": \"lt\",\n            \"value\": 6\n          },\n          \"actions\": [\n            {\n              \"type\": \"modify_intensity\",\n              \"scope\": \"day\",\n              \"note\": \"Reduce cardio target HR ceiling by 10 bpm and drop resistance sets by 1 if sleep < 6 h.\"\n            }\n          ]\n        },\n        {\n          \"id\": \"rule-rest-day-high-rpe\",\n          \"condition\": {\n            \"field\": \"session_rpe_yesterday\",\n            \"op\": \"gte\",\n            \"value\": 7\n          },\n          \"actions\": [\n            {\n              \"type\": \"substitute_day_type\",\n              \"scope\": \"day\",\n              \"note\": \"Convert next scheduled training day to active_recovery if yesterday RPE >= 7.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"phases\": [\n      {\n        \"id\": \"phase-intro\",\n        \"name\": \"Introductory Reconditioning\",\n        \"order\": 1,\n        \"type\": \"base\",\n        \"description\": \"Two weeks of low-to-moderate intensity work. Establish movement patterns, breathing discipline (no breath-holding), and aerobic base. HR must remain ≤115 bpm throughout. RPE target 3–5 on 1–10 scale.\",\n        \"duration\": { \"value\": 2, \"unit\": \"weeks\" },\n        \"weeks\": [\n          {\n            \"id\": \"week-1\",\n            \"name\": \"Week 1 — Orientation\",\n            \"order\": 1,\n            \"is_deload\": false,\n            \"days\": [\n              {\n                \"id\": \"w1d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Day 1 — Cardio + Full-Body Resistance (A)\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d1-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-wu-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 95 }\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d1-wu-mobility\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Dynamic mobility circuit\",\n                        \"category\": \"warmup_mobility\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d1-wu-leg-swing\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Leg swings (front-back)\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"body_part\": \"hip_flexors\"\n                            },\n                            {\n                              \"id\": \"w1d1-wu-arm-circle\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Arm circles\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"body_part\": \"rear_delts\"\n                            },\n                            {\n                              \"id\": \"w1d1-wu-thoracic\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Thoracic rotation (seated)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"body_part\": \"thoracic_spine\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-cardio\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-treadmill\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Moderate-pace treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 15, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 95, \"max_bpm\": 115 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-resistance\",\n                    \"type\": \"main\",\n                    \"order\": 3,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-goblet-squat\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"goblet_squat\",\n                        \"name\": \"Goblet squat (light dumbbell)\",\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\", \"abs\"],\n                        \"movement_pattern\": \"squat\",\n                        \"target_rpe\": 4,\n                        \"target_rir\": 4,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 0 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 8, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d1-db-row\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_single_arm_row\",\n                        \"name\": \"Single-arm dumbbell row\",\n                        \"primary_muscles\": [\"lats\", \"upper_back\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"target_rpe\": 4,\n                        \"target_rir\": 4,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 2, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 1 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 8, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d1-db-press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_chest_press_incline\",\n                        \"name\": \"Incline dumbbell chest press (30° bench)\",\n                        \"primary_muscles\": [\"chest\"],\n                        \"secondary_muscles\": [\"front_delts\", \"triceps\"],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"target_rpe\": 4,\n                        \"target_rir\": 4,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 0 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 6, \"unit\": \"kg\" }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d1-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 4,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d1-cd-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Cool-down treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 60, \"max_bpm\": 90 }\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d1-cd-stretch\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Static stretch — lower body\",\n                        \"category\": \"cooldown_stretch\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d1-cd-quad\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Standing quad stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"quadriceps\"\n                            },\n                            {\n                              \"id\": \"w1d1-cd-calf\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Standing calf stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"calves\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d2\",\n                \"day_of_week\": 2,\n                \"type\": \"rest\",\n                \"name\": \"Day 2 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w1d3\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Day 3 — Cardio Focus\",\n                \"estimated_duration_minutes\": 40,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d3-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d3-wu-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 95 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d3-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d3-bike\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Stationary bike — steady state\",\n                        \"modality\": \"stationary_bike\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 20, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 95, \"max_bpm\": 115 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d3-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d3-cd-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Cool-down walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 60, \"max_bpm\": 90 }\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d3-cd-breathwork\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Diaphragmatic breathing cool-down\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d3-cd-breath\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"4-count inhale / 6-count exhale\",\n                              \"modality\": \"breathwork\",\n                              \"reps\": 10,\n                              \"body_part\": \"abs\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d4\",\n                \"day_of_week\": 4,\n                \"type\": \"rest\",\n                \"name\": \"Day 4 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w1d5\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Day 5 — Full-Body Resistance (B)\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d5-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-wu-bike\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy stationary bike warm-up\",\n                        \"modality\": \"stationary_bike\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 95 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d5-resistance\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-step-up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_step_up\",\n                        \"name\": \"Dumbbell step-up (low box)\",\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\", \"calves\"],\n                        \"movement_pattern\": \"lunge\",\n                        \"target_rpe\": 4,\n                        \"target_rir\": 4,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 2, \"pause_bottom\": 0, \"concentric\": 2, \"pause_top\": 1 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 6, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d5-cable-row\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"cable_seated_row\",\n                        \"name\": \"Seated cable row (light)\",\n                        \"primary_muscles\": [\"upper_back\", \"lats\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"target_rpe\": 4,\n                        \"target_rir\": 4,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 2, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 1 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 20, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w1d5-db-shoulder-press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_seated_shoulder_press\",\n                        \"name\": \"Seated dumbbell shoulder press (light)\",\n                        \"primary_muscles\": [\"front_delts\", \"side_delts\"],\n                        \"secondary_muscles\": [\"triceps\", \"traps\"],\n                        \"movement_pattern\": \"push_vertical\",\n                        \"target_rpe\": 4,\n                        \"target_rir\": 4,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 0 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 5, \"unit\": \"kg\" }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1d5-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d5-cd-stretch\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Static stretch — upper body\",\n                        \"category\": \"cooldown_stretch\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 8, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w1d5-cd-chest\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Doorway chest stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"chest\"\n                            },\n                            {\n                              \"id\": \"w1d5-cd-lat\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Lat stretch (overhead reach on bench)\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"lats\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d6\",\n                \"day_of_week\": 6,\n                \"type\": \"active_recovery\",\n                \"name\": \"Day 6 — Active Recovery\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d6-ar\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w1d6-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Outdoor or treadmill leisure walk\",\n                        \"modality\": \"walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 25, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 100 }\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1d7\",\n                \"day_of_week\": 7,\n                \"type\": \"rest\",\n                \"name\": \"Day 7 — Full Rest\",\n                \"estimated_duration_minutes\": 0\n              }\n            ]\n          },\n          {\n            \"id\": \"week-2\",\n            \"name\": \"Week 2 — Consolidation\",\n            \"order\": 2,\n            \"is_deload\": false,\n            \"days\": [\n              {\n                \"id\": \"w2d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Day 1 — Cardio + Full-Body Resistance (A+)\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d1-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-wu-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 95 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-cardio\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-treadmill\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Moderate-pace treadmill walk (extended)\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 20, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 95, \"max_bpm\": 115 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-resistance\",\n                    \"type\": \"main\",\n                    \"order\": 3,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-goblet-squat\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"goblet_squat\",\n                        \"name\": \"Goblet squat\",\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\", \"abs\"],\n                        \"movement_pattern\": \"squat\",\n                        \"target_rpe\": 5,\n                        \"target_rir\": 3,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 0 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 10, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w2d1-db-row\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_single_arm_row\",\n                        \"name\": \"Single-arm dumbbell row\",\n                        \"primary_muscles\": [\"lats\", \"upper_back\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"target_rpe\": 5,\n                        \"target_rir\": 3,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 2, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 1 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 10, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w2d1-db-press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_chest_press_incline\",\n                        \"name\": \"Incline dumbbell chest press\",\n                        \"primary_muscles\": [\"chest\"],\n                        \"secondary_muscles\": [\"front_delts\", \"triceps\"],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"target_rpe\": 5,\n                        \"target_rir\": 3,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 0 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 8, \"unit\": \"kg\" }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d1-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 4,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d1-cd-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Cool-down treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 60, \"max_bpm\": 90 }\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d2\",\n                \"day_of_week\": 2,\n                \"type\": \"rest\",\n                \"name\": \"Day 2 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w2d3\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Day 3 — Cardio Intervals (gentle)\",\n                \"estimated_duration_minutes\": 40,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d3-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d3-wu-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy treadmill walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 95 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d3-main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d3-intervals\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Bike gentle intervals (brisk vs easy)\",\n                        \"modality\": \"stationary_bike\",\n                        \"prescription\": {\n                          \"type\": \"intervals\",\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 95, \"max_bpm\": 115 }\n                          },\n                          \"intervals\": {\n                            \"work\": { \"duration\": { \"value\": 2, \"unit\": \"minutes\" } },\n                            \"rest\": { \"duration\": { \"value\": 2, \"unit\": \"minutes\" } },\n                            \"repeat\": 6\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d3-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d3-cd-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Cool-down walk\",\n                        \"modality\": \"treadmill_walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 60, \"max_bpm\": 90 }\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d4\",\n                \"day_of_week\": 4,\n                \"type\": \"rest\",\n                \"name\": \"Day 4 — Rest\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w2d5\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Day 5 — Full-Body Resistance (B+)\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d5-warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-wu-bike\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy stationary bike warm-up\",\n                        \"modality\": \"stationary_bike\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 5, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 95 }\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d5-resistance\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-step-up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_step_up\",\n                        \"name\": \"Dumbbell step-up\",\n                        \"primary_muscles\": [\"quadriceps\", \"glutes\"],\n                        \"secondary_muscles\": [\"hamstrings\", \"calves\"],\n                        \"movement_pattern\": \"lunge\",\n                        \"target_rpe\": 5,\n                        \"target_rir\": 3,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 8, \"max\": 10 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 2, \"pause_bottom\": 0, \"concentric\": 2, \"pause_top\": 1 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 8, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w2d5-cable-row\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"cable_seated_row\",\n                        \"name\": \"Seated cable row\",\n                        \"primary_muscles\": [\"upper_back\", \"lats\"],\n                        \"secondary_muscles\": [\"biceps\", \"rear_delts\"],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"target_rpe\": 5,\n                        \"target_rir\": 3,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 2, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 1 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 25, \"unit\": \"kg\" }\n                        }\n                      },\n                      {\n                        \"id\": \"w2d5-db-shoulder-press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_seated_shoulder_press\",\n                        \"name\": \"Seated dumbbell shoulder press\",\n                        \"primary_muscles\": [\"front_delts\", \"side_delts\"],\n                        \"secondary_muscles\": [\"triceps\", \"traps\"],\n                        \"movement_pattern\": \"push_vertical\",\n                        \"target_rpe\": 5,\n                        \"target_rir\": 3,\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": { \"min\": 10, \"max\": 12 },\n                          \"rest\": { \"value\": 90, \"unit\": \"seconds\" },\n                          \"tempo\": { \"eccentric\": 3, \"pause_bottom\": 1, \"concentric\": 2, \"pause_top\": 0 },\n                          \"weight\": { \"type\": \"absolute\", \"value\": 6, \"unit\": \"kg\" }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2d5-cooldown\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d5-cd-stretch\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Full-body static stretch\",\n                        \"category\": \"cooldown_stretch\",\n                        \"prescription\": {\n                          \"duration\": { \"value\": 8, \"unit\": \"minutes\" },\n                          \"exercises\": [\n                            {\n                              \"id\": \"w2d5-cd-hip-flexor\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Kneeling hip flexor stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"hip_flexors\"\n                            },\n                            {\n                              \"id\": \"w2d5-cd-hamstring\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Seated hamstring stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"hamstrings\"\n                            },\n                            {\n                              \"id\": \"w2d5-cd-chest\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Doorway chest stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"chest\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d6\",\n                \"day_of_week\": 6,\n                \"type\": \"active_recovery\",\n                \"name\": \"Day 6 — Active Recovery\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d6-ar\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"w2d6-walk\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Leisure walk\",\n                        \"modality\": \"walk\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": { \"value\": 30, \"unit\": \"minutes\" },\n                          \"intensity\": {\n                            \"type\": \"bpm\",\n                            \"target\": { \"min_bpm\": 70, \"max_bpm\": 100 }\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2d7\",\n                \"day_of_week\": 7,\n                \"type\": \"rest\",\n                \"name\": \"Day 7 — Full Rest\",\n                \"estimated_duration_minutes\": 0\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"progress\": {\n      \"checkpoints\": [\n        {\n          \"id\": \"cp-end-week1\",\n          \"name\": \"End of Week 1 Check-in\",\n          \"at\": { \"value\": 7, \"unit\": \"days\" },\n          \"measurements\": [\n            { \"metric\": \"resting_hr_bpm\" },\n            { \"metric\": \"session_rpe_avg\" },\n            { \"metric\": \"body_weight_kg\" }\n          ],\n          \"questions\": [\n            \"Any chest pain, palpitations, or unusual shortness of breath during sessions?\",\n            \"Did HR stay below 115 bpm throughout all sessions?\",\n            \"Rate your overall energy levels this week (1–10).\",\n            \"Any joint discomfort or muscular pain to report?\"\n          ]\n        },\n        {\n          \"id\": \"cp-end-week2\",\n          \"name\": \"End of Week 2 — Baseline Assessment\",\n          \"at\": { \"value\": 14, \"unit\": \"days\" },\n          \"measurements\": [\n            { \"metric\": \"resting_hr_bpm\" },\n            { \"metric\": \"hrv_rmssd_ms\" },\n            { \"metric\": \"session_rpe_avg\" },\n            { \"metric\": \"body_weight_kg\" },\n            { \"metric\": \"six_min_walk_m\", \"note\": \"6-minute walk test on flat surface — monitor HR throughout, stop if HR exceeds 115 bpm.\" }\n          ],\n          \"questions\": [\n            \"Any cardiac symptoms (chest tightness, dizziness, palpitations) during or after exercise?\",\n            \"Has your GP or cardiologist been informed of your exercise programme?\",\n            \"How confident do you feel progressing to the next phase?\",\n            \"Rate sleep quality over the past 2 weeks (1–10).\"\n          ]\n        }\n      ],\n      \"points_system\": {\n        \"enabled\": true,\n        \"rules\": [\n          { \"action\": \"complete_training_day\", \"points\": 10 },\n          { \"action\": \"complete_active_recovery_day\", \"points\": 5 },\n          { \"action\": \"hr_stayed_below_115_bpm\", \"points\": 5 },\n          { \"action\": \"complete_checkpoint\", \"points\": 20 }\n        ]\n      }\n    },\n    \"notifications\": [\n      {\n        \"id\": \"notif-hr-warning\",\n        \"enabled\": true,\n        \"message\": \"HR monitor alert: if your heart rate exceeds 115 bpm, reduce pace or resistance immediately and allow HR to recover below 100 bpm before continuing.\",\n        \"timing_reference\": \"session_start\",\n        \"timing_offset\": { \"value\": 0, \"unit\": \"minutes\" }\n      },\n      {\n        \"id\": \"notif-symptom-stop\",\n        \"enabled\": true,\n        \"message\": \"STOP exercise immediately and seek medical attention if you experience chest pain, pressure, dizziness, unusual shortness of breath, or palpitations.\",\n        \"timing_reference\": \"session_start\",\n        \"timing_offset\": { \"value\": 0, \"unit\": \"minutes\" }\n      },\n      {\n        \"id\": \"notif-breathing-reminder\",\n        \"enabled\": true,\n        \"message\": \"Breathing reminder: exhale on exertion, inhale on the easier phase. Never hold your breath during any exercise.\",\n        \"timing_reference\": \"resistance_block_start\",\n        \"timing_offset\": { \"value\": 0, \"unit\": \"minutes\" }\n      },\n      {\n        \"id\": \"notif-checkpoint-w1\",\n        \"enabled\": true,\n        \"message\": \"Week 1 complete — time for your check-in. Log your resting HR, RPE, and answer the check-in questions before your next session.\",\n        \"timing_reference\": \"week_1_end\",\n        \"timing_offset\": { \"value\": 0, \"unit\": \"hours\" }\n      }\n    ]\n  }\n}",
+  "refusal": false,
+  "parse_ok": true,
+  "parse_error": null,
+  "schema_valid": false,
+  "validator_errors": 1,
+  "error_categories": {
+    "invalid action type 'X'": 1
+  },
+  "top_error_paths": [
+    {
+      "path": "personalization/rules/N/actions/N",
+      "count": 1
+    }
+  ],
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "post-mi-intro-2wk",
+      "name": "Post-MI Introductory Reconditioning — 2-Week Starter Block",
+      "description": "A conservative 2-week introductory programme for a 58-year-old male, 6 months post-myocardial infarction, cleared by cardiac rehab for moderate-intensity exercise only. Heart rate capped at 115 bpm (~70% age-predicted max). No Valsalva, no maximal lifts. Full gym available.",
+      "type": "hybrid",
+      "visibility": "template",
+      "metadata": {
+        "created_at": "2025-01-01T00:00:00Z",
+        "updated_at": "2025-01-01T00:00:00Z",
+        "created_by": "personal_trainer",
+        "tags": [
+          "cardiac",
+          "post-mi",
+          "reconditioning",
+          "moderate-intensity",
+          "beginner",
+          "older-adult"
+        ],
+        "difficulty": "beginner",
+        "estimated_duration_days": 14,
+        "language": "en"
+      },
+      "goals": [
+        {
+          "id": "goal-cardiovascular-safety",
+          "type": "primary",
+          "category": "cardiovascular_health",
+          "name": "Safe cardiovascular reconditioning",
+          "description": "Re-establish aerobic base while keeping HR below 115 bpm at all times.",
+          "target": {
+            "metric": "resting_hr_bpm",
+            "target_value": 65,
+            "unit": "bpm",
+            "measurement_type": "absolute"
+          }
+        },
+        {
+          "id": "goal-functional-strength",
+          "type": "secondary",
+          "category": "muscular_endurance",
+          "name": "Rebuild foundational muscular endurance",
+          "description": "Restore whole-body muscular endurance using light loads, controlled tempo, and open-glottis breathing.",
+          "target": {
+            "metric": "session_rpe_avg",
+            "target_value": 5,
+            "unit": "rpe_1-10",
+            "measurement_type": "absolute"
+          }
+        }
+      ],
+      "requirements": {
+        "min_age": 50,
+        "max_age": 70,
+        "fitness_level": [
+          "beginner",
+          "deconditioned"
+        ],
+        "equipment": [
+          {
+            "id": "eq-treadmill",
+            "name": "Treadmill",
+            "required": true,
+            "alternatives": [
+              "stationary_bike",
+              "rower"
+            ]
+          },
+          {
+            "id": "eq-dumbbells",
+            "name": "Dumbbells (light set)",
+            "required": true
+          },
+          {
+            "id": "eq-resistance-bands",
+            "name": "Resistance bands",
+            "required": false,
+            "alternatives": [
+              "cable_machine"
+            ]
+          },
+          {
+            "id": "eq-bench",
+            "name": "Adjustable bench",
+            "required": true
+          },
+          {
+            "id": "eq-cable-machine",
+            "name": "Cable machine",
+            "required": false
+          },
+          {
+            "id": "eq-hrm",
+            "name": "Heart rate monitor",
+            "required": true
+          }
+        ],
+        "contraindications": [
+          {
+            "condition": "icd10:I21",
+            "severity": "high",
+            "action": "require_clearance",
+            "affected_activities": []
+          },
+          {
+            "condition": "acsm:cardiac_rehab_phase_2",
+            "severity": "high",
+            "action": "modify",
+            "affected_activities": []
+          },
+          {
+            "condition": "valsalva_manoeuvre",
+            "severity": "high",
+            "action": "exclude",
+            "affected_activities": []
+          },
+          {
+            "condition": "maximal_effort_lifting",
+            "severity": "high",
+            "action": "exclude",
+            "affected_activities": []
+          }
+        ],
+        "time_commitment": {
+          "min_days_per_week": 3,
+          "max_days_per_week": 4,
+          "min_minutes_per_day": 35,
+          "max_minutes_per_day": 55
+        }
+      },
+      "athlete_thresholds": {
+        "hr_max_bpm": 162,
+        "resting_hr_bpm": 65,
+        "body_weight_kg": 85
+      },
+      "personalization": {
+        "inputs": [
+          {
+            "id": "hrv_morning",
+            "type": "number",
+            "source": "wellness.hrv_rmssd_morning",
+            "label": "Morning HRV (rMSSD ms)"
+          },
+          {
+            "id": "sleep_hours",
+            "type": "number",
+            "source": "wellness.sleep_hours_last_night",
+            "label": "Sleep hours last night"
+          },
+          {
+            "id": "session_rpe_yesterday",
+            "type": "number",
+            "source": "wellness.session_rpe_yesterday",
+            "label": "Yesterday session RPE"
+          }
+        ],
+        "rules": [
+          {
+            "id": "rule-reduce-intensity-poor-sleep",
+            "condition": {
+              "field": "sleep_hours",
+              "op": "lt",
+              "value": 6
+            },
+            "actions": [
+              {
+                "type": "modify_intensity",
+                "scope": "day",
+                "note": "Reduce cardio target HR ceiling by 10 bpm and drop resistance sets by 1 if sleep < 6 h."
+              }
+            ]
+          },
+          {
+            "id": "rule-rest-day-high-rpe",
+            "condition": {
+              "field": "session_rpe_yesterday",
+              "op": "gte",
+              "value": 7
+            },
+            "actions": [
+              {
+                "type": "substitute_day_type",
+                "scope": "day",
+                "note": "Convert next scheduled training day to active_recovery if yesterday RPE >= 7."
+              }
+            ]
+          }
+        ]
+      },
+      "phases": [
+        {
+          "id": "phase-intro",
+          "name": "Introductory Reconditioning",
+          "order": 1,
+          "type": "base",
+          "description": "Two weeks of low-to-moderate intensity work. Establish movement patterns, breathing discipline (no breath-holding), and aerobic base. HR must remain ≤115 bpm throughout. RPE target 3–5 on 1–10 scale.",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week-1",
+              "name": "Week 1 — Orientation",
+              "order": 1,
+              "is_deload": false,
+              "days": [
+                {
+                  "id": "w1d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Day 1 — Cardio + Full-Body Resistance (A)",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "w1d1-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-wu-walk",
+                          "type": "cardio",
+                          "name": "Easy treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 95
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d1-wu-mobility",
+                          "type": "recovery",
+                          "name": "Dynamic mobility circuit",
+                          "category": "warmup_mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d1-wu-leg-swing",
+                                "type": "recovery_exercise",
+                                "name": "Leg swings (front-back)",
+                                "modality": "dynamic_stretch",
+                                "reps": 10,
+                                "sides": "both",
+                                "body_part": "hip_flexors"
+                              },
+                              {
+                                "id": "w1d1-wu-arm-circle",
+                                "type": "recovery_exercise",
+                                "name": "Arm circles",
+                                "modality": "dynamic_stretch",
+                                "reps": 10,
+                                "sides": "both",
+                                "body_part": "rear_delts"
+                              },
+                              {
+                                "id": "w1d1-wu-thoracic",
+                                "type": "recovery_exercise",
+                                "name": "Thoracic rotation (seated)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "body_part": "thoracic_spine"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-cardio",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-treadmill",
+                          "type": "cardio",
+                          "name": "Moderate-pace treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 95,
+                                "max_bpm": 115
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-resistance",
+                      "type": "main",
+                      "order": 3,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d1-goblet-squat",
+                          "type": "exercise",
+                          "exercise_ref": "goblet_squat",
+                          "name": "Goblet squat (light dumbbell)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings",
+                            "abs"
+                          ],
+                          "movement_pattern": "squat",
+                          "target_rpe": 4,
+                          "target_rir": 4,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 0
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 8,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d1-db-row",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_single_arm_row",
+                          "name": "Single-arm dumbbell row",
+                          "primary_muscles": [
+                            "lats",
+                            "upper_back"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "target_rpe": 4,
+                          "target_rir": 4,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 2,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 1
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 8,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d1-db-press",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_chest_press_incline",
+                          "name": "Incline dumbbell chest press (30° bench)",
+                          "primary_muscles": [
+                            "chest"
+                          ],
+                          "secondary_muscles": [
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "target_rpe": 4,
+                          "target_rir": 4,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 0
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 6,
+                              "unit": "kg"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d1-cooldown",
+                      "type": "cooldown",
+                      "order": 4,
+                      "activities": [
+                        {
+                          "id": "w1d1-cd-walk",
+                          "type": "cardio",
+                          "name": "Cool-down treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 60,
+                                "max_bpm": 90
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d1-cd-stretch",
+                          "type": "recovery",
+                          "name": "Static stretch — lower body",
+                          "category": "cooldown_stretch",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d1-cd-quad",
+                                "type": "recovery_exercise",
+                                "name": "Standing quad stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "quadriceps"
+                              },
+                              {
+                                "id": "w1d1-cd-calf",
+                                "type": "recovery_exercise",
+                                "name": "Standing calf stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "calves"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d2",
+                  "day_of_week": 2,
+                  "type": "rest",
+                  "name": "Day 2 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w1d3",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Day 3 — Cardio Focus",
+                  "estimated_duration_minutes": 40,
+                  "blocks": [
+                    {
+                      "id": "w1d3-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d3-wu-walk",
+                          "type": "cardio",
+                          "name": "Easy treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 95
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d3-main",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "w1d3-bike",
+                          "type": "cardio",
+                          "name": "Stationary bike — steady state",
+                          "modality": "stationary_bike",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 95,
+                                "max_bpm": 115
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d3-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d3-cd-walk",
+                          "type": "cardio",
+                          "name": "Cool-down walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 60,
+                                "max_bpm": 90
+                              }
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d3-cd-breathwork",
+                          "type": "recovery",
+                          "name": "Diaphragmatic breathing cool-down",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d3-cd-breath",
+                                "type": "recovery_exercise",
+                                "name": "4-count inhale / 6-count exhale",
+                                "modality": "breathwork",
+                                "reps": 10,
+                                "body_part": "abs"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d4",
+                  "day_of_week": 4,
+                  "type": "rest",
+                  "name": "Day 4 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w1d5",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Day 5 — Full-Body Resistance (B)",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "w1d5-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d5-wu-bike",
+                          "type": "cardio",
+                          "name": "Easy stationary bike warm-up",
+                          "modality": "stationary_bike",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 95
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d5-resistance",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w1d5-step-up",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_step_up",
+                          "name": "Dumbbell step-up (low box)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings",
+                            "calves"
+                          ],
+                          "movement_pattern": "lunge",
+                          "target_rpe": 4,
+                          "target_rir": 4,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 2,
+                              "pause_bottom": 0,
+                              "concentric": 2,
+                              "pause_top": 1
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 6,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d5-cable-row",
+                          "type": "exercise",
+                          "exercise_ref": "cable_seated_row",
+                          "name": "Seated cable row (light)",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "target_rpe": 4,
+                          "target_rir": 4,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 2,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 1
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 20,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w1d5-db-shoulder-press",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_seated_shoulder_press",
+                          "name": "Seated dumbbell shoulder press (light)",
+                          "primary_muscles": [
+                            "front_delts",
+                            "side_delts"
+                          ],
+                          "secondary_muscles": [
+                            "triceps",
+                            "traps"
+                          ],
+                          "movement_pattern": "push_vertical",
+                          "target_rpe": 4,
+                          "target_rir": 4,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 0
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 5,
+                              "unit": "kg"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1d5-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w1d5-cd-stretch",
+                          "type": "recovery",
+                          "name": "Static stretch — upper body",
+                          "category": "cooldown_stretch",
+                          "prescription": {
+                            "duration": {
+                              "value": 8,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w1d5-cd-chest",
+                                "type": "recovery_exercise",
+                                "name": "Doorway chest stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "chest"
+                              },
+                              {
+                                "id": "w1d5-cd-lat",
+                                "type": "recovery_exercise",
+                                "name": "Lat stretch (overhead reach on bench)",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "lats"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d6",
+                  "day_of_week": 6,
+                  "type": "active_recovery",
+                  "name": "Day 6 — Active Recovery",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w1d6-ar",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w1d6-walk",
+                          "type": "cardio",
+                          "name": "Outdoor or treadmill leisure walk",
+                          "modality": "walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 25,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 100
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1d7",
+                  "day_of_week": 7,
+                  "type": "rest",
+                  "name": "Day 7 — Full Rest",
+                  "estimated_duration_minutes": 0
+                }
+              ]
+            },
+            {
+              "id": "week-2",
+              "name": "Week 2 — Consolidation",
+              "order": 2,
+              "is_deload": false,
+              "days": [
+                {
+                  "id": "w2d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Day 1 — Cardio + Full-Body Resistance (A+)",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w2d1-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d1-wu-walk",
+                          "type": "cardio",
+                          "name": "Easy treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 95
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-cardio",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "w2d1-treadmill",
+                          "type": "cardio",
+                          "name": "Moderate-pace treadmill walk (extended)",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 95,
+                                "max_bpm": 115
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-resistance",
+                      "type": "main",
+                      "order": 3,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d1-goblet-squat",
+                          "type": "exercise",
+                          "exercise_ref": "goblet_squat",
+                          "name": "Goblet squat",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings",
+                            "abs"
+                          ],
+                          "movement_pattern": "squat",
+                          "target_rpe": 5,
+                          "target_rir": 3,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 0
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 10,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w2d1-db-row",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_single_arm_row",
+                          "name": "Single-arm dumbbell row",
+                          "primary_muscles": [
+                            "lats",
+                            "upper_back"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "target_rpe": 5,
+                          "target_rir": 3,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 2,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 1
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 10,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w2d1-db-press",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_chest_press_incline",
+                          "name": "Incline dumbbell chest press",
+                          "primary_muscles": [
+                            "chest"
+                          ],
+                          "secondary_muscles": [
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "target_rpe": 5,
+                          "target_rir": 3,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 0
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 8,
+                              "unit": "kg"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d1-cooldown",
+                      "type": "cooldown",
+                      "order": 4,
+                      "activities": [
+                        {
+                          "id": "w2d1-cd-walk",
+                          "type": "cardio",
+                          "name": "Cool-down treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 60,
+                                "max_bpm": 90
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d2",
+                  "day_of_week": 2,
+                  "type": "rest",
+                  "name": "Day 2 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w2d3",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Day 3 — Cardio Intervals (gentle)",
+                  "estimated_duration_minutes": 40,
+                  "blocks": [
+                    {
+                      "id": "w2d3-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d3-wu-walk",
+                          "type": "cardio",
+                          "name": "Easy treadmill walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 95
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d3-main",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "w2d3-intervals",
+                          "type": "cardio",
+                          "name": "Bike gentle intervals (brisk vs easy)",
+                          "modality": "stationary_bike",
+                          "prescription": {
+                            "type": "intervals",
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 95,
+                                "max_bpm": 115
+                              }
+                            },
+                            "intervals": {
+                              "work": {
+                                "duration": {
+                                  "value": 2,
+                                  "unit": "minutes"
+                                }
+                              },
+                              "rest": {
+                                "duration": {
+                                  "value": 2,
+                                  "unit": "minutes"
+                                }
+                              },
+                              "repeat": 6
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d3-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d3-cd-walk",
+                          "type": "cardio",
+                          "name": "Cool-down walk",
+                          "modality": "treadmill_walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 60,
+                                "max_bpm": 90
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d4",
+                  "day_of_week": 4,
+                  "type": "rest",
+                  "name": "Day 4 — Rest",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w2d5",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Day 5 — Full-Body Resistance (B+)",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w2d5-warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d5-wu-bike",
+                          "type": "cardio",
+                          "name": "Easy stationary bike warm-up",
+                          "modality": "stationary_bike",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 95
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d5-resistance",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "w2d5-step-up",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_step_up",
+                          "name": "Dumbbell step-up",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "secondary_muscles": [
+                            "hamstrings",
+                            "calves"
+                          ],
+                          "movement_pattern": "lunge",
+                          "target_rpe": 5,
+                          "target_rir": 3,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 2,
+                              "pause_bottom": 0,
+                              "concentric": 2,
+                              "pause_top": 1
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 8,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w2d5-cable-row",
+                          "type": "exercise",
+                          "exercise_ref": "cable_seated_row",
+                          "name": "Seated cable row",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "secondary_muscles": [
+                            "biceps",
+                            "rear_delts"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "target_rpe": 5,
+                          "target_rir": 3,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 2,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 1
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 25,
+                              "unit": "kg"
+                            }
+                          }
+                        },
+                        {
+                          "id": "w2d5-db-shoulder-press",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_seated_shoulder_press",
+                          "name": "Seated dumbbell shoulder press",
+                          "primary_muscles": [
+                            "front_delts",
+                            "side_delts"
+                          ],
+                          "secondary_muscles": [
+                            "triceps",
+                            "traps"
+                          ],
+                          "movement_pattern": "push_vertical",
+                          "target_rpe": 5,
+                          "target_rir": 3,
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 10,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            },
+                            "tempo": {
+                              "eccentric": 3,
+                              "pause_bottom": 1,
+                              "concentric": 2,
+                              "pause_top": 0
+                            },
+                            "weight": {
+                              "type": "absolute",
+                              "value": 6,
+                              "unit": "kg"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2d5-cooldown",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "w2d5-cd-stretch",
+                          "type": "recovery",
+                          "name": "Full-body static stretch",
+                          "category": "cooldown_stretch",
+                          "prescription": {
+                            "duration": {
+                              "value": 8,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "w2d5-cd-hip-flexor",
+                                "type": "recovery_exercise",
+                                "name": "Kneeling hip flexor stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "hip_flexors"
+                              },
+                              {
+                                "id": "w2d5-cd-hamstring",
+                                "type": "recovery_exercise",
+                                "name": "Seated hamstring stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "hamstrings"
+                              },
+                              {
+                                "id": "w2d5-cd-chest",
+                                "type": "recovery_exercise",
+                                "name": "Doorway chest stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "chest"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d6",
+                  "day_of_week": 6,
+                  "type": "active_recovery",
+                  "name": "Day 6 — Active Recovery",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w2d6-ar",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "w2d6-walk",
+                          "type": "cardio",
+                          "name": "Leisure walk",
+                          "modality": "walk",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "bpm",
+                              "target": {
+                                "min_bpm": 70,
+                                "max_bpm": 100
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2d7",
+                  "day_of_week": 7,
+                  "type": "rest",
+                  "name": "Day 7 — Full Rest",
+                  "estimated_duration_minutes": 0
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "progress": {
+        "checkpoints": [
+          {
+            "id": "cp-end-week1",
+            "name": "End of Week 1 Check-in",
+            "at": {
+              "value": 7,
+              "unit": "days"
+            },
+            "measurements": [
+              {
+                "metric": "resting_hr_bpm"
+              },
+              {
+                "metric": "session_rpe_avg"
+              },
+              {
+                "metric": "body_weight_kg"
+              }
+            ],
+            "questions": [
+              "Any chest pain, palpitations, or unusual shortness of breath during sessions?",
+              "Did HR stay below 115 bpm throughout all sessions?",
+              "Rate your overall energy levels this week (1–10).",
+              "Any joint discomfort or muscular pain to report?"
+            ]
+          },
+          {
+            "id": "cp-end-week2",
+            "name": "End of Week 2 — Baseline Assessment",
+            "at": {
+              "value": 14,
+              "unit": "days"
+            },
+            "measurements": [
+              {
+                "metric": "resting_hr_bpm"
+              },
+              {
+                "metric": "hrv_rmssd_ms"
+              },
+              {
+                "metric": "session_rpe_avg"
+              },
+              {
+                "metric": "body_weight_kg"
+              },
+              {
+                "metric": "six_min_walk_m",
+                "note": "6-minute walk test on flat surface — monitor HR throughout, stop if HR exceeds 115 bpm."
+              }
+            ],
+            "questions": [
+              "Any cardiac symptoms (chest tightness, dizziness, palpitations) during or after exercise?",
+              "Has your GP or cardiologist been informed of your exercise programme?",
+              "How confident do you feel progressing to the next phase?",
+              "Rate sleep quality over the past 2 weeks (1–10)."
+            ]
+          }
+        ],
+        "points_system": {
+          "enabled": true,
+          "rules": [
+            {
+              "action": "complete_training_day",
+              "points": 10
+            },
+            {
+              "action": "complete_active_recovery_day",
+              "points": 5
+            },
+            {
+              "action": "hr_stayed_below_115_bpm",
+              "points": 5
+            },
+            {
+              "action": "complete_checkpoint",
+              "points": 20
+            }
+          ]
+        }
+      },
+      "notifications": [
+        {
+          "id": "notif-hr-warning",
+          "enabled": true,
+          "message": "HR monitor alert: if your heart rate exceeds 115 bpm, reduce pace or resistance immediately and allow HR to recover below 100 bpm before continuing.",
+          "timing_reference": "session_start",
+          "timing_offset": {
+            "value": 0,
+            "unit": "minutes"
+          }
+        },
+        {
+          "id": "notif-symptom-stop",
+          "enabled": true,
+          "message": "STOP exercise immediately and seek medical attention if you experience chest pain, pressure, dizziness, unusual shortness of breath, or palpitations.",
+          "timing_reference": "session_start",
+          "timing_offset": {
+            "value": 0,
+            "unit": "minutes"
+          }
+        },
+        {
+          "id": "notif-breathing-reminder",
+          "enabled": true,
+          "message": "Breathing reminder: exhale on exertion, inhale on the easier phase. Never hold your breath during any exercise.",
+          "timing_reference": "resistance_block_start",
+          "timing_offset": {
+            "value": 0,
+            "unit": "minutes"
+          }
+        },
+        {
+          "id": "notif-checkpoint-w1",
+          "enabled": true,
+          "message": "Week 1 complete — time for your check-in. Log your resting HR, RPE, and answer the check-in questions before your next session.",
+          "timing_reference": "week_1_end",
+          "timing_offset": {
+            "value": 0,
+            "unit": "hours"
+          }
+        }
+      ]
+    }
+  }
+}
