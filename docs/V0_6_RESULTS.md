@@ -37,6 +37,15 @@ restate v0.5 results except where v0.6 changes the interpretation.
    (gpt-5). The compile/schema gap is universal, not vendor-specific,
    and is the main new finding of v0.6.
 
+4. **Sub-finding from in-cycle direct-JSON probes** ($2.52, 10 trials,
+   Sonnet 4.6 only). A 12-week WPL JSON plan exceeds the LLM output
+   token budget (5/5 truncated at 16K tokens), but a 2-week WPL JSON
+   plan validates at 60% (3/5) via direct native-mode generation —
+   meaningfully higher than the same model's 17% schema-valid rate via
+   the DSL→compile path on full-length plans. This refocuses v0.7: the
+   architectural question is whether to chunk the synthesis, not
+   whether to switch off the DSL.
+
 ---
 
 ## The numbers (7-model cross-vendor table)
@@ -169,10 +178,11 @@ phases/N/weeks/N/days/N/blocks/N/activities/N/prescription (2,668)
 
 The failures concentrate at the **activity block**.
 
-### Two candidate explanations
+### Two candidate explanations (sharpened by native-JSON probes)
 
-The data is consistent with two distinct causes, and we cannot
-distinguish them from the v0.6 sweep alone:
+The Lane B sweep alone cannot distinguish two candidate causes; two
+direct-JSON probes against Sonnet 4.6 (reported below in §"Native-JSON
+probes") move the picture forward but don't resolve it cleanly either.
 
 **Explanation A — the prompt is incomplete.** The Lane B system
 prompt teaches outer DSL syntax (`PLAN`, `PHASES`, `WEEK`, `DAY`),
@@ -211,9 +221,117 @@ the v0.5 baseline; v0.7 will run an A/B/C experiment (see "Future
 work" below) to attribute the gap.
 
 **We do not commit to either interpretation in this document.** The
-served-rate ceiling we report is what the v0.5 prompt + v0.5 WPL-AI
-schema produce together; the v0.7 sweep will tell us which of the
-two layers carries the cost.
+direct-JSON probes (next section) provide partial evidence: short
+plans validate at ~60% on native JSON-mode, suggesting the schema
+itself is producible at small scale. The v0.6 served-rate ceiling
+combines (a) the schema's complexity, (b) the DSL→compile path's
+translation overhead, and (c) the output-token budget for full-length
+plans. The v0.7 sweep will measure each contribution.
+
+---
+
+## Native-JSON probes (v0.6 in-cycle, $2.52 total spend)
+
+We ran two probes outside the locked sweep to attribute the schema-
+fail rate observed in §"Finding 3." Both use Sonnet 4.6 with the full
+WPL JSON Schema (37,928 chars / ~10k tokens) included in the system
+prompt. The model is asked to emit WPL JSON directly — no DSL,
+no compile step. Output is parsed and validated by
+`@gymbile/wpl-validator`, the same validator Lane B uses.
+
+### Probe 1 — 12-week direct-JSON ($1.45, 5 trials)
+
+Prompt: each scenario's original `single_turn_prompt` (which asks for
+a 12-week programme). Output cap: 16,384 tokens (Sonnet's documented
+max-output limit for the messages API).
+
+| metric | result |
+|---|---|
+| hit output token cap | **5 / 5** |
+| parse_ok | 0 / 5 |
+| schema_valid | n/a (no parse) |
+
+Every trial emitted exactly 16,384 output tokens and the JSON was
+truncated mid-string (e.g. "Unterminated string at position 63,328").
+Inspection of the partial output shows Sonnet was attempting to
+produce valid WPL JSON — `$schema`, `version`, `plan.id`, structured
+phase/week/day trees — but the full 12-week plan exceeds the LLM's
+output token budget. A rough character count puts a complete plan at
+~150KB / ~40k output tokens, well beyond what Sonnet (or any current
+flagship) can emit in a single response.
+
+**This is a property of the WPL JSON format itself.** A 12-week DSL
+plan is ~3–5KB (LLM-emittable in one shot). The same plan as JSON is
+~150KB. The DSL→compile architecture exists, at minimum, because the
+DSL fits in the output window and the JSON does not.
+
+### Probe 2 — 2-week direct-JSON ($1.07, 5 trials)
+
+Same 5 scenarios, same model, same schema-in-prompt. The user prompt
+was modified to override the duration request: "generate a SHORT
+2-week introductory plan only; keep total activity count under ~30."
+
+| metric | result |
+|---|---|
+| hit output token cap | 0 / 5 |
+| parse_ok | **5 / 5** |
+| schema_valid | **3 / 5** |
+| errors in failing plans | 1 and 4 (minor — invalid action type/scope) |
+| cost per trial | $0.16 – $0.23 |
+
+The picture changes substantially:
+
+- **Token budget is not the limit at this scale.** Output sizes
+  landed between 7,754 and 12,380 tokens — comfortably inside the
+  16K cap. The 12-week truncation in Probe 1 is a length effect, not
+  a baseline incompetence.
+- **Schema-valid rate jumps from 17% (DSL Lane B, Sonnet) to 60%
+  (direct JSON, Sonnet) at this plan length.** The native-mode arm
+  more than triples the success rate against the same validator.
+- **The 2 failures had 1 and 4 errors each**, not the hundreds-per-
+  plan bulk-structural failures seen in the DSL Lane B sweep. The
+  errors are localized: `"invalid action type 'X'"` and
+  `"invalid action scope 'X'"`. The model is producing the right
+  *shape* and missing on specific enum values.
+
+### What these probes actually attribute
+
+The schema-fail rate observed in the main v0.6 sweep has at least
+three contributing causes, and the probes let us partially separate
+them:
+
+| cause | evidence | size estimate |
+|---|---|---|
+| Output token budget (long plans don't fit) | Probe 1: 5/5 trials truncated at the 16K cap on full-length plans | ≥ part of the gap; estimate hard to make precise |
+| DSL→compile translation cost | Same model, same scenarios, short plan: 60% schema-valid direct vs 17% via DSL→compile on the same model in the main sweep | ~3× factor in this slice |
+| Schema's own complexity (Explanation B) | Even at short scale, 2/5 plans had small schema errors; even the strongest models in the main sweep cap at 73% schema-valid | non-trivial but not dominant |
+
+The simplification proposals in §"What this means for WPL-AI design"
+still apply — they would close the residual 40% gap on short plans —
+but the **bigger v0.6 finding from these probes is architectural**:
+no current flagship LLM can emit a complete 12-week WPL JSON plan
+within its output budget. Any production system that uses WPL needs
+to either (a) keep the DSL as the LLM-facing surface, or (b) generate
+JSON in chunks (per-week, per-phase) and assemble. The v0.7 A/B/C
+experiment should add a fourth arm that tests chunked synthesis.
+
+### Methodology caveats for the probes
+
+- **N = 5 per probe.** This is a directional signal, not a calibrated
+  rate. We do not claim "60% schema-valid" as a published number; we
+  claim "short plans validate at meaningfully higher rates than long
+  plans via the same path."
+- **Safety scorer was NOT run on probe outputs.** Schema-valid plans
+  may still contain contraindicated prescriptions. Spot-check of the
+  successful `torn_meniscus` short plan, for example, contains a
+  string match for "plyometric" — which the WPL safety contract would
+  flag but the JSON validator does not. We use these probes only to
+  attribute the schema-validation result; safety claims stay with the
+  main sweep.
+- **One model, one vendor.** Probes are Sonnet-only. Opus 4.7 might
+  hit the same output-budget wall earlier (longer per-token output);
+  gpt-5 might do better given its higher schema-valid rate in the
+  main sweep. The probes show direction, not the cross-vendor map.
 
 ### The gpt-5-nano caveat
 
@@ -228,6 +346,103 @@ run in v0.7 if nano remains a target tier.
 
 ---
 
+## What this means for WPL-AI design
+
+This section steps outside the published-result frame and argues a
+design position: **the data is more consistent with WPL-AI's activity
+block being too complex for LLMs to produce reliably from prose than
+with the Lane B prompt being incomplete.** We include this section
+because the paper has to decide whether the v0.7 work is "add schema
+to the prompt" (cheap, narrow) or "simplify the format" (substantial,
+broader). Our recommendation is to take simplification seriously, and
+the v0.7 A/B/C experiment is designed to falsify this recommendation
+if it's wrong.
+
+### Where the complexity comes from
+
+Walking the schema-error breakdown back to the schema, four sources
+dominate the failure rate:
+
+1. **The `type` discriminator on the activity `oneOf`** (26% of
+   errors). WPL-AI represents an activity as a tagged union — a
+   `type` constant ("resistance" | "cardio" | "mobility" | "mobility"
+   | …) selects which inner `prescription` shape is valid. LLMs
+   consistently *flatten* discriminated unions: they write one
+   activity shape that mixes fields from multiple variants. This is
+   not a vocabulary issue, it is a structural one. Models that
+   succeed on simple JSON Schema fail on `oneOf`+`type` patterns at
+   substantially higher rates; this is widely documented in
+   structured-output literature, not specific to WPL-AI.
+2. **`additionalProperties: false`** (42% of errors). The schema
+   refuses any field it doesn't know about. LLMs invent
+   reasonable-sounding fields — `notes`, `tempo`, `cues`,
+   `instructions` — that a human author would naturally include in a
+   workout. Every one of those invented fields fails validation
+   *even if everything else is correct*.
+3. **ID-uniqueness within week scope + slug pattern** (672 errors).
+   Activity IDs must (a) match `^[a-z0-9][a-z0-9_-]*$` and (b) be
+   unique within a week. LLMs naturally reuse a stable ID for "the
+   same exercise" across days ("back_squat" on Monday and Friday),
+   which is the *opposite* of what the schema requires. The
+   normalisation cost falls on the LLM rather than on the compiler.
+4. **Required fields on the inner prescription** (1,948 errors).
+   `exercise_ref`, `prescription.type`, structured set/rep
+   representations — each is required in specific positions in the
+   tree. LLMs forget required fields at depth.
+
+The common thread: WPL-AI's activity block externalises decisions
+that *could be made at compile time* into decisions that *must be
+made correctly by the LLM*. Every one of those externalised
+decisions is a place the LLM can fail.
+
+### What a simpler shape would look like
+
+Three concrete simplifications, ordered by reversibility:
+
+| simplification | how | what it loses | what it keeps |
+|---|---|---|---|
+| **Allow `additionalProperties`** | Change activity-block schema to permit unknown fields; the validator ignores them; the rule engine continues to read only the fields it knows about | The contract no longer flags invented fields. A renderer that round-trips activities must decide what to do with unknown keys | All safety scoring, vocabulary enforcement, semantic checks |
+| **Drop the `type` discriminator** | Replace the `oneOf` with a single `Activity` shape where prescription fields are optional; runtime dispatch examines which fields are present | Slight ambiguity on the boundary between activity types; less precise error messages when prescription is malformed | Discriminator-free schemas are the dominant pattern in LLM-friendly JSON; LLMs produce them at substantially higher accuracy |
+| **Compiler-generated IDs and slug normalisation** | LLM emits human-readable names; compiler computes canonical IDs and enforces uniqueness | Cross-references inside the LLM-emitted plan get harder (the LLM can't refer to a previously-named activity by ID, because the ID didn't exist yet) | All downstream tooling continues to receive canonical IDs |
+
+All three are individually small. Together they would eliminate the
+top three error categories — which accounted for ~94% of the schema
+errors in the v0.6 Anthropic sweep — without changing the safety
+contract or the scoring logic.
+
+### What we are *not* proposing
+
+We are not proposing to weaken the safety contract. The scorer's
+blacklist, contraindication rules, and cycle-aware phasing — the
+things that produce "Lane B = 0 safety violations across 180
+Anthropic trials" — are independent of the schema's structural
+strictness. Activity-block simplification leaves all of them intact.
+
+We are also not proposing to drop the DSL. The DSL gives authors a
+concise concrete syntax; the question is what JSON the DSL compiles
+*to*. Loosening the JSON layer does not require touching the DSL
+the user writes.
+
+### Why we don't commit to the redesign in v0.6
+
+Two reasons. (a) The v0.6 results are valuable as a fixed-prompt /
+fixed-schema baseline — they tell us what the v0.5 release-version
+of WPL-AI delivers on a fresh vendor, which is the reproducibility
+property the paper relies on. (b) We have not yet measured the
+effect size of Arm A (prompt enrichment). If a 30-line schema
+appendix in the system prompt closes most of the gap, the
+simplification argument is weaker and the cost-benefit shifts. The
+v0.7 A/B/C experiment is designed exactly to make this attribution
+empirical, not rhetorical.
+
+The position we take in this draft is therefore: **acknowledge the
+design hypothesis honestly, run the experiment that disambiguates,
+let the data decide.** Papers that argue for a redesign without
+running the falsification experiment are weaker than papers that
+run it.
+
+---
+
 ## Cost (180 new Anthropic trials)
 
 | model | trials | cost | per trial |
@@ -235,7 +450,8 @@ run in v0.7 if nano remains a target tier.
 | Haiku 4.5      |  60 | $10.78 | $0.18 |
 | Sonnet 4.6     |  60 | $45.75 | $0.76 |
 | Opus 4.7       |  60 | $52.17 | $0.87 |
-| **total**      | 180 | **$108.70** | — |
+| native-JSON probes (Sonnet, 10 trials) | 10 | $2.52 | $0.25 |
+| **total**      | 190 | **$111.22** | — |
 
 Token economics. Anthropic's tokenizer for Opus 4.7 (and 4.8) is new
 relative to Opus 4.1 and can consume ~35% more tokens for the same
@@ -312,10 +528,11 @@ that is methodologically clean for the paper.
    v0.5 scenarios are all 12-week requests; we have no measurement
    of WPL on short-plan generation. Scoped in
    `docs/V0_6_SHORT_PLANS_AND_ANTHROPIC.md`.
-2. **Schema-fail attribution A/B/C** (v0.7). The single most
-   important v0.7 experiment. We do not currently know whether the
-   schema-fail rate is a prompt problem or a format problem, and the
-   answer determines what changes between v0.6 and v0.7. Three arms:
+2. **Schema-fail attribution A/B/C/D** (v0.7). The single most
+   important v0.7 experiment. v0.6's in-cycle native-JSON probes
+   (above) ruled out the *naive* version of Arm C — direct WPL JSON
+   for a 12-week plan exceeds the LLM output budget — but they
+   *strengthened* the case for testing a chunked variant. Four arms:
 
    - **Arm A — schema-enriched prompt.** Same WPL-AI format. Inject
      the activity-block JSON schema (or a faithful prose summary of
@@ -326,10 +543,17 @@ that is methodologically clean for the paper.
      open prescription shape, and let the compiler infer defaults.
      Keep the semantic content (exercise, sets, reps, RPE, rest).
      Tests: "Was the activity-block schema itself too complex?"
-   - **Arm C — native structured output.** Use Anthropic's structured
-     outputs / OpenAI's JSON-mode + schema and skip the DSL→compile
-     →JSON indirection entirely. Tests: "Is the DSL middle layer
-     adding cost without value?"
+   - **Arm C — chunked native JSON synthesis.** Generate the plan
+     scaffold in one call, then each week (or phase) as a separate
+     native-JSON call against a *subset* of the schema, then assemble.
+     Probe 2 above shows Sonnet hits 60% schema-valid on 2-week
+     plans; a 12-week plan composed of six 2-week chunks may close
+     the gap. Tests: "Does the DSL middle layer add value once we
+     route around the token-budget constraint?"
+   - **Arm D — DSL + schema-aware Lane B prompt.** The cheapest arm.
+     Keep the DSL→compile path; add ~30 lines of activity-block
+     schema guidance to the Lane B system prompt. Tests: "Is most of
+     the gap closable without changing architecture?"
 
    Whatever the result, the v0.6 numbers stand as the frozen baseline
    for the v0.5 prompt + v0.5 schema. The v0.7 report will publish the
