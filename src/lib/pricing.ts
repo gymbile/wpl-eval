@@ -5,10 +5,11 @@ import type { ModelName } from "./types.js";
 // recomputable from logged tokens without re-running the benchmark.
 //
 // OpenAI rows last verified: 2026-05-11. Source: openai.com/pricing.
-// Anthropic rows last verified: 2026-05-30. Source: anthropic.com/pricing.
-//   Note: confirm the three Claude prices before the v0.6 inference sweep —
-//   pricing changes are unannounced and the cost-per-plan tables in
-//   INDUSTRY_REPORT.md and DIFF_v0.5_to_v0.6.md derive directly from here.
+// Anthropic rows last verified: 2026-06-03. Source:
+//   platform.claude.com/docs/en/about-claude/pricing.
+//   Note: Opus 4.7 uses a new tokenizer (vs. Opus 4.1 and prior) that may
+//   consume up to ~35% more tokens for the same fixed text — factor that
+//   into cross-tier cost comparisons in INDUSTRY_REPORT.md.
 const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   "gpt-5": { input_per_m: 1.25, output_per_m: 10.0 },
   "gpt-5-mini": { input_per_m: 0.25, output_per_m: 2.0 },
@@ -17,8 +18,8 @@ const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   // Out-of-sweep models supported for ad-hoc smoke tests.
   "gpt-4o-mini": { input_per_m: 0.15, output_per_m: 0.6 },
   "gpt-4o": { input_per_m: 2.5, output_per_m: 10.0 },
-  // Anthropic Claude (v0.6 sweep). VERIFY before running the full sweep.
-  "claude-opus-4-7": { input_per_m: 15.0, output_per_m: 75.0 },
+  // Anthropic Claude (v0.6 sweep).
+  "claude-opus-4-7": { input_per_m: 5.0, output_per_m: 25.0 },
   "claude-sonnet-4-6": { input_per_m: 3.0, output_per_m: 15.0 },
   "claude-haiku-4-5-20251001": { input_per_m: 1.0, output_per_m: 5.0 },
 };
