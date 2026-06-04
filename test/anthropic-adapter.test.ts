@@ -98,6 +98,25 @@ describe("anthropic adapter — basic shape", () => {
     expect(result.refusal).toBe(true);
   });
 
+  test("omits `temperature` for Opus 4.7+ (parameter deprecated by the API)", async () => {
+    // Anthropic returns 400 "`temperature` is deprecated for this model."
+    // for Opus 4.7 and later. The adapter must omit the field for those
+    // models even if the caller passes one — disclosed in METHODOLOGY.md
+    // as a per-model determinism asymmetry vs. the OpenAI lane.
+    mockCreate.mockResolvedValueOnce(fakeResponse({ text: "ok" }));
+    const opus = makeAnthropicModel("claude-opus-4-7");
+    await opus.chat([{ role: "user", content: "x" }], { temperature: 0 });
+    const params = mockCreate.mock.calls[0]![0];
+    expect("temperature" in params).toBe(false);
+
+    // Sonnet must still forward temperature — the omission is Opus-only.
+    mockCreate.mockResolvedValueOnce(fakeResponse({ text: "ok" }));
+    const sonnet = makeAnthropicModel("claude-sonnet-4-6");
+    await sonnet.chat([{ role: "user", content: "x" }]);
+    const sonnetParams = mockCreate.mock.calls[1]![0];
+    expect(sonnetParams.temperature).toBe(0);
+  });
+
   test("concatenates multiple text content blocks; ignores non-text blocks", async () => {
     // Anthropic can return content as multiple blocks; we should join all
     // text blocks and silently drop tool_use / thinking blocks rather than

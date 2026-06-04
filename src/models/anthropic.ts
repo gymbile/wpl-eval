@@ -47,6 +47,15 @@ function extractText(content: Anthropic.ContentBlock[]): string {
     .join("");
 }
 
+// Opus 4.7 and later deprecate the `temperature` parameter — passing it
+// returns a 400 ("`temperature` is deprecated for this model."). These
+// models handle sampling internally; we omit the field rather than send
+// the OpenAI-lane default of 0. This is disclosed in METHODOLOGY.md as a
+// known per-model determinism asymmetry vs. the OpenAI lane.
+function acceptsTemperature(name: ModelName): boolean {
+  return !(name.startsWith("claude-opus-4-7") || name.startsWith("claude-opus-4-8"));
+}
+
 export function makeAnthropicModel(name: ModelName): Model {
   const client = new Anthropic({ apiKey: requireAnthropicKey() });
 
@@ -59,8 +68,8 @@ export function makeAnthropicModel(name: ModelName): Model {
       const params: Anthropic.MessageCreateParamsNonStreaming = {
         model: name,
         max_tokens: opts.max_output_tokens ?? 4096,
-        temperature: opts.temperature ?? 0,
         messages: turns,
+        ...(acceptsTemperature(name) ? { temperature: opts.temperature ?? 0 } : {}),
         ...(system ? { system } : {}),
       };
 
