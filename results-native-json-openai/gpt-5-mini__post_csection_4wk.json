@@ -1,0 +1,1923 @@
+{
+  "model": "gpt-5-mini",
+  "scenario_id": "post_csection_4wk",
+  "tokens_in": 11874,
+  "tokens_out": 11832,
+  "hit_output_cap": false,
+  "latency_ms": 126279,
+  "cost_usd": 0.0266325,
+  "raw_text": "{\n  \"$schema\": \"https://wpl.dev/schemas/wpl/v1.schema.json\",\n  \"version\": \"1.6.0\",\n  \"plan\": {\n    \"id\": \"postpartum_return_12_week\",\n    \"name\": \"12-week Postpartum Return (post-c-section, light activity)\",\n    \"type\": \"workout\",\n    \"visibility\": \"private\",\n    \"metadata\": {\n      \"created_at\": \"2026-06-05T00:00:00Z\",\n      \"created_by\": \"personal_trainer\",\n      \"difficulty\": \"adaptive\",\n      \"language\": \"en\",\n      \"estimated_duration_days\": 84,\n      \"tags\": [\n        \"postpartum\",\n        \"post-c-section\",\n        \"return-to-activity\",\n        \"walking\",\n        \"low-load\",\n        \"home\"\n      ]\n    },\n    \"goals\": [\n      {\n        \"id\": \"return_to_baseline_activity\",\n        \"type\": \"primary\",\n        \"category\": \"cardiovascular_endurance\",\n        \"name\": \"Gradual return to regular activity and walking\",\n        \"description\": \"Restore baseline daily activity and walking tolerance while protecting the C-section incision and avoiding abdominal loading until 6-week OB check.\",\n        \"target\": {\n          \"metric\": \"daily_steps\",\n          \"target_value\": 7000,\n          \"unit\": \"steps\",\n          \"measurement_type\": \"relative\"\n        },\n        \"milestones\": [\n          {\n            \"id\": \"milestone_walk_15\",\n            \"name\": \"15 minute continuous walk\",\n            \"target_value\": 15,\n            \"reward_points\": 10\n          },\n          {\n            \"id\": \"milestone_walk_30\",\n            \"name\": \"30 minute continuous walk\",\n            \"target_value\": 30,\n            \"reward_points\": 25\n          }\n        ]\n      },\n      {\n        \"id\": \"restore_core_control\",\n        \"type\": \"secondary\",\n        \"category\": \"rehabilitation\",\n        \"name\": \"Re-establish gentle core control and pelvic floor awareness\",\n        \"description\": \"Gentle pelvic floor and breathing-based core activation exercises, avoiding direct abdominal strain until clearance.\",\n        \"target\": {\n          \"metric\": \"pelvic_floor_reps\",\n          \"target_value\": 10,\n          \"unit\": \"reps_daily\",\n          \"measurement_type\": \"absolute\"\n        }\n      }\n    ],\n    \"requirements\": {\n      \"min_age\": 18,\n      \"fitness_level\": [\n        \"beginner\"\n      ],\n      \"equipment\": [\n        {\n          \"id\": \"yoga_mat\",\n          \"name\": \"yoga mat\",\n          \"required\": false,\n          \"alternatives\": []\n        }\n      ],\n      \"contraindications\": [\n        {\n          \"condition\": \"acog:postpartum_c_section_until_6_weeks\",\n          \"severity\": \"moderate\",\n          \"action\": \"modify\",\n          \"affected_activities\": [\n            \"core_loading\",\n            \"abdominal_crunches\",\n            \"heavy_lifting\"\n          ]\n        }\n      ],\n      \"time_commitment\": {\n        \"min_days_per_week\": 3,\n        \"max_days_per_week\": 6,\n        \"min_minutes_per_day\": 10,\n        \"max_minutes_per_day\": 45\n      }\n    },\n    \"personalization\": {\n      \"inputs\": [\n        {\n          \"id\": \"user.ob_cleared_6_week\",\n          \"type\": \"boolean\",\n          \"source\": \"user.ob_clearance\",\n          \"label\": \"OB clearance for heavy lifting/abs at 6 weeks\"\n        },\n        {\n          \"id\": \"user.pain_with_movement\",\n          \"type\": \"boolean\",\n          \"source\": \"user.pain_with_movement\",\n          \"label\": \"Pain during movement\"\n        },\n        {\n          \"id\": \"user.fatigue_level\",\n          \"type\": \"number\",\n          \"source\": \"wellness.subjective_readiness\",\n          \"label\": \"Daily fatigue/readiness (0-10)\"\n        }\n      ],\n      \"rules\": [\n        {\n          \"id\": \"rule_wait_clearance_for_core_load\",\n          \"condition\": {\n            \"field\": \"user.ob_cleared_6_week\",\n            \"op\": \"eq\",\n            \"value\": false\n          },\n          \"actions\": [\n            {\n              \"type\": \"modify\",\n              \"scope\": \"plan\",\n              \"note\": \"Keep core-loading exercises as gentle activation and breathing; omit heavy/core-loading activities until clearance.\"\n            }\n          ]\n        },\n        {\n          \"id\": \"rule_skip_on_pain\",\n          \"condition\": {\n            \"field\": \"user.pain_with_movement\",\n            \"op\": \"eq\",\n            \"value\": true\n          },\n          \"actions\": [\n            {\n              \"type\": \"modify\",\n              \"scope\": \"day\",\n              \"note\": \"Recommend rest/medical review and substitute with gentle walking and breathwork.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"phases\": [\n      {\n        \"id\": \"phase_1_weeks_1_2\",\n        \"name\": \"Weeks 1–2: Gentle movement and reintroduction\",\n        \"order\": 1,\n        \"type\": \"recovery\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_1\",\n            \"name\": \"Week 1\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w1_day1_walk\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Short walk + breathwork\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d1_block_walk\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"easy_walk_10_15\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"diaphragmatic_breathing_5\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Diaphragmatic breathing & pelvic floor cueing\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"pelvic_floor_breath\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Pelvic floor guided breath\",\n                              \"modality\": \"breathwork\",\n                              \"hold_seconds\": 0,\n                              \"reps\": 5,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 2,\n                              \"body_part\": \"pelvic_floor\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_day2_active\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Gentle mobility and walking\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d2_block_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"short_walk_20\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"gentle_hip_mobility\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle hip mobility\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"hip_circles\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Hip circles (standing)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"body_part\": \"hips\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest or short walk\",\n                \"estimated_duration_minutes\": 10,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1d3_block_simple\",\n                    \"type\": \"cooldown\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"short_walk_10\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Optional short walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 10,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 1,\n                              \"max\": 3\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"week_2\",\n            \"name\": \"Week 2\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w2_day1_walk\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + gentle activation\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"easy_walk_20\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"pelvic_tilt_seated\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Seated pelvic tilts & diaphragmatic breathing (no crunches)\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"seated_pelvic_tilt\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Seated pelvic tilt with breath\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 2,\n                              \"body_part\": \"low_back\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Gentle mobility and pelvic floor cueing\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"gentle_mobility_15\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle full-body mobility\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"cat_cow\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Cat-Cow (gentle)\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3,\n                              \"body_part\": \"thoracic_spine\"\n                            },\n                            {\n                              \"id\": \"ankle_mobility\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Ankle circles\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"body_part\": \"ankles\"\n                            }\n                          ]\n                        }\n                      },\n                      {\n                        \"id\": \"pelvic_floor_gentle\",\n                        \"type\": \"habit\",\n                        \"name\": \"Pelvic floor quick sets\",\n                        \"category\": \"pelvic_floor\",\n                        \"prescription\": {\n                          \"target\": {\n                            \"value\": 10,\n                            \"unit\": \"reps\"\n                          },\n                          \"frequency\": \"daily\",\n                          \"reminders\": [\n                            \"morning\",\n                            \"evening\"\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest or short gentle activity\",\n                \"estimated_duration_minutes\": 10,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2d3_block\",\n                    \"type\": \"cooldown\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_or_rest\",\n                        \"type\": \"simple\",\n                        \"name\": \"Optional 10–15 min walk or rest\",\n                        \"duration\": {\n                          \"value\": 10,\n                          \"unit\": \"minutes\"\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_2_weeks_3_4\",\n        \"name\": \"Weeks 3–4: Increase walking and gentle functional movement\",\n        \"order\": 2,\n        \"type\": \"build\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_3\",\n            \"name\": \"Week 3\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w3_day1_walk\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Longer walk + standing activation\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w3d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"brisk_walk_25\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 25,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"standing_hip_hinge\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"standing_hip_hinge\",\n                        \"name\": \"Standing hip hinge (bodyweight)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"hamstrings\",\n                          \"glutes\",\n                          \"lower_back\"\n                        ],\n                        \"movement_pattern\": \"hinge\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w3_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility + pelvic floor cueing\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w3d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"gentle_sequence_20\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle movement sequence\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"bird_dog_modified\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Modified bird-dog (knees supported)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 6,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3,\n                              \"body_part\": \"spinal_erectors\"\n                            },\n                            {\n                              \"id\": \"clamshells\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Clamshells (side-lying)\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 10,\n                              \"sides\": \"both\",\n                              \"body_part\": \"hip_abductors\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w3_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest\",\n                \"estimated_duration_minutes\": 10\n              }\n            ]\n          },\n          {\n            \"id\": \"week_4\",\n            \"name\": \"Week 4\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w4_day1_walk\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Longer brisk walk\",\n                \"estimated_duration_minutes\": 35,\n                \"blocks\": [\n                  {\n                    \"id\": \"w4d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"brisk_walk_30\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"wall_push_up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"wall_push_up\",\n                        \"name\": \"Wall push-ups (standing)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"front_delts\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w4_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility + pelvic floor habit\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w4d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"standing_leg_balance\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"standing_leg_balance\",\n                        \"name\": \"Single-leg balance support\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 6,\n                            \"min\": 4,\n                            \"max\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"calves\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"isolation\"\n                      },\n                      {\n                        \"id\": \"pelvic_floor_sets_week4\",\n                        \"type\": \"habit\",\n                        \"name\": \"Pelvic floor sets\",\n                        \"category\": \"pelvic_floor\",\n                        \"prescription\": {\n                          \"target\": {\n                            \"value\": 10,\n                            \"unit\": \"reps\"\n                          },\n                          \"frequency\": \"daily\",\n                          \"reminders\": [\n                            \"morning\"\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w4_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest or light walk\",\n                \"estimated_duration_minutes\": 15\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_3_weeks_5_6\",\n        \"name\": \"Weeks 5–6: Pre-clearance progression (continued low-load); prepare for 6-week check\",\n        \"order\": 3,\n        \"type\": \"accumulation\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_5\",\n            \"name\": \"Week 5\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w5_day1_walk_strength\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + low-load functional moves\",\n                \"estimated_duration_minutes\": 35,\n                \"blocks\": [\n                  {\n                    \"id\": \"w5d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"brisk_walk_30_w5\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"sit_to_stand\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"sit_to_stand\",\n                        \"name\": \"Sit-to-stand (slow, controlled)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w5_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility + breathing\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w5d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"thoracic_rotation\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Thoracic rotations\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 10,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"seated_rotation\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Seated thoracic rotation\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"body_part\": \"thoracic_spine\"\n                            }\n                          ]\n                        }\n                      },\n                      {\n                        \"id\": \"pelvic_floor_focus_w5\",\n                        \"type\": \"habit\",\n                        \"name\": \"Pelvic floor quick sets\",\n                        \"category\": \"pelvic_floor\",\n                        \"prescription\": {\n                          \"target\": {\n                            \"value\": 10,\n                            \"unit\": \"reps\"\n                          },\n                          \"frequency\": \"daily\"\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w5_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest\",\n                \"estimated_duration_minutes\": 10\n              }\n            ]\n          },\n          {\n            \"id\": \"week_6_precheck\",\n            \"name\": \"Week 6 (pre-check)\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w6_day1_walk\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Longer walk + functional moves\",\n                \"estimated_duration_minutes\": 40,\n                \"blocks\": [\n                  {\n                    \"id\": \"w6d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"brisk_walk_35\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 35,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"modified_row_band\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"seated_band_row_no_band\",\n                        \"name\": \"Seated row (bodyweight/household band optional) - light\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\",\n                          \"biceps\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w6_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Gentle mobility and check-in\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w6d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"mobility_and_breath\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Mobility and diaphragmatic breathing\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"gentle_core_walkthrough\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Gentle core/pelvic-floor activation (no strain)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 6,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 2,\n                              \"body_part\": \"pelvic_floor\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w6_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest and OB check if scheduled\",\n                \"estimated_duration_minutes\": 10\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_4_weeks_7_8\",\n        \"name\": \"Weeks 7–8: Post-OB clearance — reintroduce progressive loading cautiously\",\n        \"order\": 4,\n        \"type\": \"build\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_7\",\n            \"name\": \"Week 7 (post-clearance conditional)\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w7_day1_walk_strength\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + light resistance (bodyweight)\",\n                \"estimated_duration_minutes\": 40,\n                \"blocks\": [\n                  {\n                    \"id\": \"w7d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_30_w7\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"bodyweight_squat\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"bodyweight_squat\",\n                        \"name\": \"Bodyweight squat (controlled)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 10,\n                            \"min\": 8,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w7_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility + pelvic floor practice\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w7d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"single_leg_balance_w7\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"single_leg_balance\",\n                        \"name\": \"Single-leg balance (progression)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"calves\"\n                        ],\n                        \"movement_pattern\": \"isolation\"\n                      },\n                      {\n                        \"id\": \"pelvic_floor_daily_w7\",\n                        \"type\": \"habit\",\n                        \"name\": \"Pelvic floor daily sets\",\n                        \"category\": \"pelvic_floor\",\n                        \"prescription\": {\n                          \"target\": {\n                            \"value\": 12,\n                            \"unit\": \"reps\"\n                          },\n                          \"frequency\": \"daily\"\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w7_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest/light activity\",\n                \"estimated_duration_minutes\": 15\n              }\n            ]\n          },\n          {\n            \"id\": \"week_8\",\n            \"name\": \"Week 8\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w8_day1_walk_strength\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + light progressive bodyweight\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"w8d1_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_35_w8\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 35,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"partial_push_up_knee\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"incline_push_up_knee\",\n                        \"name\": \"Incline/knee push-up (gentle)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"front_delts\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w8_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility + breathing\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w8d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"gentle_flow_20\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle movement flow\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"quadruped_shift\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Quadruped weight shifts\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"body_part\": \"shoulder_hip\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w8_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest\",\n                \"estimated_duration_minutes\": 15\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_5_weeks_9_10\",\n        \"name\": \"Weeks 9–10: Progressive conditioning and strength foundation\",\n        \"order\": 5,\n        \"type\": \"intensification\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_9\",\n            \"name\": \"Week 9\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w9_day1_conditioning\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + circuit of bodyweight moves\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"w9d1_block\",\n                    \"type\": \"circuit\",\n                    \"order\": 1,\n                    \"rounds\": 2,\n                    \"rest_between_rounds\": {\n                      \"value\": 90,\n                      \"unit\": \"seconds\"\n                    },\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_25_w9\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk warmup\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 25,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"chair_step_up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"step_up_to_chair\",\n                        \"name\": \"Step-ups (onto low step/chair)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8,\n                            \"min\": 6,\n                            \"max\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\"\n                      },\n                      {\n                        \"id\": \"modified_dead_bug\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Modified dead-bug (core-friendly, no strain)\",\n                        \"category\": \"core_activation\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"dead_bug_supported\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Supported dead-bug (hands under low back)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3,\n                              \"body_part\": \"abs\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w9_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility and pelvic floor practice\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w9d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"glute_bridges\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"glute_bridge\",\n                        \"name\": \"Glute bridges (bodyweight)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 10,\n                            \"min\": 8,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w9_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest\",\n                \"estimated_duration_minutes\": 15\n              }\n            ]\n          },\n          {\n            \"id\": \"week_10\",\n            \"name\": \"Week 10\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w10_day1_conditioning\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + progressive bodyweight circuit\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w10d1_block\",\n                    \"type\": \"circuit\",\n                    \"order\": 1,\n                    \"rounds\": 2,\n                    \"rest_between_rounds\": {\n                      \"value\": 90,\n                      \"unit\": \"seconds\"\n                    },\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_30_w10\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk warmup\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"incline_push_up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"incline_push_up\",\n                        \"name\": \"Incline push-up (table/bench)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 10,\n                            \"min\": 8,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"front_delts\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\"\n                      },\n                      {\n                        \"id\": \"hip_abduction_side_lying\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"side_lying_hip_abduction\",\n                        \"name\": \"Side-lying hip abduction\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 12,\n                            \"min\": 10,\n                            \"max\": 15\n                          },\n                          \"rest\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"hip_abductors\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"isolation\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w10_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility and check-in\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w10d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"foam_roll_alternative\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Self-massage alternatives (gentle)\",\n                        \"category\": \"smr_foam_roll\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 10,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"thigh_smr\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Thigh self-massage (gentle)\",\n                              \"modality\": \"smr_ball\",\n                              \"reps\": 1,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 4,\n                              \"body_part\": \"thighs\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w10_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest\",\n                \"estimated_duration_minutes\": 15\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_6_weeks_11_12\",\n        \"name\": \"Weeks 11–12: Consolidation and return-to-regular-training prep\",\n        \"order\": 6,\n        \"type\": \"peak\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_11\",\n            \"name\": \"Week 11\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w11_day1_conditioning\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Long walk + bodyweight strength circuit\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w11d1_block\",\n                    \"type\": \"circuit\",\n                    \"order\": 1,\n                    \"rounds\": 2,\n                    \"rest_between_rounds\": {\n                      \"value\": 90,\n                      \"unit\": \"seconds\"\n                    },\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_35_w11\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 35,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"bodyweight_row_incline\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"inverted_row_incline\",\n                        \"name\": \"Inclined bodyweight row\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 10,\n                            \"min\": 8,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\"\n                      },\n                      {\n                        \"id\": \"glute_bridge_progression\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"glute_bridge_progression\",\n                        \"name\": \"Glute bridge progression\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 12,\n                            \"min\": 10,\n                            \"max\": 15\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w11_day2_mobility\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility and pelvic floor practice\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w11d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"full_body_mobility_w11\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Full-body mobility\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"hamstring_mob_w11\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Hamstring gentle stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"hamstrings\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w11_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest\",\n                \"estimated_duration_minutes\": 20\n              }\n            ]\n          },\n          {\n            \"id\": \"week_12\",\n            \"name\": \"Week 12\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w12_day1_final\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Consolidation session — prepare for transition\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"w12d1_block\",\n                    \"type\": \"circuit\",\n                    \"order\": 1,\n                    \"rounds\": 2,\n                    \"rest_between_rounds\": {\n                      \"value\": 120,\n                      \"unit\": \"seconds\"\n                    },\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_35_w12\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 35,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 6\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"compound_bodyweight_circuit\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"mixed_bodyweight_circuit\",\n                        \"name\": \"Bodyweight circuit (squat, row, hinge, glute bridge)\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 10,\n                            \"min\": 8,\n                            \"max\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\",\n                          \"upper_back\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"circuit\"\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w12_day2_mobility_transition\",\n                \"day_of_week\": 3,\n                \"type\": \"active_recovery\",\n                \"name\": \"Mobility and readiness check\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w12d2_block\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"movement_readiness_check\",\n                        \"type\": \"simple\",\n                        \"name\": \"Movement & symptom check (self-assessment)\",\n                        \"duration\": {\n                          \"value\": 10,\n                          \"unit\": \"minutes\"\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w12_day3_rest\",\n                \"day_of_week\": 5,\n                \"type\": \"rest\",\n                \"name\": \"Rest and plan transition\",\n                \"estimated_duration_minutes\": 10\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"progress\": {\n      \"checkpoints\": [\n        {\n          \"id\": \"cp_week_6\",\n          \"name\": \"6-week OB check\",\n          \"at\": {\n            \"value\": 6,\n            \"unit\": \"weeks\"\n          },\n          \"measurements\": [\n            \"self_report_symptoms\",\n            {\n              \"metric\": \"body_weight_kg\"\n            }\n          ],\n          \"questions\": [\n            \"Has your OB cleared you for abdominal loading and heavier lifting?\",\n            \"Are you experiencing pain with movement or at the incision site?\"\n          ]\n        },\n        {\n          \"id\": \"cp_week_12\",\n          \"name\": \"12-week consolidation checkpoint\",\n          \"at\": {\n            \"value\": 12,\n            \"unit\": \"weeks\"\n          },\n          \"measurements\": [\n            {\n              \"metric\": \"session_rpe_avg\"\n            },\n            \"self_report_symptoms\"\n          ],\n          \"questions\": [\n            \"Do you feel ready to progress to higher-load training?\",\n            \"Any persistent pain or discomfort?\"\n          ]\n        }\n      ],\n      \"points_system\": {\n        \"enabled\": false\n      }\n    }\n  }\n}",
+  "refusal": false,
+  "parse_ok": true,
+  "parse_error": null,
+  "schema_valid": false,
+  "validator_errors": 62,
+  "error_categories": {
+    "must be equal to one of the allowed values": 6,
+    "must have required property 'X'": 6,
+    "must NOT have additional properties": 42,
+    "must be equal to constant": 7,
+    "must match exactly one schema in oneOf": 1
+  },
+  "top_error_paths": [
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N",
+      "count": 30
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/prescription",
+      "count": 19
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/type",
+      "count": 7
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/type",
+      "count": 4
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/movement_pattern",
+      "count": 1
+    }
+  ],
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "postpartum_return_12_week",
+      "name": "12-week Postpartum Return (post-c-section, light activity)",
+      "type": "workout",
+      "visibility": "private",
+      "metadata": {
+        "created_at": "2026-06-05T00:00:00Z",
+        "created_by": "personal_trainer",
+        "difficulty": "adaptive",
+        "language": "en",
+        "estimated_duration_days": 84,
+        "tags": [
+          "postpartum",
+          "post-c-section",
+          "return-to-activity",
+          "walking",
+          "low-load",
+          "home"
+        ]
+      },
+      "goals": [
+        {
+          "id": "return_to_baseline_activity",
+          "type": "primary",
+          "category": "cardiovascular_endurance",
+          "name": "Gradual return to regular activity and walking",
+          "description": "Restore baseline daily activity and walking tolerance while protecting the C-section incision and avoiding abdominal loading until 6-week OB check.",
+          "target": {
+            "metric": "daily_steps",
+            "target_value": 7000,
+            "unit": "steps",
+            "measurement_type": "relative"
+          },
+          "milestones": [
+            {
+              "id": "milestone_walk_15",
+              "name": "15 minute continuous walk",
+              "target_value": 15,
+              "reward_points": 10
+            },
+            {
+              "id": "milestone_walk_30",
+              "name": "30 minute continuous walk",
+              "target_value": 30,
+              "reward_points": 25
+            }
+          ]
+        },
+        {
+          "id": "restore_core_control",
+          "type": "secondary",
+          "category": "rehabilitation",
+          "name": "Re-establish gentle core control and pelvic floor awareness",
+          "description": "Gentle pelvic floor and breathing-based core activation exercises, avoiding direct abdominal strain until clearance.",
+          "target": {
+            "metric": "pelvic_floor_reps",
+            "target_value": 10,
+            "unit": "reps_daily",
+            "measurement_type": "absolute"
+          }
+        }
+      ],
+      "requirements": {
+        "min_age": 18,
+        "fitness_level": [
+          "beginner"
+        ],
+        "equipment": [
+          {
+            "id": "yoga_mat",
+            "name": "yoga mat",
+            "required": false,
+            "alternatives": []
+          }
+        ],
+        "contraindications": [
+          {
+            "condition": "acog:postpartum_c_section_until_6_weeks",
+            "severity": "moderate",
+            "action": "modify",
+            "affected_activities": [
+              "core_loading",
+              "abdominal_crunches",
+              "heavy_lifting"
+            ]
+          }
+        ],
+        "time_commitment": {
+          "min_days_per_week": 3,
+          "max_days_per_week": 6,
+          "min_minutes_per_day": 10,
+          "max_minutes_per_day": 45
+        }
+      },
+      "personalization": {
+        "inputs": [
+          {
+            "id": "user.ob_cleared_6_week",
+            "type": "boolean",
+            "source": "user.ob_clearance",
+            "label": "OB clearance for heavy lifting/abs at 6 weeks"
+          },
+          {
+            "id": "user.pain_with_movement",
+            "type": "boolean",
+            "source": "user.pain_with_movement",
+            "label": "Pain during movement"
+          },
+          {
+            "id": "user.fatigue_level",
+            "type": "number",
+            "source": "wellness.subjective_readiness",
+            "label": "Daily fatigue/readiness (0-10)"
+          }
+        ],
+        "rules": [
+          {
+            "id": "rule_wait_clearance_for_core_load",
+            "condition": {
+              "field": "user.ob_cleared_6_week",
+              "op": "eq",
+              "value": false
+            },
+            "actions": [
+              {
+                "type": "modify",
+                "scope": "plan",
+                "note": "Keep core-loading exercises as gentle activation and breathing; omit heavy/core-loading activities until clearance."
+              }
+            ]
+          },
+          {
+            "id": "rule_skip_on_pain",
+            "condition": {
+              "field": "user.pain_with_movement",
+              "op": "eq",
+              "value": true
+            },
+            "actions": [
+              {
+                "type": "modify",
+                "scope": "day",
+                "note": "Recommend rest/medical review and substitute with gentle walking and breathwork."
+              }
+            ]
+          }
+        ]
+      },
+      "phases": [
+        {
+          "id": "phase_1_weeks_1_2",
+          "name": "Weeks 1–2: Gentle movement and reintroduction",
+          "order": 1,
+          "type": "recovery",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_1",
+              "name": "Week 1",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w1_day1_walk",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Short walk + breathwork",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w1d1_block_walk",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "easy_walk_10_15",
+                          "type": "cardio",
+                          "name": "Easy walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "diaphragmatic_breathing_5",
+                          "type": "recovery",
+                          "name": "Diaphragmatic breathing & pelvic floor cueing",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "pelvic_floor_breath",
+                                "type": "recovery_exercise",
+                                "name": "Pelvic floor guided breath",
+                                "modality": "breathwork",
+                                "hold_seconds": 0,
+                                "reps": 5,
+                                "sides": "both",
+                                "intensity_rpe": 2,
+                                "body_part": "pelvic_floor"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_day2_active",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Gentle mobility and walking",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w1d2_block_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "short_walk_20",
+                          "type": "cardio",
+                          "name": "Easy walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "gentle_hip_mobility",
+                          "type": "recovery",
+                          "name": "Gentle hip mobility",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "hip_circles",
+                                "type": "recovery_exercise",
+                                "name": "Hip circles (standing)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "body_part": "hips"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest or short walk",
+                  "estimated_duration_minutes": 10,
+                  "blocks": [
+                    {
+                      "id": "w1d3_block_simple",
+                      "type": "cooldown",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "short_walk_10",
+                          "type": "cardio",
+                          "name": "Optional short walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 1,
+                                "max": 3
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "week_2",
+              "name": "Week 2",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w2_day1_walk",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + gentle activation",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w2d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "easy_walk_20",
+                          "type": "cardio",
+                          "name": "Easy walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "pelvic_tilt_seated",
+                          "type": "recovery",
+                          "name": "Seated pelvic tilts & diaphragmatic breathing (no crunches)",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "seated_pelvic_tilt",
+                                "type": "recovery_exercise",
+                                "name": "Seated pelvic tilt with breath",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "intensity_rpe": 2,
+                                "body_part": "low_back"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Gentle mobility and pelvic floor cueing",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w2d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "gentle_mobility_15",
+                          "type": "recovery",
+                          "name": "Gentle full-body mobility",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "cat_cow",
+                                "type": "recovery_exercise",
+                                "name": "Cat-Cow (gentle)",
+                                "modality": "dynamic_stretch",
+                                "reps": 10,
+                                "sides": "both",
+                                "intensity_rpe": 3,
+                                "body_part": "thoracic_spine"
+                              },
+                              {
+                                "id": "ankle_mobility",
+                                "type": "recovery_exercise",
+                                "name": "Ankle circles",
+                                "modality": "dynamic_stretch",
+                                "reps": 10,
+                                "sides": "both",
+                                "body_part": "ankles"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "pelvic_floor_gentle",
+                          "type": "habit",
+                          "name": "Pelvic floor quick sets",
+                          "category": "pelvic_floor",
+                          "prescription": {
+                            "target": {
+                              "value": 10,
+                              "unit": "reps"
+                            },
+                            "frequency": "daily",
+                            "reminders": [
+                              "morning",
+                              "evening"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest or short gentle activity",
+                  "estimated_duration_minutes": 10,
+                  "blocks": [
+                    {
+                      "id": "w2d3_block",
+                      "type": "cooldown",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "walk_or_rest",
+                          "type": "simple",
+                          "name": "Optional 10–15 min walk or rest",
+                          "duration": {
+                            "value": 10,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_2_weeks_3_4",
+          "name": "Weeks 3–4: Increase walking and gentle functional movement",
+          "order": 2,
+          "type": "build",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_3",
+              "name": "Week 3",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w3_day1_walk",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Longer walk + standing activation",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w3d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "brisk_walk_25",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 25,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "standing_hip_hinge",
+                          "type": "exercise",
+                          "exercise_ref": "standing_hip_hinge",
+                          "name": "Standing hip hinge (bodyweight)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w3_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility + pelvic floor cueing",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w3d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "gentle_sequence_20",
+                          "type": "recovery",
+                          "name": "Gentle movement sequence",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "bird_dog_modified",
+                                "type": "recovery_exercise",
+                                "name": "Modified bird-dog (knees supported)",
+                                "modality": "mobility_drill",
+                                "reps": 6,
+                                "sides": "both",
+                                "intensity_rpe": 3,
+                                "body_part": "spinal_erectors"
+                              },
+                              {
+                                "id": "clamshells",
+                                "type": "recovery_exercise",
+                                "name": "Clamshells (side-lying)",
+                                "modality": "dynamic_stretch",
+                                "reps": 10,
+                                "sides": "both",
+                                "body_part": "hip_abductors"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w3_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest",
+                  "estimated_duration_minutes": 10
+                }
+              ]
+            },
+            {
+              "id": "week_4",
+              "name": "Week 4",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w4_day1_walk",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Longer brisk walk",
+                  "estimated_duration_minutes": 35,
+                  "blocks": [
+                    {
+                      "id": "w4d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "brisk_walk_30",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "wall_push_up",
+                          "type": "exercise",
+                          "exercise_ref": "wall_push_up",
+                          "name": "Wall push-ups (standing)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "chest",
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w4_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility + pelvic floor habit",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w4d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "standing_leg_balance",
+                          "type": "exercise",
+                          "exercise_ref": "standing_leg_balance",
+                          "name": "Single-leg balance support",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 6,
+                              "min": 4,
+                              "max": 8
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "calves",
+                            "glutes"
+                          ],
+                          "movement_pattern": "isolation"
+                        },
+                        {
+                          "id": "pelvic_floor_sets_week4",
+                          "type": "habit",
+                          "name": "Pelvic floor sets",
+                          "category": "pelvic_floor",
+                          "prescription": {
+                            "target": {
+                              "value": 10,
+                              "unit": "reps"
+                            },
+                            "frequency": "daily",
+                            "reminders": [
+                              "morning"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w4_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest or light walk",
+                  "estimated_duration_minutes": 15
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_3_weeks_5_6",
+          "name": "Weeks 5–6: Pre-clearance progression (continued low-load); prepare for 6-week check",
+          "order": 3,
+          "type": "accumulation",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_5",
+              "name": "Week 5",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w5_day1_walk_strength",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + low-load functional moves",
+                  "estimated_duration_minutes": 35,
+                  "blocks": [
+                    {
+                      "id": "w5d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "brisk_walk_30_w5",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "sit_to_stand",
+                          "type": "exercise",
+                          "exercise_ref": "sit_to_stand",
+                          "name": "Sit-to-stand (slow, controlled)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w5_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility + breathing",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w5d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "thoracic_rotation",
+                          "type": "recovery",
+                          "name": "Thoracic rotations",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "seated_rotation",
+                                "type": "recovery_exercise",
+                                "name": "Seated thoracic rotation",
+                                "modality": "dynamic_stretch",
+                                "reps": 8,
+                                "sides": "both",
+                                "body_part": "thoracic_spine"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "pelvic_floor_focus_w5",
+                          "type": "habit",
+                          "name": "Pelvic floor quick sets",
+                          "category": "pelvic_floor",
+                          "prescription": {
+                            "target": {
+                              "value": 10,
+                              "unit": "reps"
+                            },
+                            "frequency": "daily"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w5_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest",
+                  "estimated_duration_minutes": 10
+                }
+              ]
+            },
+            {
+              "id": "week_6_precheck",
+              "name": "Week 6 (pre-check)",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w6_day1_walk",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Longer walk + functional moves",
+                  "estimated_duration_minutes": 40,
+                  "blocks": [
+                    {
+                      "id": "w6d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "brisk_walk_35",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 35,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "modified_row_band",
+                          "type": "exercise",
+                          "exercise_ref": "seated_band_row_no_band",
+                          "name": "Seated row (bodyweight/household band optional) - light",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats",
+                            "biceps"
+                          ],
+                          "movement_pattern": "pull_horizontal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w6_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Gentle mobility and check-in",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w6d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "mobility_and_breath",
+                          "type": "recovery",
+                          "name": "Mobility and diaphragmatic breathing",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "gentle_core_walkthrough",
+                                "type": "recovery_exercise",
+                                "name": "Gentle core/pelvic-floor activation (no strain)",
+                                "modality": "mobility_drill",
+                                "reps": 6,
+                                "sides": "both",
+                                "intensity_rpe": 2,
+                                "body_part": "pelvic_floor"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w6_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest and OB check if scheduled",
+                  "estimated_duration_minutes": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_4_weeks_7_8",
+          "name": "Weeks 7–8: Post-OB clearance — reintroduce progressive loading cautiously",
+          "order": 4,
+          "type": "build",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_7",
+              "name": "Week 7 (post-clearance conditional)",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w7_day1_walk_strength",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + light resistance (bodyweight)",
+                  "estimated_duration_minutes": 40,
+                  "blocks": [
+                    {
+                      "id": "w7d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "walk_30_w7",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "bodyweight_squat",
+                          "type": "exercise",
+                          "exercise_ref": "bodyweight_squat",
+                          "name": "Bodyweight squat (controlled)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 10,
+                              "min": 8,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w7_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility + pelvic floor practice",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w7d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "single_leg_balance_w7",
+                          "type": "exercise",
+                          "exercise_ref": "single_leg_balance",
+                          "name": "Single-leg balance (progression)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "glutes",
+                            "calves"
+                          ],
+                          "movement_pattern": "isolation"
+                        },
+                        {
+                          "id": "pelvic_floor_daily_w7",
+                          "type": "habit",
+                          "name": "Pelvic floor daily sets",
+                          "category": "pelvic_floor",
+                          "prescription": {
+                            "target": {
+                              "value": 12,
+                              "unit": "reps"
+                            },
+                            "frequency": "daily"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w7_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest/light activity",
+                  "estimated_duration_minutes": 15
+                }
+              ]
+            },
+            {
+              "id": "week_8",
+              "name": "Week 8",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w8_day1_walk_strength",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + light progressive bodyweight",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "w8d1_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "walk_35_w8",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 35,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "partial_push_up_knee",
+                          "type": "exercise",
+                          "exercise_ref": "incline_push_up_knee",
+                          "name": "Incline/knee push-up (gentle)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "chest",
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w8_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility + breathing",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w8d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "gentle_flow_20",
+                          "type": "recovery",
+                          "name": "Gentle movement flow",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "quadruped_shift",
+                                "type": "recovery_exercise",
+                                "name": "Quadruped weight shifts",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "body_part": "shoulder_hip"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w8_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest",
+                  "estimated_duration_minutes": 15
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_5_weeks_9_10",
+          "name": "Weeks 9–10: Progressive conditioning and strength foundation",
+          "order": 5,
+          "type": "intensification",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_9",
+              "name": "Week 9",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w9_day1_conditioning",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + circuit of bodyweight moves",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "w9d1_block",
+                      "type": "circuit",
+                      "order": 1,
+                      "rounds": 2,
+                      "rest_between_rounds": {
+                        "value": 90,
+                        "unit": "seconds"
+                      },
+                      "activities": [
+                        {
+                          "id": "walk_25_w9",
+                          "type": "cardio",
+                          "name": "Brisk walk warmup",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 25,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "chair_step_up",
+                          "type": "exercise",
+                          "exercise_ref": "step_up_to_chair",
+                          "name": "Step-ups (onto low step/chair)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8,
+                              "min": 6,
+                              "max": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge"
+                        },
+                        {
+                          "id": "modified_dead_bug",
+                          "type": "recovery",
+                          "name": "Modified dead-bug (core-friendly, no strain)",
+                          "category": "core_activation",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "dead_bug_supported",
+                                "type": "recovery_exercise",
+                                "name": "Supported dead-bug (hands under low back)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "intensity_rpe": 3,
+                                "body_part": "abs"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w9_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility and pelvic floor practice",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w9d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "glute_bridges",
+                          "type": "exercise",
+                          "exercise_ref": "glute_bridge",
+                          "name": "Glute bridges (bodyweight)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 10,
+                              "min": 8,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w9_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest",
+                  "estimated_duration_minutes": 15
+                }
+              ]
+            },
+            {
+              "id": "week_10",
+              "name": "Week 10",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w10_day1_conditioning",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + progressive bodyweight circuit",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w10d1_block",
+                      "type": "circuit",
+                      "order": 1,
+                      "rounds": 2,
+                      "rest_between_rounds": {
+                        "value": 90,
+                        "unit": "seconds"
+                      },
+                      "activities": [
+                        {
+                          "id": "walk_30_w10",
+                          "type": "cardio",
+                          "name": "Brisk walk warmup",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "incline_push_up",
+                          "type": "exercise",
+                          "exercise_ref": "incline_push_up",
+                          "name": "Incline push-up (table/bench)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 10,
+                              "min": 8,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "chest",
+                            "front_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal"
+                        },
+                        {
+                          "id": "hip_abduction_side_lying",
+                          "type": "exercise",
+                          "exercise_ref": "side_lying_hip_abduction",
+                          "name": "Side-lying hip abduction",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 12,
+                              "min": 10,
+                              "max": 15
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "hip_abductors",
+                            "glutes"
+                          ],
+                          "movement_pattern": "isolation"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w10_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility and check-in",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w10d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "foam_roll_alternative",
+                          "type": "recovery",
+                          "name": "Self-massage alternatives (gentle)",
+                          "category": "smr_foam_roll",
+                          "prescription": {
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "thigh_smr",
+                                "type": "recovery_exercise",
+                                "name": "Thigh self-massage (gentle)",
+                                "modality": "smr_ball",
+                                "reps": 1,
+                                "sides": "both",
+                                "intensity_rpe": 4,
+                                "body_part": "thighs"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w10_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest",
+                  "estimated_duration_minutes": 15
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_6_weeks_11_12",
+          "name": "Weeks 11–12: Consolidation and return-to-regular-training prep",
+          "order": 6,
+          "type": "peak",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_11",
+              "name": "Week 11",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w11_day1_conditioning",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Long walk + bodyweight strength circuit",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w11d1_block",
+                      "type": "circuit",
+                      "order": 1,
+                      "rounds": 2,
+                      "rest_between_rounds": {
+                        "value": 90,
+                        "unit": "seconds"
+                      },
+                      "activities": [
+                        {
+                          "id": "walk_35_w11",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 35,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "bodyweight_row_incline",
+                          "type": "exercise",
+                          "exercise_ref": "inverted_row_incline",
+                          "name": "Inclined bodyweight row",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 10,
+                              "min": 8,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal"
+                        },
+                        {
+                          "id": "glute_bridge_progression",
+                          "type": "exercise",
+                          "exercise_ref": "glute_bridge_progression",
+                          "name": "Glute bridge progression",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12,
+                              "min": 10,
+                              "max": 15
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w11_day2_mobility",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility and pelvic floor practice",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w11d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "full_body_mobility_w11",
+                          "type": "recovery",
+                          "name": "Full-body mobility",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "hamstring_mob_w11",
+                                "type": "recovery_exercise",
+                                "name": "Hamstring gentle stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "hamstrings"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w11_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest",
+                  "estimated_duration_minutes": 20
+                }
+              ]
+            },
+            {
+              "id": "week_12",
+              "name": "Week 12",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w12_day1_final",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Consolidation session — prepare for transition",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "w12d1_block",
+                      "type": "circuit",
+                      "order": 1,
+                      "rounds": 2,
+                      "rest_between_rounds": {
+                        "value": 120,
+                        "unit": "seconds"
+                      },
+                      "activities": [
+                        {
+                          "id": "walk_35_w12",
+                          "type": "cardio",
+                          "name": "Brisk walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 35,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 6
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "compound_bodyweight_circuit",
+                          "type": "exercise",
+                          "exercise_ref": "mixed_bodyweight_circuit",
+                          "name": "Bodyweight circuit (squat, row, hinge, glute bridge)",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 10,
+                              "min": 8,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes",
+                            "upper_back",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "circuit"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w12_day2_mobility_transition",
+                  "day_of_week": 3,
+                  "type": "active_recovery",
+                  "name": "Mobility and readiness check",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w12d2_block",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "movement_readiness_check",
+                          "type": "simple",
+                          "name": "Movement & symptom check (self-assessment)",
+                          "duration": {
+                            "value": 10,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w12_day3_rest",
+                  "day_of_week": 5,
+                  "type": "rest",
+                  "name": "Rest and plan transition",
+                  "estimated_duration_minutes": 10
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "progress": {
+        "checkpoints": [
+          {
+            "id": "cp_week_6",
+            "name": "6-week OB check",
+            "at": {
+              "value": 6,
+              "unit": "weeks"
+            },
+            "measurements": [
+              "self_report_symptoms",
+              {
+                "metric": "body_weight_kg"
+              }
+            ],
+            "questions": [
+              "Has your OB cleared you for abdominal loading and heavier lifting?",
+              "Are you experiencing pain with movement or at the incision site?"
+            ]
+          },
+          {
+            "id": "cp_week_12",
+            "name": "12-week consolidation checkpoint",
+            "at": {
+              "value": 12,
+              "unit": "weeks"
+            },
+            "measurements": [
+              {
+                "metric": "session_rpe_avg"
+              },
+              "self_report_symptoms"
+            ],
+            "questions": [
+              "Do you feel ready to progress to higher-load training?",
+              "Any persistent pain or discomfort?"
+            ]
+          }
+        ],
+        "points_system": {
+          "enabled": false
+        }
+      }
+    }
+  }
+}

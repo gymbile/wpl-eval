@@ -37,14 +37,20 @@ restate v0.5 results except where v0.6 changes the interpretation.
    (gpt-5). The compile/schema gap is universal, not vendor-specific,
    and is the main new finding of v0.6.
 
-4. **Sub-finding from in-cycle direct-JSON probes** ($2.52, 10 trials,
-   Sonnet 4.6 only). A 12-week WPL JSON plan exceeds the LLM output
-   token budget (5/5 truncated at 16K tokens), but a 2-week WPL JSON
-   plan validates at 60% (3/5) via direct native-mode generation —
-   meaningfully higher than the same model's 17% schema-valid rate via
-   the DSL→compile path on full-length plans. This refocuses v0.7: the
-   architectural question is whether to chunk the synthesis, not
-   whether to switch off the DSL.
+4. **The DSL→compile path is doing real schema-conformance work that
+   direct LLM emission cannot substitute for.** In-cycle direct-JSON
+   probes ($2.76, 20 trials across a 2x2 of {Sonnet 4.6, gpt-5-mini}
+   × {2-week, 12-week}): at 12-week plan length, gpt-5-mini (with
+   adequate output budget and full schema in-prompt) hit **0/5
+   schema-valid** with ~115 errors per plan — worse than Sonnet's
+   17% via DSL→compile on the same length in the main sweep. Even
+   at 2-week scale, gpt-5-mini still hit 0/5; only Sonnet handled
+   short plans (3/5). The dominant error category — `additional
+   Properties: must NOT have` — is universal across vendors and
+   plan lengths. The format itself is the binding constraint at
+   production scale, which sharpens the v0.7 priority toward Arm B
+   (simplify the activity-block schema), not Arm A (enrich the
+   prompt) or Arm C (chunk the synthesis).
 
 ---
 
@@ -230,14 +236,22 @@ plans. The v0.7 sweep will measure each contribution.
 
 ---
 
-## Native-JSON probes (v0.6 in-cycle, $2.52 total spend)
+## Native-JSON probes (v0.6 in-cycle, $2.76 total spend)
 
-We ran two probes outside the locked sweep to attribute the schema-
-fail rate observed in §"Finding 3." Both use Sonnet 4.6 with the full
-WPL JSON Schema (37,928 chars / ~10k tokens) included in the system
-prompt. The model is asked to emit WPL JSON directly — no DSL,
-no compile step. Output is parsed and validated by
-`@gymbile/wpl-validator`, the same validator Lane B uses.
+We ran four probes outside the locked sweep to attribute the schema-
+fail rate observed in §"Finding 3." Each uses the full WPL JSON
+Schema (37,928 chars / ~10k tokens) included in the system prompt.
+The model is asked to emit WPL JSON directly — no DSL, no compile
+step. Output is parsed and validated by `@gymbile/wpl-validator`,
+the same validator Lane B uses. The four probes cross two factors
+(plan length × vendor):
+
+| | 2-week | 12-week |
+|---|---|---|
+| **Sonnet 4.6** (Anthropic mid-flagship) | 3/5 schema-valid (60%) | 0/5 — truncated at 16K output cap |
+| **gpt-5-mini** (OpenAI mid-flagship)    | 0/5 schema-valid (3/5 parsed; 1–5 errors each) | 0/5 schema-valid (4/5 parsed; ~115 errors each) |
+
+The detailed per-probe writeups follow.
 
 ### Probe 1 — 12-week direct-JSON ($1.45, 5 trials)
 
@@ -294,44 +308,107 @@ The picture changes substantially:
   `"invalid action scope 'X'"`. The model is producing the right
   *shape* and missing on specific enum values.
 
-### What these probes actually attribute
+### Probe 3 — 12-week direct-JSON on gpt-5-mini ($0.16, 5 trials)
+
+The Sonnet 12-week probe couldn't separate two confounds: did the
+plan not fit, or did the model fail at schema? gpt-5-mini has a much
+larger output budget than Sonnet (32K+ vs 16K), so a re-run on the
+same prompts isolates the question.
+
+| metric | result |
+|---|---|
+| hit output token cap | **0 / 5** (budget is not the limit) |
+| parse_ok | 4 / 5 (one malformed JSON) |
+| schema_valid | **0 / 5** |
+| errors per parsed plan | 54, 62, 98, 247 (~115 average) |
+| top categories | additionalProperties (306), wrong type constant (64), missing required (61) |
+
+The four parsed plans were *real* 12-week plans: 3–6 phases, 32–36
+days, 46–75 activities. Not skeletons. gpt-5-mini was genuinely
+producing structured 12-week WPL JSON and the schema validator
+rejected every attempt with the **same hostile error categories** the
+DSL Lane B sweep surfaced. Token budget is not the constraint here;
+the schema's structural strictness is.
+
+### Probe 4 — 2-week direct-JSON on gpt-5-mini ($0.08, 5 trials)
+
+Closes the 2x2 matrix (plan length × vendor).
+
+| metric | result |
+|---|---|
+| hit output token cap | 0 / 5 |
+| parse_ok | 3 / 5 |
+| schema_valid | **0 / 5** |
+| errors per parsed plan | 2, 5, 65 |
+| top categories | additionalProperties (49), wrong type constant (7), missing required (6), invalid action type (3) |
+
+Even at the 2-week scale where Sonnet hit 60%, gpt-5-mini hits 0%.
+The error pattern is the same as the 12-week case, just smaller in
+absolute count. gpt-5-mini consistently produces structures with
+fields the schema rejects regardless of plan length — particularly
+the `additionalProperties: false` constraint.
+
+### What the four probes attribute
 
 The schema-fail rate observed in the main v0.6 sweep has at least
-three contributing causes, and the probes let us partially separate
+three contributing causes, and the closed 2x2 matrix lets us separate
 them:
 
-| cause | evidence | size estimate |
+| factor | evidence | role |
 |---|---|---|
-| Output token budget (long plans don't fit) | Probe 1: 5/5 trials truncated at the 16K cap on full-length plans | ≥ part of the gap; estimate hard to make precise |
-| DSL→compile translation cost | Same model, same scenarios, short plan: 60% schema-valid direct vs 17% via DSL→compile on the same model in the main sweep | ~3× factor in this slice |
-| Schema's own complexity (Explanation B) | Even at short scale, 2/5 plans had small schema errors; even the strongest models in the main sweep cap at 73% schema-valid | non-trivial but not dominant |
+| **Format complexity** (Explanation B, the dominant cause at production scale) | Both vendors fail at 12-week regardless of budget; gpt-5-mini fails at 2-week too; the dominant error category is `additionalProperties` (models invent fields the schema forbids) across all probes | **Dominant** |
+| **Plan length** | Sonnet drops from 60% (2-week) to "doesn't fit" (12-week); gpt-5-mini's error count rises from a handful per plan to ~115 per plan | Material, vendor-dependent |
+| **Output token budget** | Sonnet truncated 5/5 at 12 weeks; gpt-5-mini had headroom | Vendor-specific, solvable by routing |
+| **Vendor/model capability** | At 2-week scale, Sonnet hit 60%, gpt-5-mini hit 0% | Real interaction at small scale; both fail at large scale |
 
-The simplification proposals in §"What this means for WPL-AI design"
-still apply — they would close the residual 40% gap on short plans —
-but the **bigger v0.6 finding from these probes is architectural**:
-no current flagship LLM can emit a complete 12-week WPL JSON plan
-within its output budget. Any production system that uses WPL needs
-to either (a) keep the DSL as the LLM-facing surface, or (b) generate
-JSON in chunks (per-week, per-phase) and assemble. The v0.7 A/B/C
-experiment should add a fourth arm that tests chunked synthesis.
+**The biggest finding from these probes is architectural and goes
+beyond what §"Finding 3" reports:** the DSL→compile path is doing
+real schema-conformance work that the LLM cannot substitute for by
+reading the schema directly. Concrete comparison at 12-week scale:
+
+| path | schema-valid rate at 12 weeks |
+|---|---|
+| Sonnet 4.6, DSL → compile → JSON | 17% (5/30 in the main sweep) |
+| gpt-5-mini, **direct JSON** with schema in-prompt | **0%** (0/5 in probe 3) |
+
+Even on a model with sufficient output budget, even with the schema
+in the prompt verbatim, **direct LLM emission of production-length
+WPL JSON does not work on the current schema**. The compiler is
+genuinely translating LLM-natural shapes into schema-conformant ones
+— and that translation is load-bearing.
+
+This refocuses the v0.7 A/B/C/D experiment significantly: Arm B
+(simplify the WPL JSON shape) is the most informative of the four,
+because all the other arms (prompt enrichment, chunked synthesis,
+DSL-with-better-prompt) leave the format unchanged and the four
+probes suggest the format itself is the binding constraint at
+production plan lengths.
 
 ### Methodology caveats for the probes
 
-- **N = 5 per probe.** This is a directional signal, not a calibrated
-  rate. We do not claim "60% schema-valid" as a published number; we
-  claim "short plans validate at meaningfully higher rates than long
-  plans via the same path."
+- **N = 5 per probe (20 total).** Directional signal, not a calibrated
+  rate. We do not claim "60% schema-valid" as a published headline
+  number; we report the rates as the relative ordering between
+  conditions in a 2x2 attribution design.
 - **Safety scorer was NOT run on probe outputs.** Schema-valid plans
   may still contain contraindicated prescriptions. Spot-check of the
-  successful `torn_meniscus` short plan, for example, contains a
-  string match for "plyometric" — which the WPL safety contract would
-  flag but the JSON validator does not. We use these probes only to
-  attribute the schema-validation result; safety claims stay with the
-  main sweep.
-- **One model, one vendor.** Probes are Sonnet-only. Opus 4.7 might
-  hit the same output-budget wall earlier (longer per-token output);
-  gpt-5 might do better given its higher schema-valid rate in the
-  main sweep. The probes show direction, not the cross-vendor map.
+  successful Sonnet `torn_meniscus` short plan, for example, contains
+  a string match for "plyometric" — which the WPL safety contract
+  would flag but the JSON validator does not. We use these probes
+  only to attribute the schema-validation result; safety claims stay
+  with the main sweep.
+- **Two models, two vendors — not the full lineup.** Probes cover the
+  mid-flagship tier on each vendor (Sonnet 4.6, gpt-5-mini). Opus
+  4.7 might hit Sonnet's output-budget wall earlier; gpt-5 might do
+  better than gpt-5-mini given its higher schema-valid rate in the
+  main DSL sweep. The 2x2 shows the attribution shape; a full 7-model
+  × 2-length matrix is v0.7 territory.
+- **The 2-week override prompt is approximate.** We prepended a
+  duration-override sentence to the scenario prompt. A more faithful
+  short-plan probe would use scenarios that *natively* ask for short
+  plans — exactly the v0.6.1 short-plan workstream. Treat the 60% /
+  0% numbers as "what happens when an existing scenario is forced
+  shorter," not "what happens for short-plan-native requests."
 
 ### The gpt-5-nano caveat
 
@@ -450,8 +527,8 @@ run it.
 | Haiku 4.5      |  60 | $10.78 | $0.18 |
 | Sonnet 4.6     |  60 | $45.75 | $0.76 |
 | Opus 4.7       |  60 | $52.17 | $0.87 |
-| native-JSON probes (Sonnet, 10 trials) | 10 | $2.52 | $0.25 |
-| **total**      | 190 | **$111.22** | — |
+| native-JSON probes (Sonnet + gpt-5-mini, 20 trials) | 20 | $2.76 | $0.14 |
+| **total**      | 200 | **$111.46** | — |
 
 Token economics. Anthropic's tokenizer for Opus 4.7 (and 4.8) is new
 relative to Opus 4.1 and can consume ~35% more tokens for the same
