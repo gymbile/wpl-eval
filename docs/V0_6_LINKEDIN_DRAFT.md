@@ -64,12 +64,34 @@ If you're building clinical AI:
 
 ---
 
-🔬 The full dataset, methodology, and reproduction code are public:
+---
+
+🧪 **Bonus finding — for the engineers in the room:**
+
+We tried to bypass our DSL entirely. Gave GPT-5-mini the **full WPL JSON Schema** (37,928 chars) in its system prompt and asked it to emit medical fitness plans as raw JSON. "Native structured output," the consensus best practice.
+
+**0 / 5 plans passed validation.**
+
+The plans were complete. Real 12-week programmes. 3–6 phases, 46–75 activities each. Not skeletons.
+
+The schema validator rejected every one — with ~115 errors per plan. The dominant error category: `additionalProperties: must NOT have`. The model invented fields the schema forbids, despite the schema being literally in its prompt.
+
+We tested Sonnet 4.6 too. Same story at 12-week length (couldn't even fit in the output budget). Short 2-week plans on Sonnet hit 60% — the only condition that worked at all.
+
+The takeaway for anyone building structured-output systems on LLMs:
+
+→ "Just use JSON mode with the schema" is harder than it looks at production scale.
+→ At long output lengths, schema-in-prompt is not enough.
+→ The compile/translate layer between the LLM and the strict format is doing real work. Removing it is not free.
+
+---
+
+🔬 Full dataset, methodology, and reproduction code:
 github.com/gymbile/wpl-eval — frozen at tag v0.6.0-anthropic
 
-Citable, reproducible, $108 to re-run end to end.
+Citable, reproducible, $111 to re-run end to end.
 
-#LLM #AISafety #HealthTech #ClinicalAI #DigitalHealth
+#LLM #AISafety #HealthTech #ClinicalAI #DigitalHealth #StructuredOutput
 
 ---
 
