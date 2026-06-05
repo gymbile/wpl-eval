@@ -1,0 +1,2448 @@
+{
+  "model": "gpt-5-mini",
+  "scenario_id": "torn_meniscus",
+  "tokens_in": 11900,
+  "tokens_out": 14696,
+  "hit_output_cap": false,
+  "latency_ms": 148494,
+  "cost_usd": 0.032367,
+  "raw_text": "{\n  \"$schema\": \"https://wpl.dev/schemas/wpl/v1.schema.json\",\n  \"version\": \"1.6.0\",\n  \"plan\": {\n    \"id\": \"meniscus_safe_strength_12wk\",\n    \"name\": \"12-Week Strength Program (Meniscus-Safe)\",\n    \"description\": \"12-week progressive strength program for a 36-year-old male recreational lifter cleared for low-impact strength work. Avoids jumping and deep knee flexion under load. Goal: increase strength and prepare for next ski season.\",\n    \"type\": \"workout\",\n    \"visibility\": \"private\",\n    \"metadata\": {\n      \"created_at\": \"2026-06-05T00:00:00Z\",\n      \"updated_at\": \"2026-06-05T00:00:00Z\",\n      \"created_by\": \"trainer\",\n      \"difficulty\": \"intermediate\",\n      \"estimated_duration_days\": 84\n    },\n    \"goals\": [\n      {\n        \"id\": \"primary_strength\",\n        \"type\": \"primary\",\n        \"category\": \"strength\",\n        \"name\": \"Increase strength\",\n        \"description\": \"Improve compound strength across squat alternatives, hinge, and upper-body pushes/pulls while protecting the repaired meniscus.\",\n        \"target\": {\n          \"metric\": \"one_rm_kg\",\n          \"target_value\": 5,\n          \"unit\": \"kg\",\n          \"measurement_type\": \"relative\"\n        },\n        \"milestones\": [\n          {\n            \"id\": \"milestone_4w\",\n            \"name\": \"4-week consistency\",\n            \"target_value\": 4,\n            \"reward_points\": 50\n          },\n          {\n            \"id\": \"milestone_8w\",\n            \"name\": \"8-week strength gain\",\n            \"target_value\": 8,\n            \"reward_points\": 100\n          }\n        ]\n      },\n      {\n        \"id\": \"secondary_return_ski\",\n        \"type\": \"secondary\",\n        \"category\": \"performance\",\n        \"name\": \"Return to skiing readiness\",\n        \"description\": \"Build reliable lower-body strength and single-leg control without loading into deep flexion or plyometrics.\"\n      }\n    ],\n    \"requirements\": {\n      \"min_age\": 18,\n      \"max_age\": 65,\n      \"fitness_level\": [\n        \"recreational_lifter\"\n      ],\n      \"equipment\": [\n        {\n          \"id\": \"barbell\",\n          \"name\": \"Barbell + plates\",\n          \"required\": true,\n          \"alternatives\": [\n            \"dumbbell\",\n            \"trap_bar\"\n          ]\n        },\n        {\n          \"id\": \"dumbbells\",\n          \"name\": \"Adjustable dumbbells\",\n          \"required\": true\n        },\n        {\n          \"id\": \"leg_press\",\n          \"name\": \"Leg press machine\",\n          \"required\": false\n        },\n        {\n          \"id\": \"cable_machine\",\n          \"name\": \"Cable machine\",\n          \"required\": false\n        },\n        {\n          \"id\": \"smith\",\n          \"name\": \"Smith machine\",\n          \"required\": false\n        },\n        {\n          \"id\": \"band\",\n          \"name\": \"Resistance bands\",\n          \"required\": true\n        }\n      ],\n      \"contraindications\": [\n        {\n          \"condition\": \"right_medial_meniscus_repair_or_tear_history\",\n          \"severity\": \"moderate\",\n          \"action\": \"modify\",\n          \"affected_activities\": [\n            \"jumping\",\n            \"back_squat_deep\",\n            \"deep_front_squat\"\n          ]\n        }\n      ],\n      \"time_commitment\": {\n        \"min_days_per_week\": 3,\n        \"max_days_per_week\": 5,\n        \"min_minutes_per_day\": 40,\n        \"max_minutes_per_day\": 90\n      }\n    },\n    \"personalization\": {\n      \"inputs\": [\n        {\n          \"id\": \"user.age\",\n          \"type\": \"number\",\n          \"source\": \"user.age\",\n          \"label\": \"Age\"\n        },\n        {\n          \"id\": \"user.injuries\",\n          \"type\": \"array\",\n          \"source\": \"user.injuries\",\n          \"label\": \"Injuries\"\n        },\n        {\n          \"id\": \"user.equipment\",\n          \"type\": \"array\",\n          \"source\": \"user.equipment\",\n          \"label\": \"Available equipment\"\n        }\n      ],\n      \"rules\": [\n        {\n          \"id\": \"exclude_jumps_for_meniscus\",\n          \"condition\": {\n            \"field\": \"user.injuries\",\n            \"op\": \"contains\",\n            \"value\": \"right_medial_meniscus_repair_or_tear_history\"\n          },\n          \"actions\": [\n            {\n              \"type\": \"modify\",\n              \"scope\": \"plan\"\n            }\n          ]\n        }\n      ]\n    },\n    \"phases\": [\n      {\n        \"id\": \"phase_1_base\",\n        \"name\": \"Base - Tissue Preparation & Technique (Weeks 1-4)\",\n        \"order\": 1,\n        \"type\": \"base\",\n        \"duration\": {\n          \"value\": 4,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"phase1_week1\",\n            \"name\": \"Week 1\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"p1_w1_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Hinge emphasis\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"warmup_l1\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"warmup_walk\",\n                        \"type\": \"simple\",\n                        \"name\": \"10 min brisk walk or bike\",\n                        \"duration\": {\n                          \"value\": 10,\n                          \"unit\": \"minutes\"\n                        }\n                      },\n                      {\n                        \"id\": \"warmup_banded\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Banded hip activation\",\n                        \"category\": \"activation\",\n                        \"prescription\": {\n                          \"exercises\": [\n                            {\n                              \"id\": \"banded_clams\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Banded clams\",\n                              \"modality\": \"dynamic_stretch\",\n                              \"reps\": 10,\n                              \"sides\": \"both\"\n                            }\n                          ]\n                        },\n                        \"order\": 2\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"main_l1\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"structure\": \"straight_sets\",\n                    \"activities\": [\n                      {\n                        \"id\": \"deadlift_trapbar\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\",\n                          \"lower_back\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 5\n                          },\n                          \"rest\": {\n                            \"value\": 2,\n                            \"unit\": \"minutes\"\n                          },\n                          \"weight\": {\n                            \"type\": \"absolute\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"split_squat_box\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"rear_foot_elevated_split_squat_box\",\n                        \"name\": \"Rear-foot elevated split squat (to limited depth)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"leg_press_shallow\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"leg_press_shallow\",\n                        \"name\": \"Leg press - shallow range (no deep flexion)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"accessory_l1\",\n                    \"type\": \"main\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"single_leg_dead_rdl\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"single_leg_rdl\",\n                        \"name\": \"Single-leg RDL (assisted as needed)\",\n                        \"primary_muscles\": [\n                          \"hamstrings\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"banded_side_walks\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"banded_side_walks\",\n                        \"name\": \"Banded lateral walks\",\n                        \"primary_muscles\": [\n                          \"hip_abductors\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"carry\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"cool_l1\",\n                    \"type\": \"cooldown\",\n                    \"order\": 4,\n                    \"activities\": [\n                      {\n                        \"id\": \"stretch_quads\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Quadriceps stretch\",\n                        \"category\": \"static_stretch\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 6,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"quad_static\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Standing quad stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5,\n                              \"body_part\": \"quadriceps\"\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w1_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Push/Pull\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"warmup_u1\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"warmup_row\",\n                        \"type\": \"simple\",\n                        \"name\": \"8 min row or bike\",\n                        \"duration\": {\n                          \"value\": 8,\n                          \"unit\": \"minutes\"\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"main_u1\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Barbell bench press\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\",\n                          \"front_delts\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 5\n                          },\n                          \"rest\": {\n                            \"value\": 2,\n                            \"unit\": \"minutes\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"barbell_row\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bent_over_row\",\n                        \"name\": \"Barbell bent-over row\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"incline_dumbbell\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"incline_dumbbell_press\",\n                        \"name\": \"Incline dumbbell press\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"front_delts\"\n                        ],\n                        \"movement_pattern\": \"push_vertical\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"accessory_u1\",\n                    \"type\": \"main\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"facepulls\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"cable_face_pull\",\n                        \"name\": \"Cable face pulls\",\n                        \"primary_muscles\": [\n                          \"rear_delts\",\n                          \"traps\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      },\n                      {\n                        \"id\": \"plank\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"front_plank\",\n                        \"name\": \"Front plank\",\n                        \"primary_muscles\": [\n                          \"abs\",\n                          \"lower_back\"\n                        ],\n                        \"movement_pattern\": \"anti_rotate\",\n                        \"prescription\": {\n                          \"type\": \"time\",\n                          \"duration\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w1_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Quad/glute control\",\n                \"estimated_duration_minutes\": 55,\n                \"blocks\": [\n                  {\n                    \"id\": \"warmup_l2\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bike_warm\",\n                        \"type\": \"simple\",\n                        \"name\": \"8 min bike\",\n                        \"duration\": {\n                          \"value\": 8,\n                          \"unit\": \"minutes\"\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"main_l2\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"split_squat_goblet\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"goblet_split_squat\",\n                        \"name\": \"Goblet split squat (shallow)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"vertical_press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"leg_press_vertical_shallow\",\n                        \"name\": \"Vertical leg press - limited ROM\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"calf_raise\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"standing_calf_raise\",\n                        \"name\": \"Standing calf raise\",\n                        \"primary_muscles\": [\n                          \"calves\"\n                        ],\n                        \"movement_pattern\": \"isolation\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"cool_l2\",\n                    \"type\": \"cooldown\",\n                    \"order\": 3,\n                    \"activities\": [\n                      {\n                        \"id\": \"hip_mob\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Hip mobility\",\n                        \"category\": \"mobility_drill\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 6,\n                            \"unit\": \"minutes\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase1_week2\",\n            \"name\": \"Week 2\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"p1_w2_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Hinge + single-leg\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_l1_w2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"romanian_deadlift\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"romanian_deadlift\",\n                        \"name\": \"Romanian deadlift\",\n                        \"primary_muscles\": [\n                          \"hamstrings\",\n                          \"glutes\",\n                          \"lower_back\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"split_squat_bulgarian\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"bulgarian_split_squat\",\n                        \"name\": \"Bulgarian split squat (limited depth)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w2_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Strength\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_u2_w2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"overhead_press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"standing_barbell_overhead_press\",\n                        \"name\": \"Standing overhead press\",\n                        \"primary_muscles\": [\n                          \"front_delts\",\n                          \"side_delts\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_vertical\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"pull_up_assist\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"assisted_pull_up_or_lat_pull\",\n                        \"name\": \"Assisted pull-up or lat pulldown\",\n                        \"primary_muscles\": [\n                          \"lats\",\n                          \"biceps\"\n                        ],\n                        \"movement_pattern\": \"pull_vertical\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w2_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Volume & control\",\n                \"estimated_duration_minutes\": 55,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_l3_w2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"front_rack_step_up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"dumbbell_step_up\",\n                        \"name\": \"Dumbbell step-ups (mod depth)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"leg_curl\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"lying_leg_curl\",\n                        \"name\": \"Hamstring curl (machine)\",\n                        \"primary_muscles\": [\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"isolation\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase1_week3\",\n            \"name\": \"Week 3\",\n            \"order\": 3,\n            \"days\": [\n              {\n                \"id\": \"p1_w3_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Strength\",\n                \"estimated_duration_minutes\": 65,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_l1_w3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"weighted_hip_thrust\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_hip_thrust\",\n                        \"name\": \"Barbell hip thrust\",\n                        \"primary_muscles\": [\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hip_flexors\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      },\n                      {\n                        \"id\": \"kb_sumo_dead\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"kettlebell_sumo_deadlift\",\n                        \"name\": \"Kettlebell sumo deadlift\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w3_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Hypertrophy\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_u3_w3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"incline_bb_press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_incline_press\",\n                        \"name\": \"Barbell incline press\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"front_delts\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"one_arm_row\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"one_arm_dumbbell_row\",\n                        \"name\": \"One-arm dumbbell row\",\n                        \"primary_muscles\": [\n                          \"lats\",\n                          \"upper_back\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w3_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Control & conditioning (low impact)\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_l4_w3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"sled_push\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"sled_push_light\",\n                        \"name\": \"Sled push (low load)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"carry\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 6,\n                          \"reps\": {\n                            \"target\": 20\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"banded_terminal_knee_extension\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"terminal_knee_extension_banded\",\n                        \"name\": \"Banded terminal knee extension\",\n                        \"primary_muscles\": [\n                          \"quadriceps\"\n                        ],\n                        \"movement_pattern\": \"isolation\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 15\n                          },\n                          \"rest\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase1_week4\",\n            \"name\": \"Week 4 (Auto-regulation week)\",\n            \"order\": 4,\n            \"days\": [\n              {\n                \"id\": \"p1_w4_d1\",\n                \"day_of_week\": 2,\n                \"type\": \"training\",\n                \"name\": \"Lower - Load check (lighter)\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_l1_w4\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"light_trap_dead\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift_light\",\n                        \"name\": \"Trap-bar deadlift (8 reps, moderate)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p1_w4_d2\",\n                \"day_of_week\": 4,\n                \"type\": \"training\",\n                \"name\": \"Upper - Technique & mobility\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_u1_w4\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"pushup_hands_elevated\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"elevated_pushup\",\n                        \"name\": \"Elevated push-up\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 12\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_2_intensification\",\n        \"name\": \"Intensification - Strength Focus (Weeks 5-8)\",\n        \"order\": 2,\n        \"type\": \"intensification\",\n        \"duration\": {\n          \"value\": 4,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"phase2_week5\",\n            \"name\": \"Week 5\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"p2_w5_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Heavy hinge & single-leg\",\n                \"estimated_duration_minutes\": 70,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"heavy_trapdead\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift (heavy)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\",\n                          \"lower_back\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 180,\n                            \"unit\": \"seconds\"\n                          },\n                          \"weight\": {\n                            \"type\": \"absolute\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      },\n                      {\n                        \"id\": \"weighted_step_up\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"weighted_step_up\",\n                        \"name\": \"Weighted step-ups (tall box, limited knee bend)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w5_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Heavy\",\n                \"estimated_duration_minutes\": 70,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_u1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_heavy\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Barbell bench press (heavy)\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 180,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      },\n                      {\n                        \"id\": \"barbell_row_heavy\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bent_over_row\",\n                        \"name\": \"Barbell row (heavy)\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w5_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Volume & posterior chain\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"hip_thrust_heavy\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_hip_thrust\",\n                        \"name\": \"Hip thrust (heavy)\",\n                        \"primary_muscles\": [\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 5\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      },\n                      {\n                        \"id\": \"romanian_deadlift_volume\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"romanian_deadlift\",\n                        \"name\": \"Romanian deadlift (volume)\",\n                        \"primary_muscles\": [\n                          \"hamstrings\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase2_week6\",\n            \"name\": \"Week 6\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"p2_w6_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Heavy singles/doubles (strength)\",\n                \"estimated_duration_minutes\": 75,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"trapdead_singles\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift (singles/doubles, heavy)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 6,\n                          \"reps\": {\n                            \"min\": 1,\n                            \"max\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 180,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8.5\n                      },\n                      {\n                        \"id\": \"single_leg_press\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"single_leg_press\",\n                        \"name\": \"Single-leg press (controlled ROM)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w6_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Heavy / Volume mix\",\n                \"estimated_duration_minutes\": 65,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_u2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"overhead_press_heavy\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"standing_barbell_overhead_press\",\n                        \"name\": \"Overhead press (heavy)\",\n                        \"primary_muscles\": [\n                          \"front_delts\",\n                          \"side_delts\"\n                        ],\n                        \"movement_pattern\": \"push_vertical\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"chinups\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"weighted_chinup\",\n                        \"name\": \"Weighted chin-up (or heavy lat pulldown)\",\n                        \"primary_muscles\": [\n                          \"lats\",\n                          \"biceps\"\n                        ],\n                        \"movement_pattern\": \"pull_vertical\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w6_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Posterior + control\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l4\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"rdl_heavy\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"romanian_deadlift\",\n                        \"name\": \"Romanian deadlift (heavy sets)\",\n                        \"primary_muscles\": [\n                          \"hamstrings\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"glute_med_stability\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"side_plank_leg_raise\",\n                        \"name\": \"Side plank with leg raise (stability)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"obliques\"\n                        ],\n                        \"movement_pattern\": \"anti_rotate\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase2_week7\",\n            \"name\": \"Week 7\",\n            \"order\": 3,\n            \"days\": [\n              {\n                \"id\": \"p2_w7_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Mixed heavy/moderate\",\n                \"estimated_duration_minutes\": 70,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l5\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"trapbar_cluster\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift cluster sets\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 150,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      },\n                      {\n                        \"id\": \"step_up_heavy\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"weighted_step_up\",\n                        \"name\": \"Weighted step-up\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w7_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Volume\",\n                \"estimated_duration_minutes\": 65,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_u3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_volume\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Bench press (volume)\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"rows_volume\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"seated_cable_row\",\n                        \"name\": \"Seated cable row\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w7_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Control & unilateral\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l6\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"reverse_lunge\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"reverse_lunge\",\n                        \"name\": \"Reverse lunge (no aggressive depth)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"glute_bridge_single\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"single_leg_glute_bridge\",\n                        \"name\": \"Single-leg glute bridge\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase2_week8\",\n            \"name\": \"Week 8 (Deload-ish)\",\n            \"order\": 4,\n            \"days\": [\n              {\n                \"id\": \"p2_w8_d1\",\n                \"day_of_week\": 2,\n                \"type\": \"training\",\n                \"name\": \"Lower - Reduced load\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_l7\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"hip_thrust_light\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_hip_thrust\",\n                        \"name\": \"Hip thrust (light)\",\n                        \"primary_muscles\": [\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p2_w8_d2\",\n                \"day_of_week\": 4,\n                \"type\": \"training\",\n                \"name\": \"Upper - Technique\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p2_u4\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"rows_light\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"seated_cable_row\",\n                        \"name\": \"Seated cable row (light)\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 10\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"id\": \"phase_3_realization\",\n        \"name\": \"Realization/Peak - Prepare for Skiing (Weeks 9-12)\",\n        \"order\": 3,\n        \"type\": \"realization\",\n        \"duration\": {\n          \"value\": 4,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"phase3_week9\",\n            \"name\": \"Week 9\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"p3_w9_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Heavy & control\",\n                \"estimated_duration_minutes\": 75,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_l1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"heavy_trapdead_p3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift (heavy)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 180,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8.5\n                      },\n                      {\n                        \"id\": \"single_leg_control\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"controlled_step_down\",\n                        \"name\": \"Controlled step-downs (eccentric focus)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7.5\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p3_w9_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Strength\",\n                \"estimated_duration_minutes\": 70,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_u1\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_heavy_p3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Bench press (peak sets)\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"min\": 2,\n                            \"max\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 180,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8.5\n                      },\n                      {\n                        \"id\": \"heavy_row_p3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bent_over_row\",\n                        \"name\": \"Barbell row (peak)\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 5,\n                          \"reps\": {\n                            \"target\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 150,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p3_w9_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Ski-specific strength (low impact)\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_l2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"sled_triangles\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"sled_triangles\",\n                        \"name\": \"Sled triangle drives (controlled, low impact)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"quadriceps\"\n                        ],\n                        \"movement_pattern\": \"carry\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 6,\n                          \"reps\": {\n                            \"target\": 20\n                          },\n                          \"rest\": {\n                            \"value\": 60,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"isometric_squat_partial\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"isometric_partial_squat\",\n                        \"name\": \"Isometric partial squat (no deep flexion)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\",\n                        \"prescription\": {\n                          \"type\": \"time\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase3_week10\",\n            \"name\": \"Week 10\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"p3_w10_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Heavy & unilateral control\",\n                \"estimated_duration_minutes\": 75,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_l3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"trapdead_peak\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift (peak intensity)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"min\": 1,\n                            \"max\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 210,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 9\n                      },\n                      {\n                        \"id\": \"single_leg_strength\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"weighted_step_up\",\n                        \"name\": \"Single-leg strength sets\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 5\n                          },\n                          \"rest\": {\n                            \"value\": 150,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8.5\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p3_w10_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Peak\",\n                \"estimated_duration_minutes\": 70,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_u2\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_peak\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Bench press (peak)\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"min\": 1,\n                            \"max\": 3\n                          },\n                          \"rest\": {\n                            \"value\": 210,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 9\n                      },\n                      {\n                        \"id\": \"row_peak\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bent_over_row\",\n                        \"name\": \"Barbell row (peak)\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 4,\n                          \"reps\": {\n                            \"target\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 150,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8.5\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p3_w10_d3\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Lower - Ski readiness (control & endurance)\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_l4\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"sled_push_p3\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"sled_push_heavy\",\n                        \"name\": \"Sled push (heavier, controlled)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"quadriceps\"\n                        ],\n                        \"movement_pattern\": \"carry\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 6,\n                          \"reps\": {\n                            \"target\": 15\n                          },\n                          \"rest\": {\n                            \"value\": 75,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      },\n                      {\n                        \"id\": \"isometric_squat_longer\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"isometric_partial_squat\",\n                        \"name\": \"Isometric partial squat hold (longer)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"squat\",\n                        \"prescription\": {\n                          \"type\": \"time\",\n                          \"duration\": {\n                            \"value\": 45,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase3_week11\",\n            \"name\": \"Week 11\",\n            \"order\": 3,\n            \"days\": [\n              {\n                \"id\": \"p3_w11_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Lower - Tapering heavy\",\n                \"estimated_duration_minutes\": 70,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_l5\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"trapdead_taper\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"trapbar_deadlift\",\n                        \"name\": \"Trap-bar deadlift (reduced volume, moderate intensity)\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"hamstrings\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"min\": 2,\n                            \"max\": 4\n                          },\n                          \"rest\": {\n                            \"value\": 180,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 8\n                      },\n                      {\n                        \"id\": \"single_leg_control_taper\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"controlled_step_down\",\n                        \"name\": \"Controlled step-downs (taper)\",\n                        \"primary_muscles\": [\n                          \"quadriceps\",\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"lunge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p3_w11_d2\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Upper - Maintain\",\n                \"estimated_duration_minutes\": 60,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_u3\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_maintain\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Bench press (maintain)\",\n                        \"primary_muscles\": [\n                          \"chest\",\n                          \"triceps\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 5\n                          },\n                          \"rest\": {\n                            \"value\": 150,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7.5\n                      },\n                      {\n                        \"id\": \"row_maintain\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bent_over_row\",\n                        \"name\": \"Barbell row (maintain)\",\n                        \"primary_muscles\": [\n                          \"upper_back\",\n                          \"lats\"\n                        ],\n                        \"movement_pattern\": \"pull_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 3,\n                          \"reps\": {\n                            \"target\": 6\n                          },\n                          \"rest\": {\n                            \"value\": 120,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 7.5\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"phase3_week12\",\n            \"name\": \"Week 12 (Deload & readiness check)\",\n            \"order\": 4,\n            \"weeks\": [],\n            \"days\": [\n              {\n                \"id\": \"p3_w12_d1\",\n                \"day_of_week\": 2,\n                \"type\": \"training\",\n                \"name\": \"Lower - Light session & movement test\",\n                \"estimated_duration_minutes\": 50,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_l6\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"hip_thrust_light_final\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_hip_thrust\",\n                        \"name\": \"Hip thrust (light)\",\n                        \"primary_muscles\": [\n                          \"glutes\"\n                        ],\n                        \"movement_pattern\": \"hinge\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      },\n                      {\n                        \"id\": \"single_leg_balance_test\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"single_leg_balance\",\n                        \"name\": \"Single-leg balance & control test\",\n                        \"primary_muscles\": [\n                          \"glutes\",\n                          \"calves\"\n                        ],\n                        \"movement_pattern\": \"isolation\",\n                        \"prescription\": {\n                          \"type\": \"time\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"seconds\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"p3_w12_d2\",\n                \"day_of_week\": 4,\n                \"type\": \"training\",\n                \"name\": \"Upper - Light\",\n                \"estimated_duration_minutes\": 45,\n                \"blocks\": [\n                  {\n                    \"id\": \"main_p3_u4\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"bench_light_final\",\n                        \"type\": \"exercise\",\n                        \"exercise_ref\": \"barbell_bench_press\",\n                        \"name\": \"Bench press (light)\",\n                        \"primary_muscles\": [\n                          \"chest\"\n                        ],\n                        \"movement_pattern\": \"push_horizontal\",\n                        \"prescription\": {\n                          \"type\": \"sets_reps\",\n                          \"sets\": 2,\n                          \"reps\": {\n                            \"target\": 8\n                          },\n                          \"rest\": {\n                            \"value\": 90,\n                            \"unit\": \"seconds\"\n                          }\n                        },\n                        \"target_rpe\": 6\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
+  "refusal": false,
+  "parse_ok": true,
+  "parse_error": null,
+  "schema_valid": false,
+  "validator_errors": 98,
+  "error_categories": {
+    "must have required property 'X'": 11,
+    "must NOT have additional properties": 69,
+    "must be equal to constant": 14,
+    "must match exactly one schema in oneOf": 2,
+    "must be equal to one of the allowed values": 2
+  },
+  "top_error_paths": [
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N",
+      "count": 55
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/prescription",
+      "count": 26
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/type",
+      "count": 14
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/movement_pattern",
+      "count": 1
+    },
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N/prescription/type",
+      "count": 1
+    }
+  ],
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "meniscus_safe_strength_12wk",
+      "name": "12-Week Strength Program (Meniscus-Safe)",
+      "description": "12-week progressive strength program for a 36-year-old male recreational lifter cleared for low-impact strength work. Avoids jumping and deep knee flexion under load. Goal: increase strength and prepare for next ski season.",
+      "type": "workout",
+      "visibility": "private",
+      "metadata": {
+        "created_at": "2026-06-05T00:00:00Z",
+        "updated_at": "2026-06-05T00:00:00Z",
+        "created_by": "trainer",
+        "difficulty": "intermediate",
+        "estimated_duration_days": 84
+      },
+      "goals": [
+        {
+          "id": "primary_strength",
+          "type": "primary",
+          "category": "strength",
+          "name": "Increase strength",
+          "description": "Improve compound strength across squat alternatives, hinge, and upper-body pushes/pulls while protecting the repaired meniscus.",
+          "target": {
+            "metric": "one_rm_kg",
+            "target_value": 5,
+            "unit": "kg",
+            "measurement_type": "relative"
+          },
+          "milestones": [
+            {
+              "id": "milestone_4w",
+              "name": "4-week consistency",
+              "target_value": 4,
+              "reward_points": 50
+            },
+            {
+              "id": "milestone_8w",
+              "name": "8-week strength gain",
+              "target_value": 8,
+              "reward_points": 100
+            }
+          ]
+        },
+        {
+          "id": "secondary_return_ski",
+          "type": "secondary",
+          "category": "performance",
+          "name": "Return to skiing readiness",
+          "description": "Build reliable lower-body strength and single-leg control without loading into deep flexion or plyometrics."
+        }
+      ],
+      "requirements": {
+        "min_age": 18,
+        "max_age": 65,
+        "fitness_level": [
+          "recreational_lifter"
+        ],
+        "equipment": [
+          {
+            "id": "barbell",
+            "name": "Barbell + plates",
+            "required": true,
+            "alternatives": [
+              "dumbbell",
+              "trap_bar"
+            ]
+          },
+          {
+            "id": "dumbbells",
+            "name": "Adjustable dumbbells",
+            "required": true
+          },
+          {
+            "id": "leg_press",
+            "name": "Leg press machine",
+            "required": false
+          },
+          {
+            "id": "cable_machine",
+            "name": "Cable machine",
+            "required": false
+          },
+          {
+            "id": "smith",
+            "name": "Smith machine",
+            "required": false
+          },
+          {
+            "id": "band",
+            "name": "Resistance bands",
+            "required": true
+          }
+        ],
+        "contraindications": [
+          {
+            "condition": "right_medial_meniscus_repair_or_tear_history",
+            "severity": "moderate",
+            "action": "modify",
+            "affected_activities": [
+              "jumping",
+              "back_squat_deep",
+              "deep_front_squat"
+            ]
+          }
+        ],
+        "time_commitment": {
+          "min_days_per_week": 3,
+          "max_days_per_week": 5,
+          "min_minutes_per_day": 40,
+          "max_minutes_per_day": 90
+        }
+      },
+      "personalization": {
+        "inputs": [
+          {
+            "id": "user.age",
+            "type": "number",
+            "source": "user.age",
+            "label": "Age"
+          },
+          {
+            "id": "user.injuries",
+            "type": "array",
+            "source": "user.injuries",
+            "label": "Injuries"
+          },
+          {
+            "id": "user.equipment",
+            "type": "array",
+            "source": "user.equipment",
+            "label": "Available equipment"
+          }
+        ],
+        "rules": [
+          {
+            "id": "exclude_jumps_for_meniscus",
+            "condition": {
+              "field": "user.injuries",
+              "op": "contains",
+              "value": "right_medial_meniscus_repair_or_tear_history"
+            },
+            "actions": [
+              {
+                "type": "modify",
+                "scope": "plan"
+              }
+            ]
+          }
+        ]
+      },
+      "phases": [
+        {
+          "id": "phase_1_base",
+          "name": "Base - Tissue Preparation & Technique (Weeks 1-4)",
+          "order": 1,
+          "type": "base",
+          "duration": {
+            "value": 4,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "phase1_week1",
+              "name": "Week 1",
+              "order": 1,
+              "days": [
+                {
+                  "id": "p1_w1_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Hinge emphasis",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "warmup_l1",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "warmup_walk",
+                          "type": "simple",
+                          "name": "10 min brisk walk or bike",
+                          "duration": {
+                            "value": 10,
+                            "unit": "minutes"
+                          }
+                        },
+                        {
+                          "id": "warmup_banded",
+                          "type": "recovery",
+                          "name": "Banded hip activation",
+                          "category": "activation",
+                          "prescription": {
+                            "exercises": [
+                              {
+                                "id": "banded_clams",
+                                "type": "recovery_exercise",
+                                "name": "Banded clams",
+                                "modality": "dynamic_stretch",
+                                "reps": 10,
+                                "sides": "both"
+                              }
+                            ]
+                          },
+                          "order": 2
+                        }
+                      ]
+                    },
+                    {
+                      "id": "main_l1",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "deadlift_trapbar",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 5
+                            },
+                            "rest": {
+                              "value": 2,
+                              "unit": "minutes"
+                            },
+                            "weight": {
+                              "type": "absolute"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "split_squat_box",
+                          "type": "exercise",
+                          "exercise_ref": "rear_foot_elevated_split_squat_box",
+                          "name": "Rear-foot elevated split squat (to limited depth)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "leg_press_shallow",
+                          "type": "exercise",
+                          "exercise_ref": "leg_press_shallow",
+                          "name": "Leg press - shallow range (no deep flexion)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        }
+                      ]
+                    },
+                    {
+                      "id": "accessory_l1",
+                      "type": "main",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "single_leg_dead_rdl",
+                          "type": "exercise",
+                          "exercise_ref": "single_leg_rdl",
+                          "name": "Single-leg RDL (assisted as needed)",
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "banded_side_walks",
+                          "type": "exercise",
+                          "exercise_ref": "banded_side_walks",
+                          "name": "Banded lateral walks",
+                          "primary_muscles": [
+                            "hip_abductors",
+                            "glutes"
+                          ],
+                          "movement_pattern": "carry",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    },
+                    {
+                      "id": "cool_l1",
+                      "type": "cooldown",
+                      "order": 4,
+                      "activities": [
+                        {
+                          "id": "stretch_quads",
+                          "type": "recovery",
+                          "name": "Quadriceps stretch",
+                          "category": "static_stretch",
+                          "prescription": {
+                            "duration": {
+                              "value": 6,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "quad_static",
+                                "type": "recovery_exercise",
+                                "name": "Standing quad stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 5,
+                                "body_part": "quadriceps"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w1_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Push/Pull",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "warmup_u1",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "warmup_row",
+                          "type": "simple",
+                          "name": "8 min row or bike",
+                          "duration": {
+                            "value": 8,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "main_u1",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "bench_press",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Barbell bench press",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps",
+                            "front_delts"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 5
+                            },
+                            "rest": {
+                              "value": 2,
+                              "unit": "minutes"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "barbell_row",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bent_over_row",
+                          "name": "Barbell bent-over row",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "incline_dumbbell",
+                          "type": "exercise",
+                          "exercise_ref": "incline_dumbbell_press",
+                          "name": "Incline dumbbell press",
+                          "primary_muscles": [
+                            "chest",
+                            "front_delts"
+                          ],
+                          "movement_pattern": "push_vertical",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        }
+                      ]
+                    },
+                    {
+                      "id": "accessory_u1",
+                      "type": "main",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "facepulls",
+                          "type": "exercise",
+                          "exercise_ref": "cable_face_pull",
+                          "name": "Cable face pulls",
+                          "primary_muscles": [
+                            "rear_delts",
+                            "traps"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        },
+                        {
+                          "id": "plank",
+                          "type": "exercise",
+                          "exercise_ref": "front_plank",
+                          "name": "Front plank",
+                          "primary_muscles": [
+                            "abs",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "anti_rotate",
+                          "prescription": {
+                            "type": "time",
+                            "duration": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w1_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Quad/glute control",
+                  "estimated_duration_minutes": 55,
+                  "blocks": [
+                    {
+                      "id": "warmup_l2",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bike_warm",
+                          "type": "simple",
+                          "name": "8 min bike",
+                          "duration": {
+                            "value": 8,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "main_l2",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "split_squat_goblet",
+                          "type": "exercise",
+                          "exercise_ref": "goblet_split_squat",
+                          "name": "Goblet split squat (shallow)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "vertical_press",
+                          "type": "exercise",
+                          "exercise_ref": "leg_press_vertical_shallow",
+                          "name": "Vertical leg press - limited ROM",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "calf_raise",
+                          "type": "exercise",
+                          "exercise_ref": "standing_calf_raise",
+                          "name": "Standing calf raise",
+                          "primary_muscles": [
+                            "calves"
+                          ],
+                          "movement_pattern": "isolation",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "cool_l2",
+                      "type": "cooldown",
+                      "order": 3,
+                      "activities": [
+                        {
+                          "id": "hip_mob",
+                          "type": "recovery",
+                          "name": "Hip mobility",
+                          "category": "mobility_drill",
+                          "prescription": {
+                            "duration": {
+                              "value": 6,
+                              "unit": "minutes"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase1_week2",
+              "name": "Week 2",
+              "order": 2,
+              "days": [
+                {
+                  "id": "p1_w2_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Hinge + single-leg",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_l1_w2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "romanian_deadlift",
+                          "type": "exercise",
+                          "exercise_ref": "romanian_deadlift",
+                          "name": "Romanian deadlift",
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "split_squat_bulgarian",
+                          "type": "exercise",
+                          "exercise_ref": "bulgarian_split_squat",
+                          "name": "Bulgarian split squat (limited depth)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w2_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Strength",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_u2_w2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "overhead_press",
+                          "type": "exercise",
+                          "exercise_ref": "standing_barbell_overhead_press",
+                          "name": "Standing overhead press",
+                          "primary_muscles": [
+                            "front_delts",
+                            "side_delts",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_vertical",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "pull_up_assist",
+                          "type": "exercise",
+                          "exercise_ref": "assisted_pull_up_or_lat_pull",
+                          "name": "Assisted pull-up or lat pulldown",
+                          "primary_muscles": [
+                            "lats",
+                            "biceps"
+                          ],
+                          "movement_pattern": "pull_vertical",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w2_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Volume & control",
+                  "estimated_duration_minutes": 55,
+                  "blocks": [
+                    {
+                      "id": "main_l3_w2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "front_rack_step_up",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_step_up",
+                          "name": "Dumbbell step-ups (mod depth)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "leg_curl",
+                          "type": "exercise",
+                          "exercise_ref": "lying_leg_curl",
+                          "name": "Hamstring curl (machine)",
+                          "primary_muscles": [
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "isolation",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase1_week3",
+              "name": "Week 3",
+              "order": 3,
+              "days": [
+                {
+                  "id": "p1_w3_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Strength",
+                  "estimated_duration_minutes": 65,
+                  "blocks": [
+                    {
+                      "id": "main_l1_w3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "weighted_hip_thrust",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_hip_thrust",
+                          "name": "Barbell hip thrust",
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "movement_pattern": "hip_flexors",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        },
+                        {
+                          "id": "kb_sumo_dead",
+                          "type": "exercise",
+                          "exercise_ref": "kettlebell_sumo_deadlift",
+                          "name": "Kettlebell sumo deadlift",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w3_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Hypertrophy",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_u3_w3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "incline_bb_press",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_incline_press",
+                          "name": "Barbell incline press",
+                          "primary_muscles": [
+                            "chest",
+                            "front_delts"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "one_arm_row",
+                          "type": "exercise",
+                          "exercise_ref": "one_arm_dumbbell_row",
+                          "name": "One-arm dumbbell row",
+                          "primary_muscles": [
+                            "lats",
+                            "upper_back"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w3_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Control & conditioning (low impact)",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "main_l4_w3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "sled_push",
+                          "type": "exercise",
+                          "exercise_ref": "sled_push_light",
+                          "name": "Sled push (low load)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "carry",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 6,
+                            "reps": {
+                              "target": 20
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "banded_terminal_knee_extension",
+                          "type": "exercise",
+                          "exercise_ref": "terminal_knee_extension_banded",
+                          "name": "Banded terminal knee extension",
+                          "primary_muscles": [
+                            "quadriceps"
+                          ],
+                          "movement_pattern": "isolation",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 15
+                            },
+                            "rest": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase1_week4",
+              "name": "Week 4 (Auto-regulation week)",
+              "order": 4,
+              "days": [
+                {
+                  "id": "p1_w4_d1",
+                  "day_of_week": 2,
+                  "type": "training",
+                  "name": "Lower - Load check (lighter)",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "main_l1_w4",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "light_trap_dead",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift_light",
+                          "name": "Trap-bar deadlift (8 reps, moderate)",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p1_w4_d2",
+                  "day_of_week": 4,
+                  "type": "training",
+                  "name": "Upper - Technique & mobility",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "main_u1_w4",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "pushup_hands_elevated",
+                          "type": "exercise",
+                          "exercise_ref": "elevated_pushup",
+                          "name": "Elevated push-up",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 12
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_2_intensification",
+          "name": "Intensification - Strength Focus (Weeks 5-8)",
+          "order": 2,
+          "type": "intensification",
+          "duration": {
+            "value": 4,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "phase2_week5",
+              "name": "Week 5",
+              "order": 1,
+              "days": [
+                {
+                  "id": "p2_w5_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Heavy hinge & single-leg",
+                  "estimated_duration_minutes": 70,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "heavy_trapdead",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift (heavy)",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings",
+                            "lower_back"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 3
+                            },
+                            "rest": {
+                              "value": 180,
+                              "unit": "seconds"
+                            },
+                            "weight": {
+                              "type": "absolute"
+                            }
+                          },
+                          "target_rpe": 8
+                        },
+                        {
+                          "id": "weighted_step_up",
+                          "type": "exercise",
+                          "exercise_ref": "weighted_step_up",
+                          "name": "Weighted step-ups (tall box, limited knee bend)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w5_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Heavy",
+                  "estimated_duration_minutes": 70,
+                  "blocks": [
+                    {
+                      "id": "main_p2_u1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bench_heavy",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Barbell bench press (heavy)",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 3
+                            },
+                            "rest": {
+                              "value": 180,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        },
+                        {
+                          "id": "barbell_row_heavy",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bent_over_row",
+                          "name": "Barbell row (heavy)",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 4
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w5_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Volume & posterior chain",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "hip_thrust_heavy",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_hip_thrust",
+                          "name": "Hip thrust (heavy)",
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 5
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        },
+                        {
+                          "id": "romanian_deadlift_volume",
+                          "type": "exercise",
+                          "exercise_ref": "romanian_deadlift",
+                          "name": "Romanian deadlift (volume)",
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase2_week6",
+              "name": "Week 6",
+              "order": 2,
+              "days": [
+                {
+                  "id": "p2_w6_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Heavy singles/doubles (strength)",
+                  "estimated_duration_minutes": 75,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "trapdead_singles",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift (singles/doubles, heavy)",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 6,
+                            "reps": {
+                              "min": 1,
+                              "max": 3
+                            },
+                            "rest": {
+                              "value": 180,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8.5
+                        },
+                        {
+                          "id": "single_leg_press",
+                          "type": "exercise",
+                          "exercise_ref": "single_leg_press",
+                          "name": "Single-leg press (controlled ROM)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w6_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Heavy / Volume mix",
+                  "estimated_duration_minutes": 65,
+                  "blocks": [
+                    {
+                      "id": "main_p2_u2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "overhead_press_heavy",
+                          "type": "exercise",
+                          "exercise_ref": "standing_barbell_overhead_press",
+                          "name": "Overhead press (heavy)",
+                          "primary_muscles": [
+                            "front_delts",
+                            "side_delts"
+                          ],
+                          "movement_pattern": "push_vertical",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 4
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "chinups",
+                          "type": "exercise",
+                          "exercise_ref": "weighted_chinup",
+                          "name": "Weighted chin-up (or heavy lat pulldown)",
+                          "primary_muscles": [
+                            "lats",
+                            "biceps"
+                          ],
+                          "movement_pattern": "pull_vertical",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 4
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w6_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Posterior + control",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l4",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "rdl_heavy",
+                          "type": "exercise",
+                          "exercise_ref": "romanian_deadlift",
+                          "name": "Romanian deadlift (heavy sets)",
+                          "primary_muscles": [
+                            "hamstrings",
+                            "glutes"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "glute_med_stability",
+                          "type": "exercise",
+                          "exercise_ref": "side_plank_leg_raise",
+                          "name": "Side plank with leg raise (stability)",
+                          "primary_muscles": [
+                            "glutes",
+                            "obliques"
+                          ],
+                          "movement_pattern": "anti_rotate",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase2_week7",
+              "name": "Week 7",
+              "order": 3,
+              "days": [
+                {
+                  "id": "p2_w7_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Mixed heavy/moderate",
+                  "estimated_duration_minutes": 70,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l5",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "trapbar_cluster",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift cluster sets",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 3
+                            },
+                            "rest": {
+                              "value": 150,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        },
+                        {
+                          "id": "step_up_heavy",
+                          "type": "exercise",
+                          "exercise_ref": "weighted_step_up",
+                          "name": "Weighted step-up",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w7_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Volume",
+                  "estimated_duration_minutes": 65,
+                  "blocks": [
+                    {
+                      "id": "main_p2_u3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bench_volume",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Bench press (volume)",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "rows_volume",
+                          "type": "exercise",
+                          "exercise_ref": "seated_cable_row",
+                          "name": "Seated cable row",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w7_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Control & unilateral",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l6",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "reverse_lunge",
+                          "type": "exercise",
+                          "exercise_ref": "reverse_lunge",
+                          "name": "Reverse lunge (no aggressive depth)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "glute_bridge_single",
+                          "type": "exercise",
+                          "exercise_ref": "single_leg_glute_bridge",
+                          "name": "Single-leg glute bridge",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase2_week8",
+              "name": "Week 8 (Deload-ish)",
+              "order": 4,
+              "days": [
+                {
+                  "id": "p2_w8_d1",
+                  "day_of_week": 2,
+                  "type": "training",
+                  "name": "Lower - Reduced load",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "main_p2_l7",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "hip_thrust_light",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_hip_thrust",
+                          "name": "Hip thrust (light)",
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p2_w8_d2",
+                  "day_of_week": 4,
+                  "type": "training",
+                  "name": "Upper - Technique",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "main_p2_u4",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "rows_light",
+                          "type": "exercise",
+                          "exercise_ref": "seated_cable_row",
+                          "name": "Seated cable row (light)",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 10
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "phase_3_realization",
+          "name": "Realization/Peak - Prepare for Skiing (Weeks 9-12)",
+          "order": 3,
+          "type": "realization",
+          "duration": {
+            "value": 4,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "phase3_week9",
+              "name": "Week 9",
+              "order": 1,
+              "days": [
+                {
+                  "id": "p3_w9_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Heavy & control",
+                  "estimated_duration_minutes": 75,
+                  "blocks": [
+                    {
+                      "id": "main_p3_l1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "heavy_trapdead_p3",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift (heavy)",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 3
+                            },
+                            "rest": {
+                              "value": 180,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8.5
+                        },
+                        {
+                          "id": "single_leg_control",
+                          "type": "exercise",
+                          "exercise_ref": "controlled_step_down",
+                          "name": "Controlled step-downs (eccentric focus)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p3_w9_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Strength",
+                  "estimated_duration_minutes": 70,
+                  "blocks": [
+                    {
+                      "id": "main_p3_u1",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bench_heavy_p3",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Bench press (peak sets)",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "min": 2,
+                              "max": 4
+                            },
+                            "rest": {
+                              "value": 180,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8.5
+                        },
+                        {
+                          "id": "heavy_row_p3",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bent_over_row",
+                          "name": "Barbell row (peak)",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 5,
+                            "reps": {
+                              "target": 4
+                            },
+                            "rest": {
+                              "value": 150,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p3_w9_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Ski-specific strength (low impact)",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_p3_l2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "sled_triangles",
+                          "type": "exercise",
+                          "exercise_ref": "sled_triangles",
+                          "name": "Sled triangle drives (controlled, low impact)",
+                          "primary_muscles": [
+                            "glutes",
+                            "quadriceps"
+                          ],
+                          "movement_pattern": "carry",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 6,
+                            "reps": {
+                              "target": 20
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            }
+                          }
+                        },
+                        {
+                          "id": "isometric_squat_partial",
+                          "type": "exercise",
+                          "exercise_ref": "isometric_partial_squat",
+                          "name": "Isometric partial squat (no deep flexion)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat",
+                          "prescription": {
+                            "type": "time",
+                            "duration": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase3_week10",
+              "name": "Week 10",
+              "order": 2,
+              "days": [
+                {
+                  "id": "p3_w10_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Heavy & unilateral control",
+                  "estimated_duration_minutes": 75,
+                  "blocks": [
+                    {
+                      "id": "main_p3_l3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "trapdead_peak",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift (peak intensity)",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "min": 1,
+                              "max": 3
+                            },
+                            "rest": {
+                              "value": 210,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 9
+                        },
+                        {
+                          "id": "single_leg_strength",
+                          "type": "exercise",
+                          "exercise_ref": "weighted_step_up",
+                          "name": "Single-leg strength sets",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 5
+                            },
+                            "rest": {
+                              "value": 150,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p3_w10_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Peak",
+                  "estimated_duration_minutes": 70,
+                  "blocks": [
+                    {
+                      "id": "main_p3_u2",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bench_peak",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Bench press (peak)",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "min": 1,
+                              "max": 3
+                            },
+                            "rest": {
+                              "value": 210,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 9
+                        },
+                        {
+                          "id": "row_peak",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bent_over_row",
+                          "name": "Barbell row (peak)",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 4,
+                            "reps": {
+                              "target": 4
+                            },
+                            "rest": {
+                              "value": 150,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p3_w10_d3",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Lower - Ski readiness (control & endurance)",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_p3_l4",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "sled_push_p3",
+                          "type": "exercise",
+                          "exercise_ref": "sled_push_heavy",
+                          "name": "Sled push (heavier, controlled)",
+                          "primary_muscles": [
+                            "glutes",
+                            "quadriceps"
+                          ],
+                          "movement_pattern": "carry",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 6,
+                            "reps": {
+                              "target": 15
+                            },
+                            "rest": {
+                              "value": 75,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        },
+                        {
+                          "id": "isometric_squat_longer",
+                          "type": "exercise",
+                          "exercise_ref": "isometric_partial_squat",
+                          "name": "Isometric partial squat hold (longer)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "squat",
+                          "prescription": {
+                            "type": "time",
+                            "duration": {
+                              "value": 45,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase3_week11",
+              "name": "Week 11",
+              "order": 3,
+              "days": [
+                {
+                  "id": "p3_w11_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Lower - Tapering heavy",
+                  "estimated_duration_minutes": 70,
+                  "blocks": [
+                    {
+                      "id": "main_p3_l5",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "trapdead_taper",
+                          "type": "exercise",
+                          "exercise_ref": "trapbar_deadlift",
+                          "name": "Trap-bar deadlift (reduced volume, moderate intensity)",
+                          "primary_muscles": [
+                            "glutes",
+                            "hamstrings"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "min": 2,
+                              "max": 4
+                            },
+                            "rest": {
+                              "value": 180,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 8
+                        },
+                        {
+                          "id": "single_leg_control_taper",
+                          "type": "exercise",
+                          "exercise_ref": "controlled_step_down",
+                          "name": "Controlled step-downs (taper)",
+                          "primary_muscles": [
+                            "quadriceps",
+                            "glutes"
+                          ],
+                          "movement_pattern": "lunge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p3_w11_d2",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Upper - Maintain",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "main_p3_u3",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bench_maintain",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Bench press (maintain)",
+                          "primary_muscles": [
+                            "chest",
+                            "triceps"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 5
+                            },
+                            "rest": {
+                              "value": 150,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7.5
+                        },
+                        {
+                          "id": "row_maintain",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bent_over_row",
+                          "name": "Barbell row (maintain)",
+                          "primary_muscles": [
+                            "upper_back",
+                            "lats"
+                          ],
+                          "movement_pattern": "pull_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 3,
+                            "reps": {
+                              "target": 6
+                            },
+                            "rest": {
+                              "value": 120,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 7.5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "phase3_week12",
+              "name": "Week 12 (Deload & readiness check)",
+              "order": 4,
+              "weeks": [],
+              "days": [
+                {
+                  "id": "p3_w12_d1",
+                  "day_of_week": 2,
+                  "type": "training",
+                  "name": "Lower - Light session & movement test",
+                  "estimated_duration_minutes": 50,
+                  "blocks": [
+                    {
+                      "id": "main_p3_l6",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "hip_thrust_light_final",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_hip_thrust",
+                          "name": "Hip thrust (light)",
+                          "primary_muscles": [
+                            "glutes"
+                          ],
+                          "movement_pattern": "hinge",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        },
+                        {
+                          "id": "single_leg_balance_test",
+                          "type": "exercise",
+                          "exercise_ref": "single_leg_balance",
+                          "name": "Single-leg balance & control test",
+                          "primary_muscles": [
+                            "glutes",
+                            "calves"
+                          ],
+                          "movement_pattern": "isolation",
+                          "prescription": {
+                            "type": "time",
+                            "duration": {
+                              "value": 30,
+                              "unit": "seconds"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "p3_w12_d2",
+                  "day_of_week": 4,
+                  "type": "training",
+                  "name": "Upper - Light",
+                  "estimated_duration_minutes": 45,
+                  "blocks": [
+                    {
+                      "id": "main_p3_u4",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "bench_light_final",
+                          "type": "exercise",
+                          "exercise_ref": "barbell_bench_press",
+                          "name": "Bench press (light)",
+                          "primary_muscles": [
+                            "chest"
+                          ],
+                          "movement_pattern": "push_horizontal",
+                          "prescription": {
+                            "type": "sets_reps",
+                            "sets": 2,
+                            "reps": {
+                              "target": 8
+                            },
+                            "rest": {
+                              "value": 90,
+                              "unit": "seconds"
+                            }
+                          },
+                          "target_rpe": 6
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,872 @@
+{
+  "model": "gpt-5-mini",
+  "scenario_id": "post_csection_4wk",
+  "tokens_in": 11927,
+  "tokens_out": 5303,
+  "hit_output_cap": false,
+  "latency_ms": 70172,
+  "cost_usd": 0.01358775,
+  "raw_text": "{\n  \"$schema\": \"https://wpl.dev/schemas/wpl/v1.schema.json\",\n  \"version\": \"1.6.0\",\n  \"plan\": {\n    \"id\": \"postpartum_return_starter\",\n    \"name\": \"Postpartum Return — 2-Week Starter (4 weeks post-c-section cleared for light activity)\",\n    \"type\": \"workout\",\n    \"visibility\": \"private\",\n    \"metadata\": {\n      \"created_at\": \"2026-06-05T00:00:00Z\",\n      \"created_by\": \"trainer\",\n      \"language\": \"en\",\n      \"difficulty\": \"adaptive\",\n      \"estimated_duration_days\": 14,\n      \"tags\": [\n        \"postpartum\",\n        \"c-section\",\n        \"reconditioning\",\n        \"walking\",\n        \"no_heavy_lifting\",\n        \"no_abs\"\n      ]\n    },\n    \"goals\": [\n      {\n        \"id\": \"safe_reconditioning\",\n        \"type\": \"primary\",\n        \"category\": \"reconditioning\",\n        \"name\": \"Safe reconditioning and gradual return to activity\",\n        \"description\": \"Restore general conditioning, pelvic floor awareness, and functional movement while respecting OB clearance: walking and light movement only; no abdominal loading or heavy lifting until 6-week check.\"\n      }\n    ],\n    \"requirements\": {\n      \"min_age\": 18,\n      \"fitness_level\": [\n        \"beginner\"\n      ],\n      \"equipment\": [\n        {\n          \"id\": \"yoga_mat\",\n          \"name\": \"Yoga mat\",\n          \"required\": true\n        }\n      ],\n      \"contraindications\": [\n        {\n          \"condition\": \"acog:postpartum_c_section_early_rehab\",\n          \"severity\": \"moderate\",\n          \"action\": \"modify\",\n          \"affected_activities\": [\n            \"pelvic_tilts\",\n            \"gentle_core_bracing\",\n            \"walking\",\n            \"diaphragmatic_breathing\"\n          ]\n        },\n        {\n          \"condition\": \"no_abdominal_loading\",\n          \"severity\": \"high\",\n          \"action\": \"exclude\",\n          \"affected_activities\": [\n            \"ab_crunches\",\n            \"plank\",\n            \"heavy_lift\"\n          ]\n        }\n      ],\n      \"time_commitment\": {\n        \"min_days_per_week\": 3,\n        \"max_days_per_week\": 7,\n        \"min_minutes_per_day\": 10,\n        \"max_minutes_per_day\": 40\n      }\n    },\n    \"personalization\": {\n      \"inputs\": [\n        {\n          \"id\": \"pain_at_incision\",\n          \"type\": \"number\",\n          \"source\": \"user.reported_pain\",\n          \"label\": \"Current incision pain (0-10)\"\n        },\n        {\n          \"id\": \"days_since_delivery\",\n          \"type\": \"number\",\n          \"source\": \"user.days_since_delivery\",\n          \"label\": \"Days since delivery\"\n        },\n        {\n          \"id\": \"energy_level\",\n          \"type\": \"enum\",\n          \"source\": \"wellness.subjective_readiness\",\n          \"label\": \"Subjective energy\",\n          \"options\": [\n            \"low\",\n            \"moderate\",\n            \"high\"\n          ]\n        }\n      ],\n      \"rules\": [\n        {\n          \"id\": \"delay_if_pain\",\n          \"condition\": {\n            \"field\": \"pain_at_incision\",\n            \"op\": \"gt\",\n            \"value\": 3\n          },\n          \"actions\": [\n            {\n              \"type\": \"modify\",\n              \"scope\": \"plan\",\n              \"note\": \"If incision pain >3/10, reduce walking duration by 50% and skip gentle_core_bracing; escalate to provider if pain persists.\"\n            }\n          ]\n        },\n        {\n          \"id\": \"scale_by_energy\",\n          \"condition\": {\n            \"field\": \"energy_level\",\n            \"op\": \"eq\",\n            \"value\": \"low\"\n          },\n          \"actions\": [\n            {\n              \"type\": \"modify\",\n              \"scope\": \"day\",\n              \"note\": \"If energy low, recommend 10–15 minute walk or restorative breathing instead of longer sessions.\"\n            }\n          ]\n        }\n      ]\n    },\n    \"phases\": [\n      {\n        \"id\": \"intro_2_weeks\",\n        \"name\": \"2-Week Intro Starter\",\n        \"order\": 1,\n        \"type\": \"recovery\",\n        \"duration\": {\n          \"value\": 2,\n          \"unit\": \"weeks\"\n        },\n        \"weeks\": [\n          {\n            \"id\": \"week_1\",\n            \"name\": \"Week 1 (post-clearance light activity)\",\n            \"order\": 1,\n            \"days\": [\n              {\n                \"id\": \"w1_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + breathing\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1_d1_warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"diaphragmatic_breathing\",\n                        \"type\": \"meditation\",\n                        \"name\": \"Diaphragmatic breathing\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"guided\": false\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1_d1_main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_easy_15\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy walk (flat terrain)\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_d2\",\n                \"day_of_week\": 2,\n                \"type\": \"active_recovery\",\n                \"name\": \"Restorative mobility\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1_d2_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"gentle_mobility\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle mobility (neck/shoulders/hips)\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"neck_rolls\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Neck rolls\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 5,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3\n                            },\n                            {\n                              \"id\": \"shoulder_pass_throughs\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Shoulder pass-throughs (use towel)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3\n                            },\n                            {\n                              \"id\": \"cat_cow\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Cat-Cow (gentle spinal mobility)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_d3\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Walk + pelvic floor awareness\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1_d3_warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"diaphragmatic_breathing_2\",\n                        \"type\": \"meditation\",\n                        \"name\": \"Diaphragmatic breathing with pelvic floor cue\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"guided\": false\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w1_d3_main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_brisk_15\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Brisk walk (comfortably brisk)\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"pelvic_floor_gentle\",\n                        \"type\": \"habit\",\n                        \"name\": \"Gentle pelvic floor engagement practice\",\n                        \"category\": \"pelvic_floor\",\n                        \"prescription\": {\n                          \"frequency\": \"daily\",\n                          \"target\": {\n                            \"value\": 6,\n                            \"unit\": \"reps\"\n                          },\n                          \"reminders\": [\n                            \"after_walking\",\n                            \"evening\"\n                          ]\n                        },\n                        \"tracking\": {\n                          \"notes\": \"Short gentle squeezes (not bearing down). Stop if pain or heaviness.\"\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_d4\",\n                \"day_of_week\": 4,\n                \"type\": \"rest\",\n                \"name\": \"Rest day\",\n                \"estimated_duration_minutes\": 0\n              },\n              {\n                \"id\": \"w1_d5\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Short walk + upright mobility\",\n                \"estimated_duration_minutes\": 20,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1_d5_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_easy_20\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Easy walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"upright_mobility\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Standing hip circles & ankle mobility\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"hip_circles\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Hip circles (standing)\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 6,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3\n                            },\n                            {\n                              \"id\": \"ankle_pumps\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Ankle pumps\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 20,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 2\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_d6\",\n                \"day_of_week\": 6,\n                \"type\": \"active_recovery\",\n                \"name\": \"Restorative stretching\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1_d6_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"gentle_stretching\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Gentle stretching (hamstrings, quads, glutes)\",\n                        \"category\": \"static_stretch\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"seated_hamstring\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Seated hamstring stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5\n                            },\n                            {\n                              \"id\": \"figure_four\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Figure-four glute stretch\",\n                              \"modality\": \"static_stretch\",\n                              \"hold_seconds\": 30,\n                              \"reps\": 2,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 5\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w1_d7\",\n                \"day_of_week\": 7,\n                \"type\": \"rest\",\n                \"name\": \"Rest / optional short walk\",\n                \"estimated_duration_minutes\": 10,\n                \"blocks\": [\n                  {\n                    \"id\": \"w1_d7_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"optional_walk_10\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Optional short walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 10,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          },\n          {\n            \"id\": \"week_2\",\n            \"name\": \"Week 2 (progress lightly as tolerated)\",\n            \"order\": 2,\n            \"days\": [\n              {\n                \"id\": \"w2_d1\",\n                \"day_of_week\": 1,\n                \"type\": \"training\",\n                \"name\": \"Walk + breathing\",\n                \"estimated_duration_minutes\": 25,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2_d1_warmup\",\n                    \"type\": \"warmup\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"diaphragmatic_breathing_3\",\n                        \"type\": \"meditation\",\n                        \"name\": \"Diaphragmatic breathing\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"guided\": false\n                        }\n                      }\n                    ]\n                  },\n                  {\n                    \"id\": \"w2_d1_main\",\n                    \"type\": \"main\",\n                    \"order\": 2,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_20\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Walk (steady)\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 20,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_d2\",\n                \"day_of_week\": 2,\n                \"type\": \"active_recovery\",\n                \"name\": \"Pelvic floor & gentle core awareness\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2_d2_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"gentle_core_bracing\",\n                        \"type\": \"habit\",\n                        \"name\": \"Gentle core awareness (no abdominal strain)\",\n                        \"category\": \"core_retraining\",\n                        \"prescription\": {\n                          \"frequency\": \"daily\",\n                          \"target\": {\n                            \"value\": 5,\n                            \"unit\": \"breaths\"\n                          },\n                          \"reminders\": [\n                            \"morning\",\n                            \"evening\"\n                          ]\n                        },\n                        \"tracking\": {\n                          \"notes\": \"Gentle transverse activation with exhale; avoid Valsalva and crunching. Stop if any pulling or pain at incision.\"\n                        }\n                      },\n                      {\n                        \"id\": \"thoracic_mobilization\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Thoracic opening drills\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 10,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"thread_the_needle\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Thread-the-needle\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 8,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_d3\",\n                \"day_of_week\": 3,\n                \"type\": \"training\",\n                \"name\": \"Walk intervals (gentle)\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2_d3_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_intervals\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Walk intervals: 3x (5min walk + 1-2min easy)\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"intervals\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          },\n                          \"intervals\": {\n                            \"work\": {\n                              \"duration\": {\n                                \"value\": 300,\n                                \"unit\": \"seconds\"\n                              }\n                            },\n                            \"rest\": {\n                              \"duration\": {\n                                \"value\": 120,\n                                \"unit\": \"seconds\"\n                              }\n                            },\n                            \"repeat\": 3\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_d4\",\n                \"day_of_week\": 4,\n                \"type\": \"rest\",\n                \"name\": \"Rest day\"\n              },\n              {\n                \"id\": \"w2_d5\",\n                \"day_of_week\": 5,\n                \"type\": \"training\",\n                \"name\": \"Longer walk + mobility\",\n                \"estimated_duration_minutes\": 30,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2_d5_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"walk_30\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Steady walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 30,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 3,\n                              \"max\": 5\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      },\n                      {\n                        \"id\": \"ankle_hip_mobility\",\n                        \"type\": \"recovery\",\n                        \"name\": \"Ankle + hip mobility\",\n                        \"category\": \"mobility\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 5,\n                            \"unit\": \"minutes\"\n                          },\n                          \"exercises\": [\n                            {\n                              \"id\": \"hip_opener\",\n                              \"type\": \"recovery_exercise\",\n                              \"name\": \"Standing hip opener\",\n                              \"modality\": \"mobility_drill\",\n                              \"reps\": 6,\n                              \"sides\": \"both\",\n                              \"intensity_rpe\": 3\n                            }\n                          ]\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_d6\",\n                \"day_of_week\": 6,\n                \"type\": \"active_recovery\",\n                \"name\": \"Breathing + light mobility\",\n                \"estimated_duration_minutes\": 15,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2_d6_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"breath_and_mobility\",\n                        \"type\": \"meditation\",\n                        \"name\": \"Breath awareness + gentle mobility\",\n                        \"category\": \"breathwork\",\n                        \"prescription\": {\n                          \"duration\": {\n                            \"value\": 15,\n                            \"unit\": \"minutes\"\n                          },\n                          \"guided\": false\n                        }\n                      }\n                    ]\n                  }\n                ]\n              },\n              {\n                \"id\": \"w2_d7\",\n                \"day_of_week\": 7,\n                \"type\": \"rest\",\n                \"name\": \"Rest / optional mini-walk\",\n                \"estimated_duration_minutes\": 10,\n                \"blocks\": [\n                  {\n                    \"id\": \"w2_d7_main\",\n                    \"type\": \"main\",\n                    \"order\": 1,\n                    \"activities\": [\n                      {\n                        \"id\": \"optional_walk_10_w2\",\n                        \"type\": \"cardio\",\n                        \"name\": \"Optional short walk\",\n                        \"modality\": \"walking\",\n                        \"prescription\": {\n                          \"type\": \"continuous\",\n                          \"duration\": {\n                            \"value\": 10,\n                            \"unit\": \"minutes\"\n                          },\n                          \"intensity\": {\n                            \"type\": \"rpe\",\n                            \"target\": {\n                              \"min\": 2,\n                              \"max\": 4\n                            },\n                            \"zone_model\": \"rpe_borg_10\"\n                          }\n                        }\n                      }\n                    ]\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    ],\n    \"progress\": {\n      \"checkpoints\": [\n        {\n          \"id\": \"two_week_checkin\",\n          \"name\": \"2-week check-in\",\n          \"at\": {\n            \"value\": 14,\n            \"unit\": \"days\"\n          },\n          \"measurements\": [\n            \"user-reported energy\",\n            \"user-reported incision pain\",\n            {\n              \"metric\": \"questionnaire_score\",\n              \"questionnaire\": \"rpe_session\",\n              \"note\": \"Session RPE average over 2 weeks\"\n            }\n          ],\n          \"questions\": [\n            \"Any new or worsening pain at incision site?\",\n            \"Any urinary or pelvic organ heaviness?\",\n            \"How would you rate overall energy (low/moderate/high)?\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+  "refusal": false,
+  "parse_ok": true,
+  "parse_error": null,
+  "schema_valid": false,
+  "validator_errors": 5,
+  "error_categories": {
+    "Activity type 'X' not allowed in 'X' block. Allowed: exercise, cardio, recovery,": 3,
+    "invalid action type 'X'": 2
+  },
+  "top_error_paths": [
+    {
+      "path": "phases/N/weeks/N/days/N/blocks/N/activities/N",
+      "count": 3
+    },
+    {
+      "path": "personalization/rules/N/actions/N",
+      "count": 2
+    }
+  ],
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "postpartum_return_starter",
+      "name": "Postpartum Return — 2-Week Starter (4 weeks post-c-section cleared for light activity)",
+      "type": "workout",
+      "visibility": "private",
+      "metadata": {
+        "created_at": "2026-06-05T00:00:00Z",
+        "created_by": "trainer",
+        "language": "en",
+        "difficulty": "adaptive",
+        "estimated_duration_days": 14,
+        "tags": [
+          "postpartum",
+          "c-section",
+          "reconditioning",
+          "walking",
+          "no_heavy_lifting",
+          "no_abs"
+        ]
+      },
+      "goals": [
+        {
+          "id": "safe_reconditioning",
+          "type": "primary",
+          "category": "reconditioning",
+          "name": "Safe reconditioning and gradual return to activity",
+          "description": "Restore general conditioning, pelvic floor awareness, and functional movement while respecting OB clearance: walking and light movement only; no abdominal loading or heavy lifting until 6-week check."
+        }
+      ],
+      "requirements": {
+        "min_age": 18,
+        "fitness_level": [
+          "beginner"
+        ],
+        "equipment": [
+          {
+            "id": "yoga_mat",
+            "name": "Yoga mat",
+            "required": true
+          }
+        ],
+        "contraindications": [
+          {
+            "condition": "acog:postpartum_c_section_early_rehab",
+            "severity": "moderate",
+            "action": "modify",
+            "affected_activities": [
+              "pelvic_tilts",
+              "gentle_core_bracing",
+              "walking",
+              "diaphragmatic_breathing"
+            ]
+          },
+          {
+            "condition": "no_abdominal_loading",
+            "severity": "high",
+            "action": "exclude",
+            "affected_activities": [
+              "ab_crunches",
+              "plank",
+              "heavy_lift"
+            ]
+          }
+        ],
+        "time_commitment": {
+          "min_days_per_week": 3,
+          "max_days_per_week": 7,
+          "min_minutes_per_day": 10,
+          "max_minutes_per_day": 40
+        }
+      },
+      "personalization": {
+        "inputs": [
+          {
+            "id": "pain_at_incision",
+            "type": "number",
+            "source": "user.reported_pain",
+            "label": "Current incision pain (0-10)"
+          },
+          {
+            "id": "days_since_delivery",
+            "type": "number",
+            "source": "user.days_since_delivery",
+            "label": "Days since delivery"
+          },
+          {
+            "id": "energy_level",
+            "type": "enum",
+            "source": "wellness.subjective_readiness",
+            "label": "Subjective energy",
+            "options": [
+              "low",
+              "moderate",
+              "high"
+            ]
+          }
+        ],
+        "rules": [
+          {
+            "id": "delay_if_pain",
+            "condition": {
+              "field": "pain_at_incision",
+              "op": "gt",
+              "value": 3
+            },
+            "actions": [
+              {
+                "type": "modify",
+                "scope": "plan",
+                "note": "If incision pain >3/10, reduce walking duration by 50% and skip gentle_core_bracing; escalate to provider if pain persists."
+              }
+            ]
+          },
+          {
+            "id": "scale_by_energy",
+            "condition": {
+              "field": "energy_level",
+              "op": "eq",
+              "value": "low"
+            },
+            "actions": [
+              {
+                "type": "modify",
+                "scope": "day",
+                "note": "If energy low, recommend 10–15 minute walk or restorative breathing instead of longer sessions."
+              }
+            ]
+          }
+        ]
+      },
+      "phases": [
+        {
+          "id": "intro_2_weeks",
+          "name": "2-Week Intro Starter",
+          "order": 1,
+          "type": "recovery",
+          "duration": {
+            "value": 2,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_1",
+              "name": "Week 1 (post-clearance light activity)",
+              "order": 1,
+              "days": [
+                {
+                  "id": "w1_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + breathing",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w1_d1_warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "diaphragmatic_breathing",
+                          "type": "meditation",
+                          "name": "Diaphragmatic breathing",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "guided": false
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1_d1_main",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "walk_easy_15",
+                          "type": "cardio",
+                          "name": "Easy walk (flat terrain)",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_d2",
+                  "day_of_week": 2,
+                  "type": "active_recovery",
+                  "name": "Restorative mobility",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w1_d2_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "gentle_mobility",
+                          "type": "recovery",
+                          "name": "Gentle mobility (neck/shoulders/hips)",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "neck_rolls",
+                                "type": "recovery_exercise",
+                                "name": "Neck rolls",
+                                "modality": "mobility_drill",
+                                "reps": 5,
+                                "sides": "both",
+                                "intensity_rpe": 3
+                              },
+                              {
+                                "id": "shoulder_pass_throughs",
+                                "type": "recovery_exercise",
+                                "name": "Shoulder pass-throughs (use towel)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "intensity_rpe": 3
+                              },
+                              {
+                                "id": "cat_cow",
+                                "type": "recovery_exercise",
+                                "name": "Cat-Cow (gentle spinal mobility)",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "intensity_rpe": 3
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_d3",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Walk + pelvic floor awareness",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w1_d3_warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "diaphragmatic_breathing_2",
+                          "type": "meditation",
+                          "name": "Diaphragmatic breathing with pelvic floor cue",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "guided": false
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w1_d3_main",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "walk_brisk_15",
+                          "type": "cardio",
+                          "name": "Brisk walk (comfortably brisk)",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "pelvic_floor_gentle",
+                          "type": "habit",
+                          "name": "Gentle pelvic floor engagement practice",
+                          "category": "pelvic_floor",
+                          "prescription": {
+                            "frequency": "daily",
+                            "target": {
+                              "value": 6,
+                              "unit": "reps"
+                            },
+                            "reminders": [
+                              "after_walking",
+                              "evening"
+                            ]
+                          },
+                          "tracking": {
+                            "notes": "Short gentle squeezes (not bearing down). Stop if pain or heaviness."
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_d4",
+                  "day_of_week": 4,
+                  "type": "rest",
+                  "name": "Rest day",
+                  "estimated_duration_minutes": 0
+                },
+                {
+                  "id": "w1_d5",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Short walk + upright mobility",
+                  "estimated_duration_minutes": 20,
+                  "blocks": [
+                    {
+                      "id": "w1_d5_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "walk_easy_20",
+                          "type": "cardio",
+                          "name": "Easy walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "upright_mobility",
+                          "type": "recovery",
+                          "name": "Standing hip circles & ankle mobility",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "hip_circles",
+                                "type": "recovery_exercise",
+                                "name": "Hip circles (standing)",
+                                "modality": "mobility_drill",
+                                "reps": 6,
+                                "sides": "both",
+                                "intensity_rpe": 3
+                              },
+                              {
+                                "id": "ankle_pumps",
+                                "type": "recovery_exercise",
+                                "name": "Ankle pumps",
+                                "modality": "mobility_drill",
+                                "reps": 20,
+                                "sides": "both",
+                                "intensity_rpe": 2
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_d6",
+                  "day_of_week": 6,
+                  "type": "active_recovery",
+                  "name": "Restorative stretching",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w1_d6_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "gentle_stretching",
+                          "type": "recovery",
+                          "name": "Gentle stretching (hamstrings, quads, glutes)",
+                          "category": "static_stretch",
+                          "prescription": {
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "seated_hamstring",
+                                "type": "recovery_exercise",
+                                "name": "Seated hamstring stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 5
+                              },
+                              {
+                                "id": "figure_four",
+                                "type": "recovery_exercise",
+                                "name": "Figure-four glute stretch",
+                                "modality": "static_stretch",
+                                "hold_seconds": 30,
+                                "reps": 2,
+                                "sides": "both",
+                                "intensity_rpe": 5
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w1_d7",
+                  "day_of_week": 7,
+                  "type": "rest",
+                  "name": "Rest / optional short walk",
+                  "estimated_duration_minutes": 10,
+                  "blocks": [
+                    {
+                      "id": "w1_d7_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "optional_walk_10",
+                          "type": "cardio",
+                          "name": "Optional short walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "week_2",
+              "name": "Week 2 (progress lightly as tolerated)",
+              "order": 2,
+              "days": [
+                {
+                  "id": "w2_d1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Walk + breathing",
+                  "estimated_duration_minutes": 25,
+                  "blocks": [
+                    {
+                      "id": "w2_d1_warmup",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "diaphragmatic_breathing_3",
+                          "type": "meditation",
+                          "name": "Diaphragmatic breathing",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "guided": false
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "w2_d1_main",
+                      "type": "main",
+                      "order": 2,
+                      "activities": [
+                        {
+                          "id": "walk_20",
+                          "type": "cardio",
+                          "name": "Walk (steady)",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 20,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_d2",
+                  "day_of_week": 2,
+                  "type": "active_recovery",
+                  "name": "Pelvic floor & gentle core awareness",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w2_d2_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "gentle_core_bracing",
+                          "type": "habit",
+                          "name": "Gentle core awareness (no abdominal strain)",
+                          "category": "core_retraining",
+                          "prescription": {
+                            "frequency": "daily",
+                            "target": {
+                              "value": 5,
+                              "unit": "breaths"
+                            },
+                            "reminders": [
+                              "morning",
+                              "evening"
+                            ]
+                          },
+                          "tracking": {
+                            "notes": "Gentle transverse activation with exhale; avoid Valsalva and crunching. Stop if any pulling or pain at incision."
+                          }
+                        },
+                        {
+                          "id": "thoracic_mobilization",
+                          "type": "recovery",
+                          "name": "Thoracic opening drills",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "thread_the_needle",
+                                "type": "recovery_exercise",
+                                "name": "Thread-the-needle",
+                                "modality": "mobility_drill",
+                                "reps": 8,
+                                "sides": "both",
+                                "intensity_rpe": 3
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_d3",
+                  "day_of_week": 3,
+                  "type": "training",
+                  "name": "Walk intervals (gentle)",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w2_d3_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "walk_intervals",
+                          "type": "cardio",
+                          "name": "Walk intervals: 3x (5min walk + 1-2min easy)",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "intervals",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            },
+                            "intervals": {
+                              "work": {
+                                "duration": {
+                                  "value": 300,
+                                  "unit": "seconds"
+                                }
+                              },
+                              "rest": {
+                                "duration": {
+                                  "value": 120,
+                                  "unit": "seconds"
+                                }
+                              },
+                              "repeat": 3
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_d4",
+                  "day_of_week": 4,
+                  "type": "rest",
+                  "name": "Rest day"
+                },
+                {
+                  "id": "w2_d5",
+                  "day_of_week": 5,
+                  "type": "training",
+                  "name": "Longer walk + mobility",
+                  "estimated_duration_minutes": 30,
+                  "blocks": [
+                    {
+                      "id": "w2_d5_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "walk_30",
+                          "type": "cardio",
+                          "name": "Steady walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 30,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 3,
+                                "max": 5
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        },
+                        {
+                          "id": "ankle_hip_mobility",
+                          "type": "recovery",
+                          "name": "Ankle + hip mobility",
+                          "category": "mobility",
+                          "prescription": {
+                            "duration": {
+                              "value": 5,
+                              "unit": "minutes"
+                            },
+                            "exercises": [
+                              {
+                                "id": "hip_opener",
+                                "type": "recovery_exercise",
+                                "name": "Standing hip opener",
+                                "modality": "mobility_drill",
+                                "reps": 6,
+                                "sides": "both",
+                                "intensity_rpe": 3
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_d6",
+                  "day_of_week": 6,
+                  "type": "active_recovery",
+                  "name": "Breathing + light mobility",
+                  "estimated_duration_minutes": 15,
+                  "blocks": [
+                    {
+                      "id": "w2_d6_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "breath_and_mobility",
+                          "type": "meditation",
+                          "name": "Breath awareness + gentle mobility",
+                          "category": "breathwork",
+                          "prescription": {
+                            "duration": {
+                              "value": 15,
+                              "unit": "minutes"
+                            },
+                            "guided": false
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "w2_d7",
+                  "day_of_week": 7,
+                  "type": "rest",
+                  "name": "Rest / optional mini-walk",
+                  "estimated_duration_minutes": 10,
+                  "blocks": [
+                    {
+                      "id": "w2_d7_main",
+                      "type": "main",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "optional_walk_10_w2",
+                          "type": "cardio",
+                          "name": "Optional short walk",
+                          "modality": "walking",
+                          "prescription": {
+                            "type": "continuous",
+                            "duration": {
+                              "value": 10,
+                              "unit": "minutes"
+                            },
+                            "intensity": {
+                              "type": "rpe",
+                              "target": {
+                                "min": 2,
+                                "max": 4
+                              },
+                              "zone_model": "rpe_borg_10"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "progress": {
+        "checkpoints": [
+          {
+            "id": "two_week_checkin",
+            "name": "2-week check-in",
+            "at": {
+              "value": 14,
+              "unit": "days"
+            },
+            "measurements": [
+              "user-reported energy",
+              "user-reported incision pain",
+              {
+                "metric": "questionnaire_score",
+                "questionnaire": "rpe_session",
+                "note": "Session RPE average over 2 weeks"
+              }
+            ],
+            "questions": [
+              "Any new or worsening pain at incision site?",
+              "Any urinary or pelvic organ heaviness?",
+              "How would you rate overall energy (low/moderate/high)?"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
