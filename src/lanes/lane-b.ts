@@ -6,6 +6,7 @@ import {
 import type { Scenario, Violation, LaneId, Phase, ModelName, RunResult, ClientContext, ExtractedPlan } from "../lib/types.js";
 import type { Model, ChatMessage } from "../models/types.js";
 import { score, collides } from "../scoring/blacklist.js";
+import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
 import {
   computeCycleDay,
@@ -188,13 +189,39 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
 // Lane B extraction: walk the compiled WPL JSON and pull out a structured
 // list matching the same ExtractedPlan shape Lane A produces, so the same
 // blacklist scorer runs against both.
+// Walk a compiled WPL plan and surface every exercise / rpe / food the
+// blacklist scorer needs to see.
+//
+// 2026-06-08: Rewritten to match the real wpl-ai compiled JSON shape.
+// The previous version assumed `phases[]` lived at the root of the
+// compiled JSON and that each day had top-level `warmup` / `main` /
+// `cooldown` keys containing an `items[]` array. The actual shape is
+// `plan.phases[].weeks[].days[].blocks[]` where each block has a
+// `type` of "warmup" | "main" | "cooldown" and an `activities[]` array.
+//
+// This mismatch silently zeroed `extracted_plan.exercises` for every
+// Lane B trial after the wpl-ai compiler shape changed — producing
+// trivial-zero safety_violations counts that looked like "the contract
+// worked" but were actually "the extractor saw nothing." Discovered
+// while running the v0.6 short-plan smoke test (see
+// docs/V0_6_SHORTPLANS_EXECUTION.md). Affected results that were
+// published as "0/180 Anthropic Lane B violations" need re-running.
 function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
   const exercises: ExtractedPlan["exercises"] = [];
   const foods: ExtractedPlan["foods"] = [];
   const intensities: ExtractedPlan["intensities"] = [];
   const notes: ExtractedPlan["notes"] = [];
 
-  const phases = Array.isArray(json["phases"]) ? (json["phases"] as Record<string, unknown>[]) : [];
+  // wpl-ai wraps the actual plan under a top-level `plan` key alongside
+  // `$schema` and `version`. Accept both shapes (root-level `phases` is
+  // tolerated for forward compatibility with anything that strips the
+  // wrapper before scoring).
+  const plan =
+    typeof json["plan"] === "object" && json["plan"] !== null
+      ? (json["plan"] as Record<string, unknown>)
+      : json;
+
+  const phases = Array.isArray(plan["phases"]) ? (plan["phases"] as Record<string, unknown>[]) : [];
   let weekCursor = 0;
   for (const phase of phases) {
     const weeks = Array.isArray(phase["weeks"]) ? (phase["weeks"] as Record<string, unknown>[]) : [];
@@ -202,25 +229,48 @@ function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
       weekCursor++;
       const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
       for (const day of days) {
-        const sections = ["warmup", "main", "cooldown"] as const;
-        for (const sec of sections) {
-          const section = day[sec];
-          if (!section || typeof section !== "object") continue;
-          const items = Array.isArray((section as Record<string, unknown>)["items"])
-            ? ((section as Record<string, unknown>)["items"] as Record<string, unknown>[])
+        const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
+        for (const block of blocks) {
+          const activities = Array.isArray(block["activities"])
+            ? (block["activities"] as Record<string, unknown>[])
             : [];
-          for (const item of items) {
-            const name = typeof item["exercise"] === "string" ? (item["exercise"] as string) : null;
-            if (name) exercises.push({ name, week: weekCursor });
-            const rpe = item["rpe"];
-            if (typeof rpe === "number") intensities.push({ domain: "rpe", level: rpe });
+          for (const activity of activities) {
+            // exercise_ref is the canonical slug the blacklist matches.
+            // Some warmup/cooldown activities are "simple" (cycling,
+            // stretches) and only carry a display `name`. Fall back to
+            // the name in that case so cardio modality blacklists fire.
+            const ref =
+              typeof activity["exercise_ref"] === "string"
+                ? (activity["exercise_ref"] as string)
+                : null;
+            const name =
+              typeof activity["name"] === "string" ? (activity["name"] as string) : null;
+            const exerciseName = ref ?? name;
+            if (exerciseName) exercises.push({ name: exerciseName, week: weekCursor });
+
+            // RPE lives on activity.target_rpe (a number) or
+            // activity.prescription.target_rpe in some compiler outputs.
+            const rpeCandidates: Array<unknown> = [activity["target_rpe"]];
+            const presc = activity["prescription"];
+            if (presc && typeof presc === "object") {
+              rpeCandidates.push((presc as Record<string, unknown>)["target_rpe"]);
+              rpeCandidates.push((presc as Record<string, unknown>)["rpe"]);
+            }
+            for (const r of rpeCandidates) {
+              if (typeof r === "number" && Number.isFinite(r)) {
+                intensities.push({ domain: "rpe", level: r });
+                break;
+              }
+            }
           }
         }
       }
     }
   }
 
-  const nutrition = json["nutrition"];
+  // Nutrition: the compiler sometimes attaches `nutrition` to the plan
+  // wrapper and sometimes at the root. Accept either.
+  const nutrition = plan["nutrition"] ?? json["nutrition"];
   if (nutrition && typeof nutrition === "object") {
     const meals = Array.isArray((nutrition as Record<string, unknown>)["meals"])
       ? ((nutrition as Record<string, unknown>)["meals"] as Record<string, unknown>[])
@@ -374,6 +424,9 @@ async function runOnce(
 
   const extracted = extractFromWplJson(planJson);
   const scored = score(scenario, extracted);
+  // v0.6 short-plan rules. No-op for v0.5 scenarios (no block_purpose).
+  // Lane B carries the compiled tree so all 5 rule families fire.
+  const shortPlanViolations = scoreShortPlan(scenario, { lane: "B", wplJson: planJson });
   const validatorErrors = compiled.validation.valid ? 0 : (compiled.validation.errors?.length ?? 0);
 
   return {
@@ -386,7 +439,7 @@ async function runOnce(
     wpl_schema_valid: validatorErrors === 0,
     compile_errors: 0,
     validator_errors: validatorErrors,
-    violations: scored.violations,
+    violations: [...scored.violations, ...shortPlanViolations],
     wpl_json: planJson,
     extracted_plan: extracted,
   };

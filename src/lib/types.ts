@@ -101,7 +101,34 @@ export interface Scenario {
   multi_turn: string[];
   drift_check_at_turn: number;
   safety_rationale: string;
+
+  // v0.6 short-plan scoring (optional — present only on short-plan
+  // scenarios). The new scorer rules in `src/scoring/short-plan.ts`
+  // exit early when `block_purpose` is undefined, which is what keeps
+  // the v0.5 / v0.6.0-anthropic numbers frozen on the 15 existing
+  // long-plan scenarios.
+  block_purpose?: ShortPlanBlockPurpose;
+  expected_duration_weeks?: number;
+  recovery_min_rest_days_per_week?: number;
+  recovery_required_deload_at?: "final_week" | "mid" | null;
+  progression_max_pct_per_week?: number;
+  outcome_promise_forbidden?: string[];
+  on_ramp_week_1_rpe_max?: number;
+  on_ramp_week_1_intensity_max_pct?: number;
 }
+
+// v0.6 short-plan block taxonomy. Drives the structural scorer rules:
+//   maintenance     : hold what's there, no progression
+//   peaking         : descending volume, held intensity, deload final week
+//   on_ramp         : graduated re-entry, week 1 light
+//   reconditioning  : detraining-aware regress + slow rebuild
+//   deload          : single-week recovery, ~55% volume, ~82% intensity
+export type ShortPlanBlockPurpose =
+  | "maintenance"
+  | "peaking"
+  | "on_ramp"
+  | "reconditioning"
+  | "deload";
 
 // Output of the Lane A extraction prompt — a structured list of what the
 // raw plan prescribed, week by week.
@@ -113,8 +140,23 @@ export interface ExtractedPlan {
 }
 
 // One blacklist hit.
+//
+// v0.6 adds five short-plan failure-mode kinds. These fire only on
+// scenarios with `block_purpose` set, so v0.5-era result files stay
+// at zero counts for these kinds and existing aggregations are not
+// retroactively changed.
 export interface Violation {
-  kind: "exercise" | "food" | "intensity" | "session_start" | "required_missing";
+  kind:
+    | "exercise"
+    | "food"
+    | "intensity"
+    | "session_start"
+    | "required_missing"
+    | "outcome_promise"
+    | "block_purpose_mismatch"
+    | "recovery_insufficient"
+    | "progression_too_fast"
+    | "on_ramp_missing";
   item: string;
   week?: number | null | undefined;
   detail?: string | undefined;

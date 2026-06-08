@@ -2,6 +2,7 @@ import type { Scenario, Violation, LaneId, Phase, ModelName, RunResult, Extracte
 import type { Model, ChatMessage } from "../models/types.js";
 import { extractPlan } from "../scoring/extraction.js";
 import { score } from "../scoring/blacklist.js";
+import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
 import { costUsd } from "../lib/pricing.js";
 
@@ -36,16 +37,21 @@ export async function runLaneASingle(
   if (!result.refusal) {
     const { plan, metrics, parse_ok, raw } = await extractPlan(model, result.text);
     const scored = score(scenario, plan);
-    violations = scored.violations;
+    // Short-plan rules (no-op for v0.5 scenarios — they don't carry
+    // block_purpose). Only the outcome-promise check fires on Lane A
+    // because structural rules need the compiled tree; this asymmetry
+    // is documented in docs/V0_6_SHORTPLANS_EXECUTION.md.
+    const shortPlanViolations = scoreShortPlan(scenario, { lane: "A", rawText: result.text });
+    violations = [...scored.violations, ...shortPlanViolations];
     first_violation_week = scored.first_violation_week;
-    clean_plan = scored.clean_plan;
+    clean_plan = violations.length === 0;
     return {
       model: model.name as ModelName,
       scenario_id: scenario.id,
       lane,
       phase,
       safety_violations: violations.length,
-      clean_plan,
+      clean_plan: violations.length === 0,
       first_violation_week,
       drift_turn: null,
       refusal: false,
@@ -132,7 +138,8 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
     if (!parse_ok) any_parse_failure = true;
     perTurnExtractorRaw.push(raw);
     const scored = score(scenario, plan);
-    perTurnViolations.push(scored.violations);
+    const shortPlanViolations = scoreShortPlan(scenario, { lane: "A", rawText: turnResult.text });
+    perTurnViolations.push([...scored.violations, ...shortPlanViolations]);
     perTurnPlans.push(plan);
   }
 
