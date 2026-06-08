@@ -60,13 +60,24 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
   return { rules };
 }
 
+// 2026-06-08: Walkers rewritten to match the real wpl-ai compiled JSON
+// shape (`plan.phases[].weeks[].days[].blocks[].activities[]`). The
+// previous version assumed top-level `phases[]` and `day.warmup/main/
+// cooldown.items[]`, which silently returned empty extractions on
+// every Lane B trial after wpl-ai's shape changed. See
+// src/lanes/lane-b.ts for the same fix in the live pipeline.
 function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
   const exercises: ExtractedPlan["exercises"] = [];
   const foods: ExtractedPlan["foods"] = [];
   const intensities: ExtractedPlan["intensities"] = [];
   const notes: ExtractedPlan["notes"] = [];
 
-  const phases = Array.isArray(json["phases"]) ? (json["phases"] as Record<string, unknown>[]) : [];
+  const plan =
+    typeof json["plan"] === "object" && json["plan"] !== null
+      ? (json["plan"] as Record<string, unknown>)
+      : json;
+
+  const phases = Array.isArray(plan["phases"]) ? (plan["phases"] as Record<string, unknown>[]) : [];
   let weekCursor = 0;
   for (const phase of phases) {
     const weeks = Array.isArray(phase["weeks"]) ? (phase["weeks"] as Record<string, unknown>[]) : [];
@@ -74,17 +85,32 @@ function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
       weekCursor++;
       const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
       for (const day of days) {
-        for (const sec of ["warmup", "main", "cooldown"] as const) {
-          const section = day[sec];
-          if (!section || typeof section !== "object") continue;
-          const items = Array.isArray((section as Record<string, unknown>)["items"])
-            ? ((section as Record<string, unknown>)["items"] as Record<string, unknown>[])
+        const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
+        for (const block of blocks) {
+          const activities = Array.isArray(block["activities"])
+            ? (block["activities"] as Record<string, unknown>[])
             : [];
-          for (const item of items) {
-            const name = typeof item["exercise"] === "string" ? (item["exercise"] as string) : null;
-            if (name) exercises.push({ name, week: weekCursor });
-            const rpe = item["rpe"];
-            if (typeof rpe === "number") intensities.push({ domain: "rpe", level: rpe });
+          for (const activity of activities) {
+            const ref =
+              typeof activity["exercise_ref"] === "string"
+                ? (activity["exercise_ref"] as string)
+                : null;
+            const name =
+              typeof activity["name"] === "string" ? (activity["name"] as string) : null;
+            const exerciseName = ref ?? name;
+            if (exerciseName) exercises.push({ name: exerciseName, week: weekCursor });
+            const rpeCandidates: Array<unknown> = [activity["target_rpe"]];
+            const presc = activity["prescription"];
+            if (presc && typeof presc === "object") {
+              rpeCandidates.push((presc as Record<string, unknown>)["target_rpe"]);
+              rpeCandidates.push((presc as Record<string, unknown>)["rpe"]);
+            }
+            for (const r of rpeCandidates) {
+              if (typeof r === "number" && Number.isFinite(r)) {
+                intensities.push({ domain: "rpe", level: r });
+                break;
+              }
+            }
           }
         }
       }
@@ -100,21 +126,30 @@ function stripForbidden(
 ): Record<string, unknown> {
   if (forbidden.size === 0) return json;
   const clone = JSON.parse(JSON.stringify(json)) as Record<string, unknown>;
-  const phases = Array.isArray(clone["phases"]) ? (clone["phases"] as Record<string, unknown>[]) : [];
+  const plan =
+    typeof clone["plan"] === "object" && clone["plan"] !== null
+      ? (clone["plan"] as Record<string, unknown>)
+      : clone;
+  const phases = Array.isArray(plan["phases"]) ? (plan["phases"] as Record<string, unknown>[]) : [];
   for (const phase of phases) {
     const weeks = Array.isArray(phase["weeks"]) ? (phase["weeks"] as Record<string, unknown>[]) : [];
     for (const week of weeks) {
       const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
       for (const day of days) {
-        for (const sec of ["warmup", "main", "cooldown"] as const) {
-          const section = day[sec];
-          if (!section || typeof section !== "object") continue;
-          const items = Array.isArray((section as Record<string, unknown>)["items"])
-            ? ((section as Record<string, unknown>)["items"] as Record<string, unknown>[])
+        const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
+        for (const block of blocks) {
+          const activities = Array.isArray(block["activities"])
+            ? (block["activities"] as Record<string, unknown>[])
             : [];
-          (section as Record<string, unknown>)["items"] = items.filter((item) => {
-            const name = typeof item["exercise"] === "string" ? (item["exercise"] as string) : "";
-            return !forbidden.has(name);
+          block["activities"] = activities.filter((activity) => {
+            const ref =
+              typeof activity["exercise_ref"] === "string"
+                ? (activity["exercise_ref"] as string)
+                : null;
+            const name =
+              typeof activity["name"] === "string" ? (activity["name"] as string) : null;
+            const id = ref ?? name ?? "";
+            return !forbidden.has(id);
           });
         }
       }
