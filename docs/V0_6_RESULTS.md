@@ -520,6 +520,107 @@ run it.
 
 ---
 
+## DSL surface form: END-markers probe (v0.6 in-cycle)
+
+A small in-cycle experiment, parallel to the native-JSON probes
+above. The native-JSON probes test "can the LLM bypass the DSL
+entirely?" This probe tests "is the *indentation discipline* in the
+DSL itself part of the failure mode?"
+
+**Variant tested.** The LLM is prompted to emit a flat WPL-AI form —
+no leading whitespace — with explicit `END <BLOCK>` closers. A small
+re-indenter (`src/lib/end-markers-reindenter.ts`, ~150 LOC) walks
+the openers/closers and reconstructs the canonical indented DSL the
+existing compiler accepts. From the compiler's perspective the input
+is unchanged; only the surface form the LLM produces is changed.
+
+**Setup.** 15 v0.5 scenarios × Lane B × single-turn × two models
+(Sonnet 4.6, Haiku 4.5). Compared against the main v0.6 sweep's Lane
+B single-turn baseline for the same model. Cost: $1.97 total.
+
+### Result
+
+| model | compile (wpl_valid) | schema_valid | re-indent clean |
+|---|---|---|---|
+| Sonnet 4.6 — baseline (indented) | 15/15 | 4/15 | — |
+| Sonnet 4.6 — END-markers | 15/15 | 0/15 | 15/15 |
+| Haiku 4.5 — baseline (indented) | 7/15 | 5/15 | — |
+| **Haiku 4.5 — END-markers** | **14/15** | **6/15** | 8/15 |
+
+### Interpretation
+
+**Sonnet sits at the compile-rate ceiling either way — no headroom
+to recover.** Single-turn Sonnet was already at 15/15 compile on the
+indented DSL. There is nothing the surface-form change can fix at
+that operating point. The schema_valid regression (4/15 → 0/15) is a
+length confound: the END-markers prompt elicited plans ~50% larger
+than baseline, which surfaces more of the upstream activity-block
+schema problem — *not* evidence that END-markers hurt structurally.
+
+**Haiku has real compile-failure headroom and END-markers recovers
+most of it.** 7/15 → 14/15 compile rate is a +47-point swing on a
+slice with no schema, no prompt, no scorer change — only the surface
+form. The schema_valid bump (5/15 → 6/15) is small and within noise,
+consistent with the upstream activity-block schema being the rate-
+limiting factor for *that* gate regardless of surface form.
+
+The 8/15 "re-indent clean" rate on Haiku (vs. 15/15 on Sonnet) shows
+the tolerant re-indenter is doing real recovery work — Haiku skipped
+or mismatched closers on 7 trials and the re-indenter recovered 6 of
+them into compile-valid canonical DSL. This is a feature of the
+END-markers form, not a bug: indentation errors silently shift block
+scope, while missing closers fail loudly and can be machine-repaired.
+
+**Mechanism.** Indentation discipline is a positional constraint:
+every line's leading whitespace must match its semantic depth. END
+markers replace that positional constraint with a tokenised one:
+each opener must have a matching closer somewhere. Small models
+appear to handle the tokenised constraint substantially better than
+the positional one — plausible because tokens carry their own
+context, while column counts do not.
+
+### What this changes for v0.7
+
+The v0.7 Arm B in Future Work (below) currently reads "redesign the
+activity block." This probe says the *outer* DSL form matters too,
+at least at the small-model tier. We should split Arm B into:
+
+- **B1 (DSL surface).** END-markers vs indented form, full sweep
+  across Haiku + Sonnet + Opus + the OpenAI lineup. Tests whether
+  the Haiku gain (small-model tier) reproduces and whether the
+  larger models gain anything at multi-turn (where they do show
+  compile failures).
+- **B2 (activity block).** The original Arm B — drop the `type`
+  discriminator and allow `additionalProperties`. Orthogonal to B1
+  and addresses the schema_valid ceiling, which B1 does not move.
+
+### Limitations of the probe
+
+- 15 scenarios × single-turn × one model per tier is enough to see
+  a +47-point swing but not enough to bound the effect size
+  precisely. The full v0.7 sweep should restore the 4-phase 60-trial
+  per-model design.
+- The re-indenter is project-specific tooling. A "fair" comparison
+  would also offer a similarly tolerant parser for the indented form
+  (one that auto-fixes minor whitespace errors). We do not run that
+  comparison here; we report only the as-shipped baseline.
+- The wpl-ai compiler silently truncates output on long-form
+  durations (`"5 minutes"` parses but drops downstream content;
+  `"5m"` works). The Haiku probe prompt was updated to require
+  short-form durations after this was discovered during the Sonnet
+  follow-up. The Sonnet baseline figures in the main sweep are not
+  affected — those used the indented DSL where the Sonnet model was
+  emitting short-form already. This bug is independent of the
+  END-markers experiment and should be filed against wpl-ai.
+
+Artifacts: `results-dsl-end-markers/` (Sonnet),
+`results-dsl-end-markers-haiku/` (Haiku),
+`src/lib/end-markers-reindenter.ts`,
+`src/scripts/dsl-end-markers-probe.ts`,
+`src/scripts/dsl-end-markers-haiku-probe.ts`.
+
+---
+
 ## Cost (180 new Anthropic trials)
 
 | model | trials | cost | per trial |
@@ -615,11 +716,19 @@ that is methodologically clean for the paper.
      the activity-block JSON schema (or a faithful prose summary of
      it) into the Lane B system prompt. Tests: "Was the gap just a
      context-coverage problem?"
-   - **Arm B — simplified WPL-AI activity block.** Redesign the
+   - **Arm B1 — DSL surface form (END-markers).** Replace the
+     indented DSL with the END-markers variant tested in the v0.6
+     in-cycle probe above. Full 60-trial sweep per model across the
+     Anthropic + OpenAI lineup. Tests whether the +47-point Haiku
+     compile gain reproduces and whether larger models gain anything
+     at multi-turn. Independent of B2.
+   - **Arm B2 — simplified WPL-AI activity block.** Redesign the
      activity block to drop the `type` discriminator, allow a more
      open prescription shape, and let the compiler infer defaults.
      Keep the semantic content (exercise, sets, reps, RPE, rest).
      Tests: "Was the activity-block schema itself too complex?"
+     Independent of B1; addresses the schema_valid ceiling, which
+     B1 does not move.
    - **Arm C — chunked native JSON synthesis.** Generate the plan
      scaffold in one call, then each week (or phase) as a separate
      native-JSON call against a *subset* of the schema, then assemble.
