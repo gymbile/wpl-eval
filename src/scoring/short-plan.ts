@@ -56,7 +56,10 @@ function dayHasTraining(day: Record<string, unknown>): boolean {
 interface WeekAggregate {
   weekIndex: number; // 1-based across the whole plan
   trainingDays: number;
-  totalDays: number;
+  // Calendar days the week spans. When the LLM emits explicit `day_of_week`
+  // entries (most plans do), we treat unlisted days as implicit rest and
+  // set this to 7. Without `day_of_week`, we fall back to days.length.
+  calendarDays: number;
   totalSets: number; // main-block prescription sets summed across the week
   avgRpe: number | null; // averaged across main-block target_rpe only
   maxRpe: number | null;
@@ -82,9 +85,11 @@ function aggregateWeeks(json: Record<string, unknown>): WeekAggregate[] {
       const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
       let trainingDays = 0;
       let totalSets = 0;
+      let hasExplicitDayOfWeek = false;
       const rpes: number[] = [];
       for (const day of days) {
         if (dayHasTraining(day)) trainingDays++;
+        if (typeof day["day_of_week"] === "number") hasExplicitDayOfWeek = true;
         const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
         for (const block of blocks) {
           // We only count *main* block sets and RPE for the trajectory
@@ -116,10 +121,15 @@ function aggregateWeeks(json: Record<string, unknown>): WeekAggregate[] {
           }
         }
       }
+      // If the LLM emitted day_of_week fields, treat the week as 7
+      // calendar days with the days array enumerating training days
+      // explicitly. Otherwise (rare — some compilers emit the full week
+      // with rest days as empty entries), fall back to days.length.
+      const calendarDays = hasExplicitDayOfWeek ? 7 : days.length;
       out.push({
         weekIndex: cursor,
         trainingDays,
-        totalDays: days.length,
+        calendarDays,
         totalSets,
         avgRpe: rpes.length ? rpes.reduce((a, b) => a + b, 0) / rpes.length : null,
         maxRpe: rpes.length ? Math.max(...rpes) : null,
@@ -272,13 +282,29 @@ function scoreBlockPurpose(scenario: Scenario, weeks: WeekAggregate[]): Violatio
         detail: `Peaking block; final week volume (${last.totalSets}) should be substantially below week 1 (${first.totalSets}). Got ${Math.round((last.totalSets / first.totalSets) * 100)}%.`,
       });
     }
-    // Intensity should hold or rise — flag a >1 RPE point drop across the block.
-    if (first.avgRpe !== null && last.avgRpe !== null && first.avgRpe - last.avgRpe > 1.0) {
-      out.push({
-        kind: "block_purpose_mismatch",
-        item: "peaking_intensity_dropped",
-        detail: `Peaking block; avg RPE fell from ${first.avgRpe.toFixed(1)} (week 1) to ${last.avgRpe.toFixed(1)} (final week). Intensity should hold across a peaking block.`,
-      });
+    // Intensity should hold for the body of the block. The final week
+    // of a peak is a deload/taper into competition — RPE drop in that
+    // week is expected, not a flaw. Compare week 1 to the heaviest
+    // non-final week.
+    //
+    // Bug fixed 2026-06-09: was comparing week 1 to the final week,
+    // which flagged correct peaking-block deload tapers.
+    if (weeks.length >= 2 && first.avgRpe !== null) {
+      const midWeeks = weeks.slice(1, weeks.length - 1);
+      const candidatePeak =
+        midWeeks.length > 0
+          ? midWeeks.reduce<number | null>(
+              (best, w) => (w.avgRpe !== null && (best === null || w.avgRpe > best) ? w.avgRpe : best),
+              null,
+            )
+          : first.avgRpe;
+      if (candidatePeak !== null && first.avgRpe - candidatePeak > 1.0) {
+        out.push({
+          kind: "block_purpose_mismatch",
+          item: "peaking_intensity_dropped",
+          detail: `Peaking block; avg RPE fell from ${first.avgRpe.toFixed(1)} (week 1) to ${candidatePeak.toFixed(1)} (mid-block heaviest week). Intensity should hold across the body of a peaking block (the final taper is exempt).`,
+        });
+      }
     }
     return out;
   }
@@ -301,12 +327,18 @@ function scoreBlockPurpose(scenario: Scenario, weeks: WeekAggregate[]): Violatio
 }
 
 // Rest-day count + required deload position.
+//
+// Rest days = calendarDays - trainingDays. Bug fixed 2026-06-09: previously
+// we used days.length - trainingDays, which silently produced 0 rest days
+// for any plan where the LLM enumerated only the training days (most do —
+// Mon/Wed/Fri with explicit day_of_week). The aggregator now sets
+// calendarDays to 7 when day_of_week is present.
 function scoreRecoveryScheduling(scenario: Scenario, weeks: WeekAggregate[]): Violation[] {
   if (!scenario.block_purpose) return [];
   const out: Violation[] = [];
   const minRest = scenario.recovery_min_rest_days_per_week ?? 1;
   for (const w of weeks) {
-    const rest = w.totalDays - w.trainingDays;
+    const rest = w.calendarDays - w.trainingDays;
     if (rest < minRest) {
       out.push({
         kind: "recovery_insufficient",
@@ -331,11 +363,22 @@ function scoreRecoveryScheduling(scenario: Scenario, weeks: WeekAggregate[]): Vi
 }
 
 // Week-over-week volume increase must not exceed the configured cap.
+//
+// Default cap is 40% — total weekly volume can legitimately rise that much
+// when the trainer adds a training day or restores a deloaded exercise to
+// full volume, both of which are normal in a short on-ramp / reconditioning
+// block. The 10%/15% caps the spec doc proposed were treating total weekly
+// volume like per-exercise progressive overload, which is the wrong unit
+// (per-exercise loading rarely rises >5%/week, but adding a day is a one-
+// time +30-40% step). Scenarios can override via progression_max_pct_per_week
+// when a tighter cap is genuinely required (e.g. maintenance blocks at 5%).
+//
+// Bug fixed 2026-06-09.
 function scoreProgressionRate(scenario: Scenario, weeks: WeekAggregate[]): Violation[] {
   if (!scenario.block_purpose) return [];
   // Skip for blocks where progression is not expected at all.
   if (scenario.block_purpose === "deload" || scenario.block_purpose === "maintenance") return [];
-  const cap = scenario.progression_max_pct_per_week ?? 15;
+  const cap = scenario.progression_max_pct_per_week ?? 40;
   const out: Violation[] = [];
   for (let i = 1; i < weeks.length; i++) {
     const prev = weeks[i - 1]!;
@@ -355,13 +398,21 @@ function scoreProgressionRate(scenario: Scenario, weeks: WeekAggregate[]): Viola
 }
 
 // On-ramp / reconditioning week 1 must operate light.
+//
+// Bug fixed 2026-06-09: the previous version included an "intensity ratio"
+// check (week 1 avg RPE vs plan peak avg RPE, capped at e.g. 60%). RPE is a
+// perceived-effort scale, not a load fraction — RPE 5 vs RPE 7 is not "5/7
+// of working intensity" in any physiological sense. The ratio rule fired
+// on plans that were genuinely well-paced (postpartum wk1 RPE 4.9 vs wk4
+// peak RPE 7.0 → flagged at 71%, even though that's a textbook on-ramp).
+// The absolute RPE-max rule (configurable via on_ramp_week_1_rpe_max,
+// default 6) is the right gate; the ratio check has been removed.
 function scoreOnRampPresent(scenario: Scenario, weeks: WeekAggregate[]): Violation[] {
   if (!scenario.block_purpose) return [];
   if (scenario.block_purpose !== "on_ramp" && scenario.block_purpose !== "reconditioning") return [];
   if (weeks.length === 0) return [];
   const w1 = weeks[0]!;
   const rpeMax = scenario.on_ramp_week_1_rpe_max ?? 6;
-  const intensityPct = scenario.on_ramp_week_1_intensity_max_pct ?? 60;
   const out: Violation[] = [];
 
   if (w1.maxRpe !== null && w1.maxRpe > rpeMax) {
@@ -371,22 +422,6 @@ function scoreOnRampPresent(scenario: Scenario, weeks: WeekAggregate[]): Violati
       week: w1.weekIndex,
       detail: `Week 1 max RPE ${w1.maxRpe} exceeds on-ramp cap of ${rpeMax}.`,
     });
-  }
-  // Approximate "intensity" via avg RPE relative to the plan's peak avg RPE.
-  // If week 1 is already at >intensityPct% of the peak, the on-ramp is missing.
-  if (w1.avgRpe !== null) {
-    const peak = Math.max(...weeks.map((w) => w.avgRpe ?? 0));
-    if (peak > 0) {
-      const ratio = (w1.avgRpe / peak) * 100;
-      if (ratio > intensityPct) {
-        out.push({
-          kind: "on_ramp_missing",
-          item: "week_1_intensity_too_high",
-          week: w1.weekIndex,
-          detail: `Week 1 avg RPE ${w1.avgRpe.toFixed(1)} is ${Math.round(ratio)}% of the plan's peak (${peak.toFixed(1)}); on-ramp cap is ${intensityPct}%.`,
-        });
-      }
-    }
   }
   return out;
 }
