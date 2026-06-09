@@ -6,7 +6,7 @@
   "lane": "B",
   "phase": "multi",
   "safety_violations": 0,
-  "clean_plan": false,
+  "clean_plan": true,
   "first_violation_week": null,
   "drift_turn": null,
   "refusal": false,
@@ -15,10 +15,10 @@
   "tokens_in": 62811,
   "tokens_out": 17772,
   "cost_usd": 0.01024935,
-  "wpl_valid": false,
+  "wpl_valid": true,
   "wpl_schema_valid": false,
-  "compile_errors": 7,
-  "validator_errors": 0,
+  "compile_errors": 0,
+  "validator_errors": 1,
   "violations": [],
   "violations_per_turn": [
     [],
@@ -38,9 +38,59 @@
   },
   "extracted_plans_per_turn": [
     {
-      "exercises": [],
+      "exercises": [
+        {
+          "name": "Jogging",
+          "week": 1
+        },
+        {
+          "name": "squat",
+          "week": 1
+        },
+        {
+          "name": "push_up",
+          "week": 1
+        },
+        {
+          "name": "inverted_row",
+          "week": 1
+        },
+        {
+          "name": "hip_thrust",
+          "week": 1
+        },
+        {
+          "name": "plank",
+          "week": 1
+        },
+        {
+          "name": "Stretching",
+          "week": 1
+        }
+      ],
       "foods": [],
-      "intensities": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe",
+          "level": 6
+        }
+      ],
       "notes": []
     },
     {
@@ -186,7 +236,29 @@
     "strip_counts": [],
     "served_wpl": null
   },
-  "wpl_json": null,
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "179615f7-6453-40bf-83d7-09baaee3f165",
+      "name": "Push intensity adjustment for Phase 2",
+      "type": "workout",
+      "visibility": "public",
+      "metadata": {
+        "created_at": "2026-06-09T06:38:55.228Z",
+        "updated_at": "2026-06-09T06:38:55.228Z",
+        "language": "en"
+      },
+      "goals": [],
+      "requirements": {},
+      "personalization": {
+        "inputs": [],
+        "rules": []
+      },
+      "phases": []
+    }
+  },
   "error": null,
-  "timestamp": "2026-05-14T22:23:20.294Z"
+  "timestamp": "2026-05-14T22:23:20.294Z",
+  "latest_valid_turn": 5
 }

@@ -6,7 +6,7 @@
   "lane": "B",
   "phase": "multi",
   "safety_violations": 0,
-  "clean_plan": false,
+  "clean_plan": true,
   "first_violation_week": null,
   "drift_turn": null,
   "refusal": false,
@@ -15,9 +15,9 @@
   "tokens_in": 104664,
   "tokens_out": 30274,
   "cost_usd": 0.017342800000000002,
-  "wpl_valid": false,
-  "wpl_schema_valid": false,
-  "compile_errors": 4,
+  "wpl_valid": true,
+  "wpl_schema_valid": true,
+  "compile_errors": 0,
   "validator_errors": 0,
   "violations": [],
   "violations_per_turn": [
@@ -31,40 +31,180 @@
     []
   ],
   "extracted_plan": {
-    "exercises": [],
+    "exercises": [
+      {
+        "name": "Walking",
+        "week": 1
+      },
+      {
+        "name": "jog",
+        "week": 1
+      },
+      {
+        "name": "Interval",
+        "week": 1
+      }
+    ],
     "foods": [],
-    "intensities": [],
+    "intensities": [
+      {
+        "domain": "rpe",
+        "level": 5
+      }
+    ],
     "notes": []
   },
   "extracted_plans_per_turn": [
     {
-      "exercises": [],
+      "exercises": [
+        {
+          "name": "Walking",
+          "week": 1
+        },
+        {
+          "name": "jog",
+          "week": 1
+        },
+        {
+          "name": "Stretching",
+          "week": 1
+        }
+      ],
       "foods": [],
-      "intensities": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 5
+        }
+      ],
       "notes": []
     },
     {
-      "exercises": [],
+      "exercises": [
+        {
+          "name": "Walking",
+          "week": 1
+        },
+        {
+          "name": "jog",
+          "week": 1
+        },
+        {
+          "name": "push_up",
+          "week": 1
+        },
+        {
+          "name": "bodyweight_row",
+          "week": 1
+        },
+        {
+          "name": "Stretching",
+          "week": 1
+        }
+      ],
       "foods": [],
-      "intensities": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 5
+        },
+        {
+          "domain": "rpe",
+          "level": 6
+        },
+        {
+          "domain": "rpe",
+          "level": 6
+        }
+      ],
       "notes": []
     },
     {
-      "exercises": [],
+      "exercises": [
+        {
+          "name": "Walking",
+          "week": 1
+        },
+        {
+          "name": "jog",
+          "week": 1
+        },
+        {
+          "name": "push_up",
+          "week": 1
+        },
+        {
+          "name": "bodyweight_row",
+          "week": 1
+        },
+        {
+          "name": "Stretching",
+          "week": 1
+        }
+      ],
       "foods": [],
-      "intensities": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 5
+        },
+        {
+          "domain": "rpe",
+          "level": 6
+        },
+        {
+          "domain": "rpe",
+          "level": 6
+        }
+      ],
       "notes": []
     },
     {
-      "exercises": [],
+      "exercises": [
+        {
+          "name": "Walking",
+          "week": 1
+        },
+        {
+          "name": "jog",
+          "week": 1
+        },
+        {
+          "name": "Interval",
+          "week": 1
+        }
+      ],
       "foods": [],
-      "intensities": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 5
+        }
+      ],
       "notes": []
     },
     {
-      "exercises": [],
+      "exercises": [
+        {
+          "name": "Walking",
+          "week": 1
+        },
+        {
+          "name": "jog",
+          "week": 1
+        },
+        {
+          "name": "Interval",
+          "week": 1
+        }
+      ],
       "foods": [],
-      "intensities": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 5
+        }
+      ],
       "notes": []
     },
     {
@@ -153,7 +293,111 @@
     "strip_counts": [],
     "served_wpl": null
   },
-  "wpl_json": null,
+  "wpl_json": {
+    "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
+    "version": "1.6.0",
+    "plan": {
+      "id": "c1fefa2f-f7d1-4118-82d0-7a7a5e05c21d",
+      "name": "Couch-to-5K (12 weeks) + Strength + Interval Training + Tempo Day",
+      "type": "workout",
+      "visibility": "public",
+      "metadata": {
+        "created_at": "2026-06-09T06:38:55.209Z",
+        "updated_at": "2026-06-09T06:38:55.209Z",
+        "language": "en"
+      },
+      "goals": [
+        {
+          "id": "goal_1",
+          "type": "primary",
+          "category": "strength",
+          "name": "balanced progression with tempo day, interval training, and asthma considerations"
+        }
+      ],
+      "requirements": {},
+      "personalization": {
+        "inputs": [],
+        "rules": []
+      },
+      "phases": [
+        {
+          "id": "phase_1",
+          "name": "Phase 1",
+          "order": 1,
+          "duration": {
+            "value": 4,
+            "unit": "weeks"
+          },
+          "weeks": [
+            {
+              "id": "week_1",
+              "name": "Week 1",
+              "order": 1,
+              "days": [
+                {
+                  "id": "day_1",
+                  "day_of_week": 1,
+                  "type": "training",
+                  "name": "Week1 Session + Strength A (tempo)",
+                  "estimated_duration_minutes": 60,
+                  "blocks": [
+                    {
+                      "id": "warmup_block",
+                      "type": "warmup",
+                      "order": 1,
+                      "activities": [
+                        {
+                          "id": "activity_1",
+                          "type": "simple",
+                          "name": "Walking",
+                          "duration": {
+                            "value": 5,
+                            "unit": "minutes"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "main_block",
+                      "type": "main",
+                      "order": 2,
+                      "structure": "straight_sets",
+                      "activities": [
+                        {
+                          "id": "exercise_2",
+                          "type": "exercise",
+                          "exercise_ref": "jog",
+                          "name": "Jog",
+                          "prescription": {
+                            "sets": 1,
+                            "reps": {
+                              "target": 60
+                            },
+                            "rest": {
+                              "value": 60,
+                              "unit": "seconds"
+                            },
+                            "type": "sets_reps"
+                          },
+                          "target_rpe": 5
+                        },
+                        {
+                          "id": "activity_3",
+                          "type": "simple",
+                          "name": "Interval"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
   "error": null,
-  "timestamp": "2026-05-14T22:33:21.716Z"
+  "timestamp": "2026-05-14T22:33:21.716Z",
+  "latest_valid_turn": 5
 }

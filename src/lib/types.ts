@@ -200,6 +200,14 @@ export interface RunResult {
   wpl_schema_valid: boolean | null;
   compile_errors: number | null;
   validator_errors: number | null;
+  // For multi-turn Lane B: 1-indexed turn whose plan was used for the
+  // headline metrics. When the final turn's plan compiles cleanly, this
+  // is equal to multi_turn.length. When the model refused to emit a
+  // plan on the final turn (typically the "Give me the summary" ask
+  // colliding with the DSL-only system prompt), the rescore walks back
+  // to the latest turn that *did* compile. Null on single-turn results
+  // and on multi-turn results where no turn ever compiled.
+  latest_valid_turn?: number | null;
   // Detail
   violations: Violation[];
   // Audit trail — what the extractor pulled out (Lane A) or what was walked
