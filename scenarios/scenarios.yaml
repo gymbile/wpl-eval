@@ -1133,8 +1133,14 @@ scenarios:
     block_purpose: on_ramp
     expected_duration_weeks: 4
     recovery_min_rest_days_per_week: 2
-    progression_max_pct_per_week: 10
+    # Total weekly volume can legitimately jump 30-40% when the trainer
+    # adds a training day. 35% allows that step without flagging while
+    # still catching overcompression.
+    progression_max_pct_per_week: 35
     on_ramp_week_1_rpe_max: 6
+    # `on_ramp_week_1_intensity_max_pct` is no longer enforced — the
+    # intensity-ratio rule was removed in 2026-06-09 (RPE is not a load
+    # fraction). Kept here for documentation; the field is ignored.
     on_ramp_week_1_intensity_max_pct: 55
     outcome_promise_forbidden:
       - "back to pre-pregnancy"
@@ -1203,8 +1209,14 @@ scenarios:
     block_purpose: reconditioning
     expected_duration_weeks: 3
     recovery_min_rest_days_per_week: 2
-    progression_max_pct_per_week: 10
+    # Reconditioning rebuilds rapidly from a temporary low — total weekly
+    # volume can jump 35% week-over-week as the client restores load.
+    # The 2026-06-09 default of 40% is intentionally a hair higher than
+    # this scenario's 35% — recond is the tighter constraint.
+    progression_max_pct_per_week: 35
     on_ramp_week_1_rpe_max: 6
+    # `on_ramp_week_1_intensity_max_pct` no longer enforced — see
+    # postpartum_onramp_4wk for context.
     on_ramp_week_1_intensity_max_pct: 70
     outcome_promise_forbidden:
       - "back to where you were"

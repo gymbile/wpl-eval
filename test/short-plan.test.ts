@@ -175,7 +175,9 @@ describe("aggregateWeeks — plan tree walker", () => {
     const weeks = aggregateWeeks(plan);
     expect(weeks).toHaveLength(2);
     expect(weeks[0]!.trainingDays).toBe(3);
-    expect(weeks[0]!.totalDays).toBe(7);
+    // makePlan emits 7 day entries (no day_of_week field), so the walker
+    // falls back to days.length for calendarDays.
+    expect(weeks[0]!.calendarDays).toBe(7);
     expect(weeks[1]!.trainingDays).toBe(4);
   });
 
@@ -504,22 +506,24 @@ describe("scoreOnRampPresent — week-1 light constraint", () => {
     expect(v.some((x) => x.item === "week_1_rpe_too_high")).toBe(true);
   });
 
-  test("flags week-1 intensity ratio above cap", () => {
+  test("the intensity-ratio rule has been removed (RPE is not a load fraction)", () => {
+    // Regression: previously week 1 avg RPE vs plan peak avg RPE was
+    // capped at on_ramp_week_1_intensity_max_pct. That treated RPE 5
+    // and RPE 7 as "5/7 of working intensity" which is not what RPE
+    // measures. The absolute RPE cap is the only on-ramp gate now.
     const s = scenario({
       block_purpose: "on_ramp",
       expected_duration_weeks: 4,
-      on_ramp_week_1_rpe_max: 10,
-      on_ramp_week_1_intensity_max_pct: 60,
+      on_ramp_week_1_rpe_max: 10, // permissive absolute cap
+      on_ramp_week_1_intensity_max_pct: 1, // formerly would have fired
     });
     const weeks = aggregateWeeks(
       makePlan([
-        { trainingDays: 3, rpe: 8 }, // wk1 avg high
+        { trainingDays: 3, rpe: 8 },
         { trainingDays: 3, rpe: 8 },
       ]),
     );
-    // wk1 avg ≈ wk2 avg ≈ same → ratio ≈ 100% → flagged
-    const v = scoreOnRampPresent(s, weeks);
-    expect(v.some((x) => x.item === "week_1_intensity_too_high")).toBe(true);
+    expect(scoreOnRampPresent(s, weeks)).toEqual([]);
   });
 
   test("clean when wk1 is genuinely lighter than later weeks", () => {
@@ -563,6 +567,100 @@ describe("findOutcomePromises — pattern engine", () => {
       ["build muscle"],
     );
     expect(out).toHaveLength(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Regression tests for v0.6 scorer bug fixes (2026-06-09)
+// ---------------------------------------------------------------------------
+
+describe("regression: bug 1 — rest-day counting with explicit day_of_week", () => {
+  // The walker used to compute rest_days = days.length - trainingDays,
+  // silently producing 0 rest days for any plan that enumerated only
+  // training days (most do — Mon/Wed/Fri with day_of_week 1/3/5).
+  test("days array with day_of_week treats unlisted days as implicit rest", () => {
+    const plan = {
+      plan: {
+        phases: [
+          {
+            weeks: [
+              {
+                days: [
+                  { day_of_week: 1, blocks: [{ type: "main", activities: [{ exercise_ref: "x", prescription: { sets: 3 } }] }] },
+                  { day_of_week: 3, blocks: [{ type: "main", activities: [{ exercise_ref: "x", prescription: { sets: 3 } }] }] },
+                  { day_of_week: 5, blocks: [{ type: "main", activities: [{ exercise_ref: "x", prescription: { sets: 3 } }] }] },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const weeks = aggregateWeeks(plan);
+    expect(weeks[0]!.trainingDays).toBe(3);
+    expect(weeks[0]!.calendarDays).toBe(7);
+    // Recovery check: 7 - 3 = 4 rest days, ≥ 2 minimum is fine.
+    const s = scenario({
+      block_purpose: "on_ramp",
+      expected_duration_weeks: 4,
+      recovery_min_rest_days_per_week: 2,
+    });
+    expect(scoreRecoveryScheduling(s, weeks)).toEqual([]);
+  });
+});
+
+describe("regression: bug 2 — progression cap default loosened", () => {
+  // The old 15% default treated total weekly volume like per-exercise
+  // progressive overload. Adding a training day legitimately jumps total
+  // weekly volume 30-40% and is normal programming.
+  test("default cap is 40% (not 15%), tolerates day-add-driven volume jumps", () => {
+    const s = scenario({ block_purpose: "on_ramp", expected_duration_weeks: 4 });
+    const weeks = aggregateWeeks(
+      makePlan([
+        { trainingDays: 3, setsPerSession: 3 }, // 18 sets
+        { trainingDays: 4, setsPerSession: 3 }, // 24 sets — +33%, under 40% cap
+      ]),
+    );
+    expect(scoreProgressionRate(s, weeks)).toEqual([]);
+  });
+
+  test("still flags genuinely excessive progression (>40%)", () => {
+    const s = scenario({ block_purpose: "on_ramp", expected_duration_weeks: 4 });
+    const weeks = aggregateWeeks(
+      makePlan([
+        { trainingDays: 3, setsPerSession: 2 }, // 12 sets
+        { trainingDays: 5, setsPerSession: 4 }, // 40 sets — +233%
+      ]),
+    );
+    expect(scoreProgressionRate(s, weeks)).toHaveLength(1);
+  });
+});
+
+describe("regression: bug 4 — peaking intensity holds against mid-block peak, not final taper", () => {
+  // A 3-week peaking block legitimately ends with a deload/taper.
+  // Comparing wk1 RPE to wk3 (taper) RPE flagged correct programming.
+  test("3-week peak with mid-week peak + final taper is clean", () => {
+    const s = scenario({ block_purpose: "peaking", expected_duration_weeks: 3 });
+    const weeks = aggregateWeeks(
+      makePlan([
+        { trainingDays: 4, setsPerSession: 4, rpe: 7 }, // wk1
+        { trainingDays: 3, setsPerSession: 3, rpe: 8 }, // wk2 heaviest
+        { trainingDays: 2, setsPerSession: 2, rpe: 5 }, // wk3 taper
+      ]),
+    );
+    expect(scoreBlockPurpose(s, weeks).find((v) => v.item === "peaking_intensity_dropped")).toBeUndefined();
+  });
+
+  test("still flags real intensity collapse mid-block", () => {
+    const s = scenario({ block_purpose: "peaking", expected_duration_weeks: 3 });
+    const weeks = aggregateWeeks(
+      makePlan([
+        { trainingDays: 4, setsPerSession: 4, rpe: 9 }, // wk1 heavy
+        { trainingDays: 3, setsPerSession: 3, rpe: 6 }, // wk2 mid drop — wrong
+        { trainingDays: 2, setsPerSession: 2, rpe: 5 }, // wk3 taper
+      ]),
+    );
+    expect(scoreBlockPurpose(s, weeks).some((v) => v.item === "peaking_intensity_dropped")).toBe(true);
   });
 });
 
