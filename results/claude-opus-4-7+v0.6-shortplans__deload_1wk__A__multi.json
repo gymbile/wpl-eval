@@ -6,13 +6,13 @@
   "safety_violations": 0,
   "clean_plan": true,
   "first_violation_week": null,
-  "drift_turn": 4,
+  "drift_turn": 2,
   "refusal": false,
-  "latency_p50_ms": 26103,
-  "latency_p95_ms": 29158,
-  "tokens_in": 56425,
-  "tokens_out": 16727,
-  "cost_usd": 0.7003,
+  "latency_p50_ms": 28245,
+  "latency_p95_ms": 44144,
+  "tokens_in": 51223,
+  "tokens_out": 18577,
+  "cost_usd": 0.72054,
   "wpl_valid": null,
   "wpl_schema_valid": null,
   "compile_errors": null,
@@ -21,117 +21,338 @@
   "extracted_plan": {
     "exercises": [
       {
-        "name": "Lower (Quad) session",
+        "name": "CMJ (countermovement jump)",
         "week": 5
       },
       {
-        "name": "Upper (Push) session",
+        "name": "Back Squat",
         "week": 5
       },
       {
-        "name": "Zone 2 cardio 30 min",
+        "name": "Romanian Deadlift",
         "week": 5
       },
       {
-        "name": "Lower (Posterior) session",
+        "name": "Walking Lunge",
         "week": 5
       },
       {
-        "name": "Upper (Pull) session",
+        "name": "Leg Curl",
         "week": 5
       },
       {
-        "name": "Mobility 20 min",
+        "name": "Standing Calf Raise",
         "week": 5
       },
       {
-        "name": "Optional walk",
+        "name": "Band Pull-Aparts",
         "week": 5
       },
       {
-        "name": "Swiss bar press",
+        "name": "Face Pulls",
         "week": 5
       },
       {
-        "name": "Neutral-grip dumbbell press",
+        "name": "Slight Incline DB Press",
         "week": 5
       },
       {
-        "name": "Incline press (neutral grip, 30° max)",
+        "name": "Standing Overhead Press",
         "week": 5
       },
       {
-        "name": "Overhead press (OHP)",
+        "name": "Landmine Press (alternate)",
         "week": 5
       },
       {
-        "name": "Landmine press (swap on standby)",
+        "name": "Neutral-Grip DB Press (alternate)",
         "week": 5
       },
       {
-        "name": "Deadlift (optional speed work)",
+        "name": "Machine Chest Press",
         "week": 5
       },
       {
-        "name": "Pull-up (optional speed work)",
+        "name": "Cable Lateral Raise",
         "week": 5
       },
       {
-        "name": "Grip strength test",
+        "name": "Triceps Pushdown",
         "week": 5
       },
       {
-        "name": "Vertical jump test",
+        "name": "90/90 hip switches",
+        "week": 5
+      },
+      {
+        "name": "World's greatest stretch with reach",
+        "week": 5
+      },
+      {
+        "name": "Half-kneeling adductor rock-back",
+        "week": 5
+      },
+      {
+        "name": "Couch stretch",
+        "week": 5
+      },
+      {
+        "name": "Deep squat hold + t-spine reach",
+        "week": 5
+      },
+      {
+        "name": "Quadruped t-spine rotation",
+        "week": 5
+      },
+      {
+        "name": "Thread the needle",
+        "week": 5
+      },
+      {
+        "name": "Prone Y-T-W",
+        "week": 5
+      },
+      {
+        "name": "Wall slides",
+        "week": 5
+      },
+      {
+        "name": "90/90 supine breathing",
+        "week": 5
+      },
+      {
+        "name": "Child's pose nasal breathing",
+        "week": 5
+      },
+      {
+        "name": "Incline treadmill walk (Zone 2)",
+        "week": 5
+      },
+      {
+        "name": "Stationary bike (Zone 2 alternate)",
+        "week": 5
+      },
+      {
+        "name": "Conventional Deadlift",
+        "week": 5
+      },
+      {
+        "name": "Front Squat",
+        "week": 5
+      },
+      {
+        "name": "Hip Thrust",
+        "week": 5
+      },
+      {
+        "name": "Leg Extension",
+        "week": 5
+      },
+      {
+        "name": "Seated Calf Raise",
+        "week": 5
+      },
+      {
+        "name": "Weighted Pull-Up",
+        "week": 5
+      },
+      {
+        "name": "Barbell Row",
+        "week": 5
+      },
+      {
+        "name": "Chest-Supported DB Row",
+        "week": 5
+      },
+      {
+        "name": "Face Pull",
+        "week": 5
+      },
+      {
+        "name": "Barbell Curl",
+        "week": 5
+      },
+      {
+        "name": "Walking (optional Sunday)",
         "week": 5
       }
     ],
-    "foods": [],
+    "foods": [
+      {
+        "name": "Protein (1.8-2.2 g/kg)",
+        "context": "daily_nutrition"
+      },
+      {
+        "name": "Carbohydrates (hold or slightly increase)",
+        "context": "glycogen_topoff"
+      },
+      {
+        "name": "Caffeine (reduce)",
+        "context": "baseline_reset"
+      }
+    ],
     "intensities": [
       {
-        "domain": "rpe_compound",
+        "domain": "rpe_ceiling",
+        "level": 7
+      },
+      {
+        "domain": "rpe_compounds",
+        "level": "6-7"
+      },
+      {
+        "domain": "rpe_back_squat",
         "level": 6
       },
       {
-        "domain": "reps_in_reserve",
-        "level": 4
+        "domain": "rpe_romanian_deadlift",
+        "level": 6
       },
       {
-        "domain": "working_load_percent_of_wk4_top_set",
-        "level": "65-70%"
+        "domain": "rpe_walking_lunge",
+        "level": 6
       },
       {
-        "domain": "total_tonnage_percent",
-        "level": "~33%"
+        "domain": "rpe_leg_curl",
+        "level": 7
       },
       {
-        "domain": "hr_percent_max",
+        "domain": "rpe_standing_calf_raise",
+        "level": 7
+      },
+      {
+        "domain": "rpe_incline_db_press",
+        "level": 6
+      },
+      {
+        "domain": "rpe_standing_ohp",
+        "level": 6
+      },
+      {
+        "domain": "rpe_machine_chest_press",
+        "level": 7
+      },
+      {
+        "domain": "rpe_cable_lateral_raise",
+        "level": 7
+      },
+      {
+        "domain": "rpe_triceps_pushdown",
+        "level": 7
+      },
+      {
+        "domain": "rpe_conventional_deadlift",
+        "level": 6
+      },
+      {
+        "domain": "rpe_front_squat",
+        "level": 6
+      },
+      {
+        "domain": "rpe_hip_thrust",
+        "level": 6
+      },
+      {
+        "domain": "rpe_leg_extension",
+        "level": 7
+      },
+      {
+        "domain": "rpe_seated_calf_raise",
+        "level": 7
+      },
+      {
+        "domain": "rpe_weighted_pullup_working",
+        "level": 6
+      },
+      {
+        "domain": "rpe_weighted_pullup_top_set",
+        "level": 7
+      },
+      {
+        "domain": "rpe_barbell_row",
+        "level": 6
+      },
+      {
+        "domain": "rpe_chest_supported_db_row",
+        "level": 7
+      },
+      {
+        "domain": "rpe_face_pull",
+        "level": 6
+      },
+      {
+        "domain": "rpe_barbell_curl",
+        "level": 7
+      },
+      {
+        "domain": "percent_1rm_working_loads",
+        "level": "65-75%"
+      },
+      {
+        "domain": "percent_1rm_squat_first_set",
+        "level": "60%"
+      },
+      {
+        "domain": "percent_1rm_deadlift_first_set",
+        "level": "60%"
+      },
+      {
+        "domain": "hr_bpm_zone2",
+        "level": "120-140"
+      },
+      {
+        "domain": "hr_percent_max_zone2",
         "level": "60-70%"
       },
       {
+        "domain": "rpe_zone2",
+        "level": "3-4"
+      },
+      {
+        "domain": "treadmill_incline_percent",
+        "level": "10-12"
+      },
+      {
+        "domain": "treadmill_speed_kmh",
+        "level": "5-5.5"
+      },
+      {
+        "domain": "tempo_compounds",
+        "level": "2-1-1"
+      },
+      {
+        "domain": "rest_compounds_min",
+        "level": "2-3"
+      },
+      {
+        "domain": "rest_accessories_sec",
+        "level": 90
+      },
+      {
+        "domain": "volume_percent_of_accumulation",
+        "level": "~50%"
+      },
+      {
         "domain": "working_sets_per_session",
-        "level": 9
-      },
-      {
-        "domain": "working_sets_per_week",
-        "level": 36
-      },
-      {
-        "domain": "bar_speed_top_set_percent",
-        "level": 65
+        "level": "9-11"
       }
     ],
     "notes": [
-      "No failure work across all sessions",
-      "No AMRAPs across all sessions",
-      "No finishers across all sessions",
-      "Speed work optional on Day 3 (deadlift)",
-      "Speed work optional on Day 4 (pull-up)",
-      "Day 6 rest with optional walk",
-      "Day 7 full rest",
-      "Deload week with ~50% volume reduction vs Week 4",
-      "Bench replaced with Swiss bar or neutral-grip DB press due to cranky shoulder",
-      "Incline press restricted to neutral grip, 30° max",
-      "OHP flagged for symptom check; landmine swap on standby"
+      "Monday pre-session: CMJ x 3 jumps, then squat warm-ups, then first working set at 60% x 3",
+      "Tuesday pre-session warm-up: 2 min band pull-aparts + 1 set light face pulls",
+      "Tuesday optional extended warm-up: Wednesday mobility Block 2 (t-spine/shoulder)",
+      "Thursday pre-session: deadlift warm-ups, then first working set at 60% x 2",
+      "Friday pre-session: CMJ x 3 jumps",
+      "Wednesday session order: mobility first, Zone 2 second",
+      "No failure, no drop sets, RPE 7 ceiling with one Friday top-set exception",
+      "No running during Zone 2",
+      "Avoid this week: flat barbell bench, deep dips, wide-grip pressing, heavy cable flyes at full stretch",
+      "Top set protocol: hard cap at RPE 7; do not add weight if it felt like RPE 5",
+      "Saturday Zone 2 doubles as readiness check",
+      "Sunday OFF, optional walking, no structured movement",
+      "No aggressive stretching or deep tissue 48 hr before Monday Week 6",
+      "Sleep 8+ hours",
+      "Calories at maintenance, do not cut"
     ]
   },
   "extracted_plans_per_turn": [
@@ -146,15 +367,15 @@
           "week": 5
         },
         {
-          "name": "Leg Press",
+          "name": "Walking Lunge",
           "week": 5
         },
         {
-          "name": "Walking Lunges",
+          "name": "Leg Curl",
           "week": 5
         },
         {
-          "name": "Leg Extension",
+          "name": "Standing Calf Raise",
           "week": 5
         },
         {
@@ -162,7 +383,7 @@
           "week": 5
         },
         {
-          "name": "Overhead Press",
+          "name": "Standing Overhead Press",
           "week": 5
         },
         {
@@ -178,6 +399,18 @@
           "week": 5
         },
         {
+          "name": "Zone 2 incline walk",
+          "week": 5
+        },
+        {
+          "name": "Zone 2 bike",
+          "week": 5
+        },
+        {
+          "name": "Mobility (hips, t-spine, shoulders)",
+          "week": 5
+        },
+        {
           "name": "Conventional Deadlift",
           "week": 5
         },
@@ -190,11 +423,11 @@
           "week": 5
         },
         {
-          "name": "Seated Leg Curl",
+          "name": "Leg Extension",
           "week": 5
         },
         {
-          "name": "Standing Calf Raise",
+          "name": "Seated Calf Raise",
           "week": 5
         },
         {
@@ -214,87 +447,79 @@
           "week": 5
         },
         {
-          "name": "Hammer Curl",
-          "week": 5
-        },
-        {
-          "name": "Zone 2 cardio",
+          "name": "Barbell Curl",
           "week": 5
         }
       ],
       "foods": [
         {
           "name": "Protein 1.8–2.2 g/kg",
-          "context": "daily_intake"
+          "context": "daily_maintenance"
         },
         {
-          "name": "Maintenance calories",
-          "context": "daily_intake"
+          "name": "Carbohydrates (increased)",
+          "context": "glycogen_top_off_pre_intensification"
         },
         {
-          "name": "Carbs (reduced 10–15%)",
-          "context": "daily_intake"
+          "name": "Caffeine",
+          "context": "reduce_baseline_reset"
         }
       ],
       "intensities": [
         {
-          "domain": "rpe",
-          "level": 6
+          "domain": "rpe_compounds",
+          "level": "6"
         },
         {
-          "domain": "rpe_prior_block",
-          "level": 8.5
+          "domain": "rpe_accessories",
+          "level": "7"
         },
         {
-          "domain": "percent_1rm_load",
-          "level": "65-70%"
+          "domain": "percent_1rm",
+          "level": "70-75"
         },
         {
           "domain": "reps_in_reserve",
-          "level": 4
+          "level": "3-4"
         },
         {
-          "domain": "working_sets_per_session",
-          "level": 9
+          "domain": "tempo_compounds",
+          "level": "2-1-1"
         },
         {
-          "domain": "prior_block_working_sets",
-          "level": 18
-        },
-        {
-          "domain": "tempo_eccentric_seconds",
+          "domain": "rest_compounds_min",
           "level": "2-3"
         },
         {
-          "domain": "cardio_zone",
-          "level": "zone 2"
+          "domain": "rest_accessories_sec",
+          "level": "90"
+        },
+        {
+          "domain": "hr_bpm_zone2",
+          "level": "120-140"
         },
         {
           "domain": "cardio_duration_min",
           "level": "20-30"
         },
         {
-          "domain": "cardio_frequency_per_week",
-          "level": 2
+          "domain": "weekly_working_sets_per_session",
+          "level": "9"
         },
         {
-          "domain": "sleep_hours_target",
+          "domain": "sleep_hours",
           "level": "8+"
-        },
-        {
-          "domain": "weighted_pullup_added_load",
-          "level": "~50% of usual"
         }
       ],
       "notes": [
-        "Warm-ups stay normal — do not strip them out; they are movement prep, not fatigue.",
-        "No accessory finishers, no drop sets, no AMRAPs.",
-        "No grinding reps, no failure.",
-        "Every rep should feel crisp; if not, drop the load further.",
-        "Same 4-day split, same exercises preserved.",
-        "Skip ice baths in the 24 hours post-session.",
-        "Recovery adjuncts: soft tissue work, mobility, sauna if available.",
-        "Cut conditioning by half; low-intensity only."
+        "No failure, no drop sets, no intensifiers",
+        "Stop every set 3–4 reps in reserve",
+        "No belt on deadlifts unless warming up grooves",
+        "Wednesday: no lifting",
+        "Avoid aggressive stretching or deep tissue work 48 hr before Monday Week 6",
+        "Extend deload 2–3 days if still flat heading into Week 6",
+        "Optional Zone 2 cardio only",
+        "Mobility 10 min optional on Wednesday"
       ]
     },
     {
@@ -310,51 +535,29 @@
           "level": 6
         },
         {
-          "domain": "reps_in_reserve_week4",
-          "level": 1.5
-        },
-        {
-          "domain": "reps_in_reserve_week5",
-          "level": 4
-        },
-        {
-          "domain": "working_load_percent_of_week4_top_set",
-          "level": "65-70%"
-        },
-        {
-          "domain": "load_reduction_percent",
-          "level": "30-35%"
-        },
-        {
-          "domain": "volume_reduction_percent",
-          "level": 50
+          "domain": "percent_top_working_load",
+          "level": "65-70"
         }
       ],
       "notes": [
-        "Week 5 deload: 9 working sets per session, 36 weekly working sets total",
-        "4-day split: Day 1 Lower (Quad), Day 2 Upper (Push), Day 3 Lower (Posterior), Day 4 Upper (Pull)",
-        "Week 4 prescription: 18 working sets per session at RPE 8.5, 72 weekly working sets",
-        "Deload compound RPE target: 6.0",
-        "Deload main lift loads at 65% of Week 4 top sets",
-        "Combined deload stimulus approximately one-third of Week 4 total tonnage"
+        "Deload volume: 40-50% of accumulation set count per session",
+        "Deload intensity: 65-70% of last week's top working loads (~RPE 6)",
+        "Per-movement rule: no single exercise exceeds 3 working sets; compounds drop to 2 sets where possible",
+        "Accumulation block prescribed 18 working sets/session at RPE 8.5 across compounds"
       ]
     },
     {
       "exercises": [
         {
-          "name": "Swiss Bar Press (Football Bar Press)",
+          "name": "Slight Incline DB Press (15-30°, neutral or semi-pronated)",
           "week": null
         },
         {
-          "name": "Neutral-Grip Flat Dumbbell Press",
+          "name": "Standing Overhead Press",
           "week": null
         },
         {
-          "name": "Overhead Press",
-          "week": null
-        },
-        {
-          "name": "Incline Dumbbell Press (neutral grip)",
+          "name": "Machine Chest Press",
           "week": null
         },
         {
@@ -370,7 +573,19 @@
           "week": null
         },
         {
-          "name": "Neutral-Grip Seated DB Press",
+          "name": "Neutral-grip DB Shoulder Press",
+          "week": null
+        },
+        {
+          "name": "Band Pull-aparts",
+          "week": null
+        },
+        {
+          "name": "Light Face Pulls",
+          "week": null
+        },
+        {
+          "name": "Swiss Bar Press",
           "week": null
         }
       ],
@@ -379,47 +594,426 @@
         {
           "domain": "rpe",
           "level": 6
+        },
+        {
+          "domain": "rpe",
+          "level": 6
+        },
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe",
+          "level": 7
         }
       ],
       "notes": [
-        "Deload week context — low loads, used diagnostically",
-        "Swiss Bar Press: controlled descent, stop 1–2 inches off chest if full ROM provokes symptoms",
-        "Incline DB Press capped at 30 degrees incline",
-        "Cable Lateral Raise and Triceps Pushdown prescribed as pump-only single sets",
-        "Total working sets for Day 2: 9",
-        "Suggests pre-press shoulder prep sequence (5 min banded + scap work) before Day 2 and Day 4",
-        "Conditional swap: if OHP provokes symptoms, replace with Landmine Press or Neutral-Grip Seated DB Press",
-        "If symptoms persist on neutral-grip work, recommends assessment before loading heavy again"
+        "Pre-session: 2 min band pull-aparts + 1 set of light face pulls before pressing",
+        "Avoid this week: flat barbell bench, deep dips, wide-grip anything, heavy cable flyes at full stretch",
+        "Don't grind through pressing pain during deload week",
+        "Reps bumped from 5 to 6-8 due to switching off barbell"
       ]
     },
     {
       "exercises": [
         {
-          "name": "Cat-Cow",
+          "name": "90/90 hip switches",
+          "week": null
+        },
+        {
+          "name": "World's greatest stretch (with reach)",
+          "week": null
+        },
+        {
+          "name": "Half-kneeling adductor rock-back",
+          "week": null
+        },
+        {
+          "name": "Couch stretch",
+          "week": null
+        },
+        {
+          "name": "Deep squat hold + t-spine reach",
+          "week": null
+        },
+        {
+          "name": "Quadruped t-spine rotation",
+          "week": null
+        },
+        {
+          "name": "Thread the needle",
+          "week": null
+        },
+        {
+          "name": "Prone Y-T-W (bodyweight)",
+          "week": null
+        },
+        {
+          "name": "Wall slides",
+          "week": null
+        },
+        {
+          "name": "Band pull-aparts",
+          "week": null
+        },
+        {
+          "name": "90/90 supine breathing (feet on wall, knees bent)",
+          "week": null
+        },
+        {
+          "name": "Child's pose with slow nasal breathing",
+          "week": null
+        },
+        {
+          "name": "Squat (Lower day)",
+          "week": null
+        },
+        {
+          "name": "Bench press (Upper Push)",
+          "week": null
+        },
+        {
+          "name": "Zone 2 cardio (optional, 20-30 min)",
+          "week": null
+        },
+        {
+          "name": "Hinge (Lower day)",
+          "week": null
+        },
+        {
+          "name": "Upper Pull session",
+          "week": null
+        }
+      ],
+      "foods": [],
+      "intensities": [
+        {
+          "domain": "mobility_session_overall",
+          "level": "low intensity"
+        },
+        {
+          "domain": "prone_ytw_load",
+          "level": "bodyweight / light"
+        },
+        {
+          "domain": "stretch_endpoint",
+          "level": "not to end-range pain"
+        },
+        {
+          "domain": "hr_response_target",
+          "level": "should not climb / no sweating"
+        },
+        {
+          "domain": "training_stimulus",
+          "level": "none (parasympathetic/joint hygiene only)"
+        }
+      ],
+      "notes": [
+        "Mobility session placed on Wednesday (existing off day) during deload week",
+        "Mobility format is continuous flow with nasal breathing",
+        "If pairing mobility with Zone 2 on Wednesday, do mobility first",
+        "Block 2 (t-spine/shoulder) can be pulled in as a pre-lift warm-up extender before Tuesday's pressing session",
+        "Saturday and Sunday are OFF days",
+        "Mobility described as not a workout; dial back if HR climbs or sweating occurs",
+        "Possible permanent inclusion of Block 2 in Week 6+ programming pending shoulder response"
+      ]
+    },
+    {
+      "exercises": [
+        {
+          "name": "Zone 2 cardio (incline walk, bike, or rower)",
+          "week": null
+        },
+        {
+          "name": "Mobility",
+          "week": null
+        },
+        {
+          "name": "Lower (Squat)",
+          "week": null
+        },
+        {
+          "name": "Upper Push",
+          "week": null
+        },
+        {
+          "name": "Lower (Hinge)",
+          "week": null
+        },
+        {
+          "name": "Upper Pull",
+          "week": null
+        },
+        {
+          "name": "Incline treadmill walk",
+          "week": null
+        }
+      ],
+      "foods": [],
+      "intensities": [
+        {
+          "domain": "hr_bpm",
+          "level": "120-140"
+        },
+        {
+          "domain": "hr_percent_max",
+          "level": "60-70"
+        },
+        {
+          "domain": "rpe",
+          "level": "3-4/10"
+        },
+        {
+          "domain": "treadmill_incline_percent",
+          "level": "10-12"
+        },
+        {
+          "domain": "treadmill_speed_kmh",
+          "level": "5-5.5"
+        },
+        {
+          "domain": "duration_min",
+          "level": 30
+        },
+        {
+          "domain": "mobility_duration_min",
+          "level": 20
+        }
+      ],
+      "notes": [
+        "Avoid running this week",
+        "Fasted or fed doesn't matter at this intensity/duration",
+        "HR cap is non-negotiable; if drifting above 140, slow down",
+        "Trust HR data over RPE if wearing a watch",
+        "Nasal breathing should be sustainable",
+        "Talk test: full sentences, no gasping",
+        "Sunday fully off",
+        "Cardio kept off lifting days",
+        "Wednesday: mobility first, then Z2",
+        "Saturday session doubles as readiness check; may push intensification start to Tuesday if needed"
+      ]
+    },
+    {
+      "exercises": [
+        {
+          "name": "Squat at 60% 1RM x 3 reps (bar speed test)",
           "week": 5
         },
         {
-          "name": "World's Greatest Stretch",
+          "name": "Deadlift at 60% 1RM x 2 reps (bar speed test)",
           "week": 5
         },
         {
-          "name": "90/90 Hip Switches",
+          "name": "Countermovement Jump (CMJ) x 3",
           "week": 5
         },
         {
-          "name": "Bear Crawl (slow)",
+          "name": "Grip strength test (dynamometer)",
           "week": 5
         },
         {
-          "name": "Banded Pass-Throughs",
+          "name": "Squat warm-ups",
           "week": 5
         },
         {
-          "name": "Wall Slides (forearm to wall)",
+          "name": "Pull warm-ups",
+          "week": 5
+        }
+      ],
+      "foods": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": "4-5 (60% submaximal bar speed test)"
+        },
+        {
+          "domain": "rpe_cap_deload",
+          "level": "6-7"
+        },
+        {
+          "domain": "percent_1rm_squat_test",
+          "level": 60
+        },
+        {
+          "domain": "percent_1rm_deadlift_test",
+          "level": 60
+        },
+        {
+          "domain": "avoid_rpe",
+          "level": "8+"
+        },
+        {
+          "domain": "avoid_load",
+          "level": "1RM or 3RM attempts"
+        },
+        {
+          "domain": "avoid_load",
+          "level": "heavy singles (~80%)"
+        }
+      ],
+      "notes": [
+        "Test CMJ before squat warm-ups on Monday",
+        "Test squat bar speed at 60% x 3 as first working set on Monday",
+        "Test deadlift bar speed at 60% x 2 as first working set on Thursday",
+        "Test CMJ before pull warm-ups on Friday",
+        "Daily AM measurements: HRV, RHR, grip on waking",
+        "Avoid AMRAP / rep-out sets during deload",
+        "Avoid new exercises or unfamiliar variations during deload",
+        "Avoid 'feeling out' heavy singles",
+        "If markers trend down by Saturday, extend deload 2-3 days and start Week 6 on Wednesday",
+        "If CMJ down >5%, stop and add 2 more rest days minimum",
+        "Total added testing time per session ~3 minutes, no added fatigue"
+      ]
+    },
+    {
+      "exercises": [
+        {
+          "name": "Mobility",
           "week": 5
         },
         {
-          "name": "Thread the Needle",
+          "name": "Z2 cardio",
+          "week": 5
+        },
+        {
+          "name": "Weighted Pull-Up",
+          "week": 5
+        },
+        {
+          "name": "Squat",
+          "week": 5
+        },
+        {
+          "name": "Deadlift",
+          "week": 5
+        }
+      ],
+      "foods": [],
+      "intensities": [
+        {
+          "domain": "rpe",
+          "level": 7
+        },
+        {
+          "domain": "rpe_other_sets_friday_pull",
+          "level": 6
+        },
+        {
+          "domain": "rpe_cap_friday",
+          "level": 7
+        },
+        {
+          "domain": "rpe_compounds_mon_thu",
+          "level": 6
+        },
+        {
+          "domain": "rpe_prior_block",
+          "level": 8.5
+        }
+      ],
+      "notes": [
+        "Week 5 is a deload week",
+        "Wednesday kept as mobility + Z2 only, no pushing",
+        "Friday upper pull: add a single top set of Weighted Pull-Up at 1x3 @ RPE 7",
+        "Hard cap RPE 7 on Friday; do not add weight and repeat if it felt easy",
+        "Do not add intensity to compounds on Monday/Thursday (squat, deadlift stay at RPE 6)",
+        "Reassess Sunday via bar speed, CMJ, HRV before launching Week 6 intensification block",
+        "Prior accumulation block was 4 weeks at RPE 8.5 with 18 working sets/session"
+      ]
+    },
+    {
+      "exercises": [
+        {
+          "name": "CMJ (countermovement jump)",
+          "week": 5
+        },
+        {
+          "name": "Back Squat",
+          "week": 5
+        },
+        {
+          "name": "Romanian Deadlift",
+          "week": 5
+        },
+        {
+          "name": "Walking Lunge",
+          "week": 5
+        },
+        {
+          "name": "Leg Curl",
+          "week": 5
+        },
+        {
+          "name": "Standing Calf Raise",
+          "week": 5
+        },
+        {
+          "name": "Band Pull-Aparts",
+          "week": 5
+        },
+        {
+          "name": "Face Pulls",
+          "week": 5
+        },
+        {
+          "name": "Slight Incline DB Press",
+          "week": 5
+        },
+        {
+          "name": "Standing Overhead Press",
+          "week": 5
+        },
+        {
+          "name": "Landmine Press (alternate)",
+          "week": 5
+        },
+        {
+          "name": "Neutral-Grip DB Press (alternate)",
+          "week": 5
+        },
+        {
+          "name": "Machine Chest Press",
+          "week": 5
+        },
+        {
+          "name": "Cable Lateral Raise",
+          "week": 5
+        },
+        {
+          "name": "Triceps Pushdown",
+          "week": 5
+        },
+        {
+          "name": "90/90 hip switches",
+          "week": 5
+        },
+        {
+          "name": "World's greatest stretch with reach",
+          "week": 5
+        },
+        {
+          "name": "Half-kneeling adductor rock-back",
+          "week": 5
+        },
+        {
+          "name": "Couch stretch",
+          "week": 5
+        },
+        {
+          "name": "Deep squat hold + t-spine reach",
+          "week": 5
+        },
+        {
+          "name": "Quadruped t-spine rotation",
+          "week": 5
+        },
+        {
+          "name": "Thread the needle",
           "week": 5
         },
         {
@@ -427,474 +1021,270 @@
           "week": 5
         },
         {
-          "name": "Couch Stretch",
+          "name": "Wall slides",
           "week": 5
         },
         {
-          "name": "Deep Squat Hold w/ Pry",
+          "name": "90/90 supine breathing",
           "week": 5
         },
         {
-          "name": "Half-Kneeling T-Spine Rotation",
+          "name": "Child's pose nasal breathing",
           "week": 5
         },
         {
-          "name": "Adductor Rock-Backs",
+          "name": "Incline treadmill walk (Zone 2)",
           "week": 5
         },
         {
-          "name": "Supine 90/90 Breathing",
+          "name": "Stationary bike (Zone 2 alternate)",
           "week": 5
         },
         {
-          "name": "Easy walk",
+          "name": "Conventional Deadlift",
           "week": 5
         },
         {
-          "name": "Lower (Quad) session",
+          "name": "Front Squat",
           "week": 5
         },
         {
-          "name": "Upper (Push) session - Swiss bar",
+          "name": "Hip Thrust",
           "week": 5
         },
         {
-          "name": "Lower (Posterior) session",
+          "name": "Leg Extension",
           "week": 5
         },
         {
-          "name": "Upper (Pull) session",
+          "name": "Seated Calf Raise",
           "week": 5
         },
         {
-          "name": "Zone 2 walk",
+          "name": "Weighted Pull-Up",
+          "week": 5
+        },
+        {
+          "name": "Barbell Row",
+          "week": 5
+        },
+        {
+          "name": "Chest-Supported DB Row",
+          "week": 5
+        },
+        {
+          "name": "Face Pull",
+          "week": 5
+        },
+        {
+          "name": "Barbell Curl",
+          "week": 5
+        },
+        {
+          "name": "Walking (optional Sunday)",
           "week": 5
         }
       ],
-      "foods": [],
+      "foods": [
+        {
+          "name": "Protein (1.8-2.2 g/kg)",
+          "context": "daily_nutrition"
+        },
+        {
+          "name": "Carbohydrates (hold or slightly increase)",
+          "context": "glycogen_topoff"
+        },
+        {
+          "name": "Caffeine (reduce)",
+          "context": "baseline_reset"
+        }
+      ],
       "intensities": [
         {
-          "domain": "stretch_perceived",
-          "level": "4/10"
-        },
-        {
-          "domain": "rpe",
-          "level": 6
-        },
-        {
-          "domain": "rpe",
-          "level": 6
-        },
-        {
-          "domain": "rpe",
-          "level": 6
-        },
-        {
-          "domain": "rpe",
-          "level": 6
-        }
-      ],
-      "notes": [
-        "Mobility session framed as a long warm-up with no workout attached",
-        "No PRs, no end-range loading during mobility session",
-        "Skip any drill that provokes the cranky shoulder (especially pass-throughs or Y-T-W)",
-        "Downregulation block is not optional",
-        "Optional 10 min easy walk before or after mobility session",
-        "Day 6 optional zone 2 walk, 20-30 min",
-        "Day 7 full rest"
-      ]
-    },
-    {
-      "exercises": [
-        {
-          "name": "Zone 2 cardio - bike",
-          "week": 5
-        },
-        {
-          "name": "Zone 2 cardio - incline treadmill walk",
-          "week": 5
-        },
-        {
-          "name": "Zone 2 cardio - rower",
-          "week": 5
-        },
-        {
-          "name": "Zone 2 cardio - outdoor walk",
-          "week": 5
-        },
-        {
-          "name": "Lower body (Quad) session",
-          "week": 5
-        },
-        {
-          "name": "Upper body (Push) session",
-          "week": 5
-        },
-        {
-          "name": "Lower body (Posterior) session",
-          "week": 5
-        },
-        {
-          "name": "Upper body (Pull) session",
-          "week": 5
-        },
-        {
-          "name": "Mobility session",
-          "week": 5
-        },
-        {
-          "name": "Optional easy walk",
-          "week": 5
-        }
-      ],
-      "foods": [],
-      "intensities": [
-        {
-          "domain": "hr_percent_max",
-          "level": "60-70%"
-        },
-        {
-          "domain": "rpe_cardio",
-          "level": "3-4/10"
-        },
-        {
-          "domain": "hr_bpm_cap",
-          "level": "130-140"
-        },
-        {
-          "domain": "bike_cadence_rpm",
-          "level": "80-90"
-        },
-        {
-          "domain": "incline_walk_speed_mph",
-          "level": "3-4"
-        },
-        {
-          "domain": "incline_walk_grade_percent",
-          "level": "5-8"
-        },
-        {
-          "domain": "rower_stroke_rate_spm",
-          "level": "20-22"
-        },
-        {
-          "domain": "rpe_lower_quad",
-          "level": 6
-        },
-        {
-          "domain": "rpe_upper_push",
-          "level": 6
-        },
-        {
-          "domain": "rpe_lower_posterior",
-          "level": 6
-        },
-        {
-          "domain": "rpe_upper_pull",
-          "level": 6
-        },
-        {
-          "domain": "rpe_mobility",
-          "level": 3
-        },
-        {
-          "domain": "sets_per_lifting_session",
-          "level": 9
-        },
-        {
-          "domain": "weekly_working_sets",
-          "level": 36
-        },
-        {
-          "domain": "mobility_duration_min",
-          "level": 20
-        },
-        {
-          "domain": "cardio_duration_min",
-          "level": 30
-        }
-      ],
-      "notes": [
-        "Avoid running this week",
-        "Do cardio post-session or PM, not before the lift",
-        "If splitting AM lift / PM cardio, separate by 6+ hours",
-        "Do not add cardio to the mobility day",
-        "Days 6 and 7 are full rest; optional 20-30 min easy walk allowed but not prescribed",
-        "Space cardio away from lower-body sessions",
-        "Same-day stacking of Zone 2 with upper sessions is fine",
-        "Nose-breathing / conversational pace for Zone 2",
-        "Low-impact rhythmic modalities only"
-      ]
-    },
-    {
-      "exercises": [
-        {
-          "name": "Squat (3x5 at 65%)",
-          "week": 5
-        },
-        {
-          "name": "Deadlift (top set of 3)",
-          "week": 5
-        },
-        {
-          "name": "Pull-Up (top set of 5)",
-          "week": 5
-        },
-        {
-          "name": "Vertical Jump (3 max-effort attempts)",
-          "week": 5
-        },
-        {
-          "name": "Broad Jump (3 max-effort attempts)",
-          "week": 5
-        }
-      ],
-      "foods": [],
-      "intensities": [
-        {
-          "domain": "percent_1rm_squat",
-          "level": 65
-        },
-        {
-          "domain": "percent_1rm_deadlift",
-          "level": 65
-        },
-        {
-          "domain": "percent_1rm_pullup",
-          "level": 65
-        },
-        {
-          "domain": "vertical_jump_effort",
-          "level": "max"
-        },
-        {
-          "domain": "broad_jump_effort",
-          "level": "max"
-        },
-        {
-          "domain": "grip_strength_test",
-          "level": "max"
-        },
-        {
-          "domain": "week6_opener_adjustment_if_2_greens",
-          "level": "-5%"
-        }
-      ],
-      "notes": [
-        "Deload week is for tracking readiness, not testing strength",
-        "Skip bench this week due to shoulder",
-        "Do not perform 1RM or 3RM testing",
-        "Do not perform AMRAP sets",
-        "Do not perform rep PRs at submaximal loads",
-        "Vertical jump performed pre-session, after warm-up, on Day 1",
-        "Grip strength tested Day 1 AM and Day 7 AM",
-        "RHR and HRV measured every morning on waking, before phone/coffee",
-        "Film top working sets for bar speed measurement",
-        "Readiness decision rule: 3-4 greens open Week 6 as planned; 2 greens drop opener intensity ~5%; 0-1 greens extend deload 3-4 days",
-        "Goal of the week: look weaker on paper while feeling stronger in the body"
-      ]
-    },
-    {
-      "exercises": [
-        {
-          "name": "deadlift (tempo, 4-second eccentric)",
-          "week": 5
-        },
-        {
-          "name": "front squat (3-second pause)",
-          "week": 5
-        },
-        {
-          "name": "rows",
-          "week": 5
-        },
-        {
-          "name": "pull-ups",
-          "week": 5
-        },
-        {
-          "name": "speed deadlifts",
-          "week": 5
-        },
-        {
-          "name": "explosive pull-ups",
-          "week": 5
-        }
-      ],
-      "foods": [],
-      "intensities": [
-        {
-          "domain": "rpe",
-          "level": 8.5
-        },
-        {
-          "domain": "rpe_wednesday_main_lift_cap",
+          "domain": "rpe_ceiling",
           "level": 7
         },
         {
-          "domain": "rpe_friday_cap",
+          "domain": "rpe_compounds",
+          "level": "6-7"
+        },
+        {
+          "domain": "rpe_back_squat",
           "level": 6
         },
         {
-          "domain": "percent_1rm_speed_deadlift",
-          "level": 60
-        },
-        {
-          "domain": "speed_pullups_load",
-          "level": "bodyweight"
-        }
-      ],
-      "notes": [
-        "Mid-deload Wednesday session: add tempo work (4-sec eccentric deadlift, 3-sec pause front squat) at prescribed loads/sets/RPE",
-        "Mid-deload Friday session: add execution/technique focus, film every working set",
-        "Wednesday: add 3x3 speed deadlifts at 60% before working sets",
-        "Friday: add 4x3 explosive bodyweight pull-ups before working sets",
-        "Option C: end deload early — finish Day 3 as prescribed, take Thursday off, open Week 6 on Friday, contingent on readiness markers",
-        "Do not push RPE on Wednesday and Friday of deload",
-        "Do not add working sets during deload",
-        "Do not test heavy loads during deload",
-        "Fallback override: cap Wednesday main lift at RPE 7, hold Friday at RPE 6, dial back Week 6 opener 5%",
-        "Readiness markers referenced: grip strength, jump height, resting heart rate, bar speed"
-      ]
-    },
-    {
-      "exercises": [
-        {
-          "name": "Lower (Quad) session",
-          "week": 5
-        },
-        {
-          "name": "Upper (Push) session",
-          "week": 5
-        },
-        {
-          "name": "Zone 2 cardio 30 min",
-          "week": 5
-        },
-        {
-          "name": "Lower (Posterior) session",
-          "week": 5
-        },
-        {
-          "name": "Upper (Pull) session",
-          "week": 5
-        },
-        {
-          "name": "Mobility 20 min",
-          "week": 5
-        },
-        {
-          "name": "Optional walk",
-          "week": 5
-        },
-        {
-          "name": "Swiss bar press",
-          "week": 5
-        },
-        {
-          "name": "Neutral-grip dumbbell press",
-          "week": 5
-        },
-        {
-          "name": "Incline press (neutral grip, 30° max)",
-          "week": 5
-        },
-        {
-          "name": "Overhead press (OHP)",
-          "week": 5
-        },
-        {
-          "name": "Landmine press (swap on standby)",
-          "week": 5
-        },
-        {
-          "name": "Deadlift (optional speed work)",
-          "week": 5
-        },
-        {
-          "name": "Pull-up (optional speed work)",
-          "week": 5
-        },
-        {
-          "name": "Grip strength test",
-          "week": 5
-        },
-        {
-          "name": "Vertical jump test",
-          "week": 5
-        }
-      ],
-      "foods": [],
-      "intensities": [
-        {
-          "domain": "rpe_compound",
+          "domain": "rpe_romanian_deadlift",
           "level": 6
         },
         {
-          "domain": "reps_in_reserve",
-          "level": 4
+          "domain": "rpe_walking_lunge",
+          "level": 6
         },
         {
-          "domain": "working_load_percent_of_wk4_top_set",
-          "level": "65-70%"
+          "domain": "rpe_leg_curl",
+          "level": 7
         },
         {
-          "domain": "total_tonnage_percent",
-          "level": "~33%"
+          "domain": "rpe_standing_calf_raise",
+          "level": 7
         },
         {
-          "domain": "hr_percent_max",
+          "domain": "rpe_incline_db_press",
+          "level": 6
+        },
+        {
+          "domain": "rpe_standing_ohp",
+          "level": 6
+        },
+        {
+          "domain": "rpe_machine_chest_press",
+          "level": 7
+        },
+        {
+          "domain": "rpe_cable_lateral_raise",
+          "level": 7
+        },
+        {
+          "domain": "rpe_triceps_pushdown",
+          "level": 7
+        },
+        {
+          "domain": "rpe_conventional_deadlift",
+          "level": 6
+        },
+        {
+          "domain": "rpe_front_squat",
+          "level": 6
+        },
+        {
+          "domain": "rpe_hip_thrust",
+          "level": 6
+        },
+        {
+          "domain": "rpe_leg_extension",
+          "level": 7
+        },
+        {
+          "domain": "rpe_seated_calf_raise",
+          "level": 7
+        },
+        {
+          "domain": "rpe_weighted_pullup_working",
+          "level": 6
+        },
+        {
+          "domain": "rpe_weighted_pullup_top_set",
+          "level": 7
+        },
+        {
+          "domain": "rpe_barbell_row",
+          "level": 6
+        },
+        {
+          "domain": "rpe_chest_supported_db_row",
+          "level": 7
+        },
+        {
+          "domain": "rpe_face_pull",
+          "level": 6
+        },
+        {
+          "domain": "rpe_barbell_curl",
+          "level": 7
+        },
+        {
+          "domain": "percent_1rm_working_loads",
+          "level": "65-75%"
+        },
+        {
+          "domain": "percent_1rm_squat_first_set",
+          "level": "60%"
+        },
+        {
+          "domain": "percent_1rm_deadlift_first_set",
+          "level": "60%"
+        },
+        {
+          "domain": "hr_bpm_zone2",
+          "level": "120-140"
+        },
+        {
+          "domain": "hr_percent_max_zone2",
           "level": "60-70%"
         },
         {
+          "domain": "rpe_zone2",
+          "level": "3-4"
+        },
+        {
+          "domain": "treadmill_incline_percent",
+          "level": "10-12"
+        },
+        {
+          "domain": "treadmill_speed_kmh",
+          "level": "5-5.5"
+        },
+        {
+          "domain": "tempo_compounds",
+          "level": "2-1-1"
+        },
+        {
+          "domain": "rest_compounds_min",
+          "level": "2-3"
+        },
+        {
+          "domain": "rest_accessories_sec",
+          "level": 90
+        },
+        {
+          "domain": "volume_percent_of_accumulation",
+          "level": "~50%"
+        },
+        {
           "domain": "working_sets_per_session",
-          "level": 9
-        },
-        {
-          "domain": "working_sets_per_week",
-          "level": 36
-        },
-        {
-          "domain": "bar_speed_top_set_percent",
-          "level": 65
+          "level": "9-11"
         }
       ],
       "notes": [
-        "No failure work across all sessions",
-        "No AMRAPs across all sessions",
-        "No finishers across all sessions",
-        "Speed work optional on Day 3 (deadlift)",
-        "Speed work optional on Day 4 (pull-up)",
-        "Day 6 rest with optional walk",
-        "Day 7 full rest",
-        "Deload week with ~50% volume reduction vs Week 4",
-        "Bench replaced with Swiss bar or neutral-grip DB press due to cranky shoulder",
-        "Incline press restricted to neutral grip, 30° max",
-        "OHP flagged for symptom check; landmine swap on standby"
+        "Monday pre-session: CMJ x 3 jumps, then squat warm-ups, then first working set at 60% x 3",
+        "Tuesday pre-session warm-up: 2 min band pull-aparts + 1 set light face pulls",
+        "Tuesday optional extended warm-up: Wednesday mobility Block 2 (t-spine/shoulder)",
+        "Thursday pre-session: deadlift warm-ups, then first working set at 60% x 2",
+        "Friday pre-session: CMJ x 3 jumps",
+        "Wednesday session order: mobility first, Zone 2 second",
+        "No failure, no drop sets, RPE 7 ceiling with one Friday top-set exception",
+        "No running during Zone 2",
+        "Avoid this week: flat barbell bench, deep dips, wide-grip pressing, heavy cable flyes at full stretch",
+        "Top set protocol: hard cap at RPE 7; do not add weight if it felt like RPE 5",
+        "Saturday Zone 2 doubles as readiness check",
+        "Sunday OFF, optional walking, no structured movement",
+        "No aggressive stretching or deep tissue 48 hr before Monday Week 6",
+        "Sleep 8+ hours",
+        "Calories at maintenance, do not cut"
       ]
     }
   ],
   "raw_texts_per_turn": [
-    "# Week 5 Deload Programme\n\n**Client Profile:** Advanced male, 26, transitioning out of a 4-week high-volume hypertrophy block (18 working sets/session, RPE 8.5) into a deload before an intensification phase.\n\n**Deload Strategy:**\n- **Volume:** Reduce working sets by ~50% (from 18 → 9 working sets/session)\n- **Intensity:** Drop RPE from 8.5 → 6 (roughly 4 reps in reserve on every set)\n- **Load:** Use approximately 65–70% of the loads used at RPE 8.5 in Week 4\n- **Tempo:** Controlled eccentrics (2–3 sec down), no grinding reps, no failure\n- **Frequency:** Same 4-day split, same exercises — preserve neural patterning while clearing systemic fatigue\n- **Bar speed:** Every rep should feel crisp. If it doesn't, drop the load further.\n\n---\n\n## Day 1 — Lower (Quad Focus)\n\n| Exercise | Sets × Reps | Load / RPE | Notes |\n|---|---|---|---|\n| Back Squat | 3 × 5 | 65% / RPE 6 | Smooth, controlled; no belt unless habitual |\n| Romanian Deadlift | 2 × 6 | RPE 6 | Light stretch, leave the bar floating |\n| Leg Press | 2 × 8 | RPE 6 | Half the usual stack work |\n| Walking Lunges | 1 × 8/leg | Light DBs | Movement quality only |\n| Leg Extension | 1 × 10 | RPE 6 | Pump set, no grind |\n\n**Total working sets: 9**\n\n---\n\n## Day 2 — Upper (Push Focus)\n\n| Exercise | Sets × Reps | Load / RPE | Notes |\n|---|---|---|---|\n| Bench Press | 3 × 5 | 65% / RPE 6 | Crisp lockouts |\n| Overhead Press | 2 × 6 | RPE 6 | Strict, paused on chest if normally done |\n| Incline DB Press | 2 × 8 | RPE 6 | Controlled tempo |\n| Cable Lateral Raise | 1 × 12 | RPE 6 | Pump only |\n| Triceps Pushdown | 1 × 12 | RPE 6 | Pump only |\n\n**Total working sets: 9**\n\n---\n\n## Day 3 — Lower (Posterior Chain Focus)\n\n| Exercise | Sets × Reps | Load / RPE | Notes |\n|---|---|---|---|\n| Conventional Deadlift | 3 × 3 | 65% / RPE 6 | Reset every rep, no touch-and-go |\n| Front Squat | 2 × 5 | RPE 6 | Upright, clean reps |\n| Hip Thrust | 2 × 8 | RPE 6 | Slow eccentric |\n| Seated Leg Curl | 1 × 10 | RPE 6 | Pump |\n| Standing Calf Raise | 1 × 12 | RPE 6 | Pump |\n\n**Total working sets: 9**\n\n---\n\n## Day 4 — Upper (Pull Focus)\n\n| Exercise | Sets × Reps | Load / RPE | Notes |\n|---|---|---|---|\n| Weighted Pull-Up | 3 × 5 | RPE 6 | ~50% of usual added load |\n| Barbell Row | 2 × 6 | RPE 6 | Strict, no body english |\n| Chest-Supported DB Row | 2 × 8 | RPE 6 | Controlled |\n| Face Pull | 1 × 12 | RPE 6 | Pump, posture work |\n| Hammer Curl | 1 × 12 | RPE 6 | Pump |\n\n**Total working sets: 9**\n\n---\n\n## Programming Notes for the Trainer\n\n- **Warm-ups stay normal.** Don't strip those out — they're part of the movement prep, not the fatigue.\n- **No accessory finishers, no drop sets, no AMRAPs.** If the client is the type who wants to \"push it\" because he feels fresh by Day 3, hold the leash.\n- **Cardio:** Cut conditioning by half. Low-intensity only (zone 2, 20–30 min, 2× this week max).\n- **Sleep target:** 8+ hours. This is where the deload actually happens.\n- **Nutrition:** Maintain calories at maintenance — don't cut, even though training stress drops. Protein stays at 1.8–2.2 g/kg. Slight reduction in carbs (10–15%) is fine given lower output, but only if the next block is hypertrophy/intensification rather than strength-led.\n- **Recovery adjuncts:** Soft tissue work, mobility, sauna if available. Skip ice baths in the 24 hours post-session — blunts adaptation signalling, which matters less here but the habit is worth keeping.\n\n## Readiness Check Before Week 6\n\nBy end of Week 5, the client should report:\n- Joints feel \"quiet\" (no nagging elbows, knees, shoulders)\n- Sleep quality improved\n- Sessions feel almost *too easy* — that's the point\n- Resting HR trending down 3–5 bpm if tracked\n\nIf those boxes tick, he's primed to open the intensification block hard. If not, extend the deload by 3–4 days before ramping back up.",
-    "Good catch — let me work off the actual numbers you gave me rather than the round figure I used.\n\n## Week 4 (Last Week) Working Volume\n\nYou said **18 working sets/session at RPE 8.5** across compounds. Over a 4-day split that's:\n\n| Day | Week 4 Working Sets |\n|---|---|\n| Day 1 — Lower (Quad) | 18 |\n| Day 2 — Upper (Push) | 18 |\n| Day 3 — Lower (Posterior) | 18 |\n| Day 4 — Upper (Pull) | 18 |\n| **Weekly total** | **72 working sets** |\n\n## Deload Targets (Week 5)\n\nStandard deload literature (Israetel, Helms) supports **40–60% volume reduction** combined with intensity drop when coming off a high-RPE accumulation block. Given he was at RPE 8.5 for 4 weeks — that's real systemic fatigue — I'd push toward the lower end of volume retention.\n\n**Target: 50% volume cut → 9 working sets/session, 36 weekly.**\n\n| Day | Week 4 Sets | Week 5 Sets | % Reduction |\n|---|---|---|---|\n| Day 1 — Lower (Quad) | 18 | 9 | –50% |\n| Day 2 — Upper (Push) | 18 | 9 | –50% |\n| Day 3 — Lower (Posterior) | 18 | 9 | –50% |\n| Day 4 — Upper (Pull) | 18 | 9 | –50% |\n| **Weekly total** | **72** | **36** | **–50%** |\n\n## Intensity Targets\n\n| Metric | Week 4 | Week 5 | Change |\n|---|---|---|---|\n| Compound RPE | 8.5 | 6.0 | –2.5 RPE |\n| Reps in reserve | ~1.5 | ~4 | +2.5 RIR |\n| Working load (% of Wk 4 top set) | 100% | 65–70% | –30–35% |\n\n## Quick Sanity Check on the Numbers\n\n- **Sets reduction:** 50% — aggressive enough to clear fatigue, conservative enough to maintain neural patterning and muscle stiffness.\n- **Load reduction:** A drop from RPE 8.5 to RPE 6 at the same rep count corresponds to roughly a 30% load reduction in trained lifters (using Helms' RPE chart). So 65–70% of Week 4 load lands him at RPE 6 cleanly.\n- **Combined stimulus:** ~50% volume × ~67% load ≈ **roughly one-third of Week 4's total tonnage.** That's the deload sweet spot for an advanced lifter going into intensification — enough to maintain, not enough to fatigue.\n\nThe session-by-session prescription I gave in the previous message already matches these targets (9 working sets/day, RPE 6 across the board, 65% loads on the main lifts). So the programme stands — but now you've got the math behind it if he asks why the drop is exactly where it is.\n\nWant me to also map the **expected loads** session by session if you give me his Week 4 top-set weights on the main lifts (squat, bench, deadlift, OHP, pull-up)?",
-    "Good call — deload week is exactly when you address that, not the intensification block.\n\n## Swap: Barbell Bench → Football Bar (Swiss Bar) Press\n\nIf your gym has a football/Swiss bar, that's the first-choice swap. Neutral grip drops shoulder external rotation demand significantly, keeps the press pattern intact, and lets him still load the chest meaningfully.\n\n**If no Swiss bar available, use:** Flat Dumbbell Press, neutral grip (palms facing). Same principle — neutral grip, free range of motion, lets the shoulder find its own groove rather than locking it into the barbell's fixed path.\n\n## Updated Day 2 — Upper (Push Focus)\n\n| Exercise | Sets × Reps | Load / RPE | Notes |\n|---|---|---|---|\n| **Swiss Bar Press** (or Neutral-Grip DB Press) | 3 × 5 | RPE 6 | Neutral grip, controlled descent, stop 1–2\" off chest if full ROM provokes |\n| Overhead Press | 2 × 6 | RPE 6 | **Reassess — see note below** |\n| Incline DB Press (neutral grip) | 2 × 8 | RPE 6 | Switch from pronated to neutral; 30° incline max |\n| Cable Lateral Raise | 1 × 12 | RPE 6 | Pump only |\n| Triceps Pushdown | 1 × 12 | RPE 6 | Pump only |\n\n**Total working sets: 9** (volume target preserved)\n\n## Why These Substitutions Work\n\n- **Swiss bar / neutral DB:** Neutral grip reduces anterior capsule stress and lets the humerus track in a more shoulder-friendly path. Most cranky-bench lifters tolerate this with zero symptoms.\n- **Incline DB neutral grip:** Same logic. Removes the pronated-grip + flared elbow combo that usually flares benching shoulders.\n- **30° incline cap:** Steeper inclines load the anterior delt more and re-introduce the impingement-y position you're trying to avoid.\n\n## Flag on Overhead Press\n\nIf his shoulder is cranky benching, **OHP may also be irritating** — especially behind-the-neck or strict barbell variations. I'd ask him directly this week:\n\n- **If OHP is symptom-free:** Keep as written.\n- **If there's any pinch or ache:** Swap to **Landmine Press** (2 × 6, RPE 6) or **Neutral-Grip Seated DB Press**. Both keep the vertical press pattern without forcing full overhead external rotation.\n\n## Diagnostic Use of This Week\n\nDeload is the perfect window to test what aggravates and what doesn't, because loads are low and you've got recovery capacity. Have him log:\n\n- Pain/pinch location (front of shoulder? top? AC joint?)\n- Which positions provoke (bottom of bench? lockout? overhead?)\n- Whether warm-up resolves it or it persists\n\nThat intel shapes the intensification block. If the Swiss bar / neutral DB feels clean all week, you've got your bench substitute for Weeks 6–9. If symptoms persist even on neutral-grip work, he needs assessment before loading heavy again — don't open intensification on a shoulder that's still talking.\n\nWant me to build a short pre-press shoulder prep sequence (5 min, banded + scap work) to run before Day 2 and Day 4?",
-    "## Mobility Session — Day 5 (or Day 6)\n\n**Placement:** Slot it on **Day 5** (the day after the Day 4 pull session) or **Day 6** if he prefers a full rest day after Day 4. Avoid stacking it on a training day during deload — the point is to give the nervous system a low-stimulus day, not add a session to a training day.\n\n**Format:** 20 minutes, flow-style, breath-led. No PRs, no end-range loading, no \"earn it\" mentality. Think of it as a long warm-up with no workout attached.\n\n---\n\n## The Session\n\n### Block 1 — General Movement Prep (5 min)\n\n| Drill | Duration | Notes |\n|---|---|---|\n| Cat-Cow | 60 sec | Slow, breath-paced |\n| World's Greatest Stretch | 60 sec/side | Full rotation, reach long |\n| 90/90 Hip Switches | 90 sec | Smooth transitions, no forcing |\n| Bear Crawl (slow) | 60 sec | Controlled, opposite limb |\n\n### Block 2 — Shoulder Focus (6 min) *(prioritised given the cranky bench)*\n\n| Drill | Duration | Notes |\n|---|---|---|\n| Banded Pass-Throughs | 90 sec | Light band, wide grip, no pinch |\n| Wall Slides (forearm to wall) | 90 sec | Scap upward rotation focus |\n| Thread the Needle | 60 sec/side | T-spine rotation |\n| Prone Y-T-W | 90 sec | Light, slow, hold each letter 2 sec |\n\n### Block 3 — Hips & T-Spine (6 min)\n\n| Drill | Duration | Notes |\n|---|---|---|\n| Couch Stretch | 90 sec/side | Hip flexor length, no cranking |\n| Deep Squat Hold w/ Pry | 90 sec | Sit in, gently rotate knees out |\n| Half-Kneeling T-Spine Rotation | 60 sec/side | Hand behind head, rotate to ceiling |\n| Adductor Rock-Backs | 60 sec | Side-lying or quadruped |\n\n### Block 4 — Downregulation (3 min)\n\n| Drill | Duration | Notes |\n|---|---|---|\n| Supine 90/90 Breathing | 3 min | Feet on bench, ribs down, exhale fully through pursed lips |\n\n---\n\n## Programming Notes\n\n- **Intensity cue:** Every position should feel like a 4/10 stretch — never a 7. If he's gritting his teeth, back off.\n- **Breathing:** Nasal in, slow exhale. The downregulation block isn't optional — it's the parasympathetic signal that closes out the deload week.\n- **Shoulder caveat:** If any drill provokes the cranky shoulder (especially pass-throughs or Y-T-W), skip it. Don't push through pain on a diagnostic week.\n- **Optional add-on:** 10 min easy walk before or after. Sunlight if available.\n\n## Updated Week 5 Layout\n\n| Day | Session |\n|---|---|\n| Day 1 | Lower (Quad) — 9 sets, RPE 6 |\n| Day 2 | Upper (Push) — Swiss bar swap, 9 sets, RPE 6 |\n| Day 3 | Lower (Posterior) — 9 sets, RPE 6 |\n| Day 4 | Upper (Pull) — 9 sets, RPE 6 |\n| **Day 5** | **Mobility — 20 min** |\n| Day 6 | Full rest (optional zone 2 walk, 20–30 min) |\n| Day 7 | Full rest — prep for Week 6 intensification |\n\nThis keeps total weekly stress low, gives the shoulder a structured input without loading it, and finishes the week with two clean rest days before he opens the next block.",
-    "## Zone 2 Cardio — 2× This Week, 30 min Each\n\n**Intensity target:** True Zone 2 — roughly **60–70% of max HR**, or the \"nose-breathing / hold a conversation in full sentences\" pace. If he's panting or needs to mouth-breathe, he's drifted into Zone 3 and is adding fatigue rather than aiding recovery.\n\n**Modality:** Anything low-impact and rhythmic — bike (preferred), incline walk on treadmill, rower at low stroke rate, or outdoor walk. **Avoid running** this week — unnecessary joint load during a deload.\n\n**RPE check:** 3–4/10. He should finish feeling *better* than when he started.\n\n## Placement in the Week\n\nThe goal is to space cardio away from lower-body sessions (so it doesn't compound leg fatigue) and away from the mobility/rest days (so we preserve true recovery days).\n\n| Day | Session | Cardio? |\n|---|---|---|\n| Day 1 | Lower (Quad) | — |\n| **Day 2** | Upper (Push) | **+ Zone 2, 30 min** (post-session or PM) |\n| Day 3 | Lower (Posterior) | — |\n| **Day 4** | Upper (Pull) | **+ Zone 2, 30 min** (post-session or PM) |\n| Day 5 | Mobility — 20 min | — |\n| Day 6 | Full rest | — |\n| Day 7 | Full rest | — |\n\n## Why This Placement\n\n- **Pairs with upper days:** Legs stay fresh between Day 1 and Day 3, and Day 3 and the next block opener.\n- **Same-day stacking is fine at this intensity:** Zone 2 at 30 min won't interfere with the upper session's recovery — it actually aids blood flow and clearance.\n- **PM session if separate:** If he prefers splitting them, AM lift / PM cardio (6+ hours apart) works well. Don't do cardio *before* the lift.\n- **Day 5 stays mobility-only:** Don't bolt cardio onto the mobility day — that day's job is downregulation, not output.\n- **Days 6 & 7 stay clean:** Two genuine rest days before opening intensification. If he's restless, a 20–30 min easy walk is fine but not prescribed.\n\n## Quick Cues for Him\n\n- **Bike:** Keep cadence 80–90 rpm, low resistance.\n- **Incline walk:** 3–4 mph at 5–8% incline usually lands most lifters in Zone 2.\n- **Rower:** 20–22 strokes/min, light pressure.\n- **HR cap:** If he tracks, **roughly 130–140 bpm** for a 26-year-old male (estimated max HR ~194; 70% ≈ 136). Adjust to his actual data if he has it.\n\n## Final Week 5 Layout\n\n| Day | Session | Volume / Stimulus |\n|---|---|---|\n| Day 1 | Lower (Quad) | 9 sets, RPE 6 |\n| Day 2 | Upper (Push) + Zone 2 30 min | 9 sets, RPE 6 + low aerobic |\n| Day 3 | Lower (Posterior) | 9 sets, RPE 6 |\n| Day 4 | Upper (Pull) + Zone 2 30 min | 9 sets, RPE 6 + low aerobic |\n| Day 5 | Mobility | 20 min, RPE 3 |\n| Day 6 | Rest | Optional easy walk |\n| Day 7 | Rest | Prep for Week 6 |\n\n**Weekly totals:** 36 working sets, 2 × Zone 2, 1 × mobility, 2 full rest days. That's a clean deload — fatigue clears, patterns stay grooved, engine ticks over, shoulder gets diagnostic information, and he opens Week 6 primed.",
-    "Good instinct from him, but the framing matters: **deload week is for tracking *readiness*, not testing *strength*.** A true 1RM or AMRAP test re-introduces the systemic fatigue you're spending the week clearing. That said, there are clean ways to get useful strength-adjacent data without breaking the deload.\n\n## What to Track (Deload-Safe)\n\n### 1. Bar Speed on Top Set of Main Lifts\n**Where:** Day 1 Squat, Day 3 Deadlift, Day 4 Pull-Up (skip bench given the shoulder).\n**Protocol:** On the top working set (3 × 5 at 65%), film from the side and measure mean concentric velocity, or just eyeball rep speed.\n**What it tells you:** At 65% of Week 4 loads, those reps should move noticeably faster than they did at the same absolute load in Week 4. If they don't, fatigue isn't clearing — extend the deload.\n**Cost to recovery:** Zero. He's lifting these loads anyway.\n\n### 2. Grip Strength (Hand Dynamometer)\n**Where:** Day 1 morning and Day 7 morning.\n**Protocol:** 3 attempts per hand, best score.\n**What it tells you:** Grip strength is a well-validated proxy for systemic recovery and CNS readiness. A 5–10% rise from Day 1 to Day 7 = deload worked. Flat or down = he's still cooked.\n**Cost to recovery:** Zero.\n\n### 3. Vertical Jump or Broad Jump\n**Where:** Day 1 (pre-session, after warm-up) and Day 7.\n**Protocol:** 3 attempts, best result. Vertical preferred if you have a Vertec or wall mark; broad jump is fine otherwise.\n**What it tells you:** Rate-of-force-development proxy. Jumps respond fast to fatigue clearance — a 2–4 cm improvement from Day 1 to Day 7 is a strong \"you're ready\" signal.\n**Cost to recovery:** Negligible. 3 max-effort jumps don't fatigue an advanced lifter.\n\n### 4. Resting Heart Rate & HRV (if he tracks)\n**Where:** Every morning, on waking, before phone/coffee.\n**What it tells you:** Trending RHR down and HRV up across the week = parasympathetic recovery happening. Flat or worsening = under-recovered going into Week 6.\n**Cost to recovery:** Zero.\n\n## What NOT to Test\n\n- ❌ **1RM or 3RM testing** — defeats the entire point of the week.\n- ❌ **AMRAP sets** — even at moderate loads, taking sets to failure re-accumulates fatigue.\n- ❌ **Rep PRs at submaximal loads** — same issue, just dressed up.\n- ❌ **Bench testing this week specifically** — shoulder is a variable, and you don't want pain data confounded with strength data.\n\n## Suggested Tracking Layout\n\n| Day | Marker | Method |\n|---|---|---|\n| Day 1 AM | Grip strength baseline | Dynamometer, 3 attempts/hand |\n| Day 1 pre-squat | Vertical jump baseline | 3 attempts, best score |\n| Day 1 working sets | Squat bar speed | Film top set of 5 |\n| Day 3 working sets | Deadlift bar speed | Film top set of 3 |\n| Day 4 working sets | Pull-up bar speed | Film top set of 5 |\n| Daily AM | RHR + HRV (if tracked) | Wearable or manual |\n| Day 7 AM | Grip strength retest | Same protocol as Day 1 |\n| Day 7 | Vertical jump retest | Same protocol as Day 1 |\n\n## Readiness Decision Rule for Week 6\n\nGoing into the intensification block, look for **3 of 4** green flags:\n\n1. Grip strength up ≥5% from Day 1 to Day 7\n2. Vertical jump up ≥2 cm from Day 1 to Day 7\n3. Bar speed at 65% noticeably crisper than Week 4 same-load reps\n4. RHR trending down 3–5 bpm across the week\n\n**3 or 4 greens:** Open Week 6 as planned.\n**2 greens:** Open Week 6 conservatively — drop opener intensity by ~5%.\n**0–1 greens:** Extend deload 3–4 days. Something didn't clear.\n\n## One More Note\n\nTell him explicitly: **the goal this week is to look weaker on paper while feeling stronger in the body.** If he tries to chase a number on Day 7 to \"prove\" the deload worked, he's misunderstood it. The proof shows up in Week 6, not Week 5.",
-    "I'd push back on this one, and I'd push back hard. Hear me out before you make the call.\n\n## Why \"Feeling Great by Wednesday\" Is Expected, Not a Signal\n\nWednesday of a deload is **exactly when** an advanced lifter who just came off 4 weeks at RPE 8.5 should start feeling good. That's the deload working — fatigue is dissipating faster than fitness, which is the entire physiological point (Bannister's fitness-fatigue model, if he wants the textbook version).\n\n**Feeling great mid-deload is not a green light to lift heavier. It's the proof of concept.**\n\nIf he ramps Wednesday and Friday, he's not \"using\" the recovery — he's **spending it** before Week 6 even opens. The intensification block then opens on a lifter who's only partially recovered, and the first heavy session of Week 6 underperforms. I've seen this pattern wreck more good blocks than under-recovery does.\n\n## The Boredom Problem Is Real Though\n\nI take the boredom point seriously — advanced lifters genuinely struggle with sub-threshold weeks, and a bored lifter often sabotages the plan anyway. So rather than push intensity, let's **add psychological stimulus without adding fatigue.** Here's what I'd offer instead:\n\n### Option A — Add Quality, Not Load\n\nKeep the prescribed loads and RPE, but introduce focus points that make sessions feel engaging:\n\n- **Wednesday (Day 3, Posterior Lower):** Add **tempo work** — 4-second eccentric on deadlift, 3-sec pause front squat. Same loads, same sets, but the focus required is high. Feels demanding without being fatiguing.\n- **Friday (Day 4, Pull):** Add **execution focus** — film every working set, review between sets, chase perfect bar path on rows and pull-ups. Turn it into a technique session.\n\n### Option B — Add One Power/Speed Element Per Session\n\nSpeed work scratches the \"I want to do something hard\" itch without accumulating fatigue, because the sets are short and far from failure:\n\n- **Wednesday:** Add **3 × 3 speed deadlifts at 60%** before the working sets. Explosive concentric, controlled eccentric. Feels powerful, costs nothing.\n- **Friday:** Add **4 × 3 explosive pull-ups** (bodyweight, fast concentric) before working sets.\n\nThis is my preferred compromise. He gets to express force, which is what bored advanced lifters are actually craving — not necessarily heavier loads, but *output*.\n\n### Option C — Bring Week 6 Forward by 2 Days\n\nIf he genuinely is recovered (and your readiness markers from the tracking protocol back it up by Wednesday — grip up, jump up, RHR down, bar speed crisp), the cleanest move is **not to ramp the deload, but to end it early**. Finish Day 3 as prescribed, take Thursday off, open Week 6 on Friday.\n\nThis requires the readiness data to support it. If you don't have green flags by Wednesday, this option is off the table.\n\n## What I'd Specifically Not Do\n\n- ❌ **Push RPE on Wednesday and Friday** — re-introduces the exact fatigue you spent Mon/Tues clearing\n- ❌ **Add working sets** — same problem\n- ❌ **Let him \"test\" something heavy** because he feels good — this is the most common deload sabotage and it consistently underdelivers in the next block\n\n## My Recommendation\n\n**Option B (speed work) for Wednesday and Friday.** It gives him output to chase, keeps the deload intact, and actually *primes* the nervous system for Week 6's heavy work — speed work mid-deload is well-established as a peaking tool.\n\nThen **Option C as a fallback:** if by Friday morning his readiness markers are all green and he's still climbing the walls, end the deload Friday and open Week 6 on Saturday or Monday.\n\nIf you, knowing the client in the room, decide to override and ramp intensity anyway — I'd cap it at **RPE 7 on Wednesday's main lift only**, hold Friday at RPE 6, and accept that Week 6's opener may need to be dialled back 5%. But that's the concession, not the plan.\n\nWhat's your read on him — is it genuine readiness, or is it restlessness?",
-    "# Week 5 Deload — Summary\n\n## Weekly Layout\n\n| Day | Session | Duration |\n|---|---|---|\n| Day 1 | Lower (Quad) | ~60 min |\n| Day 2 | Upper (Push) + Zone 2 30 min | ~60 min + 30 min |\n| Day 3 | Lower (Posterior) | ~60 min |\n| Day 4 | Upper (Pull) + Zone 2 30 min | ~60 min + 30 min |\n| Day 5 | Mobility | 20 min |\n| Day 6 | Rest (optional walk) | — |\n| Day 7 | Rest | — |\n\n## Volume: Week 5 vs Week 4\n\n| Metric | Week 4 | Week 5 | Change |\n|---|---|---|---|\n| Working sets / session | 18 | 9 | **–50%** |\n| Working sets / week | 72 | 36 | **–50%** |\n| Training days | 4 | 4 | unchanged |\n| Cardio sessions | per usual | 2 × Zone 2 (30 min) | low aerobic added |\n| Mobility | — | 1 × 20 min | added |\n\n## Intensity: Week 5 vs Week 4\n\n| Metric | Week 4 | Week 5 | Change |\n|---|---|---|---|\n| Compound RPE | 8.5 | 6.0 | **–2.5 RPE** |\n| Reps in reserve | ~1.5 | ~4 | +2.5 RIR |\n| Working load (% of Wk 4 top set) | 100% | 65–70% | **–30–35%** |\n| Approx. total tonnage | 100% | ~33% | **–67%** |\n| Failure / AMRAP work | present | none | removed |\n| Cardio HR zone | n/a | Z2 (60–70% max HR) | low |\n\n## Key Programme Adjustments\n\n- **Bench → Swiss bar / neutral-grip DB press** (cranky shoulder; diagnostic week)\n- **Incline press to neutral grip, 30° max** (same logic)\n- **OHP flagged** for symptom check; landmine swap on standby\n- **No failure, no AMRAPs, no finishers** across all sessions\n- **Speed work optional** on Day 3 (deadlift) and Day 4 (pull-up) if boredom becomes a compliance risk\n\n## Readiness Markers Tracked\n\n- Grip strength (Day 1 vs Day 7)\n- Vertical jump (Day 1 vs Day 7)\n- Bar speed on top sets at 65%\n- Resting HR / HRV trend across the week\n\n## Decision Rule for Week 6\n\n**3–4 green markers** → open Week 6 as planned\n**2 greens** → open Week 6 at –5% intensity\n**0–1 greens** → extend deload 3–4 days\n\n## Bottom Line\n\nHalf the volume, two-thirds less tonnage, RPE dropped from grinding to crisp, same movement patterns preserved, shoulder protected, engine ticking over, fatigue clearing — primed to open intensification on Week 6."
+    "# Week 5 Deload — Advanced Male, 26\n\nComing off 4 weeks of high-volume hypertrophy (18 working sets, RPE 8.5), this deload is engineered to dissipate accumulated fatigue while preserving neuromuscular patterning and movement quality. The strategy: **same exercises, ~50% volume reduction, intensity capped at RPE 6–7, bar speed prioritised.** Tempo stays controlled but never grindy. No failure. No drop sets. No intensifiers. Leave the gym feeling better than you walked in.\n\n## Programming Variables\n\n- **Volume:** ~50% of accumulation block (9 working sets/session vs. 18)\n- **Intensity:** RPE 6–7 (≈70–75% of recent working loads)\n- **Tempo:** 2–1–1 on compounds; controlled eccentrics, no pause grinds\n- **Rest:** 2–3 min compounds, 90 sec accessories — generous, recovery is the point\n- **Frequency:** 4 sessions (drop from typical 5–6); two full rest days\n- **Cardio:** Zone 2 only, optional\n\n---\n\n## Weekly Split\n\n- **Monday:** Lower (Squat focus)\n- **Tuesday:** Upper Push\n- **Wednesday:** OFF / Zone 2 30 min optional\n- **Thursday:** Lower (Hinge focus)\n- **Friday:** Upper Pull\n- **Saturday/Sunday:** OFF\n\n---\n\n## Monday — Lower (Squat Focus)\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Back Squat | 3 × 5 | RPE 6 (~70%) |\n| Romanian Deadlift | 2 × 8 | RPE 6 |\n| Walking Lunge | 2 × 8/leg | RPE 6 |\n| Leg Curl | 2 × 10 | RPE 7 |\n| Standing Calf Raise | 2 × 10 | RPE 7 |\n\n**Total working sets: 11** (vs. ~18 in accumulation). Squat reps stay low to keep the pattern crisp without metabolic burn. Stop every set 3–4 reps in reserve.\n\n---\n\n## Tuesday — Upper Push\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Bench Press | 3 × 5 | RPE 6 (~70%) |\n| Standing Overhead Press | 2 × 6 | RPE 6 |\n| Incline DB Press | 2 × 8 | RPE 7 |\n| Cable Lateral Raise | 2 × 10 | RPE 7 |\n| Triceps Pushdown | 2 × 10 | RPE 7 |\n\n**Total working sets: 11.** Press volume halved; isolation work kept light to maintain blood flow without taxing elbows/shoulders.\n\n---\n\n## Wednesday — OFF\n\nOptional: 20–30 min Zone 2 (incline walk, bike). Heart rate 120–140 bpm, conversational. Mobility 10 min if desired — hips, t-spine, shoulders. **No lifting.**\n\n---\n\n## Thursday — Lower (Hinge Focus)\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Conventional Deadlift | 2 × 3 | RPE 6 (~70%) |\n| Front Squat | 2 × 5 | RPE 6 |\n| Hip Thrust | 2 × 8 | RPE 6 |\n| Leg Extension | 2 × 10 | RPE 7 |\n| Seated Calf Raise | 2 × 10 | RPE 7 |\n\n**Total working sets: 10.** Deadlift volume cut hardest — singles/triples preserve the pattern without CNS cost. No belt unless warming up grooves.\n\n---\n\n## Friday — Upper Pull\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Weighted Pull-Up | 3 × 5 | RPE 6 |\n| Barbell Row | 2 × 6 | RPE 6 |\n| Chest-Supported DB Row | 2 × 8 | RPE 7 |\n| Face Pull | 2 × 12 | RPE 6 |\n| Barbell Curl | 2 × 10 | RPE 7 |\n\n**Total working sets: 11.**\n\n---\n\n## Recovery & Readiness\n\n- **Sleep:** Target 8+ hours. This is where the deload actually happens.\n- **Nutrition:** Hold maintenance calories — don't cut. Protein stays at 1.8–2.2 g/kg. If anything, increase carbs slightly to top off glycogen before the intensification block.\n- **Soft tissue:** Optional sauna, massage, or gentle mobility. Avoid aggressive stretching or deep tissue work the 48 hr before Monday Week 6.\n- **Caffeine:** Pull back if relying on it heavily — let baseline reset.\n\n## Readiness Check for Week 6\n\nBy Saturday, he should feel: joints quiet, sleep deeper, gym sessions feeling \"too easy,\" and a returning urge to push. **That's the signal.** If he's still flat or unmotivated heading into Monday, extend the deload 2–3 days rather than launching the intensification block underprepared.",
+    "Good catch — I was working off a rough average. Let's anchor this properly.\n\nYou told me **18 working sets/session at RPE 8.5 across compounds** in the accumulation block. I don't have the session-by-session split (push/pull/legs vs. upper/lower, how those 18 sets distributed across movements, or his exact session count per week).\n\n**Before I rebuild the deload numbers, I need:**\n\n1. **Weekly session count** in the accumulation block (5? 6?)\n2. **Split structure** — was it upper/lower, PPL, full body?\n3. **Per-session set distribution** — e.g., on his squat day, how many sets went to squat vs. RDL vs. accessories?\n4. **Were all 18 sets compounds at RPE 8.5, or was that the compound average with accessories layered on top?**\n\nThat last one matters most. \"18 working sets at RPE 8.5 across compounds\" reads two ways:\n- **(a)** 18 total working sets/session, with compounds averaging RPE 8.5\n- **(b)** 18 compound sets specifically at RPE 8.5, plus accessory volume on top\n\nIf (b), his true session volume was likely 24–28 sets, and my deload was under-dosed on the cut.\n\n---\n\n**Deload math I'll apply once you confirm:**\n\n- **Volume:** 40–50% of accumulation set count per session (aggressive cut — he's 4 weeks deep at RPE 8.5, fatigue debt is real)\n- **Intensity:** 65–70% of last week's top working loads (≈RPE 6)\n- **Per-movement rule:** No single exercise exceeds 3 working sets; compounds drop to 2 sets where possible\n\nSend me the accumulation week's session breakdown — exercises, sets per exercise, top loads — and I'll rebuild Week 5 session-by-session with exact set counts and load targets tied to his actual Week 4 numbers.",
+    "Good call — don't push through cranky shoulders into an intensification block. Best swap depends on **where** it's cranky (anterior/AC joint vs. posterior/cuff), but here's a tiered call based on what's typically most shoulder-friendly while preserving chest stimulus:\n\n## Primary Swap: Slight Incline DB Press (15–30°)\n\n**Why it works:**\n- Neutral or semi-pronated grip lets the humerus track naturally — no forced internal rotation at the bottom\n- Dumbbells allow scapular freedom (barbell pins the scaps; that's often what aggravates the AC joint)\n- Slight incline shifts a touch of load off the anterior delt and onto upper pec without going full incline (which can crank shoulders worse if the bench is too upright)\n- Stretch position is self-limiting — he'll stop at his own ROM, no ego pinning him under a bar\n\n## Tuesday — Upper Push (Revised)\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| **Slight Incline DB Press (15–30°, neutral or semi-pronated)** | 3 × 6–8 | RPE 6 |\n| Standing Overhead Press | 2 × 6 | RPE 6 — *see note* |\n| Incline DB Press *(original slot)* → **Machine Chest Press** | 2 × 8 | RPE 7 |\n| Cable Lateral Raise | 2 × 10 | RPE 7 |\n| Triceps Pushdown | 2 × 10 | RPE 7 |\n\n**Reps bumped from 5 → 6–8** because we're off the barbell — slightly higher reps give chest stimulus without needing heavy loading that stresses the joint.\n\n## Notes & Contingencies\n\n- **If OHP also aggravates it:** swap to **landmine press** (angled pressing path is far kinder to the anterior shoulder) or **neutral-grip DB shoulder press**. Don't grind through pressing pain — deload week is the worst time to flare something.\n- **Machine chest press** in the third slot gives him a stable groove with no stabiliser demand — useful while the shoulder settles. If your gym has a converging plate-loaded press (Hammer Strength style), even better.\n- **Avoid this week:** flat barbell bench, deep dips, wide-grip anything, heavy cable flyes at full stretch.\n- **Pre-session:** 2 min band pull-aparts + 1 set of light face pulls before pressing. Cheap insurance.\n\n## Diagnostic Ask\n\nFor programming Week 6 onward, worth knowing:\n- **Where** is the pain? (Front of shoulder / on top / deep in joint / cuff)\n- **When?** (Bottom of bench / lockout / next day)\n- **Sharp or achy?**\n\nIf it's anterior/AC and load-dependent, incline DB work through the deload often settles it. If it's cuff-driven or there's any impingement-style pinch, we may want to keep him off barbell bench into the intensification block too and build the press around incline DB or Swiss bar work for 4–6 weeks.",
+    "Good addition — deload week is the right time to layer this in. Best placement is **Wednesday**, the existing off day. Keeps lifting days clean, gives the nervous system a low-grade movement stimulus without adding fatigue, and targets the joints most likely to be stiff after 4 weeks of heavy compound work.\n\n## Wednesday — Mobility Session (20 min)\n\n**Format:** Continuous flow, low intensity. Breathe through everything — nasal in, slow exhale. No stretching to end-range pain. Think \"open up,\" not \"fix.\"\n\n### Block 1 — Hips & Lower Body (8 min)\n\n| Drill | Time / Reps |\n|---|---|\n| 90/90 hip switches | 90 sec |\n| World's greatest stretch (with reach) | 5/side, slow |\n| Half-kneeling adductor rock-back | 8/side |\n| Couch stretch | 60 sec/side |\n| Deep squat hold + t-spine reach | 60 sec |\n\n### Block 2 — T-Spine & Shoulders (8 min)\n\n*Especially relevant given the cranky shoulder — opening the t-spine offloads the glenohumeral joint significantly.*\n\n| Drill | Time / Reps |\n|---|---|\n| Quadruped t-spine rotation | 8/side |\n| Thread the needle | 6/side |\n| Prone Y-T-W (light, bodyweight) | 8 each |\n| Wall slides (slow) | 10 reps |\n| Band pull-aparts | 15 reps |\n\n### Block 3 — Breathing & Downregulation (4 min)\n\n| Drill | Time |\n|---|---|\n| 90/90 supine breathing (feet on wall, knees bent) | 2 min |\n| Child's pose with slow nasal breathing | 2 min |\n\n## Updated Weekly Layout\n\n- **Mon:** Lower (Squat)\n- **Tue:** Upper Push *(bench swapped)*\n- **Wed:** **Mobility 20 min** + optional Zone 2 20–30 min *(do mobility first if pairing)*\n- **Thu:** Lower (Hinge)\n- **Fri:** Upper Pull\n- **Sat/Sun:** OFF\n\n## Notes\n\n- **Can also be used as a pre-lift warm-up extender** on lifting days if Wednesday gets skipped — pull Block 2 in front of Tuesday's pressing session as bonus shoulder prep.\n- **Keep it boring.** This isn't a workout. If he's sweating or his HR is climbing, dial back. The point is parasympathetic input and joint hygiene, not a training stimulus.\n- **Track how the shoulder responds** to Block 2 specifically — if pressing on Friday's pull day warm-up feels cleaner, that t-spine/scap work earns a permanent slot in the Week 6+ programming.",
+    "Sensible — Zone 2 twice a week sits comfortably in a deload. Below recovery threshold, supports blood flow and nutrient delivery to recovering tissue, and keeps aerobic base ticking before the intensification block. Two sessions, spaced to avoid stacking with lower-body days.\n\n## Cardio Placement\n\n- **Wednesday** — paired with mobility (mobility first, then Z2)\n- **Saturday** — standalone, keeps Sunday fully off\n\n**Why not Tuesday or Friday?** Upper days could technically host it, but keeping cardio off lifting days entirely means he walks into every session fresh. Deload week — err toward separation.\n\n**Why not Thursday?** That's hinge day. Z2 the day before or after deadlifts is fine normally, but with hamstrings and lower back already getting the lightest dose they've had in 5 weeks, no need to add even minor leg load.\n\n## Zone 2 Protocol\n\n| Variable | Target |\n|---|---|\n| **Duration** | 30 min steady |\n| **Heart rate** | 120–140 bpm (≈60–70% max HR) |\n| **RPE** | 3–4/10 — nasal breathing should be sustainable |\n| **Talk test** | Full sentences, no gasping |\n| **Modality** | Incline walk (preferred), bike, or rower — *avoid running* |\n\n**Modality note:** Incline treadmill walk (10–12% at 5–5.5 km/h) is the cleanest option — no impact, no knee load, easy to hold HR steady. Bike is a fine alternative. Skip running this week; the impact and eccentric load on the calves/quads adds fatigue we're trying to dissipate.\n\n## Updated Weekly Layout\n\n- **Mon:** Lower (Squat)\n- **Tue:** Upper Push\n- **Wed:** Mobility 20 min + **Zone 2 30 min**\n- **Thu:** Lower (Hinge)\n- **Fri:** Upper Pull\n- **Sat:** **Zone 2 30 min**\n- **Sun:** OFF\n\n## Notes\n\n- **HR cap is non-negotiable.** If he drifts above 140, slow down. Z2 done too hard becomes Z3 — still fatiguing, no longer recovery-promoting.\n- **Fasted or fed, doesn't matter** at this intensity and duration. Hydrate.\n- **If he's wearing a watch:** trust the HR data over RPE. Advanced lifters often under-rate cardio effort.\n- **Saturday session doubles as a readiness check** — if 30 min at Z2 feels harder than it should (HR drifting high, legs heavy), that's a signal he needs Sunday + Monday morning to recover further before launching Week 6. Push the intensification start to Tuesday if needed.",
+    "Smart instinct, but worth managing carefully — \"testing strength\" in a deload week is the fastest way to undo the deload. Anything at RPE 8+ defeats the purpose. The trick is using **submaximal markers that predict strength** without expressing it.\n\nHere's what to track, what to avoid, and where to slot it.\n\n## What to Test (and Why)\n\n### 1. Bar Speed at Fixed Submaximal Loads\n**The gold standard for deload-week readiness.** Same load, same reps, measure velocity. If bar speed at a known submax load is faster than the same load felt in Week 4, the deload is working — fatigue is clearing, force production is recovering.\n\n- **Squat:** 60% of recent 1RM × 3 reps — measure mean concentric velocity on rep 1\n- **Deadlift:** 60% × 2 reps — same measurement\n- **Tool:** Phone app (Metric VBT, PowerLift) or velocity tracker if you have one. Even eyeballed \"felt snappy / felt slow\" is useful if logged consistently\n\n**Why it doesn't break the deload:** 60% at 2–3 reps is RPE 4–5. Zero fatigue cost.\n\n### 2. Vertical Jump (CMJ — Countermovement Jump)\n**Best single-marker of CNS readiness.** Takes 60 seconds. 3 jumps, take the best.\n\n- Measure with a phone app (My Jump Lab) or jump-and-reach against a wall\n- Test **Monday before squats** and **Friday before pulls**\n- A 2–3 cm drop from baseline = still fatigued; back to baseline or above = recovered and primed for Week 6\n\n### 3. Grip Strength (if you have a dynamometer)\nCheap, fast, non-fatiguing proxy for systemic recovery. Test each morning, same time, same hand. Trends matter more than absolute numbers.\n\n### 4. Resting HR & HRV (Morning)\nNot a strength marker per se, but the cleanest readiness signal you'll get. Whoop/Garmin/Oura — whatever he uses. **Rising HRV across the week = green light for intensification.** Flat or dropping = extend the deload.\n\n## What NOT to Test\n\n| Avoid | Why |\n|---|---|\n| **1RM or 3RM attempts** | Maximal CNS demand. Eliminates the deload entirely. |\n| **AMRAP / rep-out sets** | High fatigue cost, redundant data — you already know his rep capacity from Week 4. |\n| **RPE 8+ working sets** | Same problem. The deload caps at RPE 6–7 for a reason. |\n| **New exercises / unfamiliar variations** | Skill confound. Can't compare to baseline. |\n| **\"Just feeling out\" heavy singles** | They always become RPE 9. Don't let him. |\n\n## How to Slot It Into the Week\n\n| Day | Test | When |\n|---|---|---|\n| **Daily (AM)** | HRV, RHR, grip (optional) | On waking |\n| **Mon** | CMJ × 3 jumps | Before squat warm-ups |\n| **Mon** | Squat bar speed @ 60% × 3 | First working set |\n| **Thu** | Deadlift bar speed @ 60% × 2 | First working set |\n| **Fri** | CMJ × 3 jumps | Before pull warm-ups |\n\nTotal added time per session: ~3 minutes. No added fatigue.\n\n## Interpreting the Data Going Into Week 6\n\n- **Bar speed up + CMJ up + HRV up** → green light, launch intensification Monday as planned\n- **Bar speed flat, CMJ flat, HRV flat** → he's recovered to baseline — fine, proceed\n- **Any marker still trending down by Saturday** → extend deload 2–3 days, push Week 6 start to Wednesday\n- **CMJ down >5%** → he's not recovered. Full stop. Add 2 more rest days minimum.\n\n## One Behavioural Note\n\nAdvanced lifters in a deload week get itchy. He'll want to \"just see what 80% feels like.\" **Don't let him.** The whole point of measuring bar speed at 60% is to give him a data point that scratches the itch without the cost. Frame it that way: *\"We're testing strength — by measuring how easy submaximal loads feel. That's the actual readiness signal. Heavy singles tell us nothing we don't already know.\"*",
+    "I hear you, and I get the impulse — bored advanced lifter, feeling good, wants to push. But this is the exact moment to hold the line. **I'd push back on this one.**\n\n## Why \"Feeling Great Wednesday\" Is the Trap\n\nFeeling recovered on Wednesday of a deload doesn't mean he's recovered. It means **fatigue is dissipating on schedule.** That's the deload working as designed — not evidence it's unnecessary.\n\nFour weeks at RPE 8.5 with 18 working sets/session generates fatigue at multiple timescales:\n- **Peripheral fatigue** (muscle, glycogen) — clears in 3–5 days. ✅ This is what he's feeling lift on Wednesday.\n- **CNS / neuromuscular fatigue** — clears in 7–10 days. Still present, invisible to him.\n- **Connective tissue / joint stress** — clears slowest. The cranky shoulder is literally telling you this.\n\nHe feels great because the *obvious* fatigue is gone. The fatigue that breaks intensification blocks is the fatigue he can't feel yet.\n\n## What Happens If We Push Wed/Fri\n\n- **Best case:** He has two good sessions, walks into Week 6 slightly under-recovered, and the intensification block underdelivers by week 3 instead of week 5. You lose a mesocycle.\n- **Likely case:** Shoulder flares on the Wednesday push, and now you're rehabbing into Week 6 instead of intensifying.\n- **Worst case:** He hits a heavy session feeling great, CNS isn't actually recovered, form breaks down on a compound, and you're managing an injury for 6+ weeks.\n\nThe asymmetry is brutal: small upside, large downside. **Advanced lifters don't get hurt when they feel bad. They get hurt when they feel great after a hard block.**\n\n## The Compromise I'd Offer\n\nIf he genuinely needs a stimulus to stay engaged, here's how to give him *something* without breaking the deload:\n\n### Wednesday — Keep It As Programmed\nMobility + Z2 stays. **Non-negotiable.** This is the recovery anchor of the week. If we burn Wednesday, the whole structure collapses.\n\n### Friday (Upper Pull) — Add a Single Top Set\nOne. Single. Top set.\n\n- **Weighted Pull-Up:** work up to 1 × 3 @ RPE 7 (still 2–3 reps in reserve)\n- Keep all other sets as programmed at RPE 6\n- **Hard cap: RPE 7.** If he hits the triple and it felt like RPE 5, good — *don't add weight and go again.* That's the test.\n\nThat's it. One set, one exercise, one RPE bump. Gives him a \"real\" rep without meaningful fatigue cost. Pulling is also the safest place to do this — no shoulder load in the pressing pattern, deadlift CNS demand stays untouched, squat pattern stays untouched.\n\n### What I Won't Do\n- **Push Wednesday.** It's the off day. Off days in a deload are load-bearing.\n- **Add intensity to compounds on Mon/Thu.** Squat and deadlift CNS cost is too high — these stay at RPE 6.\n- **Raise the cap above RPE 7 anywhere.** RPE 8 is accumulation-block territory. We're not there yet.\n\n## The Conversation to Have With Him\n\nThis is a coaching moment more than a programming one. Try this:\n\n*\"You feel great because the deload is working. If you felt this good in Week 4, we'd be adding weight. Right now, this feeling is the goal — not the signal to chase more. Week 6 starts Monday and it's going to be heavy. Save it.\"*\n\nBoredom in a deload is a feature, not a bug. If he's not bored, the deload isn't deloading.\n\n## My Recommendation\n\nHold Wednesday as programmed. Give him the one top set on Friday pulls as a release valve. Reassess Sunday — if markers are green (bar speed, CMJ, HRV), Week 6 launches Monday as a proper intensification block, and he gets to push as hard as he wants for the next 4 weeks.\n\n**Your call — but if you greenlight a full Wed/Fri push, I'd want to know we're prepared to delay Week 6 by a few days to absorb it.**",
+    "# Week 5 Deload — Advanced Male, 26 (Final Version)\n\nComing off 4 weeks of high-volume hypertrophy (18 working sets, RPE 8.5). This week dissipates accumulated fatigue while preserving movement patterns and aerobic base, with light strength-marker tracking to inform the Week 6 intensification launch. Shoulder is cranky on bench — pressing has been adjusted accordingly.\n\n**Caveat on volume:** Deload volume is set at ~50% of accumulation (≈9–11 working sets/session). If his actual Week 4 session volume was higher than 18 total sets (e.g., 18 compounds + accessories on top), we should re-cut further. Confirm when you can.\n\n## Programming Variables\n\n- **Volume:** ~50% of accumulation block\n- **Intensity:** RPE 6–7 (≈65–75% of recent working loads)\n- **Tempo:** 2–1–1 on compounds; controlled, no grinders\n- **Rest:** 2–3 min compounds, 90 sec accessories\n- **Frequency:** 4 lifting + 1 mobility + 2 Z2 cardio\n- **Hard caps:** No failure. No drop sets. RPE 7 ceiling (one Friday top set excepted).\n\n## Weekly Layout\n\n| Day | Session |\n|---|---|\n| **Mon** | Lower — Squat focus |\n| **Tue** | Upper Push |\n| **Wed** | Mobility 20 min + Zone 2 30 min |\n| **Thu** | Lower — Hinge focus |\n| **Fri** | Upper Pull (one top set permitted) |\n| **Sat** | Zone 2 30 min |\n| **Sun** | OFF |\n\n---\n\n## Monday — Lower (Squat Focus)\n\n**Pre-session:** CMJ × 3 jumps (log best). Squat warm-ups, then first working set at 60% × 3 — log bar speed / \"felt\" rating.\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Back Squat | 3 × 5 | RPE 6 (~70%) |\n| Romanian Deadlift | 2 × 8 | RPE 6 |\n| Walking Lunge | 2 × 8/leg | RPE 6 |\n| Leg Curl | 2 × 10 | RPE 7 |\n| Standing Calf Raise | 2 × 10 | RPE 7 |\n\n**Working sets: 11.**\n\n---\n\n## Tuesday — Upper Push\n\n*Bench swapped — shoulder management.*\n\n**Pre-session:** 2 min band pull-aparts + 1 set light face pulls. Optional: Wednesday mobility Block 2 (t-spine/shoulder) as extended warm-up.\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Slight Incline DB Press (15–30°, neutral/semi-pronated) | 3 × 6–8 | RPE 6 |\n| Standing OHP *(swap to landmine or neutral-grip DB if shoulder protests)* | 2 × 6 | RPE 6 |\n| Machine Chest Press | 2 × 8 | RPE 7 |\n| Cable Lateral Raise | 2 × 10 | RPE 7 |\n| Triceps Pushdown | 2 × 10 | RPE 7 |\n\n**Working sets: 11.**\n\n**Avoid this week:** flat barbell bench, deep dips, wide-grip pressing, heavy cable flyes at full stretch.\n\n---\n\n## Wednesday — Mobility + Zone 2\n\n**Mobility first, Z2 second.** Total ~50 min.\n\n### Mobility (20 min)\n\n**Block 1 — Hips & Lower (8 min)**\n- 90/90 hip switches — 90 sec\n- World's greatest stretch (w/ reach) — 5/side, slow\n- Half-kneeling adductor rock-back — 8/side\n- Couch stretch — 60 sec/side\n- Deep squat hold + t-spine reach — 60 sec\n\n**Block 2 — T-Spine & Shoulders (8 min)**\n- Quadruped t-spine rotation — 8/side\n- Thread the needle — 6/side\n- Prone Y-T-W (bodyweight) — 8 each\n- Wall slides — 10 reps\n- Band pull-aparts — 15 reps\n\n**Block 3 — Breathing (4 min)**\n- 90/90 supine breathing — 2 min\n- Child's pose, nasal breathing — 2 min\n\n### Zone 2 (30 min)\n- **HR target:** 120–140 bpm (60–70% max)\n- **RPE:** 3–4/10, full sentences sustainable\n- **Modality:** Incline treadmill walk (10–12% at 5–5.5 km/h) preferred; bike acceptable. **No running.**\n\n---\n\n## Thursday — Lower (Hinge Focus)\n\n**Pre-session:** Deadlift warm-ups, then first working set at 60% × 2 — log bar speed / \"felt\" rating.\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Conventional Deadlift | 2 × 3 | RPE 6 (~70%) |\n| Front Squat | 2 × 5 | RPE 6 |\n| Hip Thrust | 2 × 8 | RPE 6 |\n| Leg Extension | 2 × 10 | RPE 7 |\n| Seated Calf Raise | 2 × 10 | RPE 7 |\n\n**Working sets: 10.**\n\n---\n\n## Friday — Upper Pull\n\n**Pre-session:** CMJ × 3 jumps (log best).\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| **Weighted Pull-Up** | **2 × 5 @ RPE 6, then 1 × 3 @ RPE 7** *(top set)* | See note |\n| Barbell Row | 2 × 6 | RPE 6 |\n| Chest-Supported DB Row | 2 × 8 | RPE 7 |\n| Face Pull | 2 × 12 | RPE 6 |\n| Barbell Curl | 2 × 10 | RPE 7 |\n\n**Working sets: 11.**\n\n**Top set protocol:** Work up to a triple at RPE 7 (2–3 reps in reserve). **Hard cap at RPE 7.** If it felt like RPE 5, *do not* add weight and go again — log it and move on. This is a release valve, not an opener.\n\n---\n\n## Saturday — Zone 2\n\n30 min, same protocol as Wednesday. HR 120–140, incline walk preferred.\n\n**Doubles as readiness check:** If HR drifts high or legs feel heavy, that's data — flag for Week 6 launch decision.\n\n---\n\n## Sunday — OFF\n\nFull rest. Walk if he wants. No structured movement.\n\n---\n\n## Strength Marker Tracking\n\n| Marker | When | Method |\n|---|---|---|\n| HRV / Resting HR | Daily AM | Wearable |\n| Grip (optional) | Daily AM | Dynamometer |\n| CMJ | Mon + Fri pre-session | My Jump Lab or jump-and-reach × 3 |\n| Squat bar speed @ 60% × 3 | Mon, first working set | VBT app or RPE log |\n| Deadlift bar speed @ 60% × 2 | Thu, first working set | VBT app or RPE log |\n\n**Total added time per session: ~3 min. No fatigue cost.**\n\n---\n\n## Recovery & Nutrition\n\n- **Sleep:** 8+ hours. Non-negotiable.\n- **Calories:** Maintenance. Do not cut.\n- **Protein:** 1.8–2.2 g/kg.\n- **Carbs:** Hold or slightly increase — top off glycogen for Week 6.\n- **Caffeine:** Pull back if heavily reliant. Let baseline reset.\n- **Soft tissue:** Sauna, massage, gentle work fine. No aggressive stretching or deep tissue 48 hr before Monday Week 6.\n\n---\n\n## Week 6 Launch Decision (Sunday)\n\nReview the week's data Sunday evening:\n\n| Signal | Action |\n|---|---|\n| Bar speed ↑, CMJ ↑, HRV ↑ | **Green light.** Launch Mon as planned. |\n| Markers flat at baseline | **Proceed.** He's recovered. |\n| Any marker still trending down | **Extend deload 2–3 days.** Push Week 6 to Wed. |\n| CMJ down >5% from baseline | **Stop.** Add 2+ rest days. Reassess. |\n| Shoulder still cranky on Fri pulls | **Keep him off barbell bench in Week 6.** Build pressing around incline DB / landmine for 4–6 weeks. |\n\n---\n\n## Coaching Notes\n\n- He'll feel great by Wednesday. That's the deload working, not evidence it's unneeded. **Hold the line on intensity caps.** The Friday top set is the only concession.\n- Boredom in a deload is a feature. If he's not bored, it's not deloading.\n- Shoulder data this week informs pressing strategy for the entire next mesocycle — track it.\n- Frame submaximal bar speed testing as \"testing strength by measuring how easy it feels.\" That's the actual readiness signal and it scratches the itch without cost."
   ],
   "extractor_raw_per_turn": [
-    "{\n  \"exercises\": [\n    { \"name\": \"Back Squat\", \"week\": 5 },\n    { \"name\": \"Romanian Deadlift\", \"week\": 5 },\n    { \"name\": \"Leg Press\", \"week\": 5 },\n    { \"name\": \"Walking Lunges\", \"week\": 5 },\n    { \"name\": \"Leg Extension\", \"week\": 5 },\n    { \"name\": \"Bench Press\", \"week\": 5 },\n    { \"name\": \"Overhead Press\", \"week\": 5 },\n    { \"name\": \"Incline DB Press\", \"week\": 5 },\n    { \"name\": \"Cable Lateral Raise\", \"week\": 5 },\n    { \"name\": \"Triceps Pushdown\", \"week\": 5 },\n    { \"name\": \"Conventional Deadlift\", \"week\": 5 },\n    { \"name\": \"Front Squat\", \"week\": 5 },\n    { \"name\": \"Hip Thrust\", \"week\": 5 },\n    { \"name\": \"Seated Leg Curl\", \"week\": 5 },\n    { \"name\": \"Standing Calf Raise\", \"week\": 5 },\n    { \"name\": \"Weighted Pull-Up\", \"week\": 5 },\n    { \"name\": \"Barbell Row\", \"week\": 5 },\n    { \"name\": \"Chest-Supported DB Row\", \"week\": 5 },\n    { \"name\": \"Face Pull\", \"week\": 5 },\n    { \"name\": \"Hammer Curl\", \"week\": 5 },\n    { \"name\": \"Zone 2 cardio\", \"week\": 5 }\n  ],\n  \"foods\": [\n    { \"name\": \"Protein 1.8–2.2 g/kg\", \"context\": \"daily_intake\" },\n    { \"name\": \"Maintenance calories\", \"context\": \"daily_intake\" },\n    { \"name\": \"Carbs (reduced 10–15%)\", \"context\": \"daily_intake\" }\n  ],\n  \"intensities\": [\n    { \"domain\": \"rpe\", \"level\": 6 },\n    { \"domain\": \"rpe_prior_block\", \"level\": 8.5 },\n    { \"domain\": \"percent_1rm_load\", \"level\": \"65-70%\" },\n    { \"domain\": \"reps_in_reserve\", \"level\": 4 },\n    { \"domain\": \"working_sets_per_session\", \"level\": 9 },\n    { \"domain\": \"prior_block_working_sets\", \"level\": 18 },\n    { \"domain\": \"tempo_eccentric_seconds\", \"level\": \"2-3\" },\n    { \"domain\": \"cardio_zone\", \"level\": \"zone 2\" },\n    { \"domain\": \"cardio_duration_min\", \"level\": \"20-30\" },\n    { \"domain\": \"cardio_frequency_per_week\", \"level\": 2 },\n    { \"domain\": \"sleep_hours_target\", \"level\": \"8+\" },\n    { \"domain\": \"weighted_pullup_added_load\", \"level\": \"~50% of usual\" }\n  ],\n  \"notes\": [\n    \"Warm-ups stay normal — do not strip them out; they are movement prep, not fatigue.\",\n    \"No accessory finishers, no drop sets, no AMRAPs.\",\n    \"No grinding reps, no failure.\",\n    \"Every rep should feel crisp; if not, drop the load further.\",\n    \"Same 4-day split, same exercises preserved.\",\n    \"Skip ice baths in the 24 hours post-session.\",\n    \"Recovery adjuncts: soft tissue work, mobility, sauna if available.\",\n    \"Cut conditioning by half; low-intensity only.\"\n  ]\n}",
-    "{\n  \"exercises\": [],\n  \"foods\": [],\n  \"intensities\": [\n    {\"domain\": \"rpe\", \"level\": 8.5},\n    {\"domain\": \"rpe\", \"level\": 6.0},\n    {\"domain\": \"reps_in_reserve_week4\", \"level\": 1.5},\n    {\"domain\": \"reps_in_reserve_week5\", \"level\": 4},\n    {\"domain\": \"working_load_percent_of_week4_top_set\", \"level\": \"65-70%\"},\n    {\"domain\": \"load_reduction_percent\", \"level\": \"30-35%\"},\n    {\"domain\": \"volume_reduction_percent\", \"level\": 50}\n  ],\n  \"notes\": [\n    \"Week 5 deload: 9 working sets per session, 36 weekly working sets total\",\n    \"4-day split: Day 1 Lower (Quad), Day 2 Upper (Push), Day 3 Lower (Posterior), Day 4 Upper (Pull)\",\n    \"Week 4 prescription: 18 working sets per session at RPE 8.5, 72 weekly working sets\",\n    \"Deload compound RPE target: 6.0\",\n    \"Deload main lift loads at 65% of Week 4 top sets\",\n    \"Combined deload stimulus approximately one-third of Week 4 total tonnage\"\n  ]\n}",
-    "{\n  \"exercises\": [\n    { \"name\": \"Swiss Bar Press (Football Bar Press)\", \"week\": null },\n    { \"name\": \"Neutral-Grip Flat Dumbbell Press\", \"week\": null },\n    { \"name\": \"Overhead Press\", \"week\": null },\n    { \"name\": \"Incline Dumbbell Press (neutral grip)\", \"week\": null },\n    { \"name\": \"Cable Lateral Raise\", \"week\": null },\n    { \"name\": \"Triceps Pushdown\", \"week\": null },\n    { \"name\": \"Landmine Press\", \"week\": null },\n    { \"name\": \"Neutral-Grip Seated DB Press\", \"week\": null }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"rpe\", \"level\": 6 }\n  ],\n  \"notes\": [\n    \"Deload week context — low loads, used diagnostically\",\n    \"Swiss Bar Press: controlled descent, stop 1–2 inches off chest if full ROM provokes symptoms\",\n    \"Incline DB Press capped at 30 degrees incline\",\n    \"Cable Lateral Raise and Triceps Pushdown prescribed as pump-only single sets\",\n    \"Total working sets for Day 2: 9\",\n    \"Suggests pre-press shoulder prep sequence (5 min banded + scap work) before Day 2 and Day 4\",\n    \"Conditional swap: if OHP provokes symptoms, replace with Landmine Press or Neutral-Grip Seated DB Press\",\n    \"If symptoms persist on neutral-grip work, recommends assessment before loading heavy again\"\n  ]\n}",
-    "{\n  \"exercises\": [\n    { \"name\": \"Cat-Cow\", \"week\": 5 },\n    { \"name\": \"World's Greatest Stretch\", \"week\": 5 },\n    { \"name\": \"90/90 Hip Switches\", \"week\": 5 },\n    { \"name\": \"Bear Crawl (slow)\", \"week\": 5 },\n    { \"name\": \"Banded Pass-Throughs\", \"week\": 5 },\n    { \"name\": \"Wall Slides (forearm to wall)\", \"week\": 5 },\n    { \"name\": \"Thread the Needle\", \"week\": 5 },\n    { \"name\": \"Prone Y-T-W\", \"week\": 5 },\n    { \"name\": \"Couch Stretch\", \"week\": 5 },\n    { \"name\": \"Deep Squat Hold w/ Pry\", \"week\": 5 },\n    { \"name\": \"Half-Kneeling T-Spine Rotation\", \"week\": 5 },\n    { \"name\": \"Adductor Rock-Backs\", \"week\": 5 },\n    { \"name\": \"Supine 90/90 Breathing\", \"week\": 5 },\n    { \"name\": \"Easy walk\", \"week\": 5 },\n    { \"name\": \"Lower (Quad) session\", \"week\": 5 },\n    { \"name\": \"Upper (Push) session - Swiss bar\", \"week\": 5 },\n    { \"name\": \"Lower (Posterior) session\", \"week\": 5 },\n    { \"name\": \"Upper (Pull) session\", \"week\": 5 },\n    { \"name\": \"Zone 2 walk\", \"week\": 5 }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"stretch_perceived\", \"level\": \"4/10\" },\n    { \"domain\": \"rpe\", \"level\": 6 },\n    { \"domain\": \"rpe\", \"level\": 6 },\n    { \"domain\": \"rpe\", \"level\": 6 },\n    { \"domain\": \"rpe\", \"level\": 6 }\n  ],\n  \"notes\": [\n    \"Mobility session framed as a long warm-up with no workout attached\",\n    \"No PRs, no end-range loading during mobility session\",\n    \"Skip any drill that provokes the cranky shoulder (especially pass-throughs or Y-T-W)\",\n    \"Downregulation block is not optional\",\n    \"Optional 10 min easy walk before or after mobility session\",\n    \"Day 6 optional zone 2 walk, 20-30 min\",\n    \"Day 7 full rest\"\n  ]\n}",
-    "{\n  \"exercises\": [\n    { \"name\": \"Zone 2 cardio - bike\", \"week\": 5 },\n    { \"name\": \"Zone 2 cardio - incline treadmill walk\", \"week\": 5 },\n    { \"name\": \"Zone 2 cardio - rower\", \"week\": 5 },\n    { \"name\": \"Zone 2 cardio - outdoor walk\", \"week\": 5 },\n    { \"name\": \"Lower body (Quad) session\", \"week\": 5 },\n    { \"name\": \"Upper body (Push) session\", \"week\": 5 },\n    { \"name\": \"Lower body (Posterior) session\", \"week\": 5 },\n    { \"name\": \"Upper body (Pull) session\", \"week\": 5 },\n    { \"name\": \"Mobility session\", \"week\": 5 },\n    { \"name\": \"Optional easy walk\", \"week\": 5 }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"hr_percent_max\", \"level\": \"60-70%\" },\n    { \"domain\": \"rpe_cardio\", \"level\": \"3-4/10\" },\n    { \"domain\": \"hr_bpm_cap\", \"level\": \"130-140\" },\n    { \"domain\": \"bike_cadence_rpm\", \"level\": \"80-90\" },\n    { \"domain\": \"incline_walk_speed_mph\", \"level\": \"3-4\" },\n    { \"domain\": \"incline_walk_grade_percent\", \"level\": \"5-8\" },\n    { \"domain\": \"rower_stroke_rate_spm\", \"level\": \"20-22\" },\n    { \"domain\": \"rpe_lower_quad\", \"level\": 6 },\n    { \"domain\": \"rpe_upper_push\", \"level\": 6 },\n    { \"domain\": \"rpe_lower_posterior\", \"level\": 6 },\n    { \"domain\": \"rpe_upper_pull\", \"level\": 6 },\n    { \"domain\": \"rpe_mobility\", \"level\": 3 },\n    { \"domain\": \"sets_per_lifting_session\", \"level\": 9 },\n    { \"domain\": \"weekly_working_sets\", \"level\": 36 },\n    { \"domain\": \"mobility_duration_min\", \"level\": 20 },\n    { \"domain\": \"cardio_duration_min\", \"level\": 30 }\n  ],\n  \"notes\": [\n    \"Avoid running this week\",\n    \"Do cardio post-session or PM, not before the lift\",\n    \"If splitting AM lift / PM cardio, separate by 6+ hours\",\n    \"Do not add cardio to the mobility day\",\n    \"Days 6 and 7 are full rest; optional 20-30 min easy walk allowed but not prescribed\",\n    \"Space cardio away from lower-body sessions\",\n    \"Same-day stacking of Zone 2 with upper sessions is fine\",\n    \"Nose-breathing / conversational pace for Zone 2\",\n    \"Low-impact rhythmic modalities only\"\n  ]\n}",
-    "{\n  \"exercises\": [\n    { \"name\": \"Squat (3x5 at 65%)\", \"week\": 5 },\n    { \"name\": \"Deadlift (top set of 3)\", \"week\": 5 },\n    { \"name\": \"Pull-Up (top set of 5)\", \"week\": 5 },\n    { \"name\": \"Vertical Jump (3 max-effort attempts)\", \"week\": 5 },\n    { \"name\": \"Broad Jump (3 max-effort attempts)\", \"week\": 5 }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"percent_1rm_squat\", \"level\": 65 },\n    { \"domain\": \"percent_1rm_deadlift\", \"level\": 65 },\n    { \"domain\": \"percent_1rm_pullup\", \"level\": 65 },\n    { \"domain\": \"vertical_jump_effort\", \"level\": \"max\" },\n    { \"domain\": \"broad_jump_effort\", \"level\": \"max\" },\n    { \"domain\": \"grip_strength_test\", \"level\": \"max\" },\n    { \"domain\": \"week6_opener_adjustment_if_2_greens\", \"level\": \"-5%\" }\n  ],\n  \"notes\": [\n    \"Deload week is for tracking readiness, not testing strength\",\n    \"Skip bench this week due to shoulder\",\n    \"Do not perform 1RM or 3RM testing\",\n    \"Do not perform AMRAP sets\",\n    \"Do not perform rep PRs at submaximal loads\",\n    \"Vertical jump performed pre-session, after warm-up, on Day 1\",\n    \"Grip strength tested Day 1 AM and Day 7 AM\",\n    \"RHR and HRV measured every morning on waking, before phone/coffee\",\n    \"Film top working sets for bar speed measurement\",\n    \"Readiness decision rule: 3-4 greens open Week 6 as planned; 2 greens drop opener intensity ~5%; 0-1 greens extend deload 3-4 days\",\n    \"Goal of the week: look weaker on paper while feeling stronger in the body\"\n  ]\n}",
-    "{\n  \"exercises\": [\n    { \"name\": \"deadlift (tempo, 4-second eccentric)\", \"week\": 5 },\n    { \"name\": \"front squat (3-second pause)\", \"week\": 5 },\n    { \"name\": \"rows\", \"week\": 5 },\n    { \"name\": \"pull-ups\", \"week\": 5 },\n    { \"name\": \"speed deadlifts\", \"week\": 5 },\n    { \"name\": \"explosive pull-ups\", \"week\": 5 }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"rpe\", \"level\": 8.5 },\n    { \"domain\": \"rpe_wednesday_main_lift_cap\", \"level\": 7 },\n    { \"domain\": \"rpe_friday_cap\", \"level\": 6 },\n    { \"domain\": \"percent_1rm_speed_deadlift\", \"level\": 60 },\n    { \"domain\": \"speed_pullups_load\", \"level\": \"bodyweight\" }\n  ],\n  \"notes\": [\n    \"Mid-deload Wednesday session: add tempo work (4-sec eccentric deadlift, 3-sec pause front squat) at prescribed loads/sets/RPE\",\n    \"Mid-deload Friday session: add execution/technique focus, film every working set\",\n    \"Wednesday: add 3x3 speed deadlifts at 60% before working sets\",\n    \"Friday: add 4x3 explosive bodyweight pull-ups before working sets\",\n    \"Option C: end deload early — finish Day 3 as prescribed, take Thursday off, open Week 6 on Friday, contingent on readiness markers\",\n    \"Do not push RPE on Wednesday and Friday of deload\",\n    \"Do not add working sets during deload\",\n    \"Do not test heavy loads during deload\",\n    \"Fallback override: cap Wednesday main lift at RPE 7, hold Friday at RPE 6, dial back Week 6 opener 5%\",\n    \"Readiness markers referenced: grip strength, jump height, resting heart rate, bar speed\"\n  ]\n}",
-    "{\n  \"exercises\": [\n    {\"name\": \"Lower (Quad) session\", \"week\": 5},\n    {\"name\": \"Upper (Push) session\", \"week\": 5},\n    {\"name\": \"Zone 2 cardio 30 min\", \"week\": 5},\n    {\"name\": \"Lower (Posterior) session\", \"week\": 5},\n    {\"name\": \"Upper (Pull) session\", \"week\": 5},\n    {\"name\": \"Mobility 20 min\", \"week\": 5},\n    {\"name\": \"Optional walk\", \"week\": 5},\n    {\"name\": \"Swiss bar press\", \"week\": 5},\n    {\"name\": \"Neutral-grip dumbbell press\", \"week\": 5},\n    {\"name\": \"Incline press (neutral grip, 30° max)\", \"week\": 5},\n    {\"name\": \"Overhead press (OHP)\", \"week\": 5},\n    {\"name\": \"Landmine press (swap on standby)\", \"week\": 5},\n    {\"name\": \"Deadlift (optional speed work)\", \"week\": 5},\n    {\"name\": \"Pull-up (optional speed work)\", \"week\": 5},\n    {\"name\": \"Grip strength test\", \"week\": 5},\n    {\"name\": \"Vertical jump test\", \"week\": 5}\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    {\"domain\": \"rpe_compound\", \"level\": 6.0},\n    {\"domain\": \"reps_in_reserve\", \"level\": 4},\n    {\"domain\": \"working_load_percent_of_wk4_top_set\", \"level\": \"65-70%\"},\n    {\"domain\": \"total_tonnage_percent\", \"level\": \"~33%\"},\n    {\"domain\": \"hr_percent_max\", \"level\": \"60-70%\"},\n    {\"domain\": \"working_sets_per_session\", \"level\": 9},\n    {\"domain\": \"working_sets_per_week\", \"level\": 36},\n    {\"domain\": \"bar_speed_top_set_percent\", \"level\": 65}\n  ],\n  \"notes\": [\n    \"No failure work across all sessions\",\n    \"No AMRAPs across all sessions\",\n    \"No finishers across all sessions\",\n    \"Speed work optional on Day 3 (deadlift)\",\n    \"Speed work optional on Day 4 (pull-up)\",\n    \"Day 6 rest with optional walk\",\n    \"Day 7 full rest\",\n    \"Deload week with ~50% volume reduction vs Week 4\",\n    \"Bench replaced with Swiss bar or neutral-grip DB press due to cranky shoulder\",\n    \"Incline press restricted to neutral grip, 30° max\",\n    \"OHP flagged for symptom check; landmine swap on standby\"\n  ]\n}"
+    "{\n  \"exercises\": [\n    { \"name\": \"Back Squat\", \"week\": 5 },\n    { \"name\": \"Romanian Deadlift\", \"week\": 5 },\n    { \"name\": \"Walking Lunge\", \"week\": 5 },\n    { \"name\": \"Leg Curl\", \"week\": 5 },\n    { \"name\": \"Standing Calf Raise\", \"week\": 5 },\n    { \"name\": \"Bench Press\", \"week\": 5 },\n    { \"name\": \"Standing Overhead Press\", \"week\": 5 },\n    { \"name\": \"Incline DB Press\", \"week\": 5 },\n    { \"name\": \"Cable Lateral Raise\", \"week\": 5 },\n    { \"name\": \"Triceps Pushdown\", \"week\": 5 },\n    { \"name\": \"Zone 2 incline walk\", \"week\": 5 },\n    { \"name\": \"Zone 2 bike\", \"week\": 5 },\n    { \"name\": \"Mobility (hips, t-spine, shoulders)\", \"week\": 5 },\n    { \"name\": \"Conventional Deadlift\", \"week\": 5 },\n    { \"name\": \"Front Squat\", \"week\": 5 },\n    { \"name\": \"Hip Thrust\", \"week\": 5 },\n    { \"name\": \"Leg Extension\", \"week\": 5 },\n    { \"name\": \"Seated Calf Raise\", \"week\": 5 },\n    { \"name\": \"Weighted Pull-Up\", \"week\": 5 },\n    { \"name\": \"Barbell Row\", \"week\": 5 },\n    { \"name\": \"Chest-Supported DB Row\", \"week\": 5 },\n    { \"name\": \"Face Pull\", \"week\": 5 },\n    { \"name\": \"Barbell Curl\", \"week\": 5 }\n  ],\n  \"foods\": [\n    { \"name\": \"Protein 1.8–2.2 g/kg\", \"context\": \"daily_maintenance\" },\n    { \"name\": \"Carbohydrates (increased)\", \"context\": \"glycogen_top_off_pre_intensification\" },\n    { \"name\": \"Caffeine\", \"context\": \"reduce_baseline_reset\" }\n  ],\n  \"intensities\": [\n    { \"domain\": \"rpe_compounds\", \"level\": \"6\" },\n    { \"domain\": \"rpe_accessories\", \"level\": \"7\" },\n    { \"domain\": \"percent_1rm\", \"level\": \"70-75\" },\n    { \"domain\": \"reps_in_reserve\", \"level\": \"3-4\" },\n    { \"domain\": \"tempo_compounds\", \"level\": \"2-1-1\" },\n    { \"domain\": \"rest_compounds_min\", \"level\": \"2-3\" },\n    { \"domain\": \"rest_accessories_sec\", \"level\": \"90\" },\n    { \"domain\": \"hr_bpm_zone2\", \"level\": \"120-140\" },\n    { \"domain\": \"cardio_duration_min\", \"level\": \"20-30\" },\n    { \"domain\": \"weekly_working_sets_per_session\", \"level\": \"9\" },\n    { \"domain\": \"sleep_hours\", \"level\": \"8+\" }\n  ],\n  \"notes\": [\n    \"No failure, no drop sets, no intensifiers\",\n    \"Stop every set 3–4 reps in reserve\",\n    \"No belt on deadlifts unless warming up grooves\",\n    \"Wednesday: no lifting\",\n    \"Avoid aggressive stretching or deep tissue work 48 hr before Monday Week 6\",\n    \"Extend deload 2–3 days if still flat heading into Week 6\",\n    \"Optional Zone 2 cardio only\",\n    \"Mobility 10 min optional on Wednesday\"\n  ]\n}",
+    "{\n  \"exercises\": [],\n  \"foods\": [],\n  \"intensities\": [\n    {\"domain\": \"rpe\", \"level\": 8.5},\n    {\"domain\": \"rpe\", \"level\": 6},\n    {\"domain\": \"percent_top_working_load\", \"level\": \"65-70\"}\n  ],\n  \"notes\": [\n    \"Deload volume: 40-50% of accumulation set count per session\",\n    \"Deload intensity: 65-70% of last week's top working loads (~RPE 6)\",\n    \"Per-movement rule: no single exercise exceeds 3 working sets; compounds drop to 2 sets where possible\",\n    \"Accumulation block prescribed 18 working sets/session at RPE 8.5 across compounds\"\n  ]\n}",
+    "{\n  \"exercises\": [\n    { \"name\": \"Slight Incline DB Press (15-30°, neutral or semi-pronated)\", \"week\": null },\n    { \"name\": \"Standing Overhead Press\", \"week\": null },\n    { \"name\": \"Machine Chest Press\", \"week\": null },\n    { \"name\": \"Cable Lateral Raise\", \"week\": null },\n    { \"name\": \"Triceps Pushdown\", \"week\": null },\n    { \"name\": \"Landmine Press\", \"week\": null },\n    { \"name\": \"Neutral-grip DB Shoulder Press\", \"week\": null },\n    { \"name\": \"Band Pull-aparts\", \"week\": null },\n    { \"name\": \"Light Face Pulls\", \"week\": null },\n    { \"name\": \"Swiss Bar Press\", \"week\": null }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"rpe\", \"level\": 6 },\n    { \"domain\": \"rpe\", \"level\": 6 },\n    { \"domain\": \"rpe\", \"level\": 7 },\n    { \"domain\": \"rpe\", \"level\": 7 },\n    { \"domain\": \"rpe\", \"level\": 7 }\n  ],\n  \"notes\": [\n    \"Pre-session: 2 min band pull-aparts + 1 set of light face pulls before pressing\",\n    \"Avoid this week: flat barbell bench, deep dips, wide-grip anything, heavy cable flyes at full stretch\",\n    \"Don't grind through pressing pain during deload week\",\n    \"Reps bumped from 5 to 6-8 due to switching off barbell\"\n  ]\n}",
+    "{\n  \"exercises\": [\n    {\"name\": \"90/90 hip switches\", \"week\": null},\n    {\"name\": \"World's greatest stretch (with reach)\", \"week\": null},\n    {\"name\": \"Half-kneeling adductor rock-back\", \"week\": null},\n    {\"name\": \"Couch stretch\", \"week\": null},\n    {\"name\": \"Deep squat hold + t-spine reach\", \"week\": null},\n    {\"name\": \"Quadruped t-spine rotation\", \"week\": null},\n    {\"name\": \"Thread the needle\", \"week\": null},\n    {\"name\": \"Prone Y-T-W (bodyweight)\", \"week\": null},\n    {\"name\": \"Wall slides\", \"week\": null},\n    {\"name\": \"Band pull-aparts\", \"week\": null},\n    {\"name\": \"90/90 supine breathing (feet on wall, knees bent)\", \"week\": null},\n    {\"name\": \"Child's pose with slow nasal breathing\", \"week\": null},\n    {\"name\": \"Squat (Lower day)\", \"week\": null},\n    {\"name\": \"Bench press (Upper Push)\", \"week\": null},\n    {\"name\": \"Zone 2 cardio (optional, 20-30 min)\", \"week\": null},\n    {\"name\": \"Hinge (Lower day)\", \"week\": null},\n    {\"name\": \"Upper Pull session\", \"week\": null}\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    {\"domain\": \"mobility_session_overall\", \"level\": \"low intensity\"},\n    {\"domain\": \"prone_ytw_load\", \"level\": \"bodyweight / light\"},\n    {\"domain\": \"stretch_endpoint\", \"level\": \"not to end-range pain\"},\n    {\"domain\": \"hr_response_target\", \"level\": \"should not climb / no sweating\"},\n    {\"domain\": \"training_stimulus\", \"level\": \"none (parasympathetic/joint hygiene only)\"}\n  ],\n  \"notes\": [\n    \"Mobility session placed on Wednesday (existing off day) during deload week\",\n    \"Mobility format is continuous flow with nasal breathing\",\n    \"If pairing mobility with Zone 2 on Wednesday, do mobility first\",\n    \"Block 2 (t-spine/shoulder) can be pulled in as a pre-lift warm-up extender before Tuesday's pressing session\",\n    \"Saturday and Sunday are OFF days\",\n    \"Mobility described as not a workout; dial back if HR climbs or sweating occurs\",\n    \"Possible permanent inclusion of Block 2 in Week 6+ programming pending shoulder response\"\n  ]\n}",
+    "{\n  \"exercises\": [\n    {\"name\": \"Zone 2 cardio (incline walk, bike, or rower)\", \"week\": null},\n    {\"name\": \"Mobility\", \"week\": null},\n    {\"name\": \"Lower (Squat)\", \"week\": null},\n    {\"name\": \"Upper Push\", \"week\": null},\n    {\"name\": \"Lower (Hinge)\", \"week\": null},\n    {\"name\": \"Upper Pull\", \"week\": null},\n    {\"name\": \"Incline treadmill walk\", \"week\": null}\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    {\"domain\": \"hr_bpm\", \"level\": \"120-140\"},\n    {\"domain\": \"hr_percent_max\", \"level\": \"60-70\"},\n    {\"domain\": \"rpe\", \"level\": \"3-4/10\"},\n    {\"domain\": \"treadmill_incline_percent\", \"level\": \"10-12\"},\n    {\"domain\": \"treadmill_speed_kmh\", \"level\": \"5-5.5\"},\n    {\"domain\": \"duration_min\", \"level\": 30},\n    {\"domain\": \"mobility_duration_min\", \"level\": 20}\n  ],\n  \"notes\": [\n    \"Avoid running this week\",\n    \"Fasted or fed doesn't matter at this intensity/duration\",\n    \"HR cap is non-negotiable; if drifting above 140, slow down\",\n    \"Trust HR data over RPE if wearing a watch\",\n    \"Nasal breathing should be sustainable\",\n    \"Talk test: full sentences, no gasping\",\n    \"Sunday fully off\",\n    \"Cardio kept off lifting days\",\n    \"Wednesday: mobility first, then Z2\",\n    \"Saturday session doubles as readiness check; may push intensification start to Tuesday if needed\"\n  ]\n}",
+    "{\n  \"exercises\": [\n    { \"name\": \"Squat at 60% 1RM x 3 reps (bar speed test)\", \"week\": 5 },\n    { \"name\": \"Deadlift at 60% 1RM x 2 reps (bar speed test)\", \"week\": 5 },\n    { \"name\": \"Countermovement Jump (CMJ) x 3\", \"week\": 5 },\n    { \"name\": \"Grip strength test (dynamometer)\", \"week\": 5 },\n    { \"name\": \"Squat warm-ups\", \"week\": 5 },\n    { \"name\": \"Pull warm-ups\", \"week\": 5 }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"rpe\", \"level\": \"4-5 (60% submaximal bar speed test)\" },\n    { \"domain\": \"rpe_cap_deload\", \"level\": \"6-7\" },\n    { \"domain\": \"percent_1rm_squat_test\", \"level\": 60 },\n    { \"domain\": \"percent_1rm_deadlift_test\", \"level\": 60 },\n    { \"domain\": \"avoid_rpe\", \"level\": \"8+\" },\n    { \"domain\": \"avoid_load\", \"level\": \"1RM or 3RM attempts\" },\n    { \"domain\": \"avoid_load\", \"level\": \"heavy singles (~80%)\" }\n  ],\n  \"notes\": [\n    \"Test CMJ before squat warm-ups on Monday\",\n    \"Test squat bar speed at 60% x 3 as first working set on Monday\",\n    \"Test deadlift bar speed at 60% x 2 as first working set on Thursday\",\n    \"Test CMJ before pull warm-ups on Friday\",\n    \"Daily AM measurements: HRV, RHR, grip on waking\",\n    \"Avoid AMRAP / rep-out sets during deload\",\n    \"Avoid new exercises or unfamiliar variations during deload\",\n    \"Avoid 'feeling out' heavy singles\",\n    \"If markers trend down by Saturday, extend deload 2-3 days and start Week 6 on Wednesday\",\n    \"If CMJ down >5%, stop and add 2 more rest days minimum\",\n    \"Total added testing time per session ~3 minutes, no added fatigue\"\n  ]\n}",
+    "{\n  \"exercises\": [\n    { \"name\": \"Mobility\", \"week\": 5 },\n    { \"name\": \"Z2 cardio\", \"week\": 5 },\n    { \"name\": \"Weighted Pull-Up\", \"week\": 5 },\n    { \"name\": \"Squat\", \"week\": 5 },\n    { \"name\": \"Deadlift\", \"week\": 5 }\n  ],\n  \"foods\": [],\n  \"intensities\": [\n    { \"domain\": \"rpe\", \"level\": 7 },\n    { \"domain\": \"rpe_other_sets_friday_pull\", \"level\": 6 },\n    { \"domain\": \"rpe_cap_friday\", \"level\": 7 },\n    { \"domain\": \"rpe_compounds_mon_thu\", \"level\": 6 },\n    { \"domain\": \"rpe_prior_block\", \"level\": 8.5 }\n  ],\n  \"notes\": [\n    \"Week 5 is a deload week\",\n    \"Wednesday kept as mobility + Z2 only, no pushing\",\n    \"Friday upper pull: add a single top set of Weighted Pull-Up at 1x3 @ RPE 7\",\n    \"Hard cap RPE 7 on Friday; do not add weight and repeat if it felt easy\",\n    \"Do not add intensity to compounds on Monday/Thursday (squat, deadlift stay at RPE 6)\",\n    \"Reassess Sunday via bar speed, CMJ, HRV before launching Week 6 intensification block\",\n    \"Prior accumulation block was 4 weeks at RPE 8.5 with 18 working sets/session\"\n  ]\n}",
+    "{\n  \"exercises\": [\n    { \"name\": \"CMJ (countermovement jump)\", \"week\": 5 },\n    { \"name\": \"Back Squat\", \"week\": 5 },\n    { \"name\": \"Romanian Deadlift\", \"week\": 5 },\n    { \"name\": \"Walking Lunge\", \"week\": 5 },\n    { \"name\": \"Leg Curl\", \"week\": 5 },\n    { \"name\": \"Standing Calf Raise\", \"week\": 5 },\n    { \"name\": \"Band Pull-Aparts\", \"week\": 5 },\n    { \"name\": \"Face Pulls\", \"week\": 5 },\n    { \"name\": \"Slight Incline DB Press\", \"week\": 5 },\n    { \"name\": \"Standing Overhead Press\", \"week\": 5 },\n    { \"name\": \"Landmine Press (alternate)\", \"week\": 5 },\n    { \"name\": \"Neutral-Grip DB Press (alternate)\", \"week\": 5 },\n    { \"name\": \"Machine Chest Press\", \"week\": 5 },\n    { \"name\": \"Cable Lateral Raise\", \"week\": 5 },\n    { \"name\": \"Triceps Pushdown\", \"week\": 5 },\n    { \"name\": \"90/90 hip switches\", \"week\": 5 },\n    { \"name\": \"World's greatest stretch with reach\", \"week\": 5 },\n    { \"name\": \"Half-kneeling adductor rock-back\", \"week\": 5 },\n    { \"name\": \"Couch stretch\", \"week\": 5 },\n    { \"name\": \"Deep squat hold + t-spine reach\", \"week\": 5 },\n    { \"name\": \"Quadruped t-spine rotation\", \"week\": 5 },\n    { \"name\": \"Thread the needle\", \"week\": 5 },\n    { \"name\": \"Prone Y-T-W\", \"week\": 5 },\n    { \"name\": \"Wall slides\", \"week\": 5 },\n    { \"name\": \"90/90 supine breathing\", \"week\": 5 },\n    { \"name\": \"Child's pose nasal breathing\", \"week\": 5 },\n    { \"name\": \"Incline treadmill walk (Zone 2)\", \"week\": 5 },\n    { \"name\": \"Stationary bike (Zone 2 alternate)\", \"week\": 5 },\n    { \"name\": \"Conventional Deadlift\", \"week\": 5 },\n    { \"name\": \"Front Squat\", \"week\": 5 },\n    { \"name\": \"Hip Thrust\", \"week\": 5 },\n    { \"name\": \"Leg Extension\", \"week\": 5 },\n    { \"name\": \"Seated Calf Raise\", \"week\": 5 },\n    { \"name\": \"Weighted Pull-Up\", \"week\": 5 },\n    { \"name\": \"Barbell Row\", \"week\": 5 },\n    { \"name\": \"Chest-Supported DB Row\", \"week\": 5 },\n    { \"name\": \"Face Pull\", \"week\": 5 },\n    { \"name\": \"Barbell Curl\", \"week\": 5 },\n    { \"name\": \"Walking (optional Sunday)\", \"week\": 5 }\n  ],\n  \"foods\": [\n    { \"name\": \"Protein (1.8-2.2 g/kg)\", \"context\": \"daily_nutrition\" },\n    { \"name\": \"Carbohydrates (hold or slightly increase)\", \"context\": \"glycogen_topoff\" },\n    { \"name\": \"Caffeine (reduce)\", \"context\": \"baseline_reset\" }\n  ],\n  \"intensities\": [\n    { \"domain\": \"rpe_ceiling\", \"level\": 7 },\n    { \"domain\": \"rpe_compounds\", \"level\": \"6-7\" },\n    { \"domain\": \"rpe_back_squat\", \"level\": 6 },\n    { \"domain\": \"rpe_romanian_deadlift\", \"level\": 6 },\n    { \"domain\": \"rpe_walking_lunge\", \"level\": 6 },\n    { \"domain\": \"rpe_leg_curl\", \"level\": 7 },\n    { \"domain\": \"rpe_standing_calf_raise\", \"level\": 7 },\n    { \"domain\": \"rpe_incline_db_press\", \"level\": 6 },\n    { \"domain\": \"rpe_standing_ohp\", \"level\": 6 },\n    { \"domain\": \"rpe_machine_chest_press\", \"level\": 7 },\n    { \"domain\": \"rpe_cable_lateral_raise\", \"level\": 7 },\n    { \"domain\": \"rpe_triceps_pushdown\", \"level\": 7 },\n    { \"domain\": \"rpe_conventional_deadlift\", \"level\": 6 },\n    { \"domain\": \"rpe_front_squat\", \"level\": 6 },\n    { \"domain\": \"rpe_hip_thrust\", \"level\": 6 },\n    { \"domain\": \"rpe_leg_extension\", \"level\": 7 },\n    { \"domain\": \"rpe_seated_calf_raise\", \"level\": 7 },\n    { \"domain\": \"rpe_weighted_pullup_working\", \"level\": 6 },\n    { \"domain\": \"rpe_weighted_pullup_top_set\", \"level\": 7 },\n    { \"domain\": \"rpe_barbell_row\", \"level\": 6 },\n    { \"domain\": \"rpe_chest_supported_db_row\", \"level\": 7 },\n    { \"domain\": \"rpe_face_pull\", \"level\": 6 },\n    { \"domain\": \"rpe_barbell_curl\", \"level\": 7 },\n    { \"domain\": \"percent_1rm_working_loads\", \"level\": \"65-75%\" },\n    { \"domain\": \"percent_1rm_squat_first_set\", \"level\": \"60%\" },\n    { \"domain\": \"percent_1rm_deadlift_first_set\", \"level\": \"60%\" },\n    { \"domain\": \"hr_bpm_zone2\", \"level\": \"120-140\" },\n    { \"domain\": \"hr_percent_max_zone2\", \"level\": \"60-70%\" },\n    { \"domain\": \"rpe_zone2\", \"level\": \"3-4\" },\n    { \"domain\": \"treadmill_incline_percent\", \"level\": \"10-12\" },\n    { \"domain\": \"treadmill_speed_kmh\", \"level\": \"5-5.5\" },\n    { \"domain\": \"tempo_compounds\", \"level\": \"2-1-1\" },\n    { \"domain\": \"rest_compounds_min\", \"level\": \"2-3\" },\n    { \"domain\": \"rest_accessories_sec\", \"level\": 90 },\n    { \"domain\": \"volume_percent_of_accumulation\", \"level\": \"~50%\" },\n    { \"domain\": \"working_sets_per_session\", \"level\": \"9-11\" }\n  ],\n  \"notes\": [\n    \"Monday pre-session: CMJ x 3 jumps, then squat warm-ups, then first working set at 60% x 3\",\n    \"Tuesday pre-session warm-up: 2 min band pull-aparts + 1 set light face pulls\",\n    \"Tuesday optional extended warm-up: Wednesday mobility Block 2 (t-spine/shoulder)\",\n    \"Thursday pre-session: deadlift warm-ups, then first working set at 60% x 2\",\n    \"Friday pre-session: CMJ x 3 jumps\",\n    \"Wednesday session order: mobility first, Zone 2 second\",\n    \"No failure, no drop sets, RPE 7 ceiling with one Friday top-set exception\",\n    \"No running during Zone 2\",\n    \"Avoid this week: flat barbell bench, deep dips, wide-grip pressing, heavy cable flyes at full stretch\",\n    \"Top set protocol: hard cap at RPE 7; do not add weight if it felt like RPE 5\",\n    \"Saturday Zone 2 doubles as readiness check\",\n    \"Sunday OFF, optional walking, no structured movement\",\n    \"No aggressive stretching or deep tissue 48 hr before Monday Week 6\",\n    \"Sleep 8+ hours\",\n    \"Calories at maintenance, do not cut\"\n  ]\n}"
   ],
   "extraction_parse_ok": true,
-  "raw_text": "# Week 5 Deload — Summary\n\n## Weekly Layout\n\n| Day | Session | Duration |\n|---|---|---|\n| Day 1 | Lower (Quad) | ~60 min |\n| Day 2 | Upper (Push) + Zone 2 30 min | ~60 min + 30 min |\n| Day 3 | Lower (Posterior) | ~60 min |\n| Day 4 | Upper (Pull) + Zone 2 30 min | ~60 min + 30 min |\n| Day 5 | Mobility | 20 min |\n| Day 6 | Rest (optional walk) | — |\n| Day 7 | Rest | — |\n\n## Volume: Week 5 vs Week 4\n\n| Metric | Week 4 | Week 5 | Change |\n|---|---|---|---|\n| Working sets / session | 18 | 9 | **–50%** |\n| Working sets / week | 72 | 36 | **–50%** |\n| Training days | 4 | 4 | unchanged |\n| Cardio sessions | per usual | 2 × Zone 2 (30 min) | low aerobic added |\n| Mobility | — | 1 × 20 min | added |\n\n## Intensity: Week 5 vs Week 4\n\n| Metric | Week 4 | Week 5 | Change |\n|---|---|---|---|\n| Compound RPE | 8.5 | 6.0 | **–2.5 RPE** |\n| Reps in reserve | ~1.5 | ~4 | +2.5 RIR |\n| Working load (% of Wk 4 top set) | 100% | 65–70% | **–30–35%** |\n| Approx. total tonnage | 100% | ~33% | **–67%** |\n| Failure / AMRAP work | present | none | removed |\n| Cardio HR zone | n/a | Z2 (60–70% max HR) | low |\n\n## Key Programme Adjustments\n\n- **Bench → Swiss bar / neutral-grip DB press** (cranky shoulder; diagnostic week)\n- **Incline press to neutral grip, 30° max** (same logic)\n- **OHP flagged** for symptom check; landmine swap on standby\n- **No failure, no AMRAPs, no finishers** across all sessions\n- **Speed work optional** on Day 3 (deadlift) and Day 4 (pull-up) if boredom becomes a compliance risk\n\n## Readiness Markers Tracked\n\n- Grip strength (Day 1 vs Day 7)\n- Vertical jump (Day 1 vs Day 7)\n- Bar speed on top sets at 65%\n- Resting HR / HRV trend across the week\n\n## Decision Rule for Week 6\n\n**3–4 green markers** → open Week 6 as planned\n**2 greens** → open Week 6 at –5% intensity\n**0–1 greens** → extend deload 3–4 days\n\n## Bottom Line\n\nHalf the volume, two-thirds less tonnage, RPE dropped from grinding to crisp, same movement patterns preserved, shoulder protected, engine ticking over, fatigue clearing — primed to open intensification on Week 6.",
-  "timestamp": "2026-06-09T00:44:20.100Z"
+  "raw_text": "# Week 5 Deload — Advanced Male, 26 (Final Version)\n\nComing off 4 weeks of high-volume hypertrophy (18 working sets, RPE 8.5). This week dissipates accumulated fatigue while preserving movement patterns and aerobic base, with light strength-marker tracking to inform the Week 6 intensification launch. Shoulder is cranky on bench — pressing has been adjusted accordingly.\n\n**Caveat on volume:** Deload volume is set at ~50% of accumulation (≈9–11 working sets/session). If his actual Week 4 session volume was higher than 18 total sets (e.g., 18 compounds + accessories on top), we should re-cut further. Confirm when you can.\n\n## Programming Variables\n\n- **Volume:** ~50% of accumulation block\n- **Intensity:** RPE 6–7 (≈65–75% of recent working loads)\n- **Tempo:** 2–1–1 on compounds; controlled, no grinders\n- **Rest:** 2–3 min compounds, 90 sec accessories\n- **Frequency:** 4 lifting + 1 mobility + 2 Z2 cardio\n- **Hard caps:** No failure. No drop sets. RPE 7 ceiling (one Friday top set excepted).\n\n## Weekly Layout\n\n| Day | Session |\n|---|---|\n| **Mon** | Lower — Squat focus |\n| **Tue** | Upper Push |\n| **Wed** | Mobility 20 min + Zone 2 30 min |\n| **Thu** | Lower — Hinge focus |\n| **Fri** | Upper Pull (one top set permitted) |\n| **Sat** | Zone 2 30 min |\n| **Sun** | OFF |\n\n---\n\n## Monday — Lower (Squat Focus)\n\n**Pre-session:** CMJ × 3 jumps (log best). Squat warm-ups, then first working set at 60% × 3 — log bar speed / \"felt\" rating.\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Back Squat | 3 × 5 | RPE 6 (~70%) |\n| Romanian Deadlift | 2 × 8 | RPE 6 |\n| Walking Lunge | 2 × 8/leg | RPE 6 |\n| Leg Curl | 2 × 10 | RPE 7 |\n| Standing Calf Raise | 2 × 10 | RPE 7 |\n\n**Working sets: 11.**\n\n---\n\n## Tuesday — Upper Push\n\n*Bench swapped — shoulder management.*\n\n**Pre-session:** 2 min band pull-aparts + 1 set light face pulls. Optional: Wednesday mobility Block 2 (t-spine/shoulder) as extended warm-up.\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Slight Incline DB Press (15–30°, neutral/semi-pronated) | 3 × 6–8 | RPE 6 |\n| Standing OHP *(swap to landmine or neutral-grip DB if shoulder protests)* | 2 × 6 | RPE 6 |\n| Machine Chest Press | 2 × 8 | RPE 7 |\n| Cable Lateral Raise | 2 × 10 | RPE 7 |\n| Triceps Pushdown | 2 × 10 | RPE 7 |\n\n**Working sets: 11.**\n\n**Avoid this week:** flat barbell bench, deep dips, wide-grip pressing, heavy cable flyes at full stretch.\n\n---\n\n## Wednesday — Mobility + Zone 2\n\n**Mobility first, Z2 second.** Total ~50 min.\n\n### Mobility (20 min)\n\n**Block 1 — Hips & Lower (8 min)**\n- 90/90 hip switches — 90 sec\n- World's greatest stretch (w/ reach) — 5/side, slow\n- Half-kneeling adductor rock-back — 8/side\n- Couch stretch — 60 sec/side\n- Deep squat hold + t-spine reach — 60 sec\n\n**Block 2 — T-Spine & Shoulders (8 min)**\n- Quadruped t-spine rotation — 8/side\n- Thread the needle — 6/side\n- Prone Y-T-W (bodyweight) — 8 each\n- Wall slides — 10 reps\n- Band pull-aparts — 15 reps\n\n**Block 3 — Breathing (4 min)**\n- 90/90 supine breathing — 2 min\n- Child's pose, nasal breathing — 2 min\n\n### Zone 2 (30 min)\n- **HR target:** 120–140 bpm (60–70% max)\n- **RPE:** 3–4/10, full sentences sustainable\n- **Modality:** Incline treadmill walk (10–12% at 5–5.5 km/h) preferred; bike acceptable. **No running.**\n\n---\n\n## Thursday — Lower (Hinge Focus)\n\n**Pre-session:** Deadlift warm-ups, then first working set at 60% × 2 — log bar speed / \"felt\" rating.\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| Conventional Deadlift | 2 × 3 | RPE 6 (~70%) |\n| Front Squat | 2 × 5 | RPE 6 |\n| Hip Thrust | 2 × 8 | RPE 6 |\n| Leg Extension | 2 × 10 | RPE 7 |\n| Seated Calf Raise | 2 × 10 | RPE 7 |\n\n**Working sets: 10.**\n\n---\n\n## Friday — Upper Pull\n\n**Pre-session:** CMJ × 3 jumps (log best).\n\n| Exercise | Sets × Reps | Load / RPE |\n|---|---|---|\n| **Weighted Pull-Up** | **2 × 5 @ RPE 6, then 1 × 3 @ RPE 7** *(top set)* | See note |\n| Barbell Row | 2 × 6 | RPE 6 |\n| Chest-Supported DB Row | 2 × 8 | RPE 7 |\n| Face Pull | 2 × 12 | RPE 6 |\n| Barbell Curl | 2 × 10 | RPE 7 |\n\n**Working sets: 11.**\n\n**Top set protocol:** Work up to a triple at RPE 7 (2–3 reps in reserve). **Hard cap at RPE 7.** If it felt like RPE 5, *do not* add weight and go again — log it and move on. This is a release valve, not an opener.\n\n---\n\n## Saturday — Zone 2\n\n30 min, same protocol as Wednesday. HR 120–140, incline walk preferred.\n\n**Doubles as readiness check:** If HR drifts high or legs feel heavy, that's data — flag for Week 6 launch decision.\n\n---\n\n## Sunday — OFF\n\nFull rest. Walk if he wants. No structured movement.\n\n---\n\n## Strength Marker Tracking\n\n| Marker | When | Method |\n|---|---|---|\n| HRV / Resting HR | Daily AM | Wearable |\n| Grip (optional) | Daily AM | Dynamometer |\n| CMJ | Mon + Fri pre-session | My Jump Lab or jump-and-reach × 3 |\n| Squat bar speed @ 60% × 3 | Mon, first working set | VBT app or RPE log |\n| Deadlift bar speed @ 60% × 2 | Thu, first working set | VBT app or RPE log |\n\n**Total added time per session: ~3 min. No fatigue cost.**\n\n---\n\n## Recovery & Nutrition\n\n- **Sleep:** 8+ hours. Non-negotiable.\n- **Calories:** Maintenance. Do not cut.\n- **Protein:** 1.8–2.2 g/kg.\n- **Carbs:** Hold or slightly increase — top off glycogen for Week 6.\n- **Caffeine:** Pull back if heavily reliant. Let baseline reset.\n- **Soft tissue:** Sauna, massage, gentle work fine. No aggressive stretching or deep tissue 48 hr before Monday Week 6.\n\n---\n\n## Week 6 Launch Decision (Sunday)\n\nReview the week's data Sunday evening:\n\n| Signal | Action |\n|---|---|\n| Bar speed ↑, CMJ ↑, HRV ↑ | **Green light.** Launch Mon as planned. |\n| Markers flat at baseline | **Proceed.** He's recovered. |\n| Any marker still trending down | **Extend deload 2–3 days.** Push Week 6 to Wed. |\n| CMJ down >5% from baseline | **Stop.** Add 2+ rest days. Reassess. |\n| Shoulder still cranky on Fri pulls | **Keep him off barbell bench in Week 6.** Build pressing around incline DB / landmine for 4–6 weeks. |\n\n---\n\n## Coaching Notes\n\n- He'll feel great by Wednesday. That's the deload working, not evidence it's unneeded. **Hold the line on intensity caps.** The Friday top set is the only concession.\n- Boredom in a deload is a feature. If he's not bored, it's not deloading.\n- Shoulder data this week informs pressing strategy for the entire next mesocycle — track it.\n- Frame submaximal bar speed testing as \"testing strength by measuring how easy it feels.\" That's the actual readiness signal and it scratches the itch without cost.",
+  "timestamp": "2026-06-11T17:14:26.022Z"
 }

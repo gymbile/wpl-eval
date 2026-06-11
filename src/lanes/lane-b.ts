@@ -328,7 +328,13 @@ async function runOnce(
     };
   }
 
-  const compiled = compileWplAi(result.text);
+  // Strip surrounding markdown code fences before compiling. Despite the
+  // system prompt explicitly forbidding fences, smaller models (Haiku in
+  // particular) still wrap their DSL output in ``` blocks. wpl-ai's parser
+  // treats the fences as syntax errors. Stripping at this layer matches
+  // how a real orchestrator would handle the output.
+  const stripped = result.text.replace(/^```[a-zA-Z0-9_-]*\n/, "").replace(/```\s*$/, "").trim();
+  const compiled = compileWplAi(stripped);
 
   if (!compiled.ok) {
     return {

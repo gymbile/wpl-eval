@@ -181,7 +181,10 @@ function scoreTurn(
   forbidden: Set<string>,
   turn: number,
 ): TurnScore {
-  const compiled = compileWplAi(text);
+  // Strip markdown code fences. Some models (Haiku especially) wrap DSL
+  // output in ``` blocks despite system-prompt instructions to the contrary.
+  const stripped = text.replace(/^```[a-zA-Z0-9_-]*\n/, "").replace(/```\s*$/, "").trim();
+  const compiled = compileWplAi(stripped);
   if (!compiled.ok) {
     return {
       turn,
@@ -222,10 +225,14 @@ const sample: Array<{ file: string; from: number; to: number }> = [];
 for (const f of files) {
   const path = resolve(RESULTS_DIR, f);
   const r = JSON.parse(readFileSync(path, "utf8")) as RunResult;
-  if (r.error || r.refusal) continue;
+  if (r.error) continue;
   const scenario = scenarios[r.scenario_id];
   if (!scenario) continue;
   if (!r.raw_texts_per_turn || r.raw_texts_per_turn.length === 0) continue;
+  // Don't skip refusal-marked files. The runner aborts the conversation on
+  // the first turn the model refuses, but earlier turns may have produced
+  // valid plans. Walk what we have — the latest-valid-turn semantics
+  // already handles "no turn compiled" via the no_valid_turn branch.
 
   const forbidden = buildForbiddenSet(scenario);
   const totalTurns = r.raw_texts_per_turn.length;
@@ -260,6 +267,11 @@ for (const f of files) {
     r.latest_valid_turn = null;
     no_valid_turn++;
   } else {
+    // At least one turn produced a valid plan. Even if the runner had set
+    // refusal:true (because a later turn refused), the served plan exists.
+    // Clear the refusal flag so the headline counts the model as having
+    // delivered a plan; the per-turn data still shows where it refused.
+    r.refusal = false;
     const winner = perTurn[latestValidIdx]!;
     r.wpl_valid = winner.wpl_valid;
     r.wpl_schema_valid = winner.wpl_schema_valid;

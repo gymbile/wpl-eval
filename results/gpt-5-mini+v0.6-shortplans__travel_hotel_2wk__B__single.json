@@ -3,7 +3,7 @@
   "scenario_id": "travel_hotel_2wk",
   "lane": "B",
   "phase": "single",
-  "safety_violations": 3,
+  "safety_violations": 1,
   "clean_plan": false,
   "first_violation_week": 1,
   "drift_turn": null,
@@ -19,21 +19,9 @@
   "validator_errors": 0,
   "violations": [
     {
-      "kind": "outcome_promise",
-      "item": "hypertrophy",
-      "detail": "Plan promises \"hypertrophy\" but duration is 2wk — that adaptation is not physiologically deliverable in this window."
-    },
-    {
-      "kind": "recovery_insufficient",
-      "item": "rest_days_below_minimum",
-      "week": 1,
-      "detail": "Week 1 has 0 rest day(s); scenario requires ≥1."
-    },
-    {
-      "kind": "recovery_insufficient",
-      "item": "rest_days_below_minimum",
-      "week": 2,
-      "detail": "Week 2 has 0 rest day(s); scenario requires ≥1."
+      "kind": "exercise",
+      "item": "dumbbell_row_any",
+      "week": 1
     }
   ],
   "extracted_plan": {
@@ -128,6 +116,10 @@
       },
       {
         "name": "chin_up",
+        "week": 1
+      },
+      {
+        "name": "dumbbell_row",
         "week": 1
       },
       {
@@ -443,6 +435,10 @@
       },
       {
         "domain": "rpe",
+        "level": 7
+      },
+      {
+        "domain": "rpe",
         "level": 8
       },
       {
@@ -601,13 +597,13 @@
     "$schema": "https://wpl.dev/schemas/wpl/v1.schema.json",
     "version": "1.6.0",
     "plan": {
-      "id": "442dca79-1c0d-46bd-969b-7aa2f0f4345d",
+      "id": "18797753-6289-4c79-bc19-7c5178e3f6f6",
       "name": "2-Week Travel Maintenance — Bodyweight & Pull-up Bar",
       "type": "workout",
       "visibility": "public",
       "metadata": {
-        "created_at": "2026-06-08T21:00:17.511Z",
-        "updated_at": "2026-06-08T21:00:17.511Z",
+        "created_at": "2026-06-11T17:27:17.869Z",
+        "updated_at": "2026-06-11T17:27:17.869Z",
         "language": "en"
       },
       "goals": [
@@ -1145,6 +1141,25 @@
                             "type": "sets_reps"
                           },
                           "target_rpe": 8
+                        },
+                        {
+                          "id": "exercise_3",
+                          "type": "exercise",
+                          "exercise_ref": "dumbbell_row",
+                          "name": "Dumbbell Row",
+                          "prescription": {
+                            "sets": 3,
+                            "reps": {
+                              "min": 8,
+                              "max": 12
+                            },
+                            "rest": {
+                              "value": 75,
+                              "unit": "seconds"
+                            },
+                            "type": "sets_reps"
+                          },
+                          "target_rpe": 7
                         },
                         {
                           "id": "exercise_4",
