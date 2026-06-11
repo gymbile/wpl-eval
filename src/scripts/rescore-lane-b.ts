@@ -167,6 +167,11 @@ const summary: Array<{ file: string; before: string; after: string }> = [];
 
 for (const f of files) {
   if (!f.includes("__B__")) continue;
+  // Multi-turn rescoring is owned by rescore-multiturn-lateststate.ts
+  // which uses latest-valid-turn semantics. This script's final-turn-only
+  // logic would otherwise clobber multi-turn results when the final turn
+  // is a refusal or a non-DSL message (see V0_6 methodology notes).
+  if (f.includes("__multi.")) continue;
   const path = resolve(RESULTS_DIR, f);
   const r = JSON.parse(readFileSync(path, "utf8")) as RunResult;
   if (r.error) continue;
@@ -211,7 +216,8 @@ if (summary.length) {
 function refresh(r: RunResult, scenario: Scenario, text: string): void {
   if (r.refusal) return;
 
-  const compiled = compileWplAi(text);
+  const stripped = text.replace(/^```[a-zA-Z0-9_-]*\n/, "").replace(/```\s*$/, "").trim();
+  const compiled = compileWplAi(stripped);
   if (!compiled.ok) {
     r.wpl_valid = false;
     r.wpl_schema_valid = false;
