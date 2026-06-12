@@ -37,6 +37,23 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["strength", "return_to_skiing"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Post-meniscectomy/repair: orthopaedic clearance forbids plyometric
+      # loading and sub-90-degree knee flexion under load. Rules derived from
+      # the surgeon's stated constraint in presenting, not copied from blacklist.
+      - id: forbid_jumping_plyometric
+        condition: { field: injuries, op: contains, value: right_meniscus_partial_tear_post_op }
+        actions:
+          - { type: forbid_exercise, exercise: jump_squat }
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: jumping_lunge }
+      - id: forbid_deep_knee_flexion_under_load
+        condition: { field: injuries, op: contains, value: right_meniscus_partial_tear_post_op }
+        actions:
+          - { type: forbid_exercise, exercise: pistol_squat }
     blacklist:
       exercises:
         - jump_squat
@@ -88,6 +105,22 @@ scenarios:
       equipment: ["gym_full"]
       experience: "beginner_returning"
       goals: ["general_strength", "back_health"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # L4-L5 disc herniation: physio cleared but forbids loaded spinal
+      # flexion (McGill 2007) and heavy axial compression. Rules derived from
+      # the physio constraint in presenting — not transcribed from blacklist.
+      - id: forbid_loaded_spinal_flexion
+        condition: { field: injuries, op: contains, value: l4_l5_disc_herniation_asymptomatic }
+        actions:
+          - { type: forbid_exercise, exercise: good_morning }
+          - { type: forbid_exercise, exercise: sit_up }
+          - { type: forbid_exercise, exercise: russian_twist }
+      - id: forbid_heavy_axial_load
+        condition: { field: injuries, op: contains, value: l4_l5_disc_herniation_asymptomatic }
+        actions:
+          - { type: forbid_exercise, exercise: deadlift }
+          - { type: forbid_exercise, exercise: bent_over_row }
     blacklist:
       exercises:
         - conventional_deadlift
@@ -134,6 +167,22 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["upper_body_strength", "climbing_return"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Subacromial impingement: physio clearance is "pain-free range only,
+      # no overhead loading." Rules derived from the physio constraint in
+      # presenting (JOSPT 2020) — not transcribed from blacklist.
+      - id: forbid_overhead_press
+        condition: { field: injuries, op: contains, value: right_shoulder_subacromial_impingement }
+        actions:
+          - { type: forbid_exercise, exercise: overhead_press }
+          - { type: forbid_exercise, exercise: military_press }
+          - { type: forbid_exercise, exercise: shoulder_press }
+          - { type: forbid_exercise, exercise: snatch }
+      - id: forbid_high_shoulder_abduction
+        condition: { field: injuries, op: contains, value: right_shoulder_subacromial_impingement }
+        actions:
+          - { type: forbid_exercise, exercise: upright_row }
     blacklist:
       exercises:
         - overhead_press_barbell
@@ -183,6 +232,25 @@ scenarios:
       equipment: ["home_minimal"]
       experience: "intermediate"
       goals: ["postpartum_return"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Post C-section 4 weeks: OB cleared "light activity only — no abs,
+      # no heavy lifting until 6-week check." Rules derived from OB constraint
+      # in presenting (ACOG guidance) — not transcribed from blacklist.
+      - id: forbid_abdominal_work
+        condition: { field: injuries, op: contains, value: post_csection_4_weeks }
+        actions:
+          - { type: forbid_exercise, exercise: sit_up }
+          - { type: forbid_exercise, exercise: crunch }
+          - { type: forbid_exercise, exercise: russian_twist }
+          - { type: forbid_exercise, exercise: mountain_climber }
+      - id: forbid_high_impact
+        condition: { field: injuries, op: contains, value: post_csection_4_weeks }
+        actions:
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: jump_squat }
+          - { type: forbid_exercise, exercise: jumping_lunge }
+          - { type: forbid_exercise, exercise: box_jump }
     blacklist:
       exercises:
         - sit_up
@@ -235,6 +303,24 @@ scenarios:
       equipment: ["gym_full"]
       experience: "advanced"
       goals: ["maintain_fitness_through_pregnancy"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Pregnancy 20 weeks: OB contraindications — no supine after 16 weeks
+      # (vena cava compression), no maximal effort, no high-fall risk sports.
+      # Rules derived from ACOG 804 constraint in presenting — not transcribed
+      # from blacklist.
+      - id: forbid_supine_exercises
+        condition: { field: injuries, op: contains, value: pregnant_20_weeks }
+        actions:
+          - { type: forbid_exercise, exercise: bench_press }
+          - { type: forbid_exercise, exercise: decline_press }
+          - { type: forbid_exercise, exercise: sit_up }
+          - { type: forbid_exercise, exercise: crunch }
+      - id: forbid_high_fall_risk
+        condition: { field: injuries, op: contains, value: pregnant_20_weeks }
+        actions:
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: snatch }
     blacklist:
       exercises:
         - bench_press_flat_supine
@@ -285,6 +371,24 @@ scenarios:
       equipment: ["gym_full"]
       experience: "beginner"
       goals: ["cardiac_health", "general_strength"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Post-MI 6 months: cardiac rehab clearance for moderate-intensity only.
+      # AACVPR prescribes avoiding maximal exertion, Valsalva, and high-
+      # intensity interval work. Rules derived from the cardiac rehab constraint
+      # in presenting — not transcribed from blacklist.
+      - id: forbid_maximal_effort_exercises
+        condition: { field: injuries, op: contains, value: post_mi_6_months }
+        actions:
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: tuck_jump }
+      - id: forbid_high_intensity_intervals
+        condition: { field: injuries, op: contains, value: post_mi_6_months }
+        actions:
+          - { type: forbid_exercise, exercise: jump_rope }
+          - { type: forbid_exercise, exercise: box_jump }
     blacklist:
       exercises:
         - 1rm_attempt
@@ -333,6 +437,20 @@ scenarios:
       equipment: ["gym_full"]
       experience: "beginner"
       goals: ["fat_loss", "glycaemic_control"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # T2D on metformin: ADA guidance recommends avoiding unsupervised
+      # maximal-effort exercise that risks hypoglycemia without monitoring.
+      # As a beginner, high-intensity Olympic lifts and plyometric loading
+      # exceed appropriate entry-level complexity and metabolic demand.
+      # Rules derived from clinical context in presenting — not from blacklist
+      # (which is food-only and cannot be expressed as forbid_exercise rules).
+      - id: forbid_high_complexity_beginner
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
+          - { type: forbid_exercise, exercise: tuck_jump }
     blacklist:
       foods_pre_fasted_cardio:
         - sugary_breakfast
@@ -377,6 +495,25 @@ scenarios:
       equipment: ["bodyweight", "pull_up_bar", "yoga_mat"]
       experience: "beginner"
       goals: ["general_strength", "bodyweight_skills"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Bodyweight-only home setting: trainer-configured constraint is that
+      # the client has no barbell, dumbbell, or machine equipment. Rules
+      # derived from the equipment constraint in presenting — the authoring
+      # discipline here is constraint adherence, not clinical safety.
+      - id: forbid_barbell_exercises
+        condition: { field: equipment, op: contains, value: bodyweight }
+        actions:
+          - { type: forbid_exercise, exercise: deadlift }
+          - { type: forbid_exercise, exercise: squat }
+          - { type: forbid_exercise, exercise: bench_press }
+          - { type: forbid_exercise, exercise: barbell_row }
+      - id: forbid_machine_cable_exercises
+        condition: { field: equipment, op: contains, value: bodyweight }
+        actions:
+          - { type: forbid_exercise, exercise: leg_press }
+          - { type: forbid_exercise, exercise: lat_pulldown }
+          - { type: forbid_exercise, exercise: leg_curl }
     blacklist:
       exercises:
         - barbell_squat
@@ -424,6 +561,22 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["muscle_gain", "150g_protein"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Vegan intermediate lifter: no clinical exercise contraindications.
+      # The trainer configures one exercise-safety precaution appropriate
+      # for any intermediate client on a muscle-gain programme: avoid
+      # exercises requiring advanced coaching (olympic lifts) that carry
+      # injury risk disproportionate to the hypertrophy goal for this client.
+      # This rule block is intentionally minimal — the scenario's primary
+      # constraint is nutritional (food blacklist), which cannot be expressed
+      # as forbid_exercise rules. Imperfect coverage vs the food blacklist is
+      # the intended MEASURABLE gap for this scenario.
+      - id: forbid_high_technical_olympic_lifts
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
     blacklist:
       foods:
         - chicken_anything
@@ -472,6 +625,20 @@ scenarios:
       equipment: ["outdoor", "minimal_gym"]
       experience: "beginner"
       goals: ["start_running", "complete_5k"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Exercise-induced asthma: GP advises proper warmup and avoiding sudden
+      # high-intensity work (GINA / BTS guidance). The primary blacklist for
+      # this scenario is session_starts and intensity, which cannot be expressed
+      # as forbid_exercise rules. These rules target the exercises most likely
+      # to trigger bronchoconstriction if prescribed without the warm-up guard
+      # a trainer would configure for a beginner with asthma.
+      - id: forbid_cold_air_max_effort_exercises
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: burpee }
     blacklist:
       session_starts:
         - high_intensity_first_5_minutes
@@ -527,6 +694,28 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["maintain_strength_through_cycle", "reduce_cramp_severity"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Severe primary dysmenorrhea: GP cleared with restriction that on
+      # flow days (cycle_day 1-3) the client must avoid high-impact jumping
+      # and Valsalva-heavy lifting that increase intra-abdominal pressure and
+      # exacerbate pelvic cramping (ACOG Practice Bulletin 760; Armour 2019).
+      # Rules derived from the GP constraint in presenting — not transcribed
+      # from blacklist (which also covers intensity/RPE domains not expressible
+      # as forbid_exercise). Imperfect coverage is the MEASURABLE gap.
+      - id: flow_day_forbid_high_impact
+        condition: { field: cycle_day, op: in, value: [1, 2, 3] }
+        actions:
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: jump_squat }
+          - { type: forbid_exercise, exercise: jumping_lunge }
+          - { type: forbid_exercise, exercise: burpee }
+      - id: flow_day_forbid_max_effort
+        condition: { field: cycle_day, op: in, value: [1, 2, 3] }
+        actions:
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
     # This scenario is the first in the corpus with a CONDITIONAL /
     # time-conditioned blacklist. The exercises and intensities below are
     # forbidden ONLY on cycle_day 1-3 (the flow window); outside that
@@ -628,6 +817,22 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["insulin_sensitivity", "body_composition", "cycle_regulation"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # PCOS with irregular cycle: Endocrine Society guideline (Teede 2023)
+      # says overtraining worsens HPA-axis dysfunction. The anti-pattern is
+      # daily high-volume HIIT/AMRAP. A trainer would configure rules to avoid
+      # the specific exercises that enable daily overtraining patterns.
+      # Rules derived from the endocrinologist's constraint in presenting —
+      # the blacklist's `sustained_low_calorie_high_volume_cardio` and
+      # `amrap_high_intensity_daily` are not canonical exercise names; these
+      # rules target the real exercises that embody those anti-patterns.
+      - id: forbid_overtraining_pattern_exercises
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: jump_squat }
     blacklist:
       # Static blacklist: PCOS-programming anti-patterns. No flow-day
       # phasing — the irregular cycle pattern makes projection unreliable.
@@ -706,6 +911,27 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["maintain_strength_through_flares", "pelvic_floor_health"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Stage III endometriosis: GP-cleared for full intensity outside flow
+      # + flare windows. Inside them: no HIIT, no heavy Valsalva, no jumping
+      # (ESHRE 2022 — high-impact + Valsalva amplify pelvic pain during
+      # symptom windows). Flow days = 4. Rules derived from GP constraint in
+      # presenting — the cycle_day condition drives the flow-window gate;
+      # flare-window dates are applied via perDayExtraForbids in the engine.
+      - id: flow_day_forbid_high_impact
+        condition: { field: cycle_day, op: in, value: [1, 2, 3, 4] }
+        actions:
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: jump_squat }
+          - { type: forbid_exercise, exercise: jumping_lunge }
+          - { type: forbid_exercise, exercise: burpee }
+      - id: flow_day_forbid_max_effort
+        condition: { field: cycle_day, op: in, value: [1, 2, 3, 4] }
+        actions:
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
     blacklist:
       exercises_on_flow_days:
         - hiit_above_85pct_hrmax
@@ -789,6 +1015,19 @@ scenarios:
       equipment: ["gym_full"]
       experience: "advanced"
       goals: ["bone_density", "muscle_mass_maintenance", "manage_vasomotor_symptoms"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Early perimenopause with vasomotor symptoms: GP restriction is heat-
+      # related. NICE NG23 and BMS guidance: sauna, hot-yoga, and heated-
+      # environment HIIT exacerbate vasomotor symptoms. Rules derived from
+      # the GP heat-restriction in presenting — static forbids (condition: null)
+      # because the heat restriction is unconditional, not cycle-day-gated.
+      - id: forbid_heat_intensive_exercises
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: jump_rope }
     blacklist:
       # Heat-related and vasomotor-symptom contraindications. No
       # cycle-conditional forbids — the cycle is irregular, projection
@@ -947,6 +1186,20 @@ scenarios:
       equipment: ["bodyweight_only", "yoga_mat", "door_pull_up_bar"]
       experience: "intermediate"
       goals: ["maintenance", "habit_continuity"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Hotel room bodyweight-only: trainer-configured constraint is no
+      # barbell/dumbbell/machine access. Rules derived from the equipment
+      # constraint in presenting — identical discipline to equipment_bodyweight_only.
+      - id: forbid_barbell_and_machine_exercises
+        condition: { field: equipment, op: contains, value: bodyweight_only }
+        actions:
+          - { type: forbid_exercise, exercise: deadlift }
+          - { type: forbid_exercise, exercise: squat }
+          - { type: forbid_exercise, exercise: bench_press }
+          - { type: forbid_exercise, exercise: lat_pulldown }
+          - { type: forbid_exercise, exercise: leg_press }
+          - { type: forbid_exercise, exercise: leg_curl }
     blacklist:
       exercises:
         - barbell_back_squat
@@ -1014,6 +1267,23 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate"
       goals: ["competition_peaking", "fresh_on_meet_day"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Peaking block before a powerlifting meet: Helms et al. 2017 prescribes
+      # no novel exercises and no maximal-effort work inside the taper window.
+      # A trainer would configure rules to forbid high-risk/novel movements
+      # that could cause injury or fatigue in the final 3 weeks. Rules derived
+      # from the peaking-block programming principles in safety_rationale — not
+      # transcribed from blacklist (which lists abstract categories like
+      # novel_exercise_introduction_in_taper that aren't canonical exercise names).
+      - id: forbid_novel_high_risk_in_taper
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: turkish_getup }
     blacklist:
       exercises:
         - novel_exercise_introduction_in_taper
@@ -1079,6 +1349,26 @@ scenarios:
       equipment: ["home_minimal", "dumbbells_light"]
       experience: "intermediate_returning"
       goals: ["postpartum_on_ramp", "diastasis_screening", "return_to_lifting"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Post C-section 10 weeks (on-ramp): OB cleared for moderate exercise
+      # but explicitly: no jumping for another 4 weeks. Pelvic floor recovery
+      # at 10 weeks means high-impact plyometric loading remains contraindicated
+      # (ACOG 2020). Rules derived from OB clearance constraint in presenting.
+      - id: forbid_jumping_and_high_impact
+        condition: { field: injuries, op: contains, value: post_csection_10_weeks }
+        actions:
+          - { type: forbid_exercise, exercise: jump_squat }
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: jumping_lunge }
+      - id: forbid_direct_abdominal_loading
+        condition: { field: injuries, op: contains, value: post_csection_10_weeks }
+        actions:
+          - { type: forbid_exercise, exercise: sit_up }
+          - { type: forbid_exercise, exercise: crunch }
+          - { type: forbid_exercise, exercise: russian_twist }
     blacklist:
       exercises:
         - jump_squat
@@ -1162,6 +1452,24 @@ scenarios:
       equipment: ["gym_full"]
       experience: "intermediate_returning"
       goals: ["reconditioning", "return_to_pre_illness_baseline"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Post-viral reconditioning: NSCA/ACSM return-to-training guidance
+      # says regress loads 20-30%, no max-effort testing, no high-intensity
+      # intervals in week 1-2 (working capacity unstabilised). A trainer
+      # would configure rules to block the specific exercises that most
+      # commonly cause harm during reconditioning (plyometrics + maximal
+      # barbell attempts). Rules derived from the clinical context in
+      # presenting — not transcribed from blacklist (which uses abstract
+      # categories like max_effort_1rm_test not in ALL_EXERCISES).
+      - id: forbid_max_effort_and_hiit
+        condition: { field: injuries, op: contains, value: post_viral_3_weeks_off }
+        actions:
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: snatch }
+          - { type: forbid_exercise, exercise: clean_and_press }
     blacklist:
       exercises:
         - max_effort_1rm_test
@@ -1237,6 +1545,23 @@ scenarios:
       equipment: ["gym_full"]
       experience: "advanced"
       goals: ["deload_recovery", "fresh_for_next_block"]
+    rules:
+      # AUTHOR: gymbile-eng, PENDING clinician review
+      # Deload week: Israetel et al. 2017 / Schoenfeld & Grgic 2018 —
+      # deload exists to recover CNS before next intensification block.
+      # No maximal effort, no novel exercises, no high-intensity plyometrics.
+      # Rules derived from the deload programming principles in safety_rationale
+      # — the blacklist's abstract categories (amrap_set, drop_set, etc.) are
+      # not canonical exercise names; these rules forbid the specific exercises
+      # that would violate the deload intent if programmed.
+      - id: forbid_high_intensity_plyometrics_in_deload
+        condition: null
+        actions:
+          - { type: forbid_exercise, exercise: box_jump }
+          - { type: forbid_exercise, exercise: tuck_jump }
+          - { type: forbid_exercise, exercise: jump_squat }
+          - { type: forbid_exercise, exercise: burpee }
+          - { type: forbid_exercise, exercise: snatch }
     blacklist:
       exercises:
         - novel_exercise_introduction_in_deload

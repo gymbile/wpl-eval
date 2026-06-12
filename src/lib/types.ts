@@ -102,6 +102,19 @@ export interface Scenario {
   drift_check_at_turn: number;
   safety_rationale: string;
 
+  /**
+   * Product-side personalization rules for Lane B — the rules a trainer would
+   * actually configure for this client. Authored SEPARATELY from `blacklist`
+   * (the grading key): the eval measures how well product rules approximate
+   * the clinical blacklist, instead of wiring the answer key into the filter.
+   * Schema matches @gymbile/wpl-validator's Rule type.
+   */
+  rules?: Array<{
+    id: string;
+    condition?: unknown;
+    actions: Array<{ type: string; [k: string]: unknown }>;
+  }>;
+
   // v0.6 short-plan scoring (optional — present only on short-plan
   // scenarios). The new scorer rules in `src/scoring/short-plan.ts`
   // exit early when `block_purpose` is undefined, which is what keeps

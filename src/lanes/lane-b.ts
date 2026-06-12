@@ -10,6 +10,7 @@ import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
 import { costUsd } from "../lib/pricing.js";
 import { enforce } from "@gymbile/wpl-validator";
+import type { Rule } from "@gymbile/wpl-validator";
 
 // Canonical exercise + cardio vocabularies, injected into the Lane B prompt
 // depending on variant. See buildLaneBSystemPrompt() below.
@@ -132,53 +133,11 @@ function buildClientContext(scenario: Scenario): ClientContext {
   };
 }
 
-// Build a personalization.rules block from the scenario's blacklist. Each
-// blacklisted exercise becomes a rule that fires when the corresponding
-// injury/condition/equipment is present and emits a `forbid_exercise`
-// action consumed downstream.
-function buildPersonalization(scenario: Scenario, ctx: ClientContext): { rules: Parameters<typeof enforce>[2] } {
-  const rules: Parameters<typeof enforce>[2] = [];
-  const inj = ctx.injuries ?? [];
-  const eq = ctx.equipment ?? [];
-
-  // Static forbids — fire whenever the client matches the scenario.
-  for (const ex of scenario.blacklist.exercises ?? []) {
-    rules.push({
-      id: `forbid_${ex}`,
-      condition: inj.length
-        ? { field: "injuries", op: "contains", value: inj[0] }
-        : eq.length
-          ? { field: "equipment", op: "contains", value: eq[0] }
-          : null,
-      actions: [{ type: "forbid_exercise", exercise: ex }],
-    });
-  }
-
-  // Cycle-conditional forbids — fire only when the day's cycle_day falls
-  // within the client's flow window. The shipped enforce() sets ctx.cycle_day
-  // transiently while walking the compiled plan's days, then re-evaluates
-  // these rules per day.
-  //
-  // For suppressed cycles the cycle_day field stays null and the rule's
-  // `cycle_day in [...]` predicate short-circuits to false — no flow-day
-  // forbids will fire even if exercises_on_flow_days is non-empty. For
-  // irregular cycles the same is true for projection-based flow days; the
-  // runtime instead uses flare_windows (if provided) which are applied
-  // via perDayExtraForbids passed to enforce(), bypassing the rule
-  // evaluator entirely for those dates.
-  const flowDaysCount = ctx.cycle?.flow_days ?? 0;
-  if (ctx.cycle && scenario.blacklist.exercises_on_flow_days?.length && flowDaysCount > 0) {
-    const flowDayList = Array.from({ length: flowDaysCount }, (_, i) => i + 1);
-    for (const ex of scenario.blacklist.exercises_on_flow_days) {
-      rules.push({
-        id: `forbid_on_flow_${ex}`,
-        condition: { field: "cycle_day", op: "in", value: flowDayList },
-        actions: [{ type: "forbid_exercise", exercise: ex }],
-      });
-    }
-  }
-
-  return { rules };
+// v0.7: rules come from the scenario's authored `rules:` block, not from the
+// grading blacklist. A scenario without rules runs Lane B with governance
+// configured to nothing — a legitimate measurement of an unconfigured rollout.
+function buildPersonalization(scenario: Scenario): { rules: Rule[] } {
+  return { rules: (scenario.rules ?? []) as Rule[] };
 }
 
 // Lane B extraction: walk the compiled WPL JSON and pull out a structured
@@ -352,7 +311,7 @@ async function runOnce(
   // the shipped enforce() from @gymbile/wpl-validator. This replaces the
   // local rule-evaluator + stripForbidden composition (Task 19).
   const ctx = buildClientContext(scenario);
-  const personalization = buildPersonalization(scenario, ctx);
+  const personalization = buildPersonalization(scenario);
 
   const planStartDate =
     typeof (scenario.presenting as Record<string, unknown>)["plan_start_date"] === "string"
@@ -360,10 +319,26 @@ async function runOnce(
       : undefined;
 
   // Flare windows stay eval-side: they're a scenario-authoring concept, passed
-  // to the shipped engine as per-day extra forbids.
+  // to the shipped engine as per-day extra forbids. Source: collect exercise
+  // payloads from authored rules whose condition references cycle_day — so
+  // flare windows amplify authored rules, not the grading key.
+  const flareExercises: string[] = (scenario.rules ?? [])
+    .filter((r) => {
+      const cond = r.condition;
+      return (
+        cond !== null &&
+        typeof cond === "object" &&
+        (cond as Record<string, unknown>)["field"] === "cycle_day"
+      );
+    })
+    .flatMap((r) =>
+      r.actions
+        .filter((a) => a.type === "forbid_exercise")
+        .map((a) => (a as { type: string; exercise: string }).exercise),
+    );
   const flareForbids: ReadonlySet<string> =
-    ctx.cycle?.flare_windows?.length && scenario.blacklist.exercises_on_flow_days?.length
-      ? new Set(scenario.blacklist.exercises_on_flow_days)
+    ctx.cycle?.flare_windows?.length && flareExercises.length
+      ? new Set(flareExercises)
       : new Set();
   const perDayExtraForbids =
     flareForbids.size > 0
