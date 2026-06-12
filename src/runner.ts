@@ -53,8 +53,9 @@ function resultPath(
   phase: Phase,
   tag: string | undefined,
   repeatIndex?: number,
+  baseDir = "results",
 ): string {
-  const dir = resolve(process.cwd(), "results");
+  const dir = resolve(process.cwd(), baseDir);
   mkdirSync(dir, { recursive: true });
   const modelPart = tag ? `${model}+${tag}` : model;
   // k=1 keeps the legacy un-suffixed name so existing tooling still finds it.
@@ -69,6 +70,7 @@ function parseArgs(): {
   only: { model?: string; scenario?: string; lane?: "A" | "B" };
   tag?: string;
   repeats: number;
+  outDir: string;
 } {
   const argv = process.argv.slice(2);
   let phase: Phase | "all" = "all";
@@ -78,6 +80,7 @@ function parseArgs(): {
   let onlyLane: "A" | "B" | undefined;
   let tag: string | undefined;
   let repeats = 1;
+  let outDir = "results";
   for (const a of argv) {
     if (a === "--phase=single") phase = "single";
     else if (a === "--phase=multi") phase = "multi";
@@ -88,16 +91,18 @@ function parseArgs(): {
     else if (a === "--lane=A" || a === "--lane=B") onlyLane = a.slice("--lane=".length) as "A" | "B";
     else if (a.startsWith("--tag=")) tag = a.slice("--tag=".length);
     else if (a.startsWith("--repeats=")) repeats = Math.max(1, parseInt(a.slice("--repeats=".length), 10) || 1);
+    else if (a.startsWith("--out=")) outDir = a.slice("--out=".length);
   }
   const only: { model?: string; scenario?: string; lane?: "A" | "B" } = {};
   if (onlyModel !== undefined) only.model = onlyModel;
   if (onlyScenario !== undefined) only.scenario = onlyScenario;
   if (onlyLane !== undefined) only.lane = onlyLane;
-  return { phase, sweep, only, ...(tag !== undefined ? { tag } : {}), repeats };
+  return { phase, sweep, only, ...(tag !== undefined ? { tag } : {}), repeats, outDir };
 }
 
 async function main(): Promise<void> {
-  const { phase, sweep, only, tag, repeats } = parseArgs();
+  const { phase, sweep, only, tag, repeats, outDir } = parseArgs();
+  console.log(`Output dir: ${resolve(process.cwd(), outDir)}`);
   const scenarios = loadScenarios();
   // If a single model is requested, use it verbatim (allows ad-hoc smoke
   // tests against models outside the locked sweep). Otherwise run the
@@ -130,7 +135,7 @@ async function main(): Promise<void> {
       for (const lane of lanes) {
         for (const p of phases) {
           for (let k = 1; k <= repeats; k++) {
-            const outPath = resultPath(modelName, scenario.id, lane, p, tag, k);
+            const outPath = resultPath(modelName, scenario.id, lane, p, tag, k, outDir);
             if (existsSync(outPath)) {
               skipped++;
               done++;
