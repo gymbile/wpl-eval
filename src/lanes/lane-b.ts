@@ -5,16 +5,11 @@ import {
 } from "@gymbile/wpl-ai";
 import type { Scenario, Violation, LaneId, Phase, ModelName, RunResult, ClientContext, ExtractedPlan } from "../lib/types.js";
 import type { Model, ChatMessage } from "../models/types.js";
-import { score, collides } from "../scoring/blacklist.js";
+import { score } from "../scoring/blacklist.js";
 import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
-import {
-  computeCycleDay,
-  dayDateForPlanPosition,
-  dayOfWeekOffset,
-} from "../lib/cycle.js";
 import { costUsd } from "../lib/pricing.js";
-import { evaluate, firingActions } from "../lib/rule-evaluator.js";
+import { enforce } from "@gymbile/wpl-validator";
 
 // Canonical exercise + cardio vocabularies, injected into the Lane B prompt
 // depending on variant. See buildLaneBSystemPrompt() below.
@@ -141,8 +136,8 @@ function buildClientContext(scenario: Scenario): ClientContext {
 // blacklisted exercise becomes a rule that fires when the corresponding
 // injury/condition/equipment is present and emits a `forbid_exercise`
 // action consumed downstream.
-function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameters<typeof evaluate>[0] {
-  const rules: NonNullable<Parameters<typeof evaluate>[0]>["rules"] = [];
+function buildPersonalization(scenario: Scenario, ctx: ClientContext): { rules: Parameters<typeof enforce>[2] } {
+  const rules: Parameters<typeof enforce>[2] = [];
   const inj = ctx.injuries ?? [];
   const eq = ctx.equipment ?? [];
 
@@ -160,7 +155,7 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
   }
 
   // Cycle-conditional forbids — fire only when the day's cycle_day falls
-  // within the client's flow window. The lane B runtime sets ctx.cycle_day
+  // within the client's flow window. The shipped enforce() sets ctx.cycle_day
   // transiently while walking the compiled plan's days, then re-evaluates
   // these rules per day.
   //
@@ -169,7 +164,7 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
   // forbids will fire even if exercises_on_flow_days is non-empty. For
   // irregular cycles the same is true for projection-based flow days; the
   // runtime instead uses flare_windows (if provided) which are applied
-  // via the isOnFlowDay helper in stripForbidden, bypassing the rule
+  // via perDayExtraForbids passed to enforce(), bypassing the rule
   // evaluator entirely for those dates.
   const flowDaysCount = ctx.cycle?.flow_days ?? 0;
   if (ctx.cycle && scenario.blacklist.exercises_on_flow_days?.length && flowDaysCount > 0) {
@@ -353,80 +348,45 @@ async function runOnce(
     };
   }
 
-  // Apply the scenario's personalisation rules against the client context.
-  // `firing_actions` returns the forbid_exercise / modify_intensity actions
-  // the runtime would consume — they confirm the rule evaluator wired up
-  // correctly and let us subtract any forbidden exercises that slipped in.
+  // Apply the scenario's personalisation rules against the client context via
+  // the shipped enforce() from @gymbile/wpl-validator. This replaces the
+  // local rule-evaluator + stripForbidden composition (Task 19).
   const ctx = buildClientContext(scenario);
   const personalization = buildPersonalization(scenario, ctx);
 
-  // Static forbids: rules whose conditions don't reference cycle_day.
-  // These fire for every day in the compiled plan regardless of date.
-  const staticFired = firingActions(evaluate(personalization, ctx));
-  const staticForbidden = new Set(
-    staticFired
-      .filter((a) => a["type"] === "forbid_exercise" && typeof a["exercise"] === "string")
-      .map((a) => a["exercise"] as string),
-  );
-
-  // Cycle-conditional forbids: rules that reference cycle_day. Evaluated
-  // per day in stripForbidden by setting ctx.cycle_day transiently.
   const planStartDate =
     typeof (scenario.presenting as Record<string, unknown>)["plan_start_date"] === "string"
       ? ((scenario.presenting as Record<string, unknown>)["plan_start_date"] as string)
-      : null;
-  // Flare windows (endometriosis et al.) are client-reported date ranges
-  // where flow-day-style forbids apply regardless of projected cycle_day.
-  // Materialise once so the per-day closure can union them in for free
-  // without re-evaluating the rule engine.
+      : undefined;
+
+  // Flare windows stay eval-side: they're a scenario-authoring concept, passed
+  // to the shipped engine as per-day extra forbids.
   const flareForbids: ReadonlySet<string> =
     ctx.cycle?.flare_windows?.length && scenario.blacklist.exercises_on_flow_days?.length
       ? new Set(scenario.blacklist.exercises_on_flow_days)
       : new Set();
-
-  const perDayForbids =
-    ctx.cycle && planStartDate
+  const perDayExtraForbids =
+    flareForbids.size > 0
       ? (date: string): ReadonlySet<string> => {
-          const set = new Set<string>();
-          // Projection-based forbids — fire only when cycle is projectable
-          // (regular pattern + anchor + length). For irregular/suppressed
-          // cycles computeCycleDay returns null and the rule short-circuits.
-          const cd = computeCycleDay(date, ctx.cycle!);
-          const dayCtx: ClientContext = { ...ctx, cycle_day: cd };
-          const fired = firingActions(evaluate(personalization, dayCtx));
-          for (const a of fired) {
-            if (a["type"] === "forbid_exercise" && typeof a["exercise"] === "string") {
-              const ex = a["exercise"] as string;
-              if (!staticForbidden.has(ex)) set.add(ex);
-            }
+          for (const w of ctx.cycle!.flare_windows!) {
+            if (date >= w.start && date <= w.end) return flareForbids;
           }
-          // Flare-window forbids — apply for any cycle pattern, projection
-          // independent. Walks the flare_windows list directly rather than
-          // going through the rule evaluator (the predicate is a date-range
-          // membership check, simpler to inline than to encode as a rule).
-          if (ctx.cycle?.flare_windows?.length && flareForbids.size > 0) {
-            for (const w of ctx.cycle.flare_windows) {
-              if (date >= w.start && date <= w.end) {
-                for (const ex of flareForbids) {
-                  if (!staticForbidden.has(ex)) set.add(ex);
-                }
-                break;
-              }
-            }
-          }
-          return set;
+          return new Set();
         }
       : undefined;
 
-  // Strip forbidden exercises from the compiled plan before scoring so the
-  // WPL governance pipeline reflects what the runtime would actually serve
-  // to the client (the rule evaluator's output is authoritative).
-  const planJson = stripForbidden(
-    compiled.json,
-    staticForbidden,
-    perDayForbids,
-    planStartDate ?? undefined,
-  );
+  const enforced = enforce(compiled.json, ctx, personalization.rules ?? [], {
+    ...(planStartDate !== undefined ? { planStartDate } : {}),
+    ...(perDayExtraForbids !== undefined ? { perDayExtraForbids } : {}),
+  });
+  if (enforced.diagnostics.length > 0) {
+    // An unenforceable rule in the eval is an authoring bug — fail loudly,
+    // never score a lane whose safety rules silently didn't apply.
+    throw new Error(
+      `enforce() diagnostics for ${scenario.id}: ${JSON.stringify(enforced.diagnostics)}`,
+    );
+  }
+  const planJson = enforced.plan;
 
   const extracted = extractFromWplJson(planJson);
   const scored = score(scenario, extracted);
@@ -449,90 +409,6 @@ async function runOnce(
     wpl_json: planJson,
     extracted_plan: extracted,
   };
-}
-
-function isForbidden(itemName: string, forbidden: ReadonlySet<string>): boolean {
-  if (!itemName) return false;
-  // Fuzzy match for parity with the deterministic scorer: a blacklist entry
-  // like `bulgarian_split_squat_below_parallel` must match an LLM-emitted
-  // exercise like `bulgarian_split_squat` (no qualifier suffix). Without
-  // this the runtime stripper was string-exact and silently let qualified
-  // blacklist entries pass through. The scorer would still catch them, but
-  // the architectural promise of "rule evaluator strips contraindicated
-  // content before serving" only holds when the stripper sees what the
-  // scorer would see.
-  for (const bl of forbidden) {
-    if (collides(itemName, bl)) return true;
-  }
-  return false;
-}
-
-function stripForbidden(
-  json: Record<string, unknown>,
-  staticForbidden: Set<string>,
-  perDayForbids?: (date: string) => ReadonlySet<string>,
-  planStartDate?: string,
-): Record<string, unknown> {
-  // Walks the real WPL JSON shape: plan.phases[].weeks[].days[].blocks[].activities[]
-  // Each activity has `exercise_ref` (or `name` for simple cardio); we match
-  // against the scorer's fuzzy collides() rules so what the stripper removes
-  // is exactly what the scorer would flag.
-  const clone = JSON.parse(JSON.stringify(json)) as Record<string, unknown>;
-  const plan = clone["plan"];
-  if (!plan || typeof plan !== "object") return clone;
-  const phases = Array.isArray((plan as Record<string, unknown>)["phases"])
-    ? ((plan as Record<string, unknown>)["phases"] as Record<string, unknown>[])
-    : [];
-
-  // Pre-compute the cumulative-weeks offset for each phase so we can
-  // anchor each day to a calendar date when cycle stripping is active.
-  let weeksBeforePhase = 0;
-  for (const phase of phases) {
-    const weeks = Array.isArray(phase["weeks"]) ? (phase["weeks"] as Record<string, unknown>[]) : [];
-    for (const week of weeks) {
-      const weekOrder = typeof week["order"] === "number" ? (week["order"] as number) : 1;
-      const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
-      for (const day of days) {
-        // Compute this day's forbid set: static rules always apply, plus
-        // any cycle-conditional rules whose predicate matches the day's
-        // computed date.
-        let forbids: ReadonlySet<string> = staticForbidden;
-        if (perDayForbids && planStartDate) {
-          const dowOffset = dayOfWeekOffset(day["day_of_week"] as string | number | undefined);
-          if (dowOffset !== null) {
-            const date = dayDateForPlanPosition(
-              planStartDate,
-              weeksBeforePhase,
-              weekOrder,
-              dowOffset,
-            );
-            const dynamic = perDayForbids(date);
-            if (dynamic.size > 0) {
-              forbids = new Set([...staticForbidden, ...dynamic]);
-            }
-          }
-        }
-        if (forbids.size === 0) continue;
-        const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
-        for (const block of blocks) {
-          const activities = Array.isArray(block["activities"])
-            ? (block["activities"] as Record<string, unknown>[])
-            : [];
-          block["activities"] = activities.filter((act) => {
-            const name =
-              typeof act["exercise_ref"] === "string"
-                ? (act["exercise_ref"] as string)
-                : typeof act["name"] === "string"
-                  ? (act["name"] as string)
-                  : "";
-            return !isForbidden(name, forbids);
-          });
-        }
-      }
-    }
-    weeksBeforePhase += weeks.length;
-  }
-  return clone;
 }
 
 export async function runLaneBSingle(model: Model, scenario: Scenario): Promise<RunResult> {

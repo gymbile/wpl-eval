@@ -19,7 +19,7 @@ import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { compileWplAi } from "@gymbile/wpl-ai";
-import { evaluate, firingActions } from "../lib/rule-evaluator.js";
+import { evaluateRules, firingActions } from "@gymbile/wpl-validator";
 import { score } from "../scoring/blacklist.js";
 import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
@@ -54,7 +54,7 @@ function buildForbiddenSet(scenario: Scenario): Set<string> {
   const ctx = buildClientContext(scenario);
   const inj = ctx.injuries ?? [];
   const eq = ctx.equipment ?? [];
-  const rules: NonNullable<Parameters<typeof evaluate>[0]>["rules"] = [];
+  const rules: NonNullable<Parameters<typeof evaluateRules>[0]> = [];
   for (const ex of scenario.blacklist.exercises ?? []) {
     rules.push({
       id: `forbid_${ex}`,
@@ -66,7 +66,8 @@ function buildForbiddenSet(scenario: Scenario): Set<string> {
       actions: [{ type: "forbid_exercise", exercise: ex }],
     });
   }
-  const fired = firingActions(evaluate({ rules }, ctx));
+  const { evaluated } = evaluateRules(rules, ctx);
+  const fired = firingActions(evaluated);
   return new Set(
     fired
       .filter((a) => a["type"] === "forbid_exercise" && typeof a["exercise"] === "string")
