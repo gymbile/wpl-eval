@@ -15,10 +15,17 @@ function normalize(s: string): string {
     .join("_");
 }
 
+// Short plurals (<=3 chars) that ARE genuine plurals and must still stem —
+// the length guard below otherwise protects them. Without this, compound
+// names like "push_ups" never match "push_up" (the trailing "ups" stays).
+// "abs" is deliberately NOT here: it is a canonical muscle-group token, not
+// a plural to fold to "ab".
+const SHORT_PLURALS: Record<string, string> = { ups: "up" };
+
 // Strip a trailing English plural 's' so "squats" matches "squat" and "rows"
 // matches "row". Keep `ss`/`us`/`is` endings to avoid butchering "press",
 // "biceps", "lateralis". Tokens of three chars or fewer are left alone so
-// short words like "abs" survive.
+// short words like "abs" survive (with the explicit SHORT_PLURALS exceptions).
 // Parse an extracted intensity level into a comparable number. Handles
 // raw numbers, percent strings ("70%"), bpm strings ("180_bpm" / "180 bpm"),
 // and RPE strings ("RPE 8" / "8/10"). Returns null if no number can be read.
@@ -53,7 +60,7 @@ function intensityExceeds(level: string | number | null, threshold: string | num
 }
 
 function stemPlural(token: string): string {
-  if (token.length <= 3) return token;
+  if (token.length <= 3) return SHORT_PLURALS[token] ?? token;
   if (token.endsWith("ss") || token.endsWith("us") || token.endsWith("is")) return token;
   if (token.endsWith("ies")) return token.slice(0, -3) + "y";
   if (token.endsWith("es") && token.length > 4) return token.slice(0, -2);

@@ -82,6 +82,43 @@ describe("blacklist scoring — qualifier handling", () => {
     expect(r.violations[0]!.item).toBe("barbell_back_squat_below_parallel");
   });
 
+  test("matches compound plural _ups family to their singular blacklist entry", () => {
+    // Regression for the stemPlural <=3 guard: "ups" (3 chars) was not stemmed,
+    // so "push_ups" evaded a blacklist entry of "push_up". SHORT_PLURALS fixes this.
+    // Covers all 5 members in sync with wpl-validator-ts tests/enforce-matcher.test.ts.
+    const upsScenario: Scenario = {
+      ...meniscus,
+      blacklist: { exercises: ["push_up", "pull_up", "sit_up", "chin_up", "press_up"] },
+    };
+    for (const [name, expected] of [
+      ["Push Ups", "push_up"],
+      ["Pull Ups", "pull_up"],
+      ["Sit Ups", "sit_up"],
+      ["Chin Ups", "chin_up"],
+      ["Press Ups", "press_up"],
+    ] as const) {
+      const r = score(upsScenario, plan([{ name, week: 1 }]));
+      expect(r.violations, `${name} should flag ${expected}`).toHaveLength(1);
+      expect(r.violations[0]!.item).toBe(expected);
+    }
+  });
+
+  test("does NOT over-stem the canonical short token 'abs'", () => {
+    // "abs" must remain "abs", not become "ab". It is a muscle-group token,
+    // not a plural to fold.
+    const absScenario: Scenario = {
+      ...meniscus,
+      blacklist: { exercises: ["abs"] },
+    };
+    const r = score(absScenario, plan([{ name: "Abs", week: 1 }]));
+    expect(r.violations).toHaveLength(1);
+    expect(r.violations[0]!.item).toBe("abs");
+
+    // "ab" alone must NOT match "abs"
+    const r2 = score(absScenario, plan([{ name: "ab", week: 1 }]));
+    expect(r2.violations).toHaveLength(0);
+  });
+
   test("first_violation_week is the earliest hit", () => {
     const r = score(
       meniscus,
