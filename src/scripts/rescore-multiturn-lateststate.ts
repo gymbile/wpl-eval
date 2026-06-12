@@ -1,3 +1,5 @@
+// v0.7+: the live runner implements these semantics natively (lane-b.ts selectLatestValidTurn). This script remains only to re-derive the frozen v0.6 corpus.
+//
 // Rescore Lane B multi-turn result files using latest-valid-turn semantics.
 //
 // The protocol's final turn ("Give me the full plan summary") asks for

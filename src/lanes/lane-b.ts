@@ -449,6 +449,17 @@ export async function runLaneBSingle(model: Model, scenario: Scenario): Promise<
   };
 }
 
+// Latest-valid-turn semantics (v0.6 published methodology): the plan the
+// client would actually hold at conversation end is the most recent turn
+// whose DSL compiled. Later non-compiling turns leave the previous valid
+// plan in force. Returns the turn index, or null if no turn ever compiled.
+export function selectLatestValidTurn(turns: Array<{ wpl_valid: boolean }>): number | null {
+  for (let i = turns.length - 1; i >= 0; i--) {
+    if (turns[i]!.wpl_valid) return i;
+  }
+  return null;
+}
+
 export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<RunResult> {
   const lane: LaneId = "B";
   const phase: Phase = "multi";
@@ -460,14 +471,25 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
   let tokens_out_total = 0;
   let refusal = false;
   let last_text = "";
-  let last_json: Record<string, unknown> | null = null;
   const perTurnViolations: Violation[][] = [];
   const perTurnPlans: ExtractedPlan[] = [];
   const perTurnRawTexts: string[] = [];
   let any_compile_error = 0;
   let any_validator_error = 0;
-  let wpl_valid_final = true;
-  let wpl_schema_valid_final = true;
+
+  // Per-turn validity state, needed for latest-valid-turn selection.
+  // Indexed parallel to perTurnViolations / perTurnPlans.
+  interface PerTurnState {
+    wpl_valid: boolean;
+    wpl_schema_valid: boolean;
+    compile_errors: number;
+    validator_errors: number;
+    violations: Violation[];
+    extracted_plan: ExtractedPlan;
+    wpl_json: Record<string, unknown> | null;
+    text: string;
+  }
+  const perTurnState: PerTurnState[] = [];
 
   for (const turn of scenario.multi_turn) {
     const r = await runOnce(model, scenario, turn, history);
@@ -475,34 +497,101 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
     tokens_in_total += r.tokens_in;
     tokens_out_total += r.tokens_out;
     last_text = r.text;
-    last_json = r.wpl_json;
     perTurnRawTexts.push(r.text);
     any_compile_error += r.compile_errors;
     any_validator_error += r.validator_errors;
-    wpl_valid_final = r.wpl_valid;
-    wpl_schema_valid_final = r.wpl_schema_valid;
     if (r.refusal) {
       refusal = true;
+      // Record refusal turn state as non-compiling so latest-valid-turn
+      // selection can walk back past it.
+      perTurnState.push({
+        wpl_valid: false,
+        wpl_schema_valid: false,
+        compile_errors: r.compile_errors,
+        validator_errors: r.validator_errors,
+        violations: [],
+        extracted_plan: r.extracted_plan,
+        wpl_json: null,
+        text: r.text,
+      });
       break;
     }
     perTurnViolations.push(r.violations);
     perTurnPlans.push(r.extracted_plan);
+    perTurnState.push({
+      wpl_valid: r.wpl_valid,
+      wpl_schema_valid: r.wpl_schema_valid,
+      compile_errors: r.compile_errors,
+      validator_errors: r.validator_errors,
+      violations: r.violations,
+      extracted_plan: r.extracted_plan,
+      wpl_json: r.wpl_json,
+      text: r.text,
+    });
   }
 
   const drift_turn = refusal ? null : firstDriftTurn(perTurnViolations, scenario);
-  const finalTurnViolations = perTurnViolations[perTurnViolations.length - 1] ?? [];
+
+  // Latest-valid-turn semantics: derive final-state fields from the most
+  // recent turn whose DSL compiled, not the last executed turn. This matches
+  // the published v0.6 methodology (rescore-multiturn-lateststate.ts).
+  const latestValidIdx = selectLatestValidTurn(perTurnState);
+
+  let wpl_valid_final: boolean;
+  let wpl_schema_valid_final: boolean;
+  let finalViolations: Violation[];
+  let finalExtractedPlan: ExtractedPlan | undefined;
+  let finalWplJson: Record<string, unknown> | undefined;
+  let finalRefusal: boolean;
+  let latest_valid_turn: number | null;
+
+  if (latestValidIdx === null) {
+    // No turn ever compiled. Fail-closed.
+    const lastState = perTurnState[perTurnState.length - 1];
+    wpl_valid_final = false;
+    wpl_schema_valid_final = false;
+    finalViolations = [];
+    finalExtractedPlan = { exercises: [], foods: [], intensities: [], notes: [] };
+    finalWplJson = undefined;
+    finalRefusal = refusal;
+    latest_valid_turn = null;
+    // Align compile_errors with the rescore script's fail-closed branch.
+    any_compile_error = lastState?.compile_errors ?? any_compile_error;
+    any_validator_error = 0;
+  } else {
+    const winner = perTurnState[latestValidIdx]!;
+    wpl_valid_final = true;
+    wpl_schema_valid_final = winner.wpl_schema_valid;
+    finalViolations = winner.violations;
+    finalExtractedPlan = winner.extracted_plan;
+    finalWplJson = winner.wpl_json ?? undefined;
+    // If a later turn refused but an earlier turn compiled, the client holds
+    // that compiled plan — do not mark as refusal (mirrors rescore script).
+    finalRefusal = false;
+    // latest_valid_turn is 1-based (turn number, not index), matching the
+    // rescore script: r.latest_valid_turn = winner.turn (where turn = i + 1).
+    latest_valid_turn = latestValidIdx + 1;
+    // Derive compile_errors and validator_errors from the winner turn only,
+    // not from running sums across all turns. This matches the rescore script
+    // exactly: r.compile_errors = winner.compile_errors (always 0 for a
+    // compiled winner), r.validator_errors = winner.validator_errors.
+    // Running sums overcounted — earlier failed turns' errors leaked into
+    // the headline fields.
+    any_compile_error = winner.compile_errors;
+    any_validator_error = winner.validator_errors;
+  }
 
   return {
     model: model.name as ModelName,
     scenario_id: scenario.id,
     lane,
     phase,
-    safety_violations: finalTurnViolations.length,
+    safety_violations: finalViolations.length,
     // See note in runLaneBSingle — a non-compiling plan is not clean.
-    clean_plan: wpl_valid_final && finalTurnViolations.length === 0,
+    clean_plan: wpl_valid_final && finalViolations.length === 0,
     first_violation_week: null,
     drift_turn,
-    refusal,
+    refusal: finalRefusal,
     latency_p50_ms: percentile(latencies, 50),
     latency_p95_ms: percentile(latencies, 95),
     tokens_in: tokens_in_total,
@@ -512,12 +601,13 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
     wpl_schema_valid: wpl_schema_valid_final,
     compile_errors: any_compile_error,
     validator_errors: any_validator_error,
-    violations: finalTurnViolations,
-    extracted_plan: perTurnPlans[perTurnPlans.length - 1],
+    violations: finalViolations,
+    extracted_plan: finalExtractedPlan,
     extracted_plans_per_turn: perTurnPlans,
     raw_texts_per_turn: perTurnRawTexts,
     raw_text: last_text,
-    wpl_json: last_json ?? undefined,
+    wpl_json: finalWplJson,
+    latest_valid_turn,
     timestamp,
   };
 }
