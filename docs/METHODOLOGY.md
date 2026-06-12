@@ -151,7 +151,7 @@ Each scenario also specifies a `drift_check_at_turn` — the earliest turn at wh
 trainer prompt ──► LLM (free-form text) ──► extractor ──► structured list ──► scorer
 ```
 
-**Step 1: LLM call.** System prompt is a generic "you are a fitness AI helping a personal trainer programme for their client". User message is the scenario's `single_turn_prompt` (or current multi-turn step). Temperature = 0 for reproducibility. `max_output_tokens = 6000`.
+**Step 1: LLM call.** System prompt is a generic "you are a fitness AI helping a personal trainer programme for their client". User message is the scenario's `single_turn_prompt` (or current multi-turn step). `max_output_tokens = 6000` passed to the lane; see §3.5 for per-model sampling behaviour and the actual token budgets sent to each model.
 
 System prompt verbatim:
 
@@ -192,7 +192,7 @@ trainer prompt ──► LLM (WPL-AI DSL) ──► compile ──► validate �
 - The **cardio modality vocabulary** from `CARDIO_MODALITIES` (8 names).
 - An explicit instruction to substitute any out-of-vocabulary exercise with the closest canonical name.
 
-User message is the same scenario prompt as Lane A. Temperature = 0. `max_output_tokens = 8000`.
+User message is the same scenario prompt as Lane A. `max_output_tokens = 8000` passed to the lane; see §3.5 for per-model sampling behaviour and the actual token budgets sent to each model.
 
 The Lane B prompt is documented verbatim in `src/lanes/lane-b.ts` and reproducible.
 
@@ -333,6 +333,45 @@ The retries are *informed*: `repair_hint.action` names the repair to attempt ("a
 The public eval substantiates the first two columns. The third column is the commercial product. The benchmark cannot prove what the orchestrator achieves end-to-end without running and publishing it — which would compromise both points above. But the benchmark *can* prove the contract the orchestrator builds on, which is what matters for credibility.
 
 A reader who interprets the public eval as the full product will conclude WPL has a "delivery problem". A reader who understands the architecture will conclude WPL has a *verifiable safety guarantee* with a separate, also-measurable but proprietary, completion mechanism on top. The intent of this document is to make the architecture explicit so the first interpretation does not stick.
+
+### 3.5 Per-model sampling behaviour and token budgets
+
+**Temperature.** Not all models in the v0.6 sweep accept a temperature parameter. The lane code passes `temperature: 0` for every call, but the model adapters filter this before the API request:
+
+| Model | Temperature sent | Notes |
+|---|---|---|
+| `gpt-4.1` | `0` | Standard OpenAI chat completions; arbitrary temperature accepted |
+| `gpt-5` | *not sent* | GPT-5 family rejects the parameter; model-controlled sampling |
+| `gpt-5-mini` | *not sent* | Same — model-controlled sampling |
+| `gpt-5-nano` | *not sent* | Same — model-controlled sampling |
+| `claude-sonnet-4-6` | `0` | Anthropic Messages API; temperature accepted |
+| `claude-haiku-4-5-20251001` | `0` | Same |
+| `claude-opus-4-7` | *not sent* | Opus 4.7 deprecates `temperature`; API returns 400 if sent; model-controlled sampling |
+
+Three of seven models (`gpt-4.1`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`) run at `temperature: 0`. The other four (`gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `claude-opus-4-7`) use model-controlled sampling and are **not reproducibly deterministic across runs**. Single-run cells for those four models carry sampling noise. This is why v0.7 headline tables report Wilson 95% confidence intervals and `--repeats` is available for variance estimation.
+
+The claim in earlier versions of this document that "Temperature = 0 for reproducibility" applied across all models was false — it applied only to the three non-reasoning models listed above.
+
+**Max-token budgets.** The lane code passes `max_output_tokens` as a budget hint:
+
+- Lane A: `max_output_tokens = 6000`
+- Lane B: `max_output_tokens = 8000`
+
+For `gpt-4.1`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`, and `claude-opus-4-7`, these values map directly to the `max_tokens` / `max_tokens` API parameter and cap visible output.
+
+For the **GPT-5 family**, the adapter uses `max_completion_tokens` instead (which covers both reasoning tokens and visible output). Because reasoning tokens consume budget against the same cap, the code multiplies:
+
+- `reasoning_effort: "minimal"` (default): `max_completion_tokens = budget × 2`
+- `reasoning_effort: "medium"`: `max_completion_tokens = budget × 4`
+
+Concrete values:
+
+| Lane | `opts.max_output_tokens` | GPT-5 `max_completion_tokens` (minimal) | GPT-5 `max_completion_tokens` (medium) |
+|---|---:|---:|---:|
+| A | 6 000 | **12 000** | 24 000 |
+| B | 8 000 | **16 000** | 32 000 |
+
+Earlier versions of this document described the Lane A limit as `max_output_tokens = 6000` and the Lane B limit as `max_output_tokens = 8000` without disclosing that GPT-5 silently receives 2× or 4× those figures as `max_completion_tokens`. The reasoning-effort sensitivity analysis in §6 uses `medium` effort for the re-runs.
 
 ---
 
@@ -557,11 +596,11 @@ A sharp reader's critique: *"This is AI validated by AI"* is not quite right —
 
 See §3.3.
 
-### 9.5 Temperature = 0 vs production
+### 9.5 Sampling settings vs production
 
 **Threat.** Production apps run with non-zero temperature; absolute violation counts will differ.
 
-**Response.** Documented. Lane A vs Lane B relative ordering should be robust to temperature (drift gets *worse* at higher temperature, in our experience; safety priors are not). We chose temperature 0 explicitly for reproducibility, not for realism — the goal of v0.5 is a clean delta measurement, not absolute production-rate estimation.
+**Response.** Documented. Lane A vs Lane B relative ordering should be robust to temperature (drift gets *worse* at higher temperature, in our experience; safety priors are not). The three non-reasoning models (`gpt-4.1`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`) run at `temperature: 0` for reproducibility, not for realism — the goal is a clean delta measurement, not absolute production-rate estimation. The four reasoning/extended models (`gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `claude-opus-4-7`) do not accept a temperature parameter and use model-controlled sampling; their results are less reproducible across runs (see §3.5).
 
 ### 9.6 Single vendor
 
@@ -724,7 +763,43 @@ The completion loop itself is left as an integration concern. We expect multiple
 
 ---
 
-*This document is published alongside the v0.5 corpus at `github.com/gymbile/wpl-eval`. Last updated 2026-05-16.*
+## 15. Changes in v0.7
+
+This section documents the design changes introduced in the v0.7 release, with the reasoning behind each.
+
+### 15.1 Fixed third-party extractor for Lane A
+
+**Change.** Lane A's extraction step (Step 2 in §3.1) now always uses a fixed external model (`gpt-4.1`) rather than the model under test.
+
+**Why.** The self-extraction confound: when the extractor is the same model as the generator, more capable models extract their own output more exhaustively. A GPT-5 extractor applied to GPT-5-generated prose finds more named exercises than a GPT-4.1 extractor would — and therefore scores more violations. This creates a spurious correlation between model capability and apparent unsafety in Lane A that has nothing to do with the model's actual safety behaviour. Using a fixed third-party extractor removes this confound and makes the Lane A violation counts comparable across models.
+
+### 15.2 Authored-rules decoupling (Lane B)
+
+**Change.** Lane B's per-scenario `personalization.rules` are now authored separately in `scenarios/scenarios.yaml` under a dedicated `lane_b_rules` key, drawn from clinical context. They are no longer constructed programmatically from the grading blacklist.
+
+**Why.** Circularity critique: in v0.6 the Lane B rule evaluator's `forbid_exercise` actions were derived directly from the same blacklist used to grade output. This meant Lane B could not demonstrably fail on any exercise the scorer cared about — any exercise the scorer would flag was also the one the rule evaluator was told to strip. Authoring the rules separately, from clinical context rather than from the grading key, means the two are genuinely independent: the rule set's coverage is imperfect (intentionally so, to stress-test the architecture), and the eval can now honestly characterise which blacklist entries the rule evaluator would catch vs. miss. Imperfect coverage is measurable; self-referential coverage is not.
+
+### 15.3 Latest-valid-turn semantics now native in the live runner
+
+**Change.** The live multi-turn runner (`src/lanes/lane-b.ts`) now natively applies latest-valid-turn semantics: when scoring a multi-turn Lane B conversation, the effective served plan at turn N is the last compiled-and-valid WPL document from any turn 1..N, not the output of turn N itself (which may be a compile failure).
+
+**Why.** In v0.6 this correction existed only in a post-hoc rescore script (`rescore-multiturn-lateststate.ts`). The live runner scored the turn-N output directly, including compile failures as empty plans. The semantics now match the published methodology from the live run, not only from rescore. New runs produce correct drift and safety numbers without needing a separate rescore pass.
+
+### 15.4 Wilson 95% confidence intervals and `--repeats`
+
+**Change.** Headline tables now report Wilson 95% confidence intervals on all binary rates (unsafe-plan rate, drift rate, serve rate). The runner accepts `--repeats N` to run each `(model, scenario, lane, phase)` cell N times, storing results as `...__r<k>.json`; the CI computation uses all repeat trials as independent draws.
+
+**Why.** Four of the seven models use model-controlled sampling (see §3.5) and are not deterministic across runs. Single-run binary outcomes on a 15-scenario corpus carry meaningful sampling noise. Wilson intervals make this noise visible and allow readers to distinguish headline differences that are robust from those that are within-noise. The `--repeats` flag enables variance estimation without committing to a full fixed-N design upfront.
+
+### 15.5 Enforcement via `@gymbile/wpl-validator@1.8` `enforce()`
+
+**Change.** Lane B's rule evaluation and exercise stripping now delegates to the published `enforce(clientContext)` function exported by `@gymbile/wpl-validator@1.8`, rather than a bespoke in-eval rule evaluator.
+
+**Why.** Alignment with production: the production runtime calls the same `enforce()` function on every plan regeneration. Running the eval against a different evaluator (even one designed to be behaviour-equivalent) created a gap: bugs in the eval evaluator would not be caught in production and vice versa. The published `enforce()` is the single source of truth for enforcement behaviour; the eval is now a consumer of it, not a reimplementation of it.
+
+---
+
+*This document is published alongside the v0.6 corpus at `github.com/gymbile/wpl-eval`. Last updated 2026-06-12.*
 
 ---
 
