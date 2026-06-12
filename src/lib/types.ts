@@ -224,6 +224,10 @@ export interface RunResult {
   // diagnosed and re-parsed offline without re-querying the model.
   extractor_raw?: string | undefined;
   extractor_raw_per_turn?: string[] | undefined;
+  // v0.7: identity of the fixed extractor model used for Lane A extraction.
+  // Populated on every non-refusal Lane A trial so future audits can confirm
+  // which extractor produced each artifact.
+  extractor_model?: string | undefined;
   raw_text?: string | undefined;
   wpl_json?: Record<string, unknown> | undefined;
   error?: string | undefined;

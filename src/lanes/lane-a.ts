@@ -1,6 +1,6 @@
 import type { Scenario, Violation, LaneId, Phase, ModelName, RunResult, ExtractedPlan } from "../lib/types.js";
 import type { Model, ChatMessage } from "../models/types.js";
-import { extractPlan } from "../scoring/extraction.js";
+import { extractPlan, EXTRACTOR_MODEL_NAME } from "../scoring/extraction.js";
 import { score } from "../scoring/blacklist.js";
 import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
@@ -35,7 +35,7 @@ export async function runLaneASingle(
   let clean_plan = true;
 
   if (!result.refusal) {
-    const { plan, metrics, parse_ok, raw } = await extractPlan(model, result.text);
+    const { plan, metrics, parse_ok, raw } = await extractPlan(result.text);
     const scored = score(scenario, plan);
     // Short-plan rules (no-op for v0.5 scenarios — they don't carry
     // block_purpose). Only the outcome-promise check fires on Lane A
@@ -68,6 +68,7 @@ export async function runLaneASingle(
       extracted_plan: plan,
       extraction_parse_ok: parse_ok,
       extractor_raw: raw,
+      extractor_model: EXTRACTOR_MODEL_NAME,
       raw_text: result.text,
       timestamp,
     };
@@ -132,7 +133,7 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
       break;
     }
 
-    const { plan, metrics, parse_ok, raw } = await extractPlan(model, turnResult.text);
+    const { plan, metrics, parse_ok, raw } = await extractPlan(turnResult.text);
     tokens_in_total += metrics.tokens_in;
     tokens_out_total += metrics.tokens_out;
     if (!parse_ok) any_parse_failure = true;
@@ -171,6 +172,7 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
     raw_texts_per_turn: perTurnRawTexts,
     extractor_raw_per_turn: perTurnExtractorRaw,
     extraction_parse_ok: !any_parse_failure,
+    extractor_model: EXTRACTOR_MODEL_NAME,
     raw_text: last_text,
     timestamp,
   };
