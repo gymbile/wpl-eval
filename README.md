@@ -2,20 +2,23 @@
 
 Public safety evaluation for the [WPL (Wellness Plan Language)](https://wpl.dev) governance layer.
 
-A two-lane benchmark that runs identical trainer-voice scenarios through two pipelines — **raw LLM output** vs **LLM + WPL governance** — across multiple OpenAI models, and reports a full metrics table (safety violations, drift, latency, cost, validity).
+A two-lane benchmark that runs identical trainer-voice scenarios through two pipelines — **raw LLM output** vs **LLM + WPL governance** — across **7 models from OpenAI and Anthropic**, and reports a full metrics table (safety violations, drift, latency, cost, validity).
 
-**Current corpus: v0.5** (`@gymbile/wpl-ai ^1.13.0`, 240 trials, $37.27 to reproduce).
+**Current corpus: v0.6** — three sub-corpora (v0.5 OpenAI long-plan, v0.6 Anthropic long-plan, v0.6 short-plan), single-turn + multi-turn, 560 trials, ~$170 to reproduce. Frozen tag: [`v0.6.0`](https://github.com/gymbile/wpl-eval/releases/tag/v0.6.0). Full write-up: [`docs/V0_6_RESULTS.md`](docs/V0_6_RESULTS.md).
 
-## Headlines, v0.5
+> **⚠️ Correction (2026-06-12):** the earlier `v0.6.0-anthropic` snapshot reported "0 safety violations across 180 Anthropic Lane B trials." That was a measurement-bug artifact — a plan-walker reading the wrong path in the compiled output, so the scorer saw an empty plan. It is fixed; every Lane B result was re-derived from stored model output (no new API calls). Do not cite `v0.6.0-anthropic`. The corrected numbers are below and in `docs/V0_6_RESULTS.md`.
+
+## Headlines, v0.6 (corrected)
+
+The contract's core job — stripping contraindicated exercises (the "blacklist" measure, apples-to-apples with v0.5):
 
 | | Raw LLM (Lane A) | WPL public layer (Lane B) |
 |---|---:|---:|
-| Plans containing unsafe content | **43/120 (36%)** | **6/120 (5%)** |
-| Total violations | **207** | **28** |
-| Reduction | — | **86% on both** |
-| Plans served / compiled | 120/120 | 109/120 (91%) |
-| Plans complete (≥10 wk) | 120/120 | 64/120 (53%) |
-| Multi-turn drift | **25/60 (42%)** | **0/60** |
+| Unsafe-plan rate, all corpora & phases | **32–51%** | **8–17%** |
+| Reduction | — | **3–5× on every corpus, both phases** |
+| Multi-turn drift (blacklist) | **42%** (44/105) | **6%** (0% on the Anthropic corpus) |
+
+What the contract does **not** do (an honest gap, new in v0.6): on the short-plan corpus, the compiled form *surfaces* structural failures (insufficient rest days, over-fast progression, missing on-ramp) the raw prose lane is blind to — but the rule evaluator's only action today is `forbid_exercise`, so it reports those failures without yet preventing them. That's the v0.7 work.
 
 Every number is reproducible from the committed `results/*.json` files.
 
@@ -25,44 +28,40 @@ For the human-readable narrative and methodology, the [`docs/`](docs/) directory
 
 | | What it is |
 |---|---|
-| [`docs/BLOG_POST.md`](docs/BLOG_POST.md) | Conversational launch post. Cycle-aware angle, real verbatim model failures, JSON-linked. |
-| [`docs/INDUSTRY_REPORT.md`](docs/INDUSTRY_REPORT.md) | Investor-positioning industry report. Architecture, trade-offs, what's measured vs claimed. |
+| [`docs/V0_6_RESULTS.md`](docs/V0_6_RESULTS.md) | **Start here.** The v0.6 results write-up — corrected cross-corpus numbers, the correction notice, the four-bug disclosure, short-plan + multi-turn methodology, native-JSON and END-markers probes. |
 | [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) | Technical companion — research question, scenario design, scoring algorithm, drift methodology, validity threats. |
-| [`docs/PRESS_KIT.md`](docs/PRESS_KIT.md) | Media kit. Six quote-ready moments, each anchored to a specific `results/<file>.json`. |
-| [`docs/CLAIM_AUDIT.md`](docs/CLAIM_AUDIT.md) | Per-claim verification — every quantitative claim in the four docs above traces here. |
-| [`docs/DIFF_v0.4_to_v0.5.md`](docs/DIFF_v0.4_to_v0.5.md) | Changelog. Why v0.5 numbers differ from earlier versions. |
-| [`docs/V0_6_LIFECYCLE_SCENARIOS.md`](docs/V0_6_LIFECYCLE_SCENARIOS.md) | Roadmap. Lifecycle scenarios for measuring adaptability in v0.6. |
-| [`docs/charts/`](docs/charts/) | Four press-ready hero charts (PNG + SVG), regenerated directly from `results/*.json`. |
+| [`docs/CLAIM_AUDIT.md`](docs/CLAIM_AUDIT.md) | Per-claim verification — quantitative claims trace to `results/<file>.json`. |
+| [`docs/V0_6_SHORT_PLANS_AND_ANTHROPIC.md`](docs/V0_6_SHORT_PLANS_AND_ANTHROPIC.md) | Design doc for the short-plan corpus + Anthropic integration. |
+| [`docs/charts/`](docs/charts/) | Press-ready hero charts (PNG + SVG), regenerated from `results/*.json`. |
 | [`docs/archive/`](docs/archive/) | Pre-v0.5 historical drafts. |
 
-The four active publication docs all carry a "Audited 2026-05-16 against `results/*.json`" footer.
+The v0.5-era publication docs (`BLOG_POST.md`, `INDUSTRY_REPORT.md`, `PRESS_KIT.md`) describe the frozen v0.5.0 corpus and predate the v0.6 correction — read `V0_6_RESULTS.md` for current numbers.
 
 ## Quick start
 
 ```bash
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
-git checkout v0.5.0                       # the v0.5 corpus
+git checkout v0.6.0                       # the corrected v0.6 corpus
 npm install                               # pins @gymbile/wpl-ai ^1.13.0, @gymbile/wpl-validator ^1.7.1
-cp .env.example .env                      # add your OPENAI_API_KEY
-npm test                                  # 71 unit tests (scoring + rule evaluator + cycle arithmetic)
-npm run eval                              # full sweep — 4 models × 15 scenarios × 2 lanes × 2 phases = 240 trials
-npx tsx src/scripts/normalise-results.ts  # re-compile Lane B raw_text against linked wpl-ai version
-npm run report                            # aggregates results/*.json → tables
-python3 docs/charts/generate.py           # regenerate hero charts (requires matplotlib)
+cp .env.example .env                      # add OPENAI_API_KEY and ANTHROPIC_API_KEY
+npm test                                  # 125 unit tests (scoring + short-plan rules + rule evaluator + cycle)
+npm run eval -- --sweep=v0.6              # full sweep — single-turn + multi-turn, all corpora
+node src/scripts/headline-all.mjs         # regenerate the cross-corpus headline tables
 ```
 
-Total OpenAI inference cost to reproduce: **$37.27** against 240 trials, ~11 hours wall-clock.
+Total inference cost to reproduce the full corpus: **~$170** against 560 trials. Or re-derive every published number from the committed model output for **$0** — see below.
 
 ## Reproducing without re-spending
 
-The 240 committed `results/*.json` files contain every raw model response (`raw_text` + `raw_texts_per_turn`) plus the Lane A extractor's raw output (`extractor_raw_per_turn`). That means:
+The 560 committed `results/*.json` files contain every raw model response (`raw_text` + `raw_texts_per_turn`) plus the Lane A extractor's raw output. That means:
 
-- Scoring can be re-derived offline against a different blacklist (`npx tsx src/rescore.ts` — no API calls).
-- Lane B compilation can be re-derived offline against a different `@gymbile/wpl-ai` version (`npx tsx src/scripts/normalise-results.ts` — no API calls).
-- Re-extraction of Lane A from raw prose only needs API calls if you change the extraction prompt or schema.
+- Lane B single-turn re-score (recompile raw_text + walk + score): `npx tsx src/scripts/rescore-lane-b.ts` — no API calls.
+- Lane B multi-turn re-score (latest-valid-turn semantics): `npx tsx src/scripts/rescore-multiturn-lateststate.ts` — no API calls.
+- Short-plan scorer re-derivation: `npx tsx src/scripts/rescore-shortplans.ts` — no API calls.
+- Headline tables: `node src/scripts/headline-all.mjs`.
 
-Every published number is **offline-reproducible from the committed dumps** — no further API spend ever needed unless you want new model outputs.
+This is exactly how the v0.6 correction was produced: the walker bug was fixed and **every Lane B number re-derived from stored output for $0**. Every published number is offline-reproducible from the committed dumps — no further API spend needed unless you want new model outputs.
 
 ## What the two lanes do
 
@@ -78,34 +77,43 @@ trainer prompt → LLM emits WPL-AI DSL → compileWplAi() → @gymbile/wpl-vali
 
 Lane A is a 2026-vintage baseline of how AI is deployed in consumer fitness apps today. Lane B is what the same model produces when it must speak through a structured grammar with compile-time validation and a rule engine that re-applies client constraints on every regeneration.
 
-## Models evaluated (v0.5)
+## Models evaluated (v0.6)
 
+OpenAI:
 - `gpt-5` — flagship (minimal reasoning effort, default)
 - `gpt-5-mini` — mid-tier reasoning
 - `gpt-5-nano` — cheapest reasoning
 - `gpt-4.1` — older non-reasoning baseline
 
-Adding Anthropic Claude / Google Gemini is on the v0.6 roadmap (`docs/V0_6_LIFECYCLE_SCENARIOS.md` + provider-agnostic runner).
+Anthropic:
+- `claude-opus-4-7` — flagship (rejects the `temperature` param; model-controlled sampling, disclosed)
+- `claude-sonnet-4-6` — mid-tier
+- `claude-haiku-4-5` — cheapest
 
-## Scenarios (15)
+Google Gemini is on the v0.7 roadmap. The cross-vendor headline: the two flagships (Opus 4.7, gpt-5) are the *worst* raw-safety performers; the two cheapest (Haiku 4.5, gpt-4.1) are the safest. Capability degrades raw safety; the contract is what reduces it.
 
-Trainer-voice client archetypes covering three classes:
+## Scenarios (20)
+
+Trainer-voice client archetypes. The 15 v0.5 long-plan scenarios (all 12-week requests) plus 5 v0.6 short-plan scenarios (1–4 week requests with `block_purpose`-gated structural scoring):
 
 | Class | Scenarios |
 |---|---|
 | Medical conditions | torn_meniscus, lumbar_disc, shoulder_impingement, post_csection_4wk, pregnancy_2nd_trimester, cardiac_post_mi |
 | Cycle-aware | severe_dysmenorrhea, endometriosis_flares, pcos_irregular, perimenopause_variable, ocp_suppressed *(negative control)* |
 | Constraint-adherence | type2_diabetes_nutrition, equipment_bodyweight_only, vegan_protein_target, asthma_exercise_induced |
+| Short-plan *(v0.6)* | travel_hotel_2wk *(maintenance)*, peaking_powerlifting_3wk, postpartum_onramp_4wk *(on-ramp)*, post_illness_recond_3wk *(reconditioning)*, deload_1wk |
 
 Full definitions and clinical citations in [`scenarios/scenarios.yaml`](scenarios/scenarios.yaml).
 
 ## Limitations (read before quoting any number)
 
-- 15 scenarios is not exhaustive — it's a stratified snapshot.
-- 4 OpenAI models is not all of LLM-space. v0.6 plans Anthropic + Google.
-- Blacklists are **clinician-cited but not clinician-validated**: every entry cites a published clinical source, but the encoding into the deterministic blacklist was authored by the Gymbile team — not by clinicians reviewing the corpus. v0.6 adds named per-domain reviewers (see [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) §9.2b and [`docs/PRESS_KIT.md`](docs/PRESS_KIT.md) for the reviewer-quote stubs). The relative comparison (raw LLM vs WPL) is robust to this gap; the absolute labels are pending external sign-off.
+- 20 scenarios is not exhaustive — it's a stratified snapshot.
+- 7 models across 2 vendors is not all of LLM-space. v0.7 plans Google Gemini.
+- Blacklists and short-plan structural thresholds are **clinician-cited but not clinician-validated**: every entry cites a published source, but the encoding was authored by the Gymbile team, not by clinicians reviewing the corpus. v0.7 adds named per-domain reviewers. The relative comparison (raw LLM vs WPL) is robust to this gap; the absolute labels are pending external sign-off.
+- The contract **reports** short-plan structural failures (rest days, progression, on-ramp) but the rule evaluator does not yet **prevent** them — its only action today is `forbid_exercise`. v0.7 adds structural enforcement.
 - Drift protocol is one realistic 8-turn trainer-conversation shape, not all shapes.
-- Cycle-scenario scoring carries a documented asymmetry: the scorer flags off-flow placements of `exercises_on_flow_days` because Lane A prose extraction has no per-day calendar resolution. Lane B's runtime correctly strips only on actual flow days. v0.6 narrows the scorer to remove the false-positive class. Documented in `docs/METHODOLOGY.md` §11.
+- Opus 4.7 rejects the `temperature` parameter (model-controlled sampling); OpenAI + Haiku + Sonnet run at `temperature: 0`. Disclosed asymmetry — see `docs/V0_6_RESULTS.md`.
+- v0.6 found and fixed four measurement bugs (the Lane B walker, four short-plan scorer rules, multi-turn final-turn semantics, fence stripping). The full disclosure is in `docs/V0_6_RESULTS.md`. The older `v0.6.0-anthropic` tag predates these fixes and should not be cited.
 
 ## License
 
