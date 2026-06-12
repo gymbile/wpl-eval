@@ -201,7 +201,7 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): { rules: 
 // while running the v0.6 short-plan smoke test (see
 // docs/V0_6_SHORTPLANS_EXECUTION.md). Affected results that were
 // published as "0/180 Anthropic Lane B violations" need re-running.
-function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
+export function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
   const exercises: ExtractedPlan["exercises"] = [];
   const foods: ExtractedPlan["foods"] = [];
   const intensities: ExtractedPlan["intensities"] = [];
