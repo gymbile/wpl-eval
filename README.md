@@ -43,7 +43,7 @@ The v0.5-era publication docs (`BLOG_POST.md`, `INDUSTRY_REPORT.md`, `PRESS_KIT.
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
 git checkout v0.6.0                       # the corrected v0.6 corpus
-npm install                               # pins @gymbile/wpl-ai ^1.13.0, @gymbile/wpl-validator ^1.7.1
+npm install                               # pins @gymbile/wpl-ai ^2.0.0, @gymbile/wpl-validator ^1.8.0
 cp .env.example .env                      # add OPENAI_API_KEY and ANTHROPIC_API_KEY
 npm test                                  # 125 unit tests (scoring + short-plan rules + rule evaluator + cycle)
 npm run eval -- --sweep=v0.6              # full sweep — single-turn + multi-turn, all corpora
