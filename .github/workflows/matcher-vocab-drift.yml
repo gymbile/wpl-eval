@@ -16,7 +16,7 @@ jobs:
         run: |
           latest=$(git ls-remote --tags https://github.com/gymbile/wpl.git \
                   | grep 'refs/tags/v' | grep -v '\^{}' \
-                  | sort -V | tail -1 | awk '{print $2}' | sed 's|refs/tags/||')
+                  | sed 's|.*refs/tags/||' | sort -V | tail -1)
           echo "latest=$latest" >> $GITHUB_OUTPUT
       - name: Diff vendored matcher-vocab.json against upstream
         run: |
