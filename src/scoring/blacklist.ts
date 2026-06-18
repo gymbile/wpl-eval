@@ -1,4 +1,5 @@
 import type { ExtractedPlan, Scenario, Violation } from "../lib/types.js";
+import { QUALIFIER_TOKENS_LIST, SHORT_PLURALS } from "./matcher-vocab.generated.js";
 
 // Normalise a free-text name into a lowercase, underscore-separated token so
 // "Jump Squat" / "jump-squat" / "jump_squat" all collide against the same
@@ -20,7 +21,8 @@ function normalize(s: string): string {
 // names like "push_ups" never match "push_up" (the trailing "ups" stays).
 // "abs" is deliberately NOT here: it is a canonical muscle-group token, not
 // a plural to fold to "ab".
-const SHORT_PLURALS: Record<string, string> = { ups: "up" };
+// SHORT_PLURALS is now generated from the canonical matcher vocab
+// (wpl/data/matcher-vocab.json) — imported at the top of this file.
 
 // Strip a trailing English plural 's' so "squats" matches "squat" and "rows"
 // matches "row". Keep `ss`/`us`/`is` endings to avoid butchering "press",
@@ -74,28 +76,12 @@ function stemPlural(token: string): string {
 // matches if it contains every CORE token of the blacklist (everything
 // before the first qualifier) — that way "bulgarian split squats" hits
 // "bulgarian_split_squat_below_parallel".
-const QUALIFIER_TOKENS = new Set([
-  "below",
-  "above",
-  "deep",
-  "heavy",
-  "light",
-  "weighted",
-  "loaded",
-  "max",
-  "maximal",
-  "parallel",
-  "bodyweight",
-  "kg",
-  "lbs",
-  "rom",
-  // Wildcard qualifiers — scenario authors use "_anything" or "_any" to mean
-  // "ANY exercise in this family is contraindicated" (e.g. kettlebell_anything
-  // → any kettlebell movement). Treat them as qualifiers so the core-token
-  // match drops them.
-  "anything",
-  "any",
-]);
+// The token list (including the wildcard qualifiers "anything"/"any" — scenario
+// authors use "_anything" or "_any" to mean "ANY exercise in this family is
+// contraindicated", e.g. kettlebell_anything → any kettlebell movement, so the
+// core-token match drops them) is generated from the canonical matcher vocab
+// (wpl/data/matcher-vocab.json) — imported at the top of this file.
+const QUALIFIER_TOKENS = new Set(QUALIFIER_TOKENS_LIST);
 
 function coreTokens(blacklisted: string): string[] {
   const tokens = normalize(blacklisted).split("_").filter(Boolean);

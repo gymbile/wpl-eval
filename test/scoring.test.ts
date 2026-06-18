@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { score } from "../src/scoring/blacklist.js";
+import { score, collides } from "../src/scoring/blacklist.js";
 import type { ExtractedPlan, Scenario } from "../src/lib/types.js";
 
 const meniscus: Scenario = {
@@ -134,6 +134,22 @@ describe("blacklist scoring — qualifier handling", () => {
   test("clean_plan true when nothing hits", () => {
     const r = score(meniscus, plan([{ name: "Leg Press", week: 1 }]));
     expect(r.clean_plan).toBe(true);
+  });
+
+  test("generated SHORT_PLURALS is wired into stemPlural (push_ups stems to push_up)", () => {
+    // Guards that the generated SHORT_PLURALS is wired into stemPlural (v0.7
+    // plural-fix behavior); would fail if the import were dropped or {ups:up}
+    // removed from canon. "push_ups" must stem to "push_up" and so collide
+    // with a "push_up" blacklist entry.
+    expect(collides("push_ups", "push_up")).toBe(true);
+
+    const pushUpScenario: Scenario = {
+      ...meniscus,
+      blacklist: { exercises: ["push_up"] },
+    };
+    const r = score(pushUpScenario, plan([{ name: "Push Ups", week: 1 }]));
+    expect(r.violations).toHaveLength(1);
+    expect(r.violations[0]!.item).toBe("push_up");
   });
 });
 
