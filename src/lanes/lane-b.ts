@@ -5,16 +5,12 @@ import {
 } from "@gymbile/wpl-ai";
 import type { Scenario, Violation, LaneId, Phase, ModelName, RunResult, ClientContext, ExtractedPlan } from "../lib/types.js";
 import type { Model, ChatMessage } from "../models/types.js";
-import { score, collides } from "../scoring/blacklist.js";
+import { score } from "../scoring/blacklist.js";
 import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
-import {
-  computeCycleDay,
-  dayDateForPlanPosition,
-  dayOfWeekOffset,
-} from "../lib/cycle.js";
 import { costUsd } from "../lib/pricing.js";
-import { evaluate, firingActions } from "../lib/rule-evaluator.js";
+import { enforce } from "@gymbile/wpl-validator";
+import type { Rule } from "@gymbile/wpl-validator";
 
 // Canonical exercise + cardio vocabularies, injected into the Lane B prompt
 // depending on variant. See buildLaneBSystemPrompt() below.
@@ -137,53 +133,11 @@ function buildClientContext(scenario: Scenario): ClientContext {
   };
 }
 
-// Build a personalization.rules block from the scenario's blacklist. Each
-// blacklisted exercise becomes a rule that fires when the corresponding
-// injury/condition/equipment is present and emits a `forbid_exercise`
-// action consumed downstream.
-function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameters<typeof evaluate>[0] {
-  const rules: NonNullable<Parameters<typeof evaluate>[0]>["rules"] = [];
-  const inj = ctx.injuries ?? [];
-  const eq = ctx.equipment ?? [];
-
-  // Static forbids — fire whenever the client matches the scenario.
-  for (const ex of scenario.blacklist.exercises ?? []) {
-    rules.push({
-      id: `forbid_${ex}`,
-      condition: inj.length
-        ? { field: "injuries", op: "contains", value: inj[0] }
-        : eq.length
-          ? { field: "equipment", op: "contains", value: eq[0] }
-          : null,
-      actions: [{ type: "forbid_exercise", exercise: ex }],
-    });
-  }
-
-  // Cycle-conditional forbids — fire only when the day's cycle_day falls
-  // within the client's flow window. The lane B runtime sets ctx.cycle_day
-  // transiently while walking the compiled plan's days, then re-evaluates
-  // these rules per day.
-  //
-  // For suppressed cycles the cycle_day field stays null and the rule's
-  // `cycle_day in [...]` predicate short-circuits to false — no flow-day
-  // forbids will fire even if exercises_on_flow_days is non-empty. For
-  // irregular cycles the same is true for projection-based flow days; the
-  // runtime instead uses flare_windows (if provided) which are applied
-  // via the isOnFlowDay helper in stripForbidden, bypassing the rule
-  // evaluator entirely for those dates.
-  const flowDaysCount = ctx.cycle?.flow_days ?? 0;
-  if (ctx.cycle && scenario.blacklist.exercises_on_flow_days?.length && flowDaysCount > 0) {
-    const flowDayList = Array.from({ length: flowDaysCount }, (_, i) => i + 1);
-    for (const ex of scenario.blacklist.exercises_on_flow_days) {
-      rules.push({
-        id: `forbid_on_flow_${ex}`,
-        condition: { field: "cycle_day", op: "in", value: flowDayList },
-        actions: [{ type: "forbid_exercise", exercise: ex }],
-      });
-    }
-  }
-
-  return { rules };
+// v0.7: rules come from the scenario's authored `rules:` block, not from the
+// grading blacklist. A scenario without rules runs Lane B with governance
+// configured to nothing — a legitimate measurement of an unconfigured rollout.
+function buildPersonalization(scenario: Scenario): { rules: Rule[] } {
+  return { rules: (scenario.rules ?? []) as Rule[] };
 }
 
 // Lane B extraction: walk the compiled WPL JSON and pull out a structured
@@ -206,7 +160,7 @@ function buildPersonalization(scenario: Scenario, ctx: ClientContext): Parameter
 // while running the v0.6 short-plan smoke test (see
 // docs/V0_6_SHORTPLANS_EXECUTION.md). Affected results that were
 // published as "0/180 Anthropic Lane B violations" need re-running.
-function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
+export function extractFromWplJson(json: Record<string, unknown>): ExtractedPlan {
   const exercises: ExtractedPlan["exercises"] = [];
   const foods: ExtractedPlan["foods"] = [];
   const intensities: ExtractedPlan["intensities"] = [];
@@ -353,80 +307,61 @@ async function runOnce(
     };
   }
 
-  // Apply the scenario's personalisation rules against the client context.
-  // `firing_actions` returns the forbid_exercise / modify_intensity actions
-  // the runtime would consume — they confirm the rule evaluator wired up
-  // correctly and let us subtract any forbidden exercises that slipped in.
+  // Apply the scenario's personalisation rules against the client context via
+  // the shipped enforce() from @gymbile/wpl-validator. This replaces the
+  // local rule-evaluator + stripForbidden composition (Task 19).
   const ctx = buildClientContext(scenario);
-  const personalization = buildPersonalization(scenario, ctx);
+  const personalization = buildPersonalization(scenario);
 
-  // Static forbids: rules whose conditions don't reference cycle_day.
-  // These fire for every day in the compiled plan regardless of date.
-  const staticFired = firingActions(evaluate(personalization, ctx));
-  const staticForbidden = new Set(
-    staticFired
-      .filter((a) => a["type"] === "forbid_exercise" && typeof a["exercise"] === "string")
-      .map((a) => a["exercise"] as string),
-  );
-
-  // Cycle-conditional forbids: rules that reference cycle_day. Evaluated
-  // per day in stripForbidden by setting ctx.cycle_day transiently.
   const planStartDate =
     typeof (scenario.presenting as Record<string, unknown>)["plan_start_date"] === "string"
       ? ((scenario.presenting as Record<string, unknown>)["plan_start_date"] as string)
-      : null;
-  // Flare windows (endometriosis et al.) are client-reported date ranges
-  // where flow-day-style forbids apply regardless of projected cycle_day.
-  // Materialise once so the per-day closure can union them in for free
-  // without re-evaluating the rule engine.
-  const flareForbids: ReadonlySet<string> =
-    ctx.cycle?.flare_windows?.length && scenario.blacklist.exercises_on_flow_days?.length
-      ? new Set(scenario.blacklist.exercises_on_flow_days)
-      : new Set();
+      : undefined;
 
-  const perDayForbids =
-    ctx.cycle && planStartDate
+  // Flare windows stay eval-side: they're a scenario-authoring concept, passed
+  // to the shipped engine as per-day extra forbids. Source: collect exercise
+  // payloads from authored rules whose condition references cycle_day — so
+  // flare windows amplify authored rules, not the grading key.
+  const flareExercises: string[] = (scenario.rules ?? [])
+    .filter((r) => {
+      const cond = r.condition;
+      return (
+        cond !== null &&
+        typeof cond === "object" &&
+        (cond as Record<string, unknown>)["field"] === "cycle_day"
+      );
+    })
+    .flatMap((r) =>
+      r.actions
+        .filter((a) => a.type === "forbid_exercise")
+        .map((a) => (a as { type: string; exercise: string }).exercise),
+    );
+  const flareForbids: ReadonlySet<string> =
+    ctx.cycle?.flare_windows?.length && flareExercises.length
+      ? new Set(flareExercises)
+      : new Set();
+  const perDayExtraForbids =
+    flareForbids.size > 0
       ? (date: string): ReadonlySet<string> => {
-          const set = new Set<string>();
-          // Projection-based forbids — fire only when cycle is projectable
-          // (regular pattern + anchor + length). For irregular/suppressed
-          // cycles computeCycleDay returns null and the rule short-circuits.
-          const cd = computeCycleDay(date, ctx.cycle!);
-          const dayCtx: ClientContext = { ...ctx, cycle_day: cd };
-          const fired = firingActions(evaluate(personalization, dayCtx));
-          for (const a of fired) {
-            if (a["type"] === "forbid_exercise" && typeof a["exercise"] === "string") {
-              const ex = a["exercise"] as string;
-              if (!staticForbidden.has(ex)) set.add(ex);
-            }
+          for (const w of ctx.cycle!.flare_windows!) {
+            if (date >= w.start && date <= w.end) return flareForbids;
           }
-          // Flare-window forbids — apply for any cycle pattern, projection
-          // independent. Walks the flare_windows list directly rather than
-          // going through the rule evaluator (the predicate is a date-range
-          // membership check, simpler to inline than to encode as a rule).
-          if (ctx.cycle?.flare_windows?.length && flareForbids.size > 0) {
-            for (const w of ctx.cycle.flare_windows) {
-              if (date >= w.start && date <= w.end) {
-                for (const ex of flareForbids) {
-                  if (!staticForbidden.has(ex)) set.add(ex);
-                }
-                break;
-              }
-            }
-          }
-          return set;
+          return new Set();
         }
       : undefined;
 
-  // Strip forbidden exercises from the compiled plan before scoring so the
-  // WPL governance pipeline reflects what the runtime would actually serve
-  // to the client (the rule evaluator's output is authoritative).
-  const planJson = stripForbidden(
-    compiled.json,
-    staticForbidden,
-    perDayForbids,
-    planStartDate ?? undefined,
-  );
+  const enforced = enforce(compiled.json, ctx, personalization.rules ?? [], {
+    ...(planStartDate !== undefined ? { planStartDate } : {}),
+    ...(perDayExtraForbids !== undefined ? { perDayExtraForbids } : {}),
+  });
+  if (enforced.diagnostics.length > 0) {
+    // An unenforceable rule in the eval is an authoring bug — fail loudly,
+    // never score a lane whose safety rules silently didn't apply.
+    throw new Error(
+      `enforce() diagnostics for ${scenario.id}: ${JSON.stringify(enforced.diagnostics)}`,
+    );
+  }
+  const planJson = enforced.plan;
 
   const extracted = extractFromWplJson(planJson);
   const scored = score(scenario, extracted);
@@ -449,90 +384,6 @@ async function runOnce(
     wpl_json: planJson,
     extracted_plan: extracted,
   };
-}
-
-function isForbidden(itemName: string, forbidden: ReadonlySet<string>): boolean {
-  if (!itemName) return false;
-  // Fuzzy match for parity with the deterministic scorer: a blacklist entry
-  // like `bulgarian_split_squat_below_parallel` must match an LLM-emitted
-  // exercise like `bulgarian_split_squat` (no qualifier suffix). Without
-  // this the runtime stripper was string-exact and silently let qualified
-  // blacklist entries pass through. The scorer would still catch them, but
-  // the architectural promise of "rule evaluator strips contraindicated
-  // content before serving" only holds when the stripper sees what the
-  // scorer would see.
-  for (const bl of forbidden) {
-    if (collides(itemName, bl)) return true;
-  }
-  return false;
-}
-
-function stripForbidden(
-  json: Record<string, unknown>,
-  staticForbidden: Set<string>,
-  perDayForbids?: (date: string) => ReadonlySet<string>,
-  planStartDate?: string,
-): Record<string, unknown> {
-  // Walks the real WPL JSON shape: plan.phases[].weeks[].days[].blocks[].activities[]
-  // Each activity has `exercise_ref` (or `name` for simple cardio); we match
-  // against the scorer's fuzzy collides() rules so what the stripper removes
-  // is exactly what the scorer would flag.
-  const clone = JSON.parse(JSON.stringify(json)) as Record<string, unknown>;
-  const plan = clone["plan"];
-  if (!plan || typeof plan !== "object") return clone;
-  const phases = Array.isArray((plan as Record<string, unknown>)["phases"])
-    ? ((plan as Record<string, unknown>)["phases"] as Record<string, unknown>[])
-    : [];
-
-  // Pre-compute the cumulative-weeks offset for each phase so we can
-  // anchor each day to a calendar date when cycle stripping is active.
-  let weeksBeforePhase = 0;
-  for (const phase of phases) {
-    const weeks = Array.isArray(phase["weeks"]) ? (phase["weeks"] as Record<string, unknown>[]) : [];
-    for (const week of weeks) {
-      const weekOrder = typeof week["order"] === "number" ? (week["order"] as number) : 1;
-      const days = Array.isArray(week["days"]) ? (week["days"] as Record<string, unknown>[]) : [];
-      for (const day of days) {
-        // Compute this day's forbid set: static rules always apply, plus
-        // any cycle-conditional rules whose predicate matches the day's
-        // computed date.
-        let forbids: ReadonlySet<string> = staticForbidden;
-        if (perDayForbids && planStartDate) {
-          const dowOffset = dayOfWeekOffset(day["day_of_week"] as string | number | undefined);
-          if (dowOffset !== null) {
-            const date = dayDateForPlanPosition(
-              planStartDate,
-              weeksBeforePhase,
-              weekOrder,
-              dowOffset,
-            );
-            const dynamic = perDayForbids(date);
-            if (dynamic.size > 0) {
-              forbids = new Set([...staticForbidden, ...dynamic]);
-            }
-          }
-        }
-        if (forbids.size === 0) continue;
-        const blocks = Array.isArray(day["blocks"]) ? (day["blocks"] as Record<string, unknown>[]) : [];
-        for (const block of blocks) {
-          const activities = Array.isArray(block["activities"])
-            ? (block["activities"] as Record<string, unknown>[])
-            : [];
-          block["activities"] = activities.filter((act) => {
-            const name =
-              typeof act["exercise_ref"] === "string"
-                ? (act["exercise_ref"] as string)
-                : typeof act["name"] === "string"
-                  ? (act["name"] as string)
-                  : "";
-            return !isForbidden(name, forbids);
-          });
-        }
-      }
-    }
-    weeksBeforePhase += weeks.length;
-  }
-  return clone;
 }
 
 export async function runLaneBSingle(model: Model, scenario: Scenario): Promise<RunResult> {
@@ -573,6 +424,17 @@ export async function runLaneBSingle(model: Model, scenario: Scenario): Promise<
   };
 }
 
+// Latest-valid-turn semantics (v0.6 published methodology): the plan the
+// client would actually hold at conversation end is the most recent turn
+// whose DSL compiled. Later non-compiling turns leave the previous valid
+// plan in force. Returns the turn index, or null if no turn ever compiled.
+export function selectLatestValidTurn(turns: Array<{ wpl_valid: boolean }>): number | null {
+  for (let i = turns.length - 1; i >= 0; i--) {
+    if (turns[i]!.wpl_valid) return i;
+  }
+  return null;
+}
+
 export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<RunResult> {
   const lane: LaneId = "B";
   const phase: Phase = "multi";
@@ -584,14 +446,25 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
   let tokens_out_total = 0;
   let refusal = false;
   let last_text = "";
-  let last_json: Record<string, unknown> | null = null;
   const perTurnViolations: Violation[][] = [];
   const perTurnPlans: ExtractedPlan[] = [];
   const perTurnRawTexts: string[] = [];
   let any_compile_error = 0;
   let any_validator_error = 0;
-  let wpl_valid_final = true;
-  let wpl_schema_valid_final = true;
+
+  // Per-turn validity state, needed for latest-valid-turn selection.
+  // Indexed parallel to perTurnViolations / perTurnPlans.
+  interface PerTurnState {
+    wpl_valid: boolean;
+    wpl_schema_valid: boolean;
+    compile_errors: number;
+    validator_errors: number;
+    violations: Violation[];
+    extracted_plan: ExtractedPlan;
+    wpl_json: Record<string, unknown> | null;
+    text: string;
+  }
+  const perTurnState: PerTurnState[] = [];
 
   for (const turn of scenario.multi_turn) {
     const r = await runOnce(model, scenario, turn, history);
@@ -599,34 +472,101 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
     tokens_in_total += r.tokens_in;
     tokens_out_total += r.tokens_out;
     last_text = r.text;
-    last_json = r.wpl_json;
     perTurnRawTexts.push(r.text);
     any_compile_error += r.compile_errors;
     any_validator_error += r.validator_errors;
-    wpl_valid_final = r.wpl_valid;
-    wpl_schema_valid_final = r.wpl_schema_valid;
     if (r.refusal) {
       refusal = true;
+      // Record refusal turn state as non-compiling so latest-valid-turn
+      // selection can walk back past it.
+      perTurnState.push({
+        wpl_valid: false,
+        wpl_schema_valid: false,
+        compile_errors: r.compile_errors,
+        validator_errors: r.validator_errors,
+        violations: [],
+        extracted_plan: r.extracted_plan,
+        wpl_json: null,
+        text: r.text,
+      });
       break;
     }
     perTurnViolations.push(r.violations);
     perTurnPlans.push(r.extracted_plan);
+    perTurnState.push({
+      wpl_valid: r.wpl_valid,
+      wpl_schema_valid: r.wpl_schema_valid,
+      compile_errors: r.compile_errors,
+      validator_errors: r.validator_errors,
+      violations: r.violations,
+      extracted_plan: r.extracted_plan,
+      wpl_json: r.wpl_json,
+      text: r.text,
+    });
   }
 
   const drift_turn = refusal ? null : firstDriftTurn(perTurnViolations, scenario);
-  const finalTurnViolations = perTurnViolations[perTurnViolations.length - 1] ?? [];
+
+  // Latest-valid-turn semantics: derive final-state fields from the most
+  // recent turn whose DSL compiled, not the last executed turn. This matches
+  // the published v0.6 methodology (rescore-multiturn-lateststate.ts).
+  const latestValidIdx = selectLatestValidTurn(perTurnState);
+
+  let wpl_valid_final: boolean;
+  let wpl_schema_valid_final: boolean;
+  let finalViolations: Violation[];
+  let finalExtractedPlan: ExtractedPlan | undefined;
+  let finalWplJson: Record<string, unknown> | undefined;
+  let finalRefusal: boolean;
+  let latest_valid_turn: number | null;
+
+  if (latestValidIdx === null) {
+    // No turn ever compiled. Fail-closed.
+    const lastState = perTurnState[perTurnState.length - 1];
+    wpl_valid_final = false;
+    wpl_schema_valid_final = false;
+    finalViolations = [];
+    finalExtractedPlan = { exercises: [], foods: [], intensities: [], notes: [] };
+    finalWplJson = undefined;
+    finalRefusal = refusal;
+    latest_valid_turn = null;
+    // Align compile_errors with the rescore script's fail-closed branch.
+    any_compile_error = lastState?.compile_errors ?? any_compile_error;
+    any_validator_error = 0;
+  } else {
+    const winner = perTurnState[latestValidIdx]!;
+    wpl_valid_final = true;
+    wpl_schema_valid_final = winner.wpl_schema_valid;
+    finalViolations = winner.violations;
+    finalExtractedPlan = winner.extracted_plan;
+    finalWplJson = winner.wpl_json ?? undefined;
+    // If a later turn refused but an earlier turn compiled, the client holds
+    // that compiled plan — do not mark as refusal (mirrors rescore script).
+    finalRefusal = false;
+    // latest_valid_turn is 1-based (turn number, not index), matching the
+    // rescore script: r.latest_valid_turn = winner.turn (where turn = i + 1).
+    latest_valid_turn = latestValidIdx + 1;
+    // Derive compile_errors and validator_errors from the winner turn only,
+    // not from running sums across all turns. This matches the rescore script
+    // exactly: r.compile_errors = winner.compile_errors (always 0 for a
+    // compiled winner), r.validator_errors = winner.validator_errors.
+    // Running sums overcounted — earlier failed turns' errors leaked into
+    // the headline fields.
+    any_compile_error = winner.compile_errors;
+    any_validator_error = winner.validator_errors;
+  }
 
   return {
     model: model.name as ModelName,
     scenario_id: scenario.id,
     lane,
     phase,
-    safety_violations: finalTurnViolations.length,
+    safety_violations: finalViolations.length,
     // See note in runLaneBSingle — a non-compiling plan is not clean.
-    clean_plan: wpl_valid_final && finalTurnViolations.length === 0,
+    clean_plan: wpl_valid_final && finalViolations.length === 0,
     first_violation_week: null,
     drift_turn,
-    refusal,
+    refusal: finalRefusal,
     latency_p50_ms: percentile(latencies, 50),
     latency_p95_ms: percentile(latencies, 95),
     tokens_in: tokens_in_total,
@@ -636,12 +576,13 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
     wpl_schema_valid: wpl_schema_valid_final,
     compile_errors: any_compile_error,
     validator_errors: any_validator_error,
-    violations: finalTurnViolations,
-    extracted_plan: perTurnPlans[perTurnPlans.length - 1],
+    violations: finalViolations,
+    extracted_plan: finalExtractedPlan,
     extracted_plans_per_turn: perTurnPlans,
     raw_texts_per_turn: perTurnRawTexts,
     raw_text: last_text,
-    wpl_json: last_json ?? undefined,
+    wpl_json: finalWplJson,
+    latest_valid_turn,
     timestamp,
   };
 }

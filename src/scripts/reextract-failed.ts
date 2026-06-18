@@ -13,11 +13,10 @@ import { readFileSync, writeFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
 import "../lib/env.js";
-import { makeOpenAiModel } from "../models/openai.js";
-import { extractPlan } from "../scoring/extraction.js";
+import { extractPlan, EXTRACTOR_MODEL_NAME } from "../scoring/extraction.js";
 import { score } from "../scoring/blacklist.js";
 import { firstDriftTurn } from "../scoring/drift.js";
-import type { ModelName, RunResult, Scenario, Violation } from "../lib/types.js";
+import type { RunResult, Scenario, Violation } from "../lib/types.js";
 
 const dryRun = process.argv.includes("--dry-run");
 const dir = resolve(process.cwd(), "results");
@@ -49,17 +48,17 @@ for (const f of failed) {
     console.log(`  SKIP ${f} — unknown scenario ${r.scenario_id}`);
     continue;
   }
-  const model = makeOpenAiModel(r.model as ModelName);
   const before = r.safety_violations;
 
   if (r.phase === "single") {
     const planText = r.raw_text ?? "";
-    const { plan, parse_ok, raw } = await extractPlan(model, planText);
+    const { plan, parse_ok, raw } = await extractPlan(planText);
     const scored = score(scenario, plan);
     if (!dryRun) {
       r.extracted_plan = plan;
       r.extraction_parse_ok = parse_ok;
       r.extractor_raw = raw;
+      r.extractor_model = EXTRACTOR_MODEL_NAME;
       r.violations = scored.violations;
       r.safety_violations = scored.violations.length;
       r.clean_plan = scored.clean_plan;
@@ -78,7 +77,7 @@ for (const f of failed) {
     const perTurnViolations: Violation[][] = [];
     let anyFail = false;
     for (const turnText of turns) {
-      const { plan, parse_ok, raw } = await extractPlan(model, turnText);
+      const { plan, parse_ok, raw } = await extractPlan(turnText);
       if (!parse_ok) anyFail = true;
       perTurnPlans.push(plan);
       perTurnExtractorRaw.push(raw);
@@ -91,6 +90,7 @@ for (const f of failed) {
       r.extractor_raw_per_turn = perTurnExtractorRaw;
       r.extracted_plan = perTurnPlans[perTurnPlans.length - 1];
       r.extraction_parse_ok = !anyFail;
+      r.extractor_model = EXTRACTOR_MODEL_NAME;
       r.violations = finalViolations;
       r.safety_violations = finalViolations.length;
       r.clean_plan = finalViolations.length === 0;

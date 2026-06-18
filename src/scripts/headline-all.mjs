@@ -2,25 +2,50 @@
 // Reads results/ directly. Output is grouped by corpus → phase → lane → model.
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
+
+// keep in sync with src/lib/stats.ts (tested there)
+function wilsonInterval(successes, n, z = 1.959963984540054) {
+  if (n === 0) return { lo: 0, hi: 1 };
+  const p = successes / n;
+  const z2 = z * z;
+  const denom = 1 + z2 / n;
+  const center = (p + z2 / (2 * n)) / denom;
+  const margin = (z * Math.sqrt((p * (1 - p)) / n + z2 / (4 * n * n))) / denom;
+  return { lo: Math.max(0, center - margin), hi: Math.min(1, center + margin) };
+}
+
+function pct(x) { return Math.round(x * 100) + "%"; }
+
+function wilsonStr(successes, n) {
+  if (n === 0) return "0/0";
+  const { lo, hi } = wilsonInterval(successes, n);
+  return `${successes}/${n} (${pct(successes / n)} [${pct(lo)}, ${pct(hi)}])`;
+}
+
 const dir = resolve(process.cwd(), "results");
+// Include both legacy un-suffixed files and __r<k> repeat files (k>1).
+// k=1 is stored un-suffixed (legacy name), so no double-counting occurs.
 const files = readdirSync(dir).filter(
   (f) => f.endsWith(".json") && !f.startsWith("smoketest") && f.includes("__"),
 );
 
 function classify(f) {
   const name = f.replace(".json", "");
-  // model+tag__scenario__lane__phase  OR  model__scenario__lane__phase
+  // model+tag__scenario__lane__phase[__r<k>]  OR  model__scenario__lane__phase[__r<k>]
+  // __r<k> suffix is present for repeat k>1; k=1 is stored un-suffixed (legacy).
   const m = name.match(
-    /^([a-z0-9.+_-]+?)(?:\+(v0\.6-[a-z]+))?__([a-z0-9_]+)__([AB])__(single|multi)$/,
+    /^([a-z0-9.+_-]+?)(?:\+(v0\.6-[a-z]+))?__([a-z0-9_]+)__([AB])__(single|multi)(?:__r(\d+))?$/,
   );
   if (!m) return null;
-  const [, model, tag, scenario, lane, phase] = m;
+  const [, model, tag, scenario, lane, phase, repeatK] = m;
+  // repeatK is undefined for k=1 (legacy un-suffixed), or a string "2","3",... for k>1.
+  // Both are legitimate independent Bernoulli draws; count all of them.
   let corpus;
   if (tag === undefined) corpus = "v0.5-openai-longplan";
   else if (["v0.6-haiku", "v0.6-sonnet", "v0.6-opus"].includes(tag)) corpus = "v0.6-anthropic-longplan";
   else if (tag === "v0.6-shortplans") corpus = "v0.6-shortplan";
   else return null;
-  return { model, corpus, scenario, lane, phase };
+  return { model, corpus, scenario, lane, phase, repeatK: repeatK ? parseInt(repeatK, 10) : 1 };
 }
 
 const groups = new Map();
@@ -39,8 +64,10 @@ for (const f of files) {
       cost: 0,
     });
   const g = groups.get(key);
-  g.n++;
+  // W9 fix: errored trials are excluded from n (denominator) as well as all
+  // numerator counters. Only non-errored trials contribute to the rate cells.
   if (r.error) { g.err++; continue; }
+  g.n++;
   if (r.refusal) g.refusal++;
   if (r.wpl_valid === true) g.compile++;
   if (r.wpl_schema_valid === true) g.schema++;
@@ -89,8 +116,8 @@ for (const corpus of corpora) {
     // Lane A vs B aggregate for this corpus+phase
     const A = agg(sub.filter((r)=>r.lane==="A"));
     const B = agg(sub.filter((r)=>r.lane==="B"));
-    console.log(wl("  TOTAL Lane A",33) + w(A.unsafe+"/"+A.n+" unsafe",18) + "  " + w(A.totalViol+" viol",12));
-    console.log(wl("  TOTAL Lane B",33) + w(B.unsafe+"/"+B.n+" unsafe",18) + "  " + w(B.totalViol+" viol",12) + "  compile " + B.compile+"/"+B.n);
+    console.log(wl("  TOTAL Lane A",33) + wilsonStr(A.unsafe, A.n) + " unsafe  " + A.totalViol+" viol");
+    console.log(wl("  TOTAL Lane B",33) + wilsonStr(B.unsafe, B.n) + " unsafe  " + B.totalViol+" viol  compile " + B.compile+"/"+B.n);
   }
 }
 

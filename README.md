@@ -43,7 +43,7 @@ The v0.5-era publication docs (`BLOG_POST.md`, `INDUSTRY_REPORT.md`, `PRESS_KIT.
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
 git checkout v0.6.0                       # the corrected v0.6 corpus
-npm install                               # pins @gymbile/wpl-ai ^1.13.0, @gymbile/wpl-validator ^1.7.1
+npm install                               # pins @gymbile/wpl-ai ^2.0.0, @gymbile/wpl-validator ^1.8.0
 cp .env.example .env                      # add OPENAI_API_KEY and ANTHROPIC_API_KEY
 npm test                                  # 125 unit tests (scoring + short-plan rules + rule evaluator + cycle)
 npm run eval -- --sweep=v0.6              # full sweep — single-turn + multi-turn, all corpora
@@ -72,7 +72,7 @@ trainer prompt → LLM emits free-form plan → extractor LLM call → structure
 
 **Lane B (WPL governance):**
 ```
-trainer prompt → LLM emits WPL-AI DSL → compileWplAi() → @gymbile/wpl-validator → ruleEvaluator(clientContext) → blacklist scoring
+trainer prompt → LLM emits WPL-AI DSL → compileWplAi() → @gymbile/wpl-validator validate() + enforce(clientContext) → blacklist scoring
 ```
 
 Lane A is a 2026-vintage baseline of how AI is deployed in consumer fitness apps today. Lane B is what the same model produces when it must speak through a structured grammar with compile-time validation and a rule engine that re-applies client constraints on every regeneration.
@@ -112,7 +112,7 @@ Full definitions and clinical citations in [`scenarios/scenarios.yaml`](scenario
 - Blacklists and short-plan structural thresholds are **clinician-cited but not clinician-validated**: every entry cites a published source, but the encoding was authored by the Gymbile team, not by clinicians reviewing the corpus. v0.7 adds named per-domain reviewers. The relative comparison (raw LLM vs WPL) is robust to this gap; the absolute labels are pending external sign-off.
 - The contract **reports** short-plan structural failures (rest days, progression, on-ramp) but the rule evaluator does not yet **prevent** them — its only action today is `forbid_exercise`. v0.7 adds structural enforcement.
 - Drift protocol is one realistic 8-turn trainer-conversation shape, not all shapes.
-- Opus 4.7 rejects the `temperature` parameter (model-controlled sampling); OpenAI + Haiku + Sonnet run at `temperature: 0`. Disclosed asymmetry — see `docs/V0_6_RESULTS.md`.
+- `gpt-4.1`, `claude-sonnet-4-6`, and `claude-haiku-4-5-20251001` run at `temperature: 0`. The GPT-5 family (`gpt-5`, `gpt-5-mini`, `gpt-5-nano`) does not accept a temperature parameter, and `claude-opus-4-7` rejects it with a 400 — all four use model-controlled sampling and are not deterministic across runs. Disclosed asymmetry — see `docs/METHODOLOGY.md §3.5`.
 - v0.6 found and fixed four measurement bugs (the Lane B walker, four short-plan scorer rules, multi-turn final-turn semantics, fence stripping). The full disclosure is in `docs/V0_6_RESULTS.md`. The older `v0.6.0-anthropic` tag predates these fixes and should not be cited.
 
 ## License

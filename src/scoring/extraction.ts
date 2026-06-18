@@ -1,7 +1,27 @@
 import { z } from "zod";
-import type { Model } from "../models/types.js";
-import type { ChatMessage } from "../models/types.js";
-import type { ExtractedPlan, LlmCallMetrics } from "../lib/types.js";
+import type { Model, ChatMessage } from "../models/types.js";
+import type { ExtractedPlan, LlmCallMetrics, ModelName } from "../lib/types.js";
+import { makeOpenAiModel } from "../models/openai.js";
+
+// v0.7: Lane A extraction uses ONE fixed model for every trial, regardless of
+// which model generated the plan. v0.5/v0.6 used the model-under-test as its
+// own extractor, which confounds cross-model safety comparisons (a more
+// capable model extracts its own output more exhaustively and so *looks*
+// less safe). gpt-4.1 is the designated extractor: non-reasoning,
+// deterministic at temperature 0, cheap, and not a flagship under test.
+export const EXTRACTOR_MODEL_NAME: string =
+  process.env["WPL_EVAL_EXTRACTOR_MODEL"] ?? "gpt-4.1";
+
+// Lazy singleton — constructed only on the first extractPlan() call so that
+// importing this module in tests (where no API key is set) does NOT throw.
+// Only an actual inference call would need the key.
+let _extractorModel: Model | null = null;
+function getExtractorModel(): Model {
+  if (_extractorModel === null) {
+    _extractorModel = makeOpenAiModel(EXTRACTOR_MODEL_NAME as ModelName);
+  }
+  return _extractorModel;
+}
 
 // The Lane A extraction prompt. This is NOT a judge — it does not score, grade,
 // or interpret. It only enumerates what the plan prescribed. Same prompt for
@@ -56,9 +76,9 @@ function stripCodeFence(text: string): string {
 }
 
 export async function extractPlan(
-  model: Model,
   planText: string,
 ): Promise<{ plan: ExtractedPlan; metrics: LlmCallMetrics; parse_ok: boolean; raw: string }> {
+  const model = getExtractorModel();
   const messages: ChatMessage[] = [
     { role: "system", content: EXTRACTION_SYSTEM },
     {

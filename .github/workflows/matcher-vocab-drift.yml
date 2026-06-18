@@ -1,0 +1,42 @@
+name: Matcher vocab drift check
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  vendored-matches-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read vendored version
+        id: vendored
+        run: echo "version=$(cat src/data/matcher-vocab-version.txt)" >> $GITHUB_OUTPUT
+      - name: Diff vendored matcher-vocab.json against the upstream release it pins
+        run: |
+          tag="v${{ steps.vendored.outputs.version }}"
+          curl -sSL "https://raw.githubusercontent.com/gymbile/wpl/${tag}/data/matcher-vocab.json" -o /tmp/upstream-vocab.json
+          if ! diff -q src/data/matcher-vocab.json /tmp/upstream-vocab.json > /dev/null; then
+            echo "::error::Vendored matcher-vocab.json drifted from gymbile/wpl@${tag} (vendored vocab version: ${{ steps.vendored.outputs.version }}). The vendored copy no longer matches the release it claims to track."
+            exit 1
+          fi
+
+  codegen-no-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run gen:matcher-vocab
+      - name: Fail if generated vocab drifted
+        run: |
+          if ! git diff --quiet -- src/scoring/matcher-vocab.generated.ts; then
+            echo "::error::matcher-vocab.generated.ts is out of date — run 'npm run gen:matcher-vocab' and commit."
+            git --no-pager diff -- src/scoring/matcher-vocab.generated.ts
+            exit 1
+          fi
