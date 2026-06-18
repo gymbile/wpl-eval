@@ -1,0 +1,45 @@
+name: Matcher vocab drift check
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  vendored-matches-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve latest gymbile/wpl tag
+        id: tag
+        run: |
+          latest=$(git ls-remote --tags https://github.com/gymbile/wpl.git \
+                  | grep 'refs/tags/v' | grep -v '\^{}' \
+                  | sort -V | tail -1 | awk '{print $2}' | sed 's|refs/tags/||')
+          echo "latest=$latest" >> $GITHUB_OUTPUT
+      - name: Diff vendored matcher-vocab.json against upstream
+        run: |
+          curl -sSL "https://raw.githubusercontent.com/gymbile/wpl/${{ steps.tag.outputs.latest }}/data/matcher-vocab.json" -o /tmp/upstream-vocab.json
+          if ! diff -q src/data/matcher-vocab.json /tmp/upstream-vocab.json > /dev/null; then
+            echo "::error::Vendored matcher-vocab.json drifted from gymbile/wpl@${{ steps.tag.outputs.latest }}."
+            exit 1
+          fi
+
+  codegen-no-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run gen:matcher-vocab
+      - name: Fail if generated vocab drifted
+        run: |
+          if ! git diff --quiet -- src/scoring/matcher-vocab.generated.ts; then
+            echo "::error::matcher-vocab.generated.ts is out of date — run 'npm run gen:matcher-vocab' and commit."
+            git --no-pager diff -- src/scoring/matcher-vocab.generated.ts
+            exit 1
+          fi
