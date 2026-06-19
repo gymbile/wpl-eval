@@ -24,6 +24,17 @@ What the contract does **not** do (an honest gap, new in v0.6): on the short-pla
 
 Every number is reproducible from the committed `results/*.json` files.
 
+## Since v0.6 (v0.7 / v0.7.1, shipped)
+
+The v0.6 corrected numbers above remain the cited corpus — they are still the headline result. What changed since is engineering and methodology, not a new score:
+
+- **v0.7 — `enforce()` is now in the published library.** The contraindicated-exercise stripping that Lane B exercises used to apply in the eval harness now lives in the published `@gymbile/wpl-validator` itself, so the served behaviour and the measured behaviour are the same code path.
+- **v0.7 — honesty fixes.** Lane B rules were de-circularized (authored from the client's clinical picture rather than the grading blacklist); a single independent extractor model is used for every trial; the compiler **fails closed** on safety paths; confidence intervals were added; and the matcher plural gap was fixed (`push_ups` no longer slips past a `push_up` rule). Because the old Lane B rules were partly circular and the old matcher failed open, the Lane B figures are expected to come *down*, not up, on re-measurement.
+- **v0.7.1 — canonical exercise catalog (SSOT).** The exercise vocabulary is now one canonical catalog as a single source of truth, vendored + codegen'd into each consumer with CI drift-checks — closing a production gap where a drifted catalog left a whole class of post-injury rehab exercises "unknown" to the live safety layer.
+- **Packages published:** npm `@gymbile/wpl-validator@1.9.0`, `@gymbile/wpl-ai@2.1.0`; Hex `wpl_validator 1.9.0`, `wpl_ai 2.1.0`; spec tag `wpl v1.8.0`.
+
+A full de-circularized re-run of the corpus is the next budgeted step — there are **no new safety percentages** until it runs. Full write-up of the v0.6→v0.7→v0.7.1 changes: [`docs/V0_7_RESULTS.md`](docs/V0_7_RESULTS.md).
+
 ## Where to start
 
 For the human-readable narrative and methodology, the [`docs/`](docs/) directory is the entry point:
@@ -45,7 +56,7 @@ The v0.5-era publication docs (`BLOG_POST.md`, `INDUSTRY_REPORT.md`, `PRESS_KIT.
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
 git checkout v0.6.0                       # the corrected v0.6 corpus
-npm install                               # pins @gymbile/wpl-ai ^2.0.0, @gymbile/wpl-validator ^1.8.0
+npm install                               # pins @gymbile/wpl-ai ^2.1.0, @gymbile/wpl-validator ^1.9.0
 cp .env.example .env                      # add OPENAI_API_KEY and ANTHROPIC_API_KEY
 npm test                                  # 125 unit tests (scoring + short-plan rules + rule evaluator + cycle)
 npm run eval -- --sweep=v0.6              # full sweep — single-turn + multi-turn, all corpora
