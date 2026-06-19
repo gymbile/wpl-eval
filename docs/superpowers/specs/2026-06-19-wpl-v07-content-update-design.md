@@ -75,6 +75,9 @@
 - **`gymbile_backend/wpl_press_kit.md` + `wpl_press_outreach.md`:** refresh status lines to v0.7.1 (shipped, packages live, production gap closed); keep claims inside the fact base.
 - **Tidy the draft collection (`gymbile_backend/wpl_*.md`):** consolidate into a clean current set. Keep the current long-form v0.7 + new v0.7.1 + the 2 final LinkedIn posts + press kit/outreach; move superseded `wpl_linkedin_post.md` / `_v2` / `_v3` into an `archive/` (or clearly mark them superseded). Do not delete history; just make "what's current" obvious.
 
+### 3.6 "Why WPL" intro paragraph in both READMEs (added 2026-06-19 by request)
+A short, plain-language paragraph at the TOP of both the `wpl` spec repo README and the `wpl-eval` README: what WPL is, why it's better than raw LLM output, with proof numbers from the latest evals. **Numbers must be verified from source, not memory.** Verified 2026-06-19 (regenerated `headline-all.mjs` + `docs/V0_6_RESULTS.md` blacklist-only table): raw unsafe-plan rate **32–51%** → WPL **8–17%** (3–5×, blacklist/contraindicated-exercise measure, every corpus + both phases); multi-turn drift raw **42% (44/105)** → WPL **6%** (Anthropic **0/45**); **560 trials, 7 models, ~$170, 0 errors**, reproducible from `results/`. Do NOT use the structural-inclusive short-plan "77%" or any retracted zero. Both READMEs cite identical figures.
+
 ## 4. Constraints / non-goals
 - Do not run the paid corpus re-run; do not invent any new safety percentage.
 - Do not mutate `wpl-eval/results/` or any frozen corpus data.
