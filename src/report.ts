@@ -1,9 +1,9 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { RunResult } from "./lib/types.js";
+import { parse as parseYaml } from "yaml";
+import type { RunResult, Scenario } from "./lib/types.js";
 
-function loadResults(): RunResult[] {
-  const dir = resolve(process.cwd(), "results");
+function loadResults(dir: string): RunResult[] {
   const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
   return files.map((f) => JSON.parse(readFileSync(resolve(dir, f), "utf8")) as RunResult);
 }
@@ -68,6 +68,53 @@ function writeMarkdownTable(results: RunResult[], path: string): void {
   writeFileSync(path, lines.join("\n") + "\n");
 }
 
+// v0.7 adaptation matrix. One table per lifecycle scenario: rows =
+// lifecycle criteria (by id), columns = model × lane, cell = ✓ (no
+// violations against that criterion), ✗ (at least one), or — (the trial
+// never served a plan, so the criterion was unmeasurable).
+// Exported for unit testing.
+export function buildAdaptationMatrix(results: RunResult[], scenarios: Scenario[]): string[] {
+  const lifecycleScenarios = scenarios.filter(
+    (s) => (s.lifecycle_criteria ?? []).length > 0,
+  );
+  const lines: string[] = [];
+  for (const s of lifecycleScenarios) {
+    const rs = results
+      .filter((r) => r.scenario_id === s.id && r.phase === "multi")
+      .sort((a, b) => `${a.model}|${a.lane}`.localeCompare(`${b.model}|${b.lane}`));
+    if (rs.length === 0) continue;
+    lines.push(`## ${s.id}\n`);
+    const cols = rs.map((r) => `${r.model} / ${r.lane}`);
+    lines.push(`| Criterion | ${cols.join(" | ")} |`);
+    lines.push(`|---|${cols.map(() => ":---:").join("|")}|`);
+    for (const c of s.lifecycle_criteria ?? []) {
+      const cells = rs.map((r) => {
+        if (r.lane === "B" && r.wpl_valid === false) return "—";
+        if (r.refusal) return "—";
+        const failed = r.violations.some(
+          (v) => v.kind.startsWith("lifecycle_") && v.item === c.id,
+        );
+        return failed ? "✗" : "✓";
+      });
+      lines.push(`| ${c.id} | ${cells.join(" | ")} |`);
+    }
+    lines.push("");
+  }
+  return lines;
+}
+
+function loadScenarioDefs(): Scenario[] {
+  const path = resolve(process.cwd(), "scenarios/scenarios.yaml");
+  const doc = parseYaml(readFileSync(path, "utf8")) as { scenarios?: Scenario[] };
+  return doc.scenarios ?? [];
+}
+
+function writeAdaptationMatrix(results: RunResult[], path: string): void {
+  const lines = buildAdaptationMatrix(results, loadScenarioDefs());
+  if (lines.length === 0) return; // no lifecycle scenarios in this result set
+  writeFileSync(path, ["# WPL Safety Eval — Adaptation Matrix\n", ...lines].join("\n") + "\n");
+}
+
 function writeSummary(results: RunResult[], path: string): void {
   const byKey = (r: RunResult) => `${r.model}|${r.lane}|${r.phase}`;
   const groups = new Map<string, RunResult[]>();
@@ -106,16 +153,20 @@ function writeSummary(results: RunResult[], path: string): void {
 }
 
 function main(): void {
-  const results = loadResults();
+  const outDir = resolve(process.cwd(), process.argv[2] ?? "results");
+  const results = loadResults(outDir);
   if (results.length === 0) {
     console.log("No results yet. Run `npm run eval` first.");
     return;
   }
-  const outDir = resolve(process.cwd(), "results");
   writeMarkdownTable(results, resolve(outDir, "results-table.md"));
   writeSummary(results, resolve(outDir, "summary.md"));
   writeCsv(results, resolve(outDir, "results.csv"));
+  writeAdaptationMatrix(results, resolve(outDir, "adaptation-matrix.md"));
   console.log(`Wrote results-table.md, summary.md, results.csv to ${outDir}/`);
 }
 
-main();
+// Only run as a CLI, not when imported by tests.
+if (process.argv[1] && process.argv[1].endsWith("report.ts")) {
+  main();
+}
