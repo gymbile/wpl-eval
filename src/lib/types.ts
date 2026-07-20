@@ -115,6 +115,33 @@ export interface Scenario {
     actions: Array<{ type: string; [k: string]: unknown }>;
   }>;
 
+  // v0.7 lifecycle scenarios (optional — present only on lifecycle
+  // scenarios). Absent fields mean zero behaviour change, following the
+  // v0.6 `block_purpose` precedent that keeps historical numbers frozen.
+  //
+  // A turn state applies from its turn onward. `context` overlays are
+  // shallow-merged in ascending turn order over the base ClientContext
+  // (later overlays win per top-level key; `cycle` is replaced wholesale,
+  // never deep-merged — a cycle state change is always a full
+  // re-description). `rules` REPLACES the active rule set from that turn
+  // on; a turn state without `rules` leaves the previous set active.
+  turn_states?: Array<{
+    turn: number; // 1-based, matching multi_turn indices
+    context?: Partial<ClientContext>;
+    rules?: Scenario["rules"];
+  }>;
+  // Per-turn-range × per-week-range correctness checks, evaluated against
+  // the plan served at each qualifying turn. See src/scoring/lifecycle.ts.
+  lifecycle_criteria?: Array<{
+    id: string; // stable label for the report's adaptation matrix
+    from_turn: number; // applies to plans served at turns >= from_turn
+    to_turn?: number; //   ... and <= to_turn (default: last turn)
+    weeks?: { from: number; to: number }; // plan weeks (default: all)
+    must_not_contain?: string[]; // exercise slugs (canonical vocab)
+    must_eventually_contain?: string[]; // appears in >=1 qualifying plan
+    rpe_max?: number; // cap over ALL intensities of qualifying plans
+  }>;
+
   // v0.6 short-plan scoring (optional — present only on short-plan
   // scenarios). The new scorer rules in `src/scoring/short-plan.ts`
   // exit early when `block_purpose` is undefined, which is what keeps
@@ -129,6 +156,9 @@ export interface Scenario {
   on_ramp_week_1_rpe_max?: number;
   on_ramp_week_1_intensity_max_pct?: number;
 }
+
+export type TurnState = NonNullable<Scenario["turn_states"]>[number];
+export type LifecycleCriterion = NonNullable<Scenario["lifecycle_criteria"]>[number];
 
 // v0.6 short-plan block taxonomy. Drives the structural scorer rules:
 //   maintenance     : hold what's there, no progression
@@ -169,7 +199,10 @@ export interface Violation {
     | "block_purpose_mismatch"
     | "recovery_insufficient"
     | "progression_too_fast"
-    | "on_ramp_missing";
+    | "on_ramp_missing"
+    | "lifecycle_forbidden"
+    | "lifecycle_regression_missing"
+    | "lifecycle_intensity";
   item: string;
   week?: number | null | undefined;
   detail?: string | undefined;
