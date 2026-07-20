@@ -31,8 +31,8 @@ describe("splitForGemini", () => {
 
 describe("pricing", () => {
   it("all three Gemini sweep models are priced", () => {
-    expect(isPriced("gemini-2.5-pro")).toBe(true);
-    expect(isPriced("gemini-2.5-flash")).toBe(true);
-    expect(isPriced("gemini-2.5-flash-lite")).toBe(true);
+    expect(isPriced("gemini-3.1-pro-preview")).toBe(true);
+    expect(isPriced("gemini-3.5-flash")).toBe(true);
+    expect(isPriced("gemini-3.1-flash-lite")).toBe(true);
   });
 });

@@ -13,7 +13,15 @@ export type AnthropicModel =
 
 // v0.7 widens vendor coverage to Google Gemini. Same flagship / mid /
 // cheap tier shape as the OpenAI and Anthropic sides.
-export type GeminiModel = "gemini-2.5-pro" | "gemini-2.5-flash" | "gemini-2.5-flash-lite";
+// 2026-07-20: the gemini-2.5 tier returns 404 "no longer available to new
+// users" on fresh API keys — swapped to the 3.x lineup. No GA pro tier is
+// callable on new keys, so the flagship slot is a preview model
+// (gemini-3.1-pro-preview) — disclosed in pricing/README when v0.7 results
+// publish. 2.5 tier retired for new users as of this date.
+export type GeminiModel =
+  | "gemini-3.1-pro-preview"
+  | "gemini-3.5-flash"
+  | "gemini-3.1-flash-lite";
 
 // Version-pinned locked sweeps. V0_5 stays frozen so historical results
 // remain reproducible against the same lineup; V0_6 is the superset.

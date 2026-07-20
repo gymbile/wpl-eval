@@ -39,9 +39,9 @@ const LOCKED_MODELS_V0_6: LockedModelV06[] = [
 // `--sweep=v0.7` to use this set.
 const LOCKED_MODELS_V0_7: LockedModelV07[] = [
   ...LOCKED_MODELS_V0_6,
-  "gemini-2.5-pro",
-  "gemini-2.5-flash",
-  "gemini-2.5-flash-lite",
+  "gemini-3.1-pro-preview",
+  "gemini-3.5-flash",
+  "gemini-3.1-flash-lite",
 ];
 
 function isAnthropic(name: ModelName): boolean {

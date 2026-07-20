@@ -58,7 +58,7 @@ export function makeGeminiModel(name: ModelName): Model {
           temperature: opts.temperature ?? 0,
           maxOutputTokens: opts.max_output_tokens ?? 4096,
           // Cap thinking so it can't consume the whole output budget:
-          // Gemini 2.5 thinking tokens count against maxOutputTokens, and
+          // Gemini thinking tokens count against maxOutputTokens, and
           // pro's default dynamic thinking can return EMPTY text after
           // burning the entire budget — which the eval would misread as a
           // compile failure. 1024 keeps some deliberation while
