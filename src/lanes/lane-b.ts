@@ -11,6 +11,8 @@ import { firstDriftTurn } from "../scoring/drift.js";
 import { costUsd } from "../lib/pricing.js";
 import { enforce } from "@gymbile/wpl-validator";
 import type { Rule } from "@gymbile/wpl-validator";
+import { isLifecycle, mergeContextAtTurn, activeRulesAtTurn } from "../lib/lifecycle.js";
+import { scoreLifecycle } from "../scoring/lifecycle.js";
 
 // Canonical exercise + cardio vocabularies, injected into the Lane B prompt
 // depending on variant. See buildLaneBSystemPrompt() below.
@@ -245,6 +247,10 @@ async function runOnce(
   scenario: Scenario,
   userPrompt: string,
   history: ChatMessage[],
+  // v0.7 lifecycle: per-turn context + rule set. Defaults preserve the
+  // static behaviour for non-lifecycle scenarios.
+  ctxOverride?: ClientContext,
+  rulesOverride?: Rule[],
 ): Promise<{
   text: string;
   tokens_in: number;
@@ -310,8 +316,8 @@ async function runOnce(
   // Apply the scenario's personalisation rules against the client context via
   // the shipped enforce() from @gymbile/wpl-validator. This replaces the
   // local rule-evaluator + stripForbidden composition (Task 19).
-  const ctx = buildClientContext(scenario);
-  const personalization = buildPersonalization(scenario);
+  const ctx = ctxOverride ?? buildClientContext(scenario);
+  const activeRules: Rule[] = rulesOverride ?? buildPersonalization(scenario).rules;
 
   const planStartDate =
     typeof (scenario.presenting as Record<string, unknown>)["plan_start_date"] === "string"
@@ -322,7 +328,7 @@ async function runOnce(
   // to the shipped engine as per-day extra forbids. Source: collect exercise
   // payloads from authored rules whose condition references cycle_day — so
   // flare windows amplify authored rules, not the grading key.
-  const flareExercises: string[] = (scenario.rules ?? [])
+  const flareExercises: string[] = (activeRules as Scenario["rules"] ?? [])
     .filter((r) => {
       const cond = r.condition;
       return (
@@ -350,7 +356,7 @@ async function runOnce(
         }
       : undefined;
 
-  const enforced = enforce(compiled.json, ctx, personalization.rules ?? [], {
+  const enforced = enforce(compiled.json, ctx, activeRules, {
     ...(planStartDate !== undefined ? { planStartDate } : {}),
     ...(perDayExtraForbids !== undefined ? { perDayExtraForbids } : {}),
   });
@@ -466,8 +472,19 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
   }
   const perTurnState: PerTurnState[] = [];
 
-  for (const turn of scenario.multi_turn) {
-    const r = await runOnce(model, scenario, turn, history);
+  const lifecycle = isLifecycle(scenario);
+  for (let turnIdx = 0; turnIdx < scenario.multi_turn.length; turnIdx++) {
+    const turn = scenario.multi_turn[turnIdx]!;
+    const turnNumber = turnIdx + 1;
+    // v0.7 lifecycle: hand enforce() the context + rules active at THIS
+    // turn. Non-lifecycle scenarios pass undefined → static behaviour.
+    const ctxOverride = lifecycle
+      ? mergeContextAtTurn(buildClientContext(scenario), scenario, turnNumber)
+      : undefined;
+    const rulesOverride = lifecycle
+      ? (activeRulesAtTurn(scenario, turnNumber) as Rule[])
+      : undefined;
+    const r = await runOnce(model, scenario, turn, history, ctxOverride, rulesOverride);
     latencies.push(r.latency_ms);
     tokens_in_total += r.tokens_in;
     tokens_out_total += r.tokens_out;
@@ -555,6 +572,14 @@ export async function runLaneBMulti(model: Model, scenario: Scenario): Promise<R
     any_compile_error = winner.compile_errors;
     any_validator_error = winner.validator_errors;
   }
+
+  // v0.7 lifecycle scoring over per-turn plans. Non-compiling turns are
+  // null (skipped by the scorer); no-op for non-lifecycle scenarios.
+  const lifecycleViolations = scoreLifecycle(
+    scenario,
+    perTurnState.map((s) => (s.wpl_valid ? s.extracted_plan : null)),
+  );
+  finalViolations = [...finalViolations, ...lifecycleViolations];
 
   return {
     model: model.name as ModelName,

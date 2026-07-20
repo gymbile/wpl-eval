@@ -15,6 +15,8 @@ import type {
   Scenario,
 } from "./lib/types.js";
 import { isPriced } from "./lib/pricing.js";
+import { ALL_EXERCISES } from "@gymbile/wpl-ai";
+import { isLifecycle, validateLifecycleScenario } from "./lib/lifecycle.js";
 
 // v0.5 locked sweep — these four ship in the published v0.5 results. Frozen
 // so historical results stay reproducible against the same lineup.
@@ -43,7 +45,11 @@ function loadScenarios(): Scenario[] {
   const path = resolve(process.cwd(), "scenarios/scenarios.yaml");
   const raw = readFileSync(path, "utf8");
   const doc = parseYaml(raw) as { scenarios?: Scenario[] };
-  return doc.scenarios ?? [];
+  const scenarios = doc.scenarios ?? [];
+  // v0.7: fail loud on invalid lifecycle authoring before any LLM call.
+  const vocab = new Set(ALL_EXERCISES as readonly string[]);
+  for (const s of scenarios) validateLifecycleScenario(s, vocab);
+  return scenarios;
 }
 
 function resultPath(
@@ -117,6 +123,13 @@ async function main(): Promise<void> {
   }
   const targets = only.scenario ? scenarios.filter((s) => s.id === only.scenario) : scenarios;
 
+  // Lifecycle scenarios are multi-turn only — a single-turn trial cannot
+  // exercise state evolution and would silently measure nothing.
+  if (phase === "single" && targets.some(isLifecycle)) {
+    const ids = targets.filter(isLifecycle).map((s) => s.id).join(", ");
+    throw new Error(`lifecycle scenarios are multi-turn only (--phase=single requested): ${ids}`);
+  }
+
   const phases: Phase[] = phase === "all" ? ["single", "multi"] : [phase];
   const lanes: Array<"A" | "B"> = only.lane ? [only.lane] : ["A", "B"];
 
@@ -134,6 +147,7 @@ async function main(): Promise<void> {
     for (const scenario of targets) {
       for (const lane of lanes) {
         for (const p of phases) {
+          if (p === "single" && isLifecycle(scenario)) continue;
           for (let k = 1; k <= repeats; k++) {
             const outPath = resultPath(modelName, scenario.id, lane, p, tag, k, outDir);
             if (existsSync(outPath)) {
