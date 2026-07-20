@@ -11,15 +11,20 @@ export type AnthropicModel =
   | "claude-sonnet-4-6"
   | "claude-haiku-4-5-20251001";
 
+// v0.7 widens vendor coverage to Google Gemini. Same flagship / mid /
+// cheap tier shape as the OpenAI and Anthropic sides.
+export type GeminiModel = "gemini-2.5-pro" | "gemini-2.5-flash" | "gemini-2.5-flash-lite";
+
 // Version-pinned locked sweeps. V0_5 stays frozen so historical results
 // remain reproducible against the same lineup; V0_6 is the superset.
 export type LockedModelV05 = LockedModel;
 export type LockedModelV06 = LockedModelV05 | AnthropicModel;
+export type LockedModelV07 = LockedModelV06 | GeminiModel;
 
 // Any model identifier the runner is willing to call. The opaque-string
 // escape hatch covers ad-hoc smoke tests (gpt-4o-mini, etc.). Models not in
 // the pricing table cost $0 in the results, clearly flagged as "unpriced".
-export type ModelName = LockedModelV06 | (string & { readonly __opaque?: "model-id" });
+export type ModelName = LockedModelV07 | (string & { readonly __opaque?: "model-id" });
 
 export type LaneId = "A" | "B";
 
