@@ -34,10 +34,12 @@ export function scoreLifecycle(
     };
 
     const eventuallySeen = new Set<string>();
+    let sawAnyPlan = false;
 
     for (let turn = c.from_turn; turn <= toTurn; turn++) {
       const plan = perTurnPlans[turn - 1];
       if (!plan) continue;
+      sawAnyPlan = true;
 
       const flaggedExercisesInTurn = new Set<string>();
 
@@ -77,7 +79,7 @@ export function scoreLifecycle(
     }
 
     for (const slug of c.must_eventually_contain ?? []) {
-      if (!eventuallySeen.has(slug)) {
+      if (sawAnyPlan && !eventuallySeen.has(slug)) {
         violations.push({
           kind: "lifecycle_regression_missing",
           item: c.id,

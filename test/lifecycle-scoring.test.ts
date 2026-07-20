@@ -106,6 +106,10 @@ describe("must_eventually_contain (progression sanity)", () => {
     const perTurn = [null, null, null, null, null, plan([{ name: "plank", week: 2 }, { name: "dead_bug", week: 8 }]), null, null];
     expect(scoreLifecycle(s, perTurn)).toHaveLength(1);
   });
+  it("no phantom violation when no qualifying plan was ever served", () => {
+    const perTurn = [null, null, null, null, null, null, null, null];
+    expect(scoreLifecycle(s, perTurn)).toEqual([]);
+  });
 });
 
 describe("rpe_max (L4 intensity cap)", () => {
