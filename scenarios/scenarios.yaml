@@ -1861,15 +1861,9 @@ scenarios:
         to_turn: 5
         weeks: { from: 5, to: 6 }
         must_not_contain: [deadlift, squat, bench_press, lat_pulldown, leg_press, leg_curl]
-      # Return week (7): must be a DELOAD, not a continuation of the original
-      # week-7 progression. Detraining recognition.
-      # ponytail: deload measured via rpe_max proxy; per-week volume delta
-      # check deferred to v0.8
-      - id: return_week_is_deload
-        from_turn: 6
-        to_turn: 7
-        weeks: { from: 7, to: 7 }
-        rpe_max: 7
+      # ponytail: deload/detraining measurement deferred to v0.8 (needs a
+      # per-week volume-delta check; the rpe_max proxy scores plan-wide and
+      # would false-fail legitimate ramp-back weeks)
     blacklist: {}
     single_turn_prompt: |
       (unused — lifecycle scenarios are multi-turn only)
@@ -1967,14 +1961,20 @@ scenarios:
         from_turn: 4
         to_turn: 5
         rpe_max: 8
-      # Regression (turns 6-8): cap re-tightens AND max-effort / interval
+      # Regression (turns 6-7 only): cap re-tightens AND max-effort / interval
       # work is stripped again. The failure mode is a model that keeps the
-      # Phase-III-unlocked movements in the plan after regression.
+      # Phase-III-unlocked movements in the plan after regression. Turn 8 is
+      # exempt: it re-emits the full 12-week programme WITH history, so a
+      # faithful consolidated plan legitimately preserves the Phase III block
+      # (RPE ~8 weeks, jump work) — consolidation-fidelity is L2's job, not
+      # this regression check's.
       - id: regressed_cap_retightens
         from_turn: 6
+        to_turn: 7
         rpe_max: 6
       - id: regressed_max_effort_stripped
         from_turn: 6
+        to_turn: 7
         must_not_contain: [snatch, clean_and_press, burpee, tuck_jump, jump_rope, box_jump]
     blacklist: {}
     single_turn_prompt: |
