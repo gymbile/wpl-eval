@@ -4,17 +4,21 @@ import { parse as parseYaml } from "yaml";
 import "./lib/env.js";
 import { makeOpenAiModel } from "./models/openai.js";
 import { makeAnthropicModel } from "./models/anthropic.js";
+import { makeGeminiModel } from "./models/gemini.js";
 import { runLaneASingle, runLaneAMulti } from "./lanes/lane-a.js";
 import { runLaneBSingle, runLaneBMulti } from "./lanes/lane-b.js";
 import type {
   LockedModelV05,
   LockedModelV06,
+  LockedModelV07,
   ModelName,
   Phase,
   RunResult,
   Scenario,
 } from "./lib/types.js";
 import { isPriced } from "./lib/pricing.js";
+import { ALL_EXERCISES } from "@gymbile/wpl-ai";
+import { isLifecycle, validateLifecycleScenario } from "./lib/lifecycle.js";
 
 // v0.5 locked sweep — these four ship in the published v0.5 results. Frozen
 // so historical results stay reproducible against the same lineup.
@@ -31,19 +35,38 @@ const LOCKED_MODELS_V0_6: LockedModelV06[] = [
   "claude-haiku-4-5-20251001",
 ];
 
+// v0.7 adds three Google Gemini models — the third vendor lane. Pass
+// `--sweep=v0.7` to use this set.
+const LOCKED_MODELS_V0_7: LockedModelV07[] = [
+  ...LOCKED_MODELS_V0_6,
+  "gemini-3.1-pro-preview",
+  "gemini-3.5-flash",
+  "gemini-3.1-flash-lite",
+];
+
 function isAnthropic(name: ModelName): boolean {
   return name.startsWith("claude-");
 }
 
+function isGemini(name: ModelName): boolean {
+  return name.startsWith("gemini-");
+}
+
 function makeModel(name: ModelName) {
-  return isAnthropic(name) ? makeAnthropicModel(name) : makeOpenAiModel(name);
+  if (isAnthropic(name)) return makeAnthropicModel(name);
+  if (isGemini(name)) return makeGeminiModel(name);
+  return makeOpenAiModel(name);
 }
 
 function loadScenarios(): Scenario[] {
   const path = resolve(process.cwd(), "scenarios/scenarios.yaml");
   const raw = readFileSync(path, "utf8");
   const doc = parseYaml(raw) as { scenarios?: Scenario[] };
-  return doc.scenarios ?? [];
+  const scenarios = doc.scenarios ?? [];
+  // v0.7: fail loud on invalid lifecycle authoring before any LLM call.
+  const vocab = new Set(ALL_EXERCISES as readonly string[]);
+  for (const s of scenarios) validateLifecycleScenario(s, vocab);
+  return scenarios;
 }
 
 function resultPath(
@@ -66,7 +89,7 @@ function resultPath(
 
 function parseArgs(): {
   phase: Phase | "all";
-  sweep: "v0.5" | "v0.6";
+  sweep: "v0.5" | "v0.6" | "v0.7";
   only: { model?: string; scenario?: string; lane?: "A" | "B" };
   tag?: string;
   repeats: number;
@@ -74,7 +97,7 @@ function parseArgs(): {
 } {
   const argv = process.argv.slice(2);
   let phase: Phase | "all" = "all";
-  let sweep: "v0.5" | "v0.6" = "v0.5";
+  let sweep: "v0.5" | "v0.6" | "v0.7" = "v0.5";
   let onlyModel: string | undefined;
   let onlyScenario: string | undefined;
   let onlyLane: "A" | "B" | undefined;
@@ -86,6 +109,7 @@ function parseArgs(): {
     else if (a === "--phase=multi") phase = "multi";
     else if (a === "--sweep=v0.5") sweep = "v0.5";
     else if (a === "--sweep=v0.6") sweep = "v0.6";
+    else if (a === "--sweep=v0.7") sweep = "v0.7";
     else if (a.startsWith("--model=")) onlyModel = a.slice("--model=".length);
     else if (a.startsWith("--scenario=")) onlyScenario = a.slice("--scenario=".length);
     else if (a === "--lane=A" || a === "--lane=B") onlyLane = a.slice("--lane=".length) as "A" | "B";
@@ -108,7 +132,11 @@ async function main(): Promise<void> {
   // tests against models outside the locked sweep). Otherwise run the
   // sweep selected via --sweep=v0.5|v0.6 (default v0.5).
   const lockedSweep: ModelName[] =
-    sweep === "v0.6" ? [...LOCKED_MODELS_V0_6] : [...LOCKED_MODELS_V0_5];
+    sweep === "v0.7"
+      ? [...LOCKED_MODELS_V0_7]
+      : sweep === "v0.6"
+        ? [...LOCKED_MODELS_V0_6]
+        : [...LOCKED_MODELS_V0_5];
   const models: ModelName[] = only.model ? [only.model as ModelName] : lockedSweep;
   for (const m of models) {
     if (!isPriced(m)) {
@@ -116,6 +144,13 @@ async function main(): Promise<void> {
     }
   }
   const targets = only.scenario ? scenarios.filter((s) => s.id === only.scenario) : scenarios;
+
+  // Lifecycle scenarios are multi-turn only — a single-turn trial cannot
+  // exercise state evolution and would silently measure nothing.
+  if (phase === "single" && targets.some(isLifecycle)) {
+    const ids = targets.filter(isLifecycle).map((s) => s.id).join(", ");
+    throw new Error(`lifecycle scenarios are multi-turn only (--phase=single requested): ${ids}`);
+  }
 
   const phases: Phase[] = phase === "all" ? ["single", "multi"] : [phase];
   const lanes: Array<"A" | "B"> = only.lane ? [only.lane] : ["A", "B"];
@@ -134,6 +169,7 @@ async function main(): Promise<void> {
     for (const scenario of targets) {
       for (const lane of lanes) {
         for (const p of phases) {
+          if (p === "single" && isLifecycle(scenario)) continue;
           for (let k = 1; k <= repeats; k++) {
             const outPath = resultPath(modelName, scenario.id, lane, p, tag, k, outDir);
             if (existsSync(outPath)) {

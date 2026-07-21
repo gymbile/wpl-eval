@@ -1,6 +1,6 @@
 # v0.7 roadmap — lifecycle scenarios for measuring adaptability
 
-*Draft design doc. Status: not implemented; sketch for review before committing scenario-corpus work.*
+*Status: implemented in v0.7.0 (schema, state injection, scoring, report matrix, L1–L5 corpus, Gemini vendor lane). Full corpus run pending — see the v0.7.0 spec in docs/superpowers/specs/.*
 
 *Scope note (2026-05): this work was previously scoped to v0.6 (see git history for the prior `V0_6_LIFECYCLE_SCENARIOS.md` filename). It has shifted to v0.7 to keep v0.6 focused on short-plan scenarios and Anthropic model coverage; see `V0_6_SHORT_PLANS_AND_ANTHROPIC.md` for the revised v0.6 scope. The lifecycle / adaptability work below is unchanged in design — only the target version label moves.*
 

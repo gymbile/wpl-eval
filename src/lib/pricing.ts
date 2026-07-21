@@ -10,6 +10,7 @@ import type { ModelName } from "./types.js";
 //   Note: Opus 4.7 uses a new tokenizer (vs. Opus 4.1 and prior) that may
 //   consume up to ~35% more tokens for the same fixed text — factor that
 //   into cross-tier cost comparisons in INDUSTRY_REPORT.md.
+// Gemini rows last verified: 2026-07-20. Source: ai.google.dev/gemini-api/docs/pricing.
 const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   "gpt-5": { input_per_m: 1.25, output_per_m: 10.0 },
   "gpt-5-mini": { input_per_m: 0.25, output_per_m: 2.0 },
@@ -22,6 +23,13 @@ const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   "claude-opus-4-7": { input_per_m: 5.0, output_per_m: 25.0 },
   "claude-sonnet-4-6": { input_per_m: 3.0, output_per_m: 15.0 },
   "claude-haiku-4-5-20251001": { input_per_m: 1.0, output_per_m: 5.0 },
+  // Google Gemini (v0.7 sweep). 2.5 tier retired for new API users
+  // 2026-07-20; rows below are the 3.x replacement lineup, verified live
+  // 2026-07-20. Source: ai.google.dev/gemini-api/docs/pricing (paid tier;
+  // pro row is the <=200k-prompt tier — eval prompts are far below 200k).
+  "gemini-3.1-pro-preview": { input_per_m: 2.0, output_per_m: 12.0 },
+  "gemini-3.5-flash": { input_per_m: 1.5, output_per_m: 9.0 },
+  "gemini-3.1-flash-lite": { input_per_m: 0.25, output_per_m: 1.5 },
 };
 
 export function costUsd(model: ModelName, tokensIn: number, tokensOut: number): number {

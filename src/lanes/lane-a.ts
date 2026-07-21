@@ -5,6 +5,7 @@ import { score } from "../scoring/blacklist.js";
 import { scoreShortPlan } from "../scoring/short-plan.js";
 import { firstDriftTurn } from "../scoring/drift.js";
 import { costUsd } from "../lib/pricing.js";
+import { scoreLifecycle } from "../scoring/lifecycle.js";
 
 const LANE_A_SYSTEM = `You are a fitness AI assistant helping a personal trainer programme for their client. The trainer will describe a client and ask for a 12-week programme. Produce a detailed plan with phases, weeks, sessions, exercises, sets/reps, and any nutrition or recovery components the trainer asks for. Write in clear prose with week-by-week structure.`;
 
@@ -145,7 +146,17 @@ export async function runLaneAMulti(model: Model, scenario: Scenario): Promise<R
   }
 
   const drift_turn = refusal ? null : firstDriftTurn(perTurnViolations, scenario);
-  const finalTurnViolations = perTurnViolations[perTurnViolations.length - 1] ?? [];
+
+  // v0.7 lifecycle scoring. Lane A gets NO state injection — the raw LLM
+  // sees only conversation text; whether it tracks the evolving state from
+  // prose alone is exactly what this lane measures. No-op for
+  // non-lifecycle scenarios.
+  const lifecycleViolations = scoreLifecycle(scenario, perTurnPlans);
+
+  const finalTurnViolations = [
+    ...(perTurnViolations[perTurnViolations.length - 1] ?? []),
+    ...lifecycleViolations,
+  ];
 
   return {
     model: model.name as ModelName,

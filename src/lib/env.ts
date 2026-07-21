@@ -39,3 +39,14 @@ export function requireAnthropicKey(): string {
   }
   return key;
 }
+
+export function requireGeminiKey(): string {
+  const key = process.env["GEMINI_API_KEY"];
+  if (!key) {
+    throw new Error(
+      "GEMINI_API_KEY is not set. Add it to ./.env (preferred for public reproducers) " +
+        "or ../../gymbile_backend/.env (local dev fallback).",
+    );
+  }
+  return key;
+}

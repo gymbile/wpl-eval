@@ -33,7 +33,7 @@ The v0.6 corrected numbers above remain the cited corpus — they are still the 
 - **v0.7.1 — canonical exercise catalog (SSOT).** The exercise vocabulary is now one canonical catalog as a single source of truth, vendored + codegen'd into each consumer with CI drift-checks — closing a production gap where a drifted catalog left a whole class of post-injury rehab exercises "unknown" to the live safety layer.
 - **Packages published:** npm `@gymbile/wpl-validator@1.9.0`, `@gymbile/wpl-ai@2.1.0`; Hex `wpl_validator 1.9.0`, `wpl_ai 2.1.0`; spec tag `wpl v1.8.0`.
 
-A full de-circularized re-run of the corpus is the next budgeted step — there are **no new safety percentages** until it runs. Full write-up of the v0.6→v0.7→v0.7.1 changes: [`docs/V0_7_RESULTS.md`](docs/V0_7_RESULTS.md).
+The de-circularized methodology has now been exercised: the **v0.7.0 lifecycle sweep** (5 evolving-client scenarios × 10 models × 3 vendors, 100 multi-turn trials) measured adaptability end-to-end — **210 → 10 lifecycle violations (21×), criterion pass rate 65% → 94%** under the WPL contract. Results: [`docs/V0_7_RESULTS.md`](docs/V0_7_RESULTS.md). The v0.6→v0.7→v0.7.1 methodology changes that made the measurement trustworthy: [`docs/V0_7_METHODOLOGY_CHANGES.md`](docs/V0_7_METHODOLOGY_CHANGES.md).
 
 ## Where to start
 
