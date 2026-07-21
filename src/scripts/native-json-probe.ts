@@ -28,7 +28,7 @@
 // the output format the model is asked to produce.
 //
 // Cost: ~5 calls × ~15k input × ~8k output on Sonnet ≈ $1–2.
-// Output: results-native-json/<model>__<scenario>.json (one per
+// Output: experiments/native-json/<model>__<scenario>.json (one per
 // trial) plus a single SUMMARY.json with aggregate.
 
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from "node:fs";
@@ -236,7 +236,7 @@ async function main(): Promise<void> {
   const systemPrompt = buildSystemPrompt(schema);
   console.log(`[native-json-probe] system prompt length: ${systemPrompt.length} chars`);
 
-  const outDir = resolve("results-native-json");
+  const outDir = resolve("experiments/native-json");
   mkdirSync(outDir, { recursive: true });
   const model = makeAnthropicModel(PROBE_MODEL);
 

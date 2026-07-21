@@ -15,7 +15,7 @@
 //   Stage 2 — `translateToWpl(trainerPrompt, toc)` → WPL-AI DSL
 //
 // Run on the 32 shallow trials with the same model+scenario combination
-// as the original. Save results under results-plan-then-translate/ so we
+// as the original. Save results under experiments/plan-then-translate/ so we
 // don't pollute the main corpus. Report: deep-recovery rate.
 
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from "node:fs";
@@ -27,7 +27,7 @@ import { makeOpenAiModel } from "../models/openai.js";
 import type { Scenario, ModelName } from "../lib/types.js";
 import type { ChatMessage } from "../models/types.js";
 
-const outDir = resolve(process.cwd(), "results-plan-then-translate");
+const outDir = resolve(process.cwd(), "experiments/plan-then-translate");
 mkdirSync(outDir, { recursive: true });
 
 const scenariosByName: Record<string, Scenario> = {};

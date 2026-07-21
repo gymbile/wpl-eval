@@ -211,7 +211,7 @@ async function main(): Promise<void> {
   const schema = loadWplSchema();
   const scenarios = loadScenarios();
   const systemPrompt = buildSystemPrompt(schema);
-  const outDir = resolve("results-native-json-openai-short");
+  const outDir = resolve("experiments/native-json-openai-short");
   mkdirSync(outDir, { recursive: true });
   const model = makeOpenAiModel(PROBE_MODEL);
 

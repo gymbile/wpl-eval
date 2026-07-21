@@ -687,8 +687,8 @@ at least at the small-model tier. We should split Arm B into:
   emitting short-form already. This bug is independent of the
   END-markers experiment and should be filed against wpl-ai.
 
-Artifacts: `results-dsl-end-markers/` (Sonnet),
-`results-dsl-end-markers-haiku/` (Haiku),
+Artifacts: `experiments/dsl-end-markers/` (Sonnet),
+`experiments/dsl-end-markers-haiku/` (Haiku),
 `src/lib/end-markers-reindenter.ts`,
 `src/scripts/dsl-end-markers-probe.ts`,
 `src/scripts/dsl-end-markers-haiku-probe.ts`.

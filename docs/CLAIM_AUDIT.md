@@ -187,7 +187,7 @@ These are valid product claims about the *proprietary orchestrator* — but they
 ## Concrete next steps
 
 1. **Fix the 17 stale claims** above. Estimated effort: 2 hours of focused editing.
-2. **Write `docs/DIFF_v0.4_to_v0.5.md`** disclosing every reason v0.5 numbers differ from the archived v0.4 corpus — so reporters who diff against `results-v0.4.0-archive/` can read the changelog. Drivers:
+2. **Write `docs/DIFF_v0.4_to_v0.5.md`** disclosing every reason v0.5 numbers differ from the archived v0.4 corpus — so reporters who diff against `archive/results-v0.4.0/` can read the changelog. Drivers:
    - **Dead-blacklist-entry fix** → Lane A surfaced more violations (35→43, 176→207). Same model outputs, stricter (corrected) scoring.
    - **Extraction-truncation fix** → 27 of 120 Lane A trials had silently zeroed plans in v0.4; v0.5 re-extraction surfaces those plans (4 net new violations on torn_meniscus alone).
    - **Model snapshots evolved** → OpenAI's `gpt-5`, `gpt-5-mini`, `gpt-5-nano` produce different output than the v0.4 archive even at temperature 0; example: GPT-5 on torn_meniscus single went from 9 violations (v0.4 archive, "Bulgarian split squat to shallow depth" × 9 weeks) to 0 (v0.5, model now picks "Rear-Foot-Elevated Split Squat (shallow)" — outside the canonical-vocab match for `bulgarian_split_squat_*`).

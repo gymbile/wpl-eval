@@ -259,7 +259,7 @@ async function main(): Promise<void> {
   const systemPrompt = buildEndMarkersSystemPrompt();
   console.log(`[dsl-end-markers-haiku] system prompt length: ${systemPrompt.length} chars`);
 
-  const outDir = resolve("results-dsl-end-markers-haiku");
+  const outDir = resolve("experiments/dsl-end-markers-haiku");
   mkdirSync(outDir, { recursive: true });
   const model = makeAnthropicModel(PROBE_MODEL);
 
