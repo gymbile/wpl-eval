@@ -4,7 +4,10 @@
 lifecycle corpus (5 scenarios, evolving `ClientContext`) across a 10-model,
 3-vendor lineup (`--sweep=v0.7`), multi-turn only, single repeat per cell.
 Complements — does not modify — the v0.5/v0.6 safety and short-plan results
-(`V0_6_RESULTS.md`), whose numbers stay frozen.
+(`V0_6_RESULTS.md`), whose numbers stay frozen. The methodology hardening
+this sweep runs on (library `enforce()`, fixed extractor, per-scenario
+rules, canonical catalog) is documented in
+[`V0_7_METHODOLOGY_CHANGES.md`](V0_7_METHODOLOGY_CHANGES.md).
 
 **What v0.7 measures.** Safety (v0.5) and short-plan structure (v0.6) were
 static: one client state, held for the whole conversation. Real clients

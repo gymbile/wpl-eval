@@ -4,6 +4,8 @@ Public safety evaluation for the [WPL (Wellness Plan Language)](https://wpl.dev)
 
 A two-lane benchmark that runs identical trainer-voice scenarios through two pipelines — **raw LLM output** vs **LLM + WPL governance** — across **7 models from OpenAI and Anthropic**, and reports a full metrics table (safety violations, drift, latency, cost, validity).
 
+**Why this exists, in one paragraph.** An LLM will happily prescribe an exercise that's dangerous for a client's injury. WPL is a safety layer that makes the model write its plan through a structured grammar, then strips contraindicated exercises against that client's constraints before the plan is served — and this repo measures the difference. Across **560 trials** and **7 models** (OpenAI + Anthropic), raw LLMs produced a plan with a contraindicated exercise **32–51%** of the time; the *same* models routed through WPL: **8–17%** — a **3–5× reduction**, on every corpus and in both single- and multi-turn conversations. In multi-turn coaching chats, raw models forget a contraindication the user already stated **42%** of the time; through WPL, **6%** (and **0%** on the Anthropic set). Every number reproduces from the committed model outputs in `results/`.
+
 **Current corpus: v0.6** — three sub-corpora (v0.5 OpenAI long-plan, v0.6 Anthropic long-plan, v0.6 short-plan), single-turn + multi-turn, 560 trials, ~$170 to reproduce. Frozen tag: [`v0.6.0`](https://github.com/gymbile/wpl-eval/releases/tag/v0.6.0). Full write-up: [`docs/V0_6_RESULTS.md`](docs/V0_6_RESULTS.md).
 
 > **⚠️ Correction (2026-06-12):** the earlier `v0.6.0-anthropic` snapshot reported "0 safety violations across 180 Anthropic Lane B trials." That was a measurement-bug artifact — a plan-walker reading the wrong path in the compiled output, so the scorer saw an empty plan. It is fixed; every Lane B result was re-derived from stored model output (no new API calls). Do not cite `v0.6.0-anthropic`. The corrected numbers are below and in `docs/V0_6_RESULTS.md`.
@@ -21,6 +23,17 @@ The contract's core job — stripping contraindicated exercises (the "blacklist"
 What the contract does **not** do (an honest gap, new in v0.6): on the short-plan corpus, the compiled form *surfaces* structural failures (insufficient rest days, over-fast progression, missing on-ramp) the raw prose lane is blind to — but the rule evaluator's only action today is `forbid_exercise`, so it reports those failures without yet preventing them. That's the v0.7 work.
 
 Every number is reproducible from the committed `results/*.json` files.
+
+## Since v0.6 (v0.7 / v0.7.1, shipped)
+
+The v0.6 corrected numbers above remain the cited corpus — they are still the headline result. What changed since is engineering and methodology, not a new score:
+
+- **v0.7 — `enforce()` is now in the published library.** The contraindicated-exercise stripping that Lane B exercises used to apply in the eval harness now lives in the published `@gymbile/wpl-validator` itself, so the served behaviour and the measured behaviour are the same code path.
+- **v0.7 — honesty fixes.** Lane B rules were de-circularized (authored from the client's clinical picture rather than the grading blacklist); a single independent extractor model is used for every trial; the compiler **fails closed** on safety paths; confidence intervals were added; and the matcher plural gap was fixed (`push_ups` no longer slips past a `push_up` rule). Because the old Lane B rules were partly circular and the old matcher failed open, the Lane B figures are expected to come *down*, not up, on re-measurement.
+- **v0.7.1 — canonical exercise catalog (SSOT).** The exercise vocabulary is now one canonical catalog as a single source of truth, vendored + codegen'd into each consumer with CI drift-checks — closing a production gap where a drifted catalog left a whole class of post-injury rehab exercises "unknown" to the live safety layer.
+- **Packages published:** npm `@gymbile/wpl-validator@1.9.0`, `@gymbile/wpl-ai@2.1.0`; Hex `wpl_validator 1.9.0`, `wpl_ai 2.1.0`; spec tag `wpl v1.8.0`.
+
+The de-circularized methodology has now been exercised: the **v0.7.0 lifecycle sweep** (5 evolving-client scenarios × 10 models × 3 vendors, 100 multi-turn trials) measured adaptability end-to-end — **210 → 10 lifecycle violations (21×), criterion pass rate 65% → 94%** under the WPL contract. Results: [`docs/V0_7_RESULTS.md`](docs/V0_7_RESULTS.md). The v0.6→v0.7→v0.7.1 methodology changes that made the measurement trustworthy: [`docs/V0_7_METHODOLOGY_CHANGES.md`](docs/V0_7_METHODOLOGY_CHANGES.md).
 
 ## Where to start
 
@@ -43,7 +56,7 @@ The v0.5-era publication docs (`BLOG_POST.md`, `INDUSTRY_REPORT.md`, `PRESS_KIT.
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
 git checkout v0.6.0                       # the corrected v0.6 corpus
-npm install                               # pins @gymbile/wpl-ai ^2.0.0, @gymbile/wpl-validator ^1.8.0
+npm install                               # pins @gymbile/wpl-ai ^2.1.0, @gymbile/wpl-validator ^1.9.0
 cp .env.example .env                      # add OPENAI_API_KEY and ANTHROPIC_API_KEY
 npm test                                  # 125 unit tests (scoring + short-plan rules + rule evaluator + cycle)
 npm run eval -- --sweep=v0.6              # full sweep — single-turn + multi-turn, all corpora
