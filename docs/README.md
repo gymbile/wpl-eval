@@ -16,7 +16,7 @@ file).
 
 **Press / publication (v0.5-era, predates the v0.6 correction — do not
 quote numbers from these):** `BLOG_POST.md`, `INDUSTRY_REPORT.md`,
-`PRESS_KIT.md`, `V0_6_LINKEDIN_DRAFT.md`. `charts/` holds hero charts
+`PRESS_KIT.md`. `charts/` holds hero charts
 regenerated from `results/*.json`.
 
 `archive/` — pre-v0.5 drafts. `superpowers/` — implementation specs and
