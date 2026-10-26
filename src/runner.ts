@@ -11,6 +11,7 @@ import type {
   LockedModelV05,
   LockedModelV06,
   LockedModelV07,
+  LockedModelV08,
   ModelName,
   Phase,
   RunResult,
@@ -42,6 +43,14 @@ const LOCKED_MODELS_V0_7: LockedModelV07[] = [
   "gemini-3.1-pro-preview",
   "gemini-3.5-flash",
   "gemini-3.1-flash-lite",
+];
+
+// v0.8: Anthropic-only sweep on the Claude 5.5 generation — the static
+// corpus re-measured under the hardened v0.7 harness. Pass `--sweep=v0.8`.
+const LOCKED_MODELS_V0_8: LockedModelV08[] = [
+  "claude-opus-5-5",
+  "claude-sonnet-5-5",
+  "claude-haiku-5-5",
 ];
 
 function isAnthropic(name: ModelName): boolean {
@@ -89,7 +98,7 @@ function resultPath(
 
 function parseArgs(): {
   phase: Phase | "all";
-  sweep: "v0.5" | "v0.6" | "v0.7";
+  sweep: "v0.5" | "v0.6" | "v0.7" | "v0.8";
   only: { model?: string; scenario?: string; lane?: "A" | "B" };
   tag?: string;
   repeats: number;
@@ -97,7 +106,7 @@ function parseArgs(): {
 } {
   const argv = process.argv.slice(2);
   let phase: Phase | "all" = "all";
-  let sweep: "v0.5" | "v0.6" | "v0.7" = "v0.5";
+  let sweep: "v0.5" | "v0.6" | "v0.7" | "v0.8" = "v0.5";
   let onlyModel: string | undefined;
   let onlyScenario: string | undefined;
   let onlyLane: "A" | "B" | undefined;
@@ -110,6 +119,7 @@ function parseArgs(): {
     else if (a === "--sweep=v0.5") sweep = "v0.5";
     else if (a === "--sweep=v0.6") sweep = "v0.6";
     else if (a === "--sweep=v0.7") sweep = "v0.7";
+    else if (a === "--sweep=v0.8") sweep = "v0.8";
     else if (a.startsWith("--model=")) onlyModel = a.slice("--model=".length);
     else if (a.startsWith("--scenario=")) onlyScenario = a.slice("--scenario=".length);
     else if (a === "--lane=A" || a === "--lane=B") onlyLane = a.slice("--lane=".length) as "A" | "B";
@@ -132,7 +142,9 @@ async function main(): Promise<void> {
   // tests against models outside the locked sweep). Otherwise run the
   // sweep selected via --sweep=v0.5|v0.6 (default v0.5).
   const lockedSweep: ModelName[] =
-    sweep === "v0.7"
+    sweep === "v0.8"
+      ? [...LOCKED_MODELS_V0_8]
+      : sweep === "v0.7"
       ? [...LOCKED_MODELS_V0_7]
       : sweep === "v0.6"
         ? [...LOCKED_MODELS_V0_6]

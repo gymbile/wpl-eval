@@ -23,6 +23,12 @@ const PRICING: Record<string, { input_per_m: number; output_per_m: number }> = {
   "claude-opus-4-7": { input_per_m: 5.0, output_per_m: 25.0 },
   "claude-sonnet-4-6": { input_per_m: 3.0, output_per_m: 15.0 },
   "claude-haiku-4-5-20251001": { input_per_m: 1.0, output_per_m: 5.0 },
+  // Anthropic Claude 5.5 (v0.8 sweep). Verified 2026-10-26. Source:
+  //   platform.claude.com/docs/en/about-claude/pricing. Output tokens
+  //   include adaptive-thinking tokens (billed, not returned).
+  "claude-opus-5-5": { input_per_m: 4.0, output_per_m: 20.0 },
+  "claude-sonnet-5-5": { input_per_m: 2.0, output_per_m: 10.0 },
+  "claude-haiku-5-5": { input_per_m: 0.1, output_per_m: 0.5 },
   // Google Gemini (v0.7 sweep). 2.5 tier retired for new API users
   // 2026-07-20; rows below are the 3.x replacement lineup, verified live
   // 2026-07-20. Source: ai.google.dev/gemini-api/docs/pricing (paid tier;

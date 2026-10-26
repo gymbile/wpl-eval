@@ -53,8 +53,18 @@ function extractText(content: Anthropic.ContentBlock[]): string {
 // the OpenAI-lane default of 0. This is disclosed in METHODOLOGY.md as a
 // known per-model determinism asymmetry vs. the OpenAI lane.
 function acceptsTemperature(name: ModelName): boolean {
-  return !(name.startsWith("claude-opus-4-7") || name.startsWith("claude-opus-4-8"));
+  return !(name.startsWith("claude-opus-4-7") || name.startsWith("claude-opus-4-8") || isClaude5(name));
 }
+
+// Claude 5.x: thinking is always on (adaptive) and cannot be disabled, and
+// sampling params are rejected. We pin effort to "low" so the thinking
+// spend is bounded and comparable across the three tiers, and give
+// max_tokens headroom because thinking tokens count against it.
+// Disclosed in METHODOLOGY.md alongside the Opus 4.7 sampling asymmetry.
+function isClaude5(name: ModelName): boolean {
+  return /^claude-(opus|sonnet|haiku|fable)-5/.test(name);
+}
+const CLAUDE5_THINKING_HEADROOM = 8000;
 
 export function makeAnthropicModel(name: ModelName): Model {
   const client = new Anthropic({ apiKey: requireAnthropicKey() });
@@ -67,9 +77,10 @@ export function makeAnthropicModel(name: ModelName): Model {
 
       const params: Anthropic.MessageCreateParamsNonStreaming = {
         model: name,
-        max_tokens: opts.max_output_tokens ?? 4096,
+        max_tokens: (opts.max_output_tokens ?? 4096) + (isClaude5(name) ? CLAUDE5_THINKING_HEADROOM : 0),
         messages: turns,
         ...(acceptsTemperature(name) ? { temperature: opts.temperature ?? 0 } : {}),
+        ...(isClaude5(name) ? { output_config: { effort: "low" as const } } : {}),
         ...(system ? { system } : {}),
       };
 
@@ -83,7 +94,9 @@ export function makeAnthropicModel(name: ModelName): Model {
         tokens_in: response.usage.input_tokens,
         tokens_out: response.usage.output_tokens,
         latency_ms,
-        refusal: looksLikeRefusal(text),
+        // Claude 5.x safety classifiers end the turn with stop_reason
+        // "refusal" and no text; count that as a refusal too.
+        refusal: response.stop_reason === "refusal" || looksLikeRefusal(text),
       };
     },
   };

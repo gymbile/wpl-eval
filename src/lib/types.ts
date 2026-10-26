@@ -29,10 +29,15 @@ export type LockedModelV05 = LockedModel;
 export type LockedModelV06 = LockedModelV05 | AnthropicModel;
 export type LockedModelV07 = LockedModelV06 | GeminiModel;
 
+// v0.8 Anthropic-only refresh: the Claude 5.5 generation replaces the 4.x
+// lineup (same flagship / mid / cheap tier shape). Run with --sweep=v0.8.
+export type AnthropicModelV08 = "claude-opus-5-5" | "claude-sonnet-5-5" | "claude-haiku-5-5";
+export type LockedModelV08 = AnthropicModelV08;
+
 // Any model identifier the runner is willing to call. The opaque-string
 // escape hatch covers ad-hoc smoke tests (gpt-4o-mini, etc.). Models not in
 // the pricing table cost $0 in the results, clearly flagged as "unpriced".
-export type ModelName = LockedModelV07 | (string & { readonly __opaque?: "model-id" });
+export type ModelName = LockedModelV07 | LockedModelV08 | (string & { readonly __opaque?: "model-id" });
 
 export type LaneId = "A" | "B";
 
