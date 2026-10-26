@@ -16,10 +16,10 @@ measured reasons:
 
 1. **It compounds over a conversation.** Constraints stated at turn 1
    drift out of the plan by turn 6–8.
-2. **It does not improve with model quality.** The most capable models on
-   the market are among the *worst* raw-safety performers — flagships
-   prescribe more contraindicated work than budget models, across
-   vendors. Buying a better model does not buy safety.
+2. **It does not improve with model quality.** Across three vendors and
+   two model generations, the per-exercise rate of contraindicated
+   prescriptions is flat from the cheapest tier to the flagship. Buying a
+   better model buys fluency, not safety.
 3. **It breaks hardest when the client changes.** Real clients get
    injured mid-programme, get cleared, travel, regress. When state
    changes mid-conversation, 9 of 10 raw models fail to *remove* what

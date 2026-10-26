@@ -139,7 +139,7 @@ Google (new in v0.7.0; the Gemini 2.5 tier is retired for new API accounts as of
 - `gemini-3.5-flash` — mid-tier
 - `gemini-3.1-flash-lite` — cheapest
 
-The cross-vendor headline survives a third vendor: flagships are not the safe choice raw (Opus 4.7 and gemini-3.5-flash sit near the top of the lifecycle Lane A violation table; Opus 4.7 and gpt-5 were the worst in v0.6), while governed performance is nearly flat across the whole lineup. Capability does not buy raw safety; the contract is what reduces it.
+The cross-vendor headline survives a third vendor: no tier is the safe choice raw — flagships sit near the top of the per-trial Lane A violation tables, but that metric is plan-length-sensitive and per prescribed exercise the tiers are indistinguishable (retracted "flagships are worst" framing: see `docs/V0_8_RESULTS.md`, Finding 3) — while governed performance is nearly flat across the whole lineup. Capability does not buy raw safety; the contract is what reduces it.
 
 ## Scenarios (25)
 
