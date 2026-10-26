@@ -64,8 +64,10 @@ Anthropic lineups.
 **v0.8 re-measurement (2026-10-26).** The same static corpus on the
 Claude 5.5 generation, under the de-circularized v0.7 harness: unsafe
 trials **43% raw vs 11% governed (3.9×)**, drift 38% → 4%, served rate
-31% → 80%. The 3–5× figure held; the flagship (Opus 5.5) is still the
-joint-worst raw model. See `V0_8_RESULTS.md`.
+31% → 80%. The 3–5× figure held. Normalised per prescribed exercise, the
+three Claude tiers are indistinguishable raw (0.5–0.7 contraindicated per
+100); the earlier "flagships are worst raw" framing was plan-length
+exposure and is retracted. See `V0_8_RESULTS.md`.
 
 ### 2. Structure — programme quality gates
 

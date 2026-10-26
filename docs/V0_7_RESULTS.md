@@ -107,7 +107,9 @@ semantics. Total sweep cost: **$60.81**.
 | **Total** | **210** | **46%** | **10** | **84%** | **1** |
 
 The v0.6 finding that raw-safety does not improve with capability holds on
-the lifecycle corpus: Opus 4.7 (28) and gemini-3.5-flash (27) sit near the
+the lifecycle corpus (**corrigendum 2026-10-26:** per-trial violation
+counts are plan-length-sensitive; read the ordering below as "no tier is
+safer", not "flagships are worse" — see `V0_8_RESULTS.md` Finding 3): Opus 4.7 (28) and gemini-3.5-flash (27) sit near the
 top of the Lane A violation table while much cheaper models do better; the
 one exception is gpt-5, which is both the strongest raw lifecycle tracker
 (11 violations, only model to pass L1's injury criterion raw) and perfect

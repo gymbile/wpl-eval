@@ -35,11 +35,20 @@ re-run, with the lineup refreshed from Claude 4.x (June 2026) to 5.5.
    installed library changed zero files, so this is the model generation
    writing better WPL-AI, not a library change.
 
-3. **Raw safety still does not improve with capability.** Opus 5.5 is the
-   joint-worst raw model on the long-plan corpus (8/15 unsafe in both
-   phases), as Opus 4.7 was. Haiku 5.5, at 1/300th of the price, is the
-   best raw multi-turn tracker (4/15). Under the contract all three
-   converge to 1–2 unsafe trials per cell.
+3. **Raw safety does not change with tier, in either direction.** Opus 5.5
+   trips the per-trial unsafe metric most often (16/30 long-plan trials vs
+   10/30 for Haiku), as Opus 4.7 did — but it also writes plans twice as
+   long and prescribes 55% more exercises, so it has more chances to trip
+   once. Normalised per 100 prescribed exercises, Opus 0.54 / Haiku 0.65 /
+   Sonnet 0.70 contraindicated, and all three pick the same number of
+   distinct contraindicated items (9 / 8 / 8). The per-trial ranking is
+   plan-length exposure plus k=1 noise (Wilson intervals overlap heavily),
+   not a safety difference. **This retracts the "flagships are worst raw"
+   framing of the v0.6 and v0.7 write-ups, which used the same
+   exposure-sensitive metric.** The defensible claim is the weaker one:
+   buying a higher tier does not buy raw safety, and dropping a tier does
+   not lose it. Under the contract all three converge to 1–2 unsafe
+   trials per cell.
 
 4. **The residual Lane B failures are almost entirely intensity.** Of the
    blacklist violations the governed lane still served, 574 are RPE/%1RM
@@ -84,6 +93,33 @@ Per model, long-plan corpus:
 
 Cost is the whole static corpus (both lanes, both phases, short-plan
 included). The same corpus on the 4.x lineup cost $125.94.
+
+### Per-exercise exposure check (Lane A, long-plan, both phases)
+
+| model | avg plan chars | exercises prescribed (30 trials) | contraindicated slots | per 100 | distinct items |
+|---|---:|---:|---:|---:|---:|
+| claude-opus-5-5   | 20,005 | 5,006 | 27 | 0.54 | 9 |
+| claude-sonnet-5-5 | 11,760 | 4,145 | 29 | 0.70 | 8 |
+| claude-haiku-5-5  |  9,905 | 3,229 | 21 | 0.65 | 8 |
+
+### What "11% unsafe" means — the four-way split of 120 governed trials
+
+| outcome | trials | share |
+|---|---:|---:|
+| served, no violation of any kind | 74 | 62% |
+| served, structural flag only (rest days / progression / on-ramp — reported, not prevented) | 9 | 8% |
+| served with a blacklist violation (**the 11%**) | 13 | 11% |
+| not served — compiled but failed schema validation, fail-closed | 24 | 20% |
+
+The headline rate is a **harm** measure with all 120 trials in the
+denominator (fail-closed trials count as not-unsafe in both lanes; every
+Lane A trial serves a plan). It is not a success rate: of the 96 plans
+that reached the client, 77% were fully clean and 14% carried a
+contraindication. On a **utility** measure (delivered a plan with no
+contraindication) the governed lane scores 69% vs 57% raw. The 20%
+not-served rate is single-shot; production retries before failing closed,
+which this eval does not measure. On Claude 4.x the not-served rate on
+this corpus was ~70%.
 
 ## v0.6 (Claude 4.x) → v0.8 (Claude 5.5), same corpus, same scorer
 

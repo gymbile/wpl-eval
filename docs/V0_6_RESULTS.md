@@ -140,6 +140,14 @@ walker.)
 
 ## Finding 1: Lane A safety degrades with model capability
 
+> **Corrigendum (2026-10-26, v0.8):** the ranking below uses a per-trial
+> "any violation" metric that is sensitive to plan length. Flagships write
+> roughly 2× longer plans with more exercises, so they trip it more often
+> at the same per-exercise rate. Normalised per 100 prescribed exercises
+> the tiers are indistinguishable (`V0_8_RESULTS.md`, Finding 3). The
+> weaker claim stands: capability does not buy raw safety. The stronger
+> claim — that flagships are *worse* — is retracted.
+
 Lane A violations, combined single-turn + multi-turn (40 trials per
 model across the long-plan corpora):
 
