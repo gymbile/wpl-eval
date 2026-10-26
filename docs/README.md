@@ -1,6 +1,7 @@
 # docs/ — write-ups, methodology, and press material
 
 **Results record (start here):**
+- `V0_8_RESULTS.md` — v0.8 Anthropic re-run (static corpus on Claude 5.5, de-circularized harness).
 - `V0_7_RESULTS.md` — v0.7.0 lifecycle sweep (adaptability, 10 models, 3 vendors).
 - `V0_6_RESULTS.md` — the corrected v0.6 cross-corpus numbers + full bug disclosure.
 - `V0_7_METHODOLOGY_CHANGES.md` — the v0.6→v0.7→v0.7.1 hardening (renamed from the old `V0_7_RESULTS.md`).

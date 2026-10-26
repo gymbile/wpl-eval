@@ -6,6 +6,8 @@ A two-lane benchmark that runs identical trainer-voice scenarios through two pip
 
 **Why this exists, in one paragraph.** An LLM will happily prescribe an exercise that's dangerous for a client's injury. WPL is a safety layer that makes the model write its plan through a structured grammar, then strips contraindicated exercises against that client's constraints before the plan is served — and this repo measures the difference. Across **560 trials** and **7 models** (OpenAI + Anthropic), raw LLMs produced a plan with a contraindicated exercise **32–51%** of the time; the *same* models routed through WPL: **8–17%** — a **3–5× reduction**, on every corpus and in both single- and multi-turn conversations. In multi-turn coaching chats, raw models forget a contraindication the user already stated **42%** of the time; through WPL, **6%** (and **0%** on the Anthropic set). Every number reproduces from the committed model outputs in `results/`.
 
+**Latest sweep: v0.8 (2026-10-26) — the static corpus re-measured on Claude 5.5.** Anthropic-only: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`, all 20 static scenarios, both phases, both lanes, 240 trials, $83. Blacklist-unsafe trials **43% raw vs 11% governed (3.9×)** — the same 3–5× the v0.6 corpus showed, now measured under the de-circularized v0.7 harness. Lane B served rate (schema-valid) rose from **31% to 80%**, and Opus 5.5 is still the joint-worst raw model. Write-up: [`docs/V0_8_RESULTS.md`](docs/V0_8_RESULTS.md).
+
 **Current release: v0.7.0** — adds the **lifecycle corpus** (5 evolving-client scenarios: mid-programme injury with staged clearance, postpartum clearance gate, travel equipment window, cardiac progression *and regression*, cycle-pattern transition) and the **Gemini vendor lane**. 100 multi-turn trials across 10 models and 3 vendors: raw LLMs produced **210** state-conditional violations, the same models through WPL produced **10** — a **21× reduction**, with per-state criterion pass rising **65% → 94%**. Tag: [`v0.7.0`](https://github.com/gymbile/wpl-eval/releases/tag/v0.7.0). Write-up: [`docs/V0_7_RESULTS.md`](docs/V0_7_RESULTS.md).
 
 **Frozen prior corpus: v0.6** — three sub-corpora (v0.5 OpenAI long-plan, v0.6 Anthropic long-plan, v0.6 short-plan), single-turn + multi-turn, 560 trials, ~$170 to reproduce. Frozen tag: [`v0.6.0`](https://github.com/gymbile/wpl-eval/releases/tag/v0.6.0). Full write-up: [`docs/V0_6_RESULTS.md`](docs/V0_6_RESULTS.md).
@@ -57,6 +59,7 @@ For the human-readable narrative and methodology, the [`docs/`](docs/) directory
 |---|---|
 | [`docs/V0_6_RESULTS.md`](docs/V0_6_RESULTS.md) | **Start here.** The v0.6 results write-up — corrected cross-corpus numbers, the correction notice, the four-bug disclosure, short-plan + multi-turn methodology, native-JSON and END-markers probes. |
 | [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) | Technical companion — research question, scenario design, scoring algorithm, drift methodology, validity threats. |
+| [`docs/V0_8_RESULTS.md`](docs/V0_8_RESULTS.md) | The v0.8 Anthropic re-run — static corpus on Claude 5.5 under the hardened harness, v0.6→v0.8 comparison. |
 | [`docs/V0_7_RESULTS.md`](docs/V0_7_RESULTS.md) | The v0.7.0 lifecycle-sweep write-up — adaptability across 10 models / 3 vendors, adaptation matrix, residual-gap accounting. |
 | [`docs/V0_7_METHODOLOGY_CHANGES.md`](docs/V0_7_METHODOLOGY_CHANGES.md) | The v0.6→v0.7→v0.7.1 hardening that made the lifecycle measurement trustworthy (library `enforce()`, de-circularized rules, canonical catalog). |
 | [`docs/STATE_OF_WPL.md`](docs/STATE_OF_WPL.md) | Current-state summary of the whole WPL programme — problem, evidence across all three measured properties, production status, roadmap. |
@@ -73,7 +76,7 @@ The v0.5-era publication docs (`BLOG_POST.md`, `INDUSTRY_REPORT.md`, `PRESS_KIT.
 git clone https://github.com/gymbile/wpl-eval.git
 cd wpl-eval
 git checkout v0.7.0                       # current release (lifecycle + Gemini)
-npm install                               # pins @gymbile/wpl-ai ^2.1.0, @gymbile/wpl-validator ^1.9.0
+npm install                               # lockfile: @gymbile/wpl-ai 2.0.0, @gymbile/wpl-validator 1.8.0
 cp .env.example .env                      # add OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY
 npm test                                  # 342 unit tests (scoring + lifecycle + short-plan + rule evaluator + cycle)
 
@@ -116,7 +119,9 @@ trainer prompt → LLM emits WPL-AI DSL → compileWplAi() → @gymbile/wpl-vali
 
 Lane A is a 2026-vintage baseline of how AI is deployed in consumer fitness apps today. Lane B is what the same model produces when it must speak through a structured grammar with compile-time validation and a rule engine that re-applies client constraints on every regeneration.
 
-## Models evaluated (v0.7 sweep: 10)
+## Models evaluated (v0.7 sweep: 10; v0.8 sweep: 3)
+
+v0.8 (Anthropic-only refresh, `--sweep=v0.8`): `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`. Thinking always on at `effort: low`, no sampling parameters accepted — see `docs/METHODOLOGY.md §3.5`.
 
 OpenAI:
 - `gpt-5` — flagship (minimal reasoning effort, default)
@@ -153,6 +158,7 @@ Full definitions and clinical citations in [`scenarios/scenarios.yaml`](scenario
 ## Limitations (read before quoting any number)
 
 - 25 scenarios is not exhaustive — it's a stratified snapshot.
+- The v0.8 sweep is Anthropic-only (k=1) and replaces the 4.x Anthropic lineup; it does not refresh the OpenAI or Gemini lanes. Claude 5.5 models run with thinking on and are not deterministic across runs.
 - 10 models across 3 vendors is not all of LLM-space; the Gemini flagship slot is a preview model (no GA pro tier is callable on new API keys — the 2.5 tier is retired for new accounts).
 - The v0.7.0 lifecycle sweep ran one repeat per cell (k=1); the runner supports `--repeats` + Wilson CIs, and per-model single-criterion differences should be treated as noise. The 21× Lane A/B gap is far outside it.
 - Blacklists, structural thresholds, and lifecycle criteria are **clinician-cited but not clinician-validated**: every entry cites a published source, but the encoding was authored by the Gymbile team, not by clinicians reviewing the corpus. Clinician review is scheduled for v0.8. The relative comparison (raw LLM vs WPL) is robust to this gap; the absolute labels are pending external sign-off.

@@ -20,7 +20,7 @@ import type {
   Scenario,
 } from "../lib/types.js";
 
-const RESULTS_DIR = resolve(process.cwd(), "results");
+const RESULTS_DIR = resolve(process.cwd(), process.env["RESULTS_DIR"] ?? "results");
 const SCENARIOS_PATH = resolve(process.cwd(), "scenarios/scenarios.yaml");
 
 const scenarioDoc = parseYaml(readFileSync(SCENARIOS_PATH, "utf8")) as {

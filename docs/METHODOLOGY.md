@@ -348,6 +348,8 @@ A reader who interprets the public eval as the full product will conclude WPL ha
 | `claude-haiku-4-5-20251001` | `0` | Same |
 | `claude-opus-4-7` | *not sent* | Opus 4.7 deprecates `temperature`; API returns 400 if sent; model-controlled sampling |
 
+**v0.8 (Claude 5.5 lineup).** `claude-opus-5-5`, `claude-sonnet-5-5` and `claude-haiku-5-5` reject every sampling parameter and run adaptive thinking that cannot be disabled. The adapter sends no temperature, pins `output_config.effort = "low"` so thinking spend is bounded and identical across tiers, and adds 8,000 tokens of `max_tokens` headroom because thinking tokens count against the cap. Reported `tokens_out` and cost include thinking tokens. A `stop_reason: "refusal"` (safety classifier) is counted as a refusal alongside the text heuristic. None of the three is reproducibly deterministic across runs.
+
 Three of seven models (`gpt-4.1`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`) run at `temperature: 0`. The other four (`gpt-5`, `gpt-5-mini`, `gpt-5-nano`, `claude-opus-4-7`) use model-controlled sampling and are **not reproducibly deterministic across runs**. Single-run cells for those four models carry sampling noise. This is why v0.7 headline tables report Wilson 95% confidence intervals and `--repeats` is available for variance estimation.
 
 The claim in earlier versions of this document that "Temperature = 0 for reproducibility" applied across all models was false — it applied only to the three non-reasoning models listed above.

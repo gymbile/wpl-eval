@@ -1,6 +1,6 @@
 # The State of WPL — Governed AI for Wellness & Fitness
 
-**Date:** 2026-07-21 · **Eval version:** v0.7.0 · **All numbers below are
+**Date:** 2026-10-26 · **Eval version:** v0.7.0 + v0.8 Anthropic re-run · **All numbers below are
 from the open, reproducible benchmark in this repository.**
 
 ---
@@ -60,6 +60,12 @@ Anthropic lineups.
 | Trials serving unsafe prescriptions | **32–51%** | **8–17%** |
 | Reduction | — | **3–5×, every corpus, every phase** |
 | Multi-turn constraint drift | 42% of conversations | 6% (0% on Anthropic models) |
+
+**v0.8 re-measurement (2026-10-26).** The same static corpus on the
+Claude 5.5 generation, under the de-circularized v0.7 harness: unsafe
+trials **43% raw vs 11% governed (3.9×)**, drift 38% → 4%, served rate
+31% → 80%. The 3–5× figure held; the flagship (Opus 5.5) is still the
+joint-worst raw model. See `V0_8_RESULTS.md`.
 
 ### 2. Structure — programme quality gates
 
@@ -135,7 +141,8 @@ audited instead:
 
 | Item | Status |
 |---|---|
-| Intensity capping (`cap_rpe` rule action) | scoped from a measured Lane B miss |
+| Intensity capping (`cap_rpe` rule action) | scoped; v0.8 re-run measured 11 of 13 residual governed misses as intensity-only |
+| De-circularized re-run of the static corpus | **done** (Anthropic lane, Claude 5.5, 2026-10-26) |
 | Deload / detraining volume-delta check | scoped; deferred rather than shipped with a flawed metric |
 | Clinician review of the scenario corpus | scheduled; `[VERIFY]` markers published in the interim |
 | Repeats + confidence intervals on lifecycle sweep | runner support shipped (Wilson CIs); budget decision |
