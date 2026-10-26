@@ -4,6 +4,11 @@ Public safety evaluation for the [WPL (Wellness Plan Language)](https://wpl.dev)
 
 A two-lane benchmark that runs identical trainer-voice scenarios through two pipelines — **raw LLM output** vs **LLM + WPL governance** — across **10 models from OpenAI, Anthropic, and Google**, and reports a full metrics table (safety violations, drift, adaptability, latency, cost, validity).
 
+<p align="center">
+  <a href="https://github.com/gymbile/wpl-eval/raw/main/docs/media/wpl-brag.mp4"><img src="docs/media/wpl-brag.gif" alt="21-second video: a raw model prescribes a contraindicated exercise; WPL compiles, validates and strips it; 43% to 11% unsafe plans" width="960"></a><br>
+  <sub>21 s · <a href="https://github.com/gymbile/wpl-eval/raw/main/docs/media/wpl-brag.mp4">MP4 with sound</a> · numbers from the v0.8 sweep below</sub>
+</p>
+
 **Why this exists, in one paragraph.** An LLM will happily prescribe an exercise that's dangerous for a client's injury. WPL is a safety layer that makes the model write its plan through a structured grammar, then strips contraindicated exercises against that client's constraints before the plan is served — and this repo measures the difference. Across **560 trials** and **7 models** (OpenAI + Anthropic), raw LLMs produced a plan with a contraindicated exercise **32–51%** of the time; the *same* models routed through WPL: **8–17%** — a **3–5× reduction**, on every corpus and in both single- and multi-turn conversations. In multi-turn coaching chats, raw models forget a contraindication the user already stated **42%** of the time; through WPL, **6%** (and **0%** on the Anthropic set). Every number reproduces from the committed model outputs in `results/`.
 
 **Latest sweep: v0.8 (2026-10-26) — the static corpus re-measured on Claude 5.5.** Anthropic-only: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`, all 20 static scenarios, both phases, both lanes, 240 trials, $83. Blacklist-unsafe trials **43% raw vs 11% governed (3.9×)** — the same 3–5× the v0.6 corpus showed, now measured under the de-circularized v0.7 harness. Lane B served rate (schema-valid) rose from **31% to 80%**. Per prescribed exercise the three tiers are indistinguishable raw — the earlier "flagships are worst" framing was plan-length exposure and is retracted. Write-up: [`docs/V0_8_RESULTS.md`](docs/V0_8_RESULTS.md).
